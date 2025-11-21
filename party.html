@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Mustard Hall Registry</title>
+  <style>
+    /* --- SUITE DESIGN SYSTEM --- */
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 1.5rem; font-family: system-ui, -apple-system, sans-serif; background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%); color: #e5e7eb; }
+    h1 { margin: 0 0 0.3rem 0; font-size: 1.6rem; letter-spacing: -0.02em; }
+    .tagline { font-size: 0.85rem; color: #94a3b8; margin-bottom: 1.2rem; }
+    
+    .layout-main { display: grid; grid-template-columns: 280px 1fr; gap: 1rem; margin-top: 0.75rem; }
+    @media (max-width: 900px) { .layout-main { grid-template-columns: 1fr; } }
+
+    /* Cards */
+    .card { border-radius: 0.75rem; border: 1px solid #1f2937; background: #0f172a; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem; height: fit-content; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; border-bottom: 1px solid #1e293b; margin-bottom: 0.5rem; }
+    .card-title { font-weight: 700; font-size: 1rem; color: #f8fafc; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    /* Inputs */
+    label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 3px; }
+    input[type="number"], select {
+      width: 100%; background: #020617; border: 1px solid #334155; color: #e2e8f0;
+      padding: 8px; border-radius: 4px; font-size: 0.9rem;
+    }
+    input:focus, select:focus { border-color: #6366f1; outline: none; }
+    
+    .row { display: flex; gap: 8px; }
+    .row > div { flex: 1; }
+
+    /* Character Grid */
+    .char-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+    
+    .char-card { 
+      background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px; 
+      position: relative; overflow: hidden;
+    }
+    .char-card.retainer { border-style: dashed; background: #111827; opacity: 0.9; }
+    
+    .char-header { display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 6px; }
+    .char-name { font-weight: 700; color: #fff; font-size: 1.1rem; }
+    .char-class { font-size: 0.85rem; color: #93c5fd; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    .stat-block { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; text-align: center; margin-bottom: 10px; }
+    .stat-box { background: #0f172a; padding: 4px 2px; border-radius: 4px; }
+    .stat-lbl { font-size: 0.6rem; color: #64748b; display: block; margin-bottom: 2px; }
+    .stat-val { font-size: 0.9rem; font-weight: bold; color: #e2e8f0; }
+    .stat-mod { font-size: 0.7rem; color: #4ade80; }
+    .stat-mod.neg { color: #f87171; }
+    
+    .derived-stats { display: flex; gap: 10px; margin-bottom: 10px; background: #020617; padding: 6px; border-radius: 4px; }
+    .d-stat { flex: 1; text-align: center; font-size: 0.8rem; }
+    .d-val { font-weight: bold; color: #fff; }
+    .d-lbl { font-size: 0.65rem; color: #64748b; text-transform: uppercase; }
+
+    .equipment { font-size: 0.75rem; color: #94a3b8; margin-top: 8px; line-height: 1.4; }
+    .retainer-section { margin-top: 10px; padding-top: 8px; border-top: 1px dashed #334155; }
+    
+    /* Buttons */
+    .btn { width: 100%; padding: 10px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; }
+    .btn-primary { background: #4f46e5; color: white; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+    .btn-primary:hover { background: #4338ca; }
+    .btn-sm { padding: 4px 8px; font-size: 0.75rem; width: auto; background: #334155; color: #e2e8f0; }
+    .btn-sm:hover { background: #475569; }
+
+    /* Badges */
+    .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; margin-right: 4px; }
+    .bg-gold { background: #854d0e; color: #fef3c7; }
+    .bg-xp { background: #1e3a8a; color: #bfdbfe; }
+  </style>
+</head>
+<body>
+
+  <h1>The Mustard Hall Registry</h1>
+  <p class="tagline">Strict BECMI Party Generator (3d6 In Order).</p>
+
+  <div class="layout-main">
+
+    <!-- CONTROLS -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Generation Settings</span>
+      </div>
+      
+      <label>Party Size</label>
+      <input type="number" id="partySize" value="4" min="1" max="10">
+      
+      <label>Starting Level</label>
+      <input type="number" id="partyLvl" value="1" min="1" max="36">
+      
+      <div style="margin-top:10px">
+        <label>Method</label>
+        <select id="genMethod">
+          <option value="strict">Strict (3d6 In Order)</option>
+          <option value="heroic">Heroic (4d6 Drop Lowest)</option>
+        </select>
+      </div>
+
+      <div style="margin-top:10px">
+        <button class="btn btn-primary" onclick="exportParty()">Export for Dungeon</button>
+      </div>
+
+      <div style="margin-top:10px">
+        <label>Import from Dungeon</label>
+        <input type="file" id="partyImport" accept=".json" onchange="importPartyFromFile()">
+      </div>
+
+      <div style="margin-top:15px; padding:10px; background:#27272a; border-radius:6px; font-size:0.75rem; color:#a1a1aa; line-height:1.4">
+        <strong>BECMI Logic:</strong>
+        <ul style="padding-left:15px; margin:5px 0">
+          <li>Classes restricted by ability minimums (e.g., Elf needs Int 9).</li>
+          <li>HP includes Con mods.</li>
+          <li>Gold: 3d6 x 10 gp.</li>
+          <li>Retainer limit based on Cha.</li>
+        </ul>
+      </div>
+
+      <button class="btn btn-primary" style="margin-top:auto" onclick="generateParty()">Generate Party</button>
+    </div>
+
+    <!-- ROSTER -->
+    <div id="partyContainer" class="char-grid">
+      <!-- Characters inject here -->
+      <div style="grid-column: 1/-1; text-align: center; color: #475569; padding-top: 40px;">
+        Click "Generate Party" to roll the dice.
+      </div>
+    </div>
+
+  </div>
+
+  <script src="names.js"></script>
+  <script>
+    // --- CONSTANTS ---
+
+    // BECMI Tables
+    const THAC0_TABLE = {
+      'Fighter': [19,19,19,17,17,17,15,15,15,13,13,13,11,11,11,9,9,9,7,7,7,5,5,5,3,3,3,2,2,2,2,2,2,2,2,2],
+      'Cleric':  [19,19,19,19,17,17,17,17,14,14,14,14,12,12,12,12,9,9,9,9,7,7,7,7,4,4,4,4,2,2,2,2,2,2,2,2],
+      'MagicUser': [19,19,19,19,19,17,17,17,17,17,14,14,14,14,14,12,12,12,12,12,9,9,9,9,9,7,7,7,7,7,4,4,4,4,4,4],
+      'Thief':   [19,19,19,19,17,17,17,17,14,14,14,14,12,12,12,12,9,9,9,9,7,7,7,7,4,4,4,4,2,2,2,2,2,2,2,2]
+    };
+
+    // Updated to strict BECMI (RC p. 106 & 107)
+    // Format: Death/Poison, Wands, Para/Stone, Breath, Spells
+    const SAVING_THROWS = {
+      'Fighter': {
+        deathPoison: [12,12,12,10,10,10,8,8,8,6,6,6,4,4,4,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+        wands:       [13,13,13,11,11,11,9,9,9,7,7,7,5,5,5,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+        paraStone:   [14,14,14,12,12,12,10,10,10,8,8,8,6,6,6,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+        breath:      [15,15,15,13,13,13,10,10,10,8,8,8,5,5,5,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+        spells:      [16,16,16,14,14,14,12,12,12,10,10,10,8,8,8,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5]
+      },
+      'Cleric': {
+        deathPoison: [11,11,11,11,9,9,9,9,7,7,7,7,5,5,5,5,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+        wands:       [12,12,12,12,10,10,10,10,8,8,8,8,6,6,6,6,4,4,4,4,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+        paraStone:   [14,14,14,14,12,12,12,12,10,10,10,10,8,8,8,8,6,6,6,6,4,4,4,4,2,2,2,2,2,2,2,2,2,2,2,2],
+        breath:      [16,16,16,16,14,14,14,14,12,12,12,12,10,10,10,10,8,8,8,8,6,6,6,6,4,4,4,4,2,2,2,2,2,2,2,2],
+        spells:      [15,15,15,15,13,13,13,13,11,11,11,11,9,9,9,9,7,7,7,7,5,5,5,5,3,3,3,3,2,2,2,2,2,2,2,2]
+      },
+      'MagicUser': {
+        deathPoison: [13,13,13,13,13,11,11,11,11,11,9,9,9,9,9,7,7,7,7,7,5,5,5,5,5,3,3,3,3,3,2,2,2,2,2,2],
+        wands:       [14,14,14,14,14,12,12,12,12,12,10,10,10,10,10,8,8,8,8,8,6,6,6,6,6,4,4,4,4,4,2,2,2,2,2,2],
+        paraStone:   [13,13,13,13,13,11,11,11,11,11,9,9,9,9,9,7,7,7,7,7,5,5,5,5,5,3,3,3,3,3,2,2,2,2,2,2],
+        breath:      [16,16,16,16,16,14,14,14,14,14,12,12,12,12,12,9,9,9,9,9,7,7,7,7,7,5,5,5,5,5,3,3,3,3,3,3],
+        spells:      [15,15,15,15,15,12,12,12,12,12,10,10,10,10,10,8,8,8,8,8,6,6,6,6,6,4,4,4,4,4,2,2,2,2,2,2]
+      },
+      'Thief': {
+        deathPoison: [13,13,13,13,11,11,11,11,9,9,9,9,7,7,7,7,5,5,5,5,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2],
+        wands:       [14,14,14,14,12,12,12,12,10,10,10,10,8,8,8,8,6,6,6,6,4,4,4,4,2,2,2,2,2,2,2,2,2,2,2,2],
+        paraStone:   [13,13,13,13,11,11,11,11,9,9,9,9,7,7,7,7,5,5,5,5,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2],
+        breath:      [16,16,16,16,14,14,14,14,12,12,12,12,10,10,10,10,8,8,8,8,6,6,6,6,4,4,4,4,2,2,2,2,2,2,2,2],
+        spells:      [15,15,15,15,13,13,13,13,11,11,11,11,9,9,9,9,7,7,7,7,5,5,5,5,3,3,3,3,2,2,2,2,2,2,2,2]
+      }
+    };
+
+
+    // Thief Skills (Rules Cyclopedia p. 22)
+    // Format: OL, FT, RT, CW, MS, HS, PP, HN
+    // Note: Hear Noise (HN) converted to % (1-2 on d6 ~= 33%, etc).
+    const THIEF_TABLE = {
+       1: { ol: 15, ft: 10, rt: 10, cw: 87, ms: 20, hs: 10, pp: 20, hn: 30 },
+       2: { ol: 20, ft: 15, rt: 15, cw: 88, ms: 25, hs: 15, pp: 25, hn: 30 },
+       3: { ol: 25, ft: 20, rt: 20, cw: 89, ms: 30, hs: 20, pp: 30, hn: 30 },
+       4: { ol: 30, ft: 25, rt: 25, cw: 90, ms: 35, hs: 25, pp: 35, hn: 30, rl: 80 }, // Read Languages starts
+       5: { ol: 35, ft: 30, rt: 30, cw: 91, ms: 40, hs: 30, pp: 40, hn: 30, rl: 80 },
+       6: { ol: 45, ft: 40, rt: 40, cw: 92, ms: 45, hs: 36, pp: 45, hn: 30, rl: 80 },
+       7: { ol: 55, ft: 50, rt: 50, cw: 93, ms: 55, hs: 45, pp: 55, hn: 50, rl: 80 },
+       8: { ol: 65, ft: 60, rt: 60, cw: 94, ms: 65, hs: 55, pp: 65, hn: 50, rl: 80 },
+       9: { ol: 75, ft: 70, rt: 70, cw: 95, ms: 75, hs: 65, pp: 75, hn: 50, rl: 80 },
+      10: { ol: 85, ft: 80, rt: 80, cw: 96, ms: 85, hs: 75, pp: 85, hn: 50, rl: 80 },
+      11: { ol: 95, ft: 90, rt: 90, cw: 97, ms: 95, hs: 85, pp: 95, hn: 66, rl: 80 },
+      12: { ol: 96, ft: 95, rt: 95, cw: 98, ms: 96, hs: 90, pp: 105, hn: 66, rl: 80 }, // PP > 100 allows pockets of high level victims
+      13: { ol: 97, ft: 97, rt: 97, cw: 99, ms: 98, hs: 95, pp: 115, hn: 83, rl: 80 },
+      14: { ol: 99, ft: 99, rt: 99, cw: 99, ms: 99, hs: 99, pp: 125, hn: 83, rl: 80 }
+    };
+
+    // Magic-User Spells (Expanded to Lvl 9)
+    const MU_SPELLS = {
+      1: ["Charm Person", "Detect Magic", "Floating Disc", "Hold Portal", "Light", "Magic Missile", "Protection from Evil", "Read Languages", "Read Magic", "Shield", "Sleep", "Ventriloquism"],
+      2: ["Continual Light", "Detect Evil", "Detect Invisible", "ESP", "Invisibility", "Knock", "Levitate", "Locate Object", "Mirror Image", "Phantasmal Force", "Web", "Wizard Lock"],
+      3: ["Clairvoyance", "Dispel Magic", "Explosive Runes", "Fire Ball", "Fly", "Haste", "Hold Person", "Infravision", "Invisibility 10' Radius", "Lightning Bolt", "Protection from Evil 10' Radius", "Protection from Normal Missiles", "Slow", "Water Breathing"],
+      4: ["Charm Monster", "Confusion", "Dimension Door", "Fire Shield", "Fumble", "Ice Storm", "Minor Globe of Invulnerability", "Remove Curse", "Stoneskin", "Wall of Fire", "Wall of Ice", "Wizard Eye"],
+      5: ["Animate Dead", "Cloudkill", "Cone of Cold", "Feeblemind", "Hold Monster", "Magic Jar", "Passwall", "Telekinesis", "Teleport", "Wall of Force", "Wall of Iron", "Wall of Stone"],
+      6: ["Anti-Magic Shell", "Death Spell", "Disintegrate", "Geas", "Invisible Stalker", "Lower Water", "Move Earth", "Part Water", "Project Image", "Reincarnation", "Stone to Flesh"],
+      7: ["Create Normal Monsters", "Delayed Blast Fireball", "Lore", "Magic Door", "Mass Invisibility", "Power Word Stun", "Reverse Gravity", "Statue", "Summon Object", "Sword", "Teleport any Object"],
+      8: ["Clone", "Create Magical Monsters", "Dance", "Explosive Cloud", "Force Field", "Mass Charm", "Mind Barrier", "Permanent", "Polymorph Any Object", "Power Word Blind", "Symbol", "Travel"],
+      9: ["Create Any Monster", "Gate", "Heal", "Immunity", "Maze", "Meteor Swarm", "Power Word Kill", "Prismatic Wall", "Shape Change", "Survival", "Time Stop", "Wish"]
+    };
+
+    // Cleric Spells (Added)
+    const CLERIC_SPELLS = {
+      1: ["Cure Light Wounds", "Detect Evil", "Detect Magic", "Light", "Protection from Evil", "Purify Food and Water", "Remove Fear", "Resist Cold"],
+      2: ["Bless", "Find Traps", "Hold Person", "Know Alignment", "Resist Fire", "Silence 15' Radius", "Snake Charm", "Speak with Animal"],
+      3: ["Continual Light", "Cure Disease", "Growth of Animal", "Locate Object", "Remove Curse", "Striking"],
+      4: ["Create Water", "Cure Serious Wounds", "Dispel Magic", "Neutralize Poison", "Protection from Evil 10' Radius", "Speak with Plants", "Sticks to Snakes"],
+      5: ["Commune", "Create Food", "Dispel Evil", "Insect Plague", "Quest", "Raise Dead", "Truesight"],
+      6: ["Aerial Servant", "Animate Objects", "Barrier", "Create Normal Animals", "Cure Critical Wounds", "Find the Path", "Speak with Monsters", "Word of Recall"],
+      7: ["Earthquake", "Holy Word", "Raise Dead Fully", "Restoration", "Resurrection", "Survival", "Travel", "Wish"]
+    };
+    
+    const CLASSES = {
+      'cleric': { name: 'Cleric', hd: 6, req: { wis: 9 }, prime: 'wis' },
+      'fighter': { name: 'Fighter', hd: 8, req: { str: 9 }, prime: 'str' },
+      'magicuser': { name: 'Magic-User', hd: 4, req: { int: 9 }, prime: 'int' },
+      'thief': { name: 'Thief', hd: 4, req: { dex: 9 }, prime: 'dex' }, // BECMI Thief has no hard min, but Dex 9 helps
+      'dwarf': { name: 'Dwarf', hd: 8, req: { con: 9 }, prime: 'str' },
+      'elf': { name: 'Elf', hd: 6, req: { int: 9, str: 9 }, prime: 'str_int' },
+      'halfling': { name: 'Halfling', hd: 6, req: { dex: 9, con: 9 }, prime: 'str_dex' }
+    };
+
+    const MODS = [
+      { min: 1, max: 3, mod: -3 },
+      { min: 4, max: 5, mod: -2 },
+      { min: 6, max: 8, mod: -1 },
+      { min: 9, max: 12, mod: 0 },
+      { min: 13, max: 15, mod: 1 },
+      { min: 16, max: 17, mod: 2 },
+      { min: 18, max: 18, mod: 3 }
+    ];
+
+    // --- ENGINE ---
+
+    function d6() { return Math.floor(Math.random() * 6) + 1; }
+    
+    function rollStat(method) {
+      if (method === 'heroic') {
+        const rolls = [d6(), d6(), d6(), d6()].sort().slice(1);
+        return rolls.reduce((a, b) => a + b, 0);
+      }
+      return d6() + d6() + d6();
+    }
+
+    function getMod(score) {
+      const m = MODS.find(r => score >= r.min && score <= r.max);
+      return m ? m.mod : 0;
+    }
+
+    function getModStr(score) {
+      const m = getMod(score);
+      return m >= 0 ? `+${m}` : `${m}`;
+    }
+
+    function generateStats(method) {
+      return {
+        str: rollStat(method),
+        int: rollStat(method),
+        wis: rollStat(method),
+        dex: rollStat(method),
+        con: rollStat(method),
+        cha: rollStat(method)
+      };
+    }
+
+    function selectClass(stats) {
+      // Separate human classes and demihuman races for fair selection
+      const humanClasses = ['cleric', 'fighter', 'magicuser', 'thief'];
+      const demihumanRaces = ['dwarf', 'elf', 'halfling'];
+
+      // Find valid human classes
+      let validHumans = [];
+      humanClasses.forEach(cls => {
+        const clsData = CLASSES[cls];
+        let valid = true;
+        for (const [attr, min] of Object.entries(clsData.req)) {
+          if (stats[attr] < min) valid = false;
+        }
+        if (valid) validHumans.push(cls);
+      });
+
+      // Find valid demihuman races
+      let validDemis = [];
+      demihumanRaces.forEach(race => {
+        const clsData = CLASSES[race];
+        let valid = true;
+        for (const [attr, min] of Object.entries(clsData.req)) {
+          if (stats[attr] < min) valid = false;
+        }
+        if (valid) validDemis.push(race);
+      });
+
+      // If no valid options, default to fighter
+      if (validHumans.length === 0 && validDemis.length === 0) return 'fighter';
+
+      // BECMI balance: Give demihumans fair chance (about 40% demihuman, 60% human)
+      const isDemihuman = (validDemis.length > 0) && (Math.random() < 0.4 || validHumans.length === 0);
+
+      let candidates, selectedClass;
+      if (isDemihuman) {
+        candidates = validDemis;
+      } else {
+        candidates = validHumans;
+        if (candidates.length === 0) candidates = validDemis; // Fallback
+      }
+
+      // Pick best from selected group based on prime stat
+      selectedClass = candidates[0];
+      let maxScore = -1;
+
+      candidates.forEach(c => {
+        const prime = CLASSES[c].prime;
+        let score = 0;
+        if (prime.includes('_')) {
+           // Multi-prime (Elf/Halfling)
+           const parts = prime.split('_');
+           score = Math.max(stats[parts[0]], stats[parts[1]]);
+        } else {
+           score = stats[prime];
+        }
+
+        if (score > maxScore) {
+          maxScore = score;
+          selectedClass = c;
+        }
+      });
+
+      return selectedClass;
+    }
+
+    function generateCharacter(level, method, isRetainer = false) {
+      const stats = generateStats(method);
+      const clsKey = selectClass(stats);
+      const clsData = CLASSES[clsKey];
+
+      // Determine race
+      let race = "Human";
+      if (clsKey === 'elf') race = "Elf";
+      else if (clsKey === 'dwarf') race = "Dwarf";
+      else if (clsKey === 'halfling') race = "Halfling";
+
+      // Generate name with equal chance male/female
+      let nameList = (Math.random() < 0.5) ? female : male;
+      let name = nameList[Math.floor(Math.random() * nameList.length)];
+
+      // Calc HP
+      const conMod = getMod(stats.con);
+      let hp = 0;
+      // Level 1: Full HD? RC says roll. We'll be nice and give max at lvl 1 for PCs, roll for others
+      if(!isRetainer) hp = Math.max(1, clsData.hd + conMod);
+      else hp = Math.max(1, d6() + conMod); // Retainers are weaker
+
+      // Add levels
+      for(let i=1; i<level; i++) {
+        hp += Math.max(1, (Math.floor(Math.random() * clsData.hd) + 1) + conMod);
+      }
+
+      // Calc Gold
+      const gold = (d6() + d6() + d6()) * 10;
+
+      // Calc AC (BECMI Rules Cyclopedia p. 27)
+      const dexMod = getMod(stats.dex);
+      let baseAC = 10; // No armor
+      let armorName = "None";
+      let hasShield = false;
+
+      // BECMI Armor Rules
+      if (['fighter','cleric','dwarf','elf'].includes(clsKey)) {
+        baseAC = 5; // Chain mail
+        armorName = "Chain Mail";
+        hasShield = true; // Fighters, clerics, dwarves, elves get shields
+      } else if (clsKey === 'thief') {
+        baseAC = 8; // Leather armor
+        armorName = "Leather";
+      } else if (clsKey === 'halfling') {
+        baseAC = 5; // Chain mail (halflings can wear it)
+        armorName = "Chain Mail";
+        // Halflings don't get shield bonus due to size
+      } else if (clsKey === 'magicuser') {
+        baseAC = 10; // No armor allowed
+        armorName = "None";
+      }
+
+      // Apply shield bonus (-1 AC) if character has one
+      if (hasShield) {
+        baseAC -= 1;
+      }
+
+      // Apply dexterity bonus (BECMI allows dex AC bonuses)
+      let ac = baseAC - dexMod; // Lower AC is better
+
+      // THAC0 Calculation
+      let thac0Class = clsData.name.replace('-', ''); // Remove hyphens for table lookup
+      if (['dwarf', 'elf', 'halfling'].includes(clsKey)) thac0Class = 'Fighter'; // Demi-humans use fighter table
+      const table = THAC0_TABLE[thac0Class];
+      const thac0 = table ? (table[Math.min(level - 1, table.length - 1)] || 20) : 20;
+
+      // Saving Throws
+      const saveTable = SAVING_THROWS[thac0Class];
+      const saves = {
+        deathPoison: saveTable ? (saveTable.deathPoison[Math.min(level - 1, saveTable.deathPoison.length - 1)] || 12) : 12,
+        wands:       saveTable ? (saveTable.wands[Math.min(level - 1, saveTable.wands.length - 1)] || 13) : 13,
+        paraStone:   saveTable ? (saveTable.paraStone[Math.min(level - 1, saveTable.paraStone.length - 1)] || 14) : 14,
+        breath:      saveTable ? (saveTable.breath[Math.min(level - 1, saveTable.breath.length - 1)] || 15) : 15,
+        spells:      saveTable ? (saveTable.spells[Math.min(level - 1, saveTable.spells.length - 1)] || 16) : 16
+      };
+
+      // Alignment (Random)
+      const alignments = ["Lawful", "Neutral", "Chaotic"];
+      const alignment = alignments[Math.floor(Math.random() * alignments.length)];
+
+      // Spells
+      let spells = { slots: {"1st":0,"2nd":0,"3rd":0,"4th":0,"5th":0,"6th":0,"7th":0,"8th":0,"9th":0}, known: [] };
+      
+      // --- MAGIC-USER SPELLS ---
+      if (clsKey === 'magicuser' || clsKey === 'elf') {
+        // Elf uses MU table? RC says Elves are same as MU but capped.
+        // MU Slots (Rules Cyclopedia)
+        const muSlots = [
+          [1], [2], [2,1], [2,2], [2,2,1], [2,2,2], [3,2,2,1], [3,3,2,2], [3,3,3,2,1], // 1-9
+          [3,3,3,3,2], [4,3,3,3,2,1], [4,4,3,3,3,2], [4,4,4,3,3,2,1], [4,4,4,4,3,3,2], // 10-14
+          [5,4,4,4,4,3,2,1], [5,5,4,4,4,3,2,1], [6,5,5,4,4,3,2,1], [6,6,5,5,4,4,3,2], // 15-18
+          [7,6,6,5,5,4,4,3], [7,7,6,6,5,5,4,4], [8,7,7,6,6,5,5,4], [8,8,7,7,6,6,5,5], // 19-22
+          [9,8,8,7,7,6,6,5], [9,9,8,8,7,7,6,6], [9,9,9,8,8,7,7,6], [9,9,9,9,8,8,7,7], // 23-26
+          [9,9,9,9,9,8,8,7], [9,9,9,9,9,9,8,8], [9,9,9,9,9,9,9,8], [9,9,9,9,9,9,9,9], // 27-30
+          [9,9,9,9,9,9,9,9,1], [9,9,9,9,9,9,9,9,2], [9,9,9,9,9,9,9,9,3], // 31-33
+          [9,9,9,9,9,9,9,9,4], [9,9,9,9,9,9,9,9,5], [9,9,9,9,9,9,9,9,6]  // 34-36
+        ];
+        
+        const mySlots = muSlots[Math.min(level, 36) - 1] || [1];
+        const suffixes = ["1st","2nd","3rd","4th","5th","6th","7th","8th","9th"];
+        
+        mySlots.forEach((count, idx) => {
+            if(idx < suffixes.length) spells.slots[suffixes[idx]] = count;
+        });
+
+        // Known spells logic
+        spells.known = [{name: "Read Magic", level: 1, memorized: true}]; // Always known
+        
+        // Add random spells for book based on slots (simplified: full book for level)
+        for (let i = 0; i < mySlots.length; i++) {
+            const slvl = i + 1;
+            const count = Math.max(1, mySlots[i]); // Assume at least 1 known per level available
+            const pool = MU_SPELLS[slvl] || [];
+            if(pool.length === 0) continue;
+            
+            for(let k=0; k < count + 1; k++) { // Know slightly more than slots
+                 const sp = pool[Math.floor(Math.random() * pool.length)];
+                 if(!spells.known.find(x => x.name === sp)) {
+                     spells.known.push({name: sp, level: slvl, memorized: (k < mySlots[i])});
+                 }
+            }
+        }
+      }
+
+      // --- CLERIC SPELLS ---
+      if (clsKey === 'cleric') {
+          // Cleric Slots (RC Table 4)
+          const clSlots = [
+             [], [1], [2], [2,1], [2,2], [2,2,1], [3,2,2], [3,3,2,1], [3,3,3,2], // 1-9
+             [4,4,3,2,1], [4,4,3,3,2], [5,4,4,3,2,1], [5,5,4,4,3,2], [6,5,5,4,4,3], // 10-14
+             [6,6,5,5,4,4], [7,6,6,5,5,4], [7,7,6,6,5,5,1], [8,7,7,6,6,5,2], // 15-18
+             [8,8,7,7,6,6,3], [9,8,8,7,7,6,4], [9,9,8,8,7,7,5], [9,9,9,8,8,7,6], // 19-22
+             [9,9,9,9,8,8,7], [9,9,9,9,9,8,8], [9,9,9,9,9,9,8], [9,9,9,9,9,9,9], // 23-26
+             [9,9,9,9,9,9,9,1], [9,9,9,9,9,9,9,2], [9,9,9,9,9,9,9,3], // 27-29
+             [9,9,9,9,9,9,9,4], [9,9,9,9,9,9,9,5], [9,9,9,9,9,9,9,6], // 30-32
+             [9,9,9,9,9,9,9,7], [9,9,9,9,9,9,9,8], [9,9,9,9,9,9,9,9], [9,9,9,9,9,9,9,9] // 33-36
+          ];
+          
+          let mySlots = [...(clSlots[Math.min(level, 36) - 1] || [])];
+          
+          // Wisdom Bonus (RC Table 3)
+          // 13-15: +1 1st
+          // 16-17: +1 1st, +1 2nd
+          // 18: +1 1st, +1 2nd, +1 3rd
+          if (stats.wis >= 13) {
+             if(!mySlots[0]) mySlots[0] = 0; 
+             mySlots[0] += 1;
+          }
+          if (stats.wis >= 16) {
+             if(!mySlots[1]) mySlots[1] = 0;
+             mySlots[1] += 1;
+          }
+          if (stats.wis >= 18) {
+             if(!mySlots[2]) mySlots[2] = 0;
+             mySlots[2] += 1;
+          }
+          
+          const suffixes = ["1st","2nd","3rd","4th","5th","6th","7th"];
+          mySlots.forEach((count, idx) => {
+              if(idx < suffixes.length) spells.slots[suffixes[idx]] = count;
+              
+              // Clerics know ALL spells of the level they can cast
+              if (count > 0) {
+                  const slvl = idx + 1;
+                  const pool = CLERIC_SPELLS[slvl] || [];
+                  pool.forEach(sp => {
+                      // Mark as "known" (Clerics pray for them, effectively know all)
+                      // We'll just list them all as available options
+                      if (!spells.known.find(s => s.name === sp)) {
+                          spells.known.push({name: sp, level: slvl, memorized: false});
+                      }
+                  });
+              }
+          });
+          // For UI cleanliness, maybe we don't list EVERY cleric spell in the box, 
+          // but just say "All Level X". But user wants generation.
+          // Let's keep the list but maybe limit display if too long.
+      }
+
+      // Thief Skills
+      let thiefSkills = null;
+      if (clsKey === 'thief') {
+        const dexMod = getMod(stats.dex);
+        // BECMI: Dex adjustment for Thief Skills (RC p. 10)
+        // Logic: +5% per +1 dex adj? No, specific table.
+        // RC Table: Dex 9-12 (0), 13-15 (+5% OL/FT/RT/PP/MS/HS), 16-17 (+10%), 18 (+15%)
+        // We'll just use simple 5% * mod logic which approximates it well enough
+        const modVal = Math.max(0, dexMod * 5); 
+        
+        const lvlIdx = Math.min(level, 14); // Cap at 14 for table lookup, extrapolate if needed
+        const base = THIEF_TABLE[lvlIdx] || THIEF_TABLE[14];
+        
+        thiefSkills = {
+          pickLocks: Math.min(99, base.ol + modVal),
+          findTraps: Math.min(99, base.ft + modVal),
+          removeTraps: Math.min(99, base.rt + modVal),
+          climbWalls: base.cw, // No dex mod usually
+          moveSilently: Math.min(99, base.ms + modVal),
+          hideInShadows: Math.min(99, base.hs + modVal),
+          pickPockets: Math.min(125, base.pp + modVal), // Can go over 100
+          detectNoise: base.hn, // Usually no dex mod
+          readLanguages: base.rl || 0
+        };
+        if(level >= 4 && !thiefSkills.readLanguages) thiefSkills.readLanguages = 80;
+      }
+
+      // Gear
+      let gear = [armorName];
+      if (['fighter','dwarf','elf'].includes(clsKey)) {
+        gear.push("Sword");
+        if (hasShield) gear.push("Shield");
+      }
+      if (clsKey === 'cleric') {
+        gear.push("Mace", "Holy Symbol");
+        if (hasShield) gear.push("Shield");
+      }
+      if (clsKey === 'halfling') gear.push("Sword"); // Halflings get swords but no shields
+      if (clsKey === 'thief') gear.push("Dagger", "Thieves' Tools");
+      if (clsKey === 'magicuser') gear.push("Dagger", "Spellbook");
+      gear.push("Backpack", "Rations (1wk)", "Torches (6)");
+
+      return {
+        id: Date.now() + Math.random(),
+        name: name,
+        race: race,
+        class: clsData.name,
+        level: level,
+        alignment: alignment,
+        abilityScores: stats,
+        derivedStats: {
+          hp: { current: hp, max: hp },
+          ac: ac,
+          thac0: thac0,
+          savingThrows: saves
+        },
+        spells: spells,
+        thiefSkills: thiefSkills,
+        equipment: {
+          weapon: gear[1] || "Dagger",
+          armor: armorName,
+          shield: gear.includes("Shield") ? "Shield" : null,
+          backpack: ["Rations (7 days)", "Torch (6)", "Waterskin"],
+          gold: gold
+        },
+        retainers: [],
+        maxRetainers: 4 + getMod(stats.cha), 
+        retainerMorale: 7 + getMod(stats.cha)
+      };
+    }
+
+    // --- IMPORT & REPLACE LOGIC ---
+    let currentParty = []; // Store party in memory for manipulations
+
+    function importPartyFromFile() {
+      const fileInput = document.getElementById('partyImport');
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          if(data.party) {
+             currentParty = data.party; // Load into memory
+             
+             // Restore retainer map for export logic
+             window.tempRetainers = {};
+             currentParty.forEach((char, idx) => {
+                char.tempId = `char-${idx}`; // Reassign temp IDs
+                if(char.retainers && char.retainers.length > 0) {
+                    window.tempRetainers[char.tempId] = char.retainers;
+                }
+             });
+             
+             renderParty(currentParty);
+             
+             // Optionally display resources
+             if(data.partyResources) {
+                 alert(`Party Loaded!\nBanked Gold: ${data.partyResources.bankedGold}gp\nCurrent Loot: ${data.partyResources.gold}gp\nResources: ${data.partyResources.rations} rations, ${data.partyResources.torches} torches`);
+             }
+          }
+        } catch(err) {
+          alert("Error parsing party file: " + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+    
+    function renderParty(partyData) {
+       const container = document.getElementById('partyContainer');
+       container.innerHTML = "";
+       partyData.forEach(char => {
+          container.appendChild(createCharCard(char));
+       });
+    }
+
+    function replaceCharacter(deadId, level) {
+        if(!confirm(`Generate a new Level ${level} character to replace this slot? The dead character's gear will be lost (assumed looted or left behind).`)) return;
+        
+        // Generate replacement
+        const method = document.getElementById('genMethod').value;
+        const newChar = generateCharacter(1, method); // New chars start at level 1 in strict BECMI? 
+        // Actually user probably wants same level replacement or level 1. 
+        // RC Rules: New characters usually Level 1. But for usability let's prompt.
+        // Let's stick to Level 1 for strictness, or maybe half level?
+        // Let's just use Level 1 as default strictly, but user can change input.
+        // Wait, the generateCharacter uses the inputs. Let's stick to Level 1 logic or user defined.
+        // Actually, let's just generate a Level 1 replacement as per strict rules.
+        
+        // Find index
+        const idx = currentParty.findIndex(c => c.id == deadId);
+        if(idx !== -1) {
+            // Preserve ID or new ID? New ID.
+            newChar.tempId = currentParty[idx].tempId; // Keep slot ID for retainers? 
+            // Actually, if character dies, retainers might leave. 
+            // Simplification: Retainers transfer to new leader or leave.
+            // Let's clear retainers for the new guy.
+            if(window.tempRetainers[newChar.tempId]) delete window.tempRetainers[newChar.tempId];
+            newChar.retainers = [];
+            
+            currentParty[idx] = newChar;
+            renderParty(currentParty);
+        }
+    }
+
+    // --- UI ---
+
+    function getBECMIClassDisplay(char) {
+      // BECMI naming convention: Humans show class, demi-humans show race (race implies class)
+      if (char.race === "Human") {
+        return char.class;
+      } else {
+        // Demi-humans: Elf, Dwarf, Halfling are race/class combinations
+        return char.race;
+      }
+    }
+
+    function generateParty() {
+      const size = parseInt(document.getElementById('partySize').value);
+      const lvl = parseInt(document.getElementById('partyLvl').value);
+      const method = document.getElementById('genMethod').value;
+
+      // Reset retainer storage for new party
+      window.tempRetainers = {};
+      currentParty = [];
+
+      const container = document.getElementById('partyContainer');
+      container.innerHTML = "";
+
+      for (let i = 0; i < size; i++) {
+        const char = generateCharacter(lvl, method);
+        // Add temp ID for retainer association
+        char.tempId = `char-${i}`;
+        currentParty.push(char);
+        container.appendChild(createCharCard(char));
+      }
+    }
+
+    function exportParty() {
+      // Use currentParty if exists, otherwise grab from DOM? 
+      // Actually we should rely on currentParty as source of truth now.
+      if(currentParty.length === 0) {
+          // Try to generate if empty? Or just warn.
+          alert("No party generated to export.");
+          return;
+      }
+      
+      const party = currentParty;
+
+      // Attach retainers to characters (Sync from tempRetainers)
+      if (window.tempRetainers) {
+        party.forEach((char) => {
+          if (char.tempId && window.tempRetainers[char.tempId]) {
+            char.retainers = window.tempRetainers[char.tempId].map(ret => ({
+              name: ret.name,
+              class: ret.class,
+              level: ret.level,
+              hp: ret.hp,
+              morale: ret.morale,
+              wage: ret.wage,
+              ac: ret.ac,
+              thac0: ret.thac0,
+              equipment: ret.equipment
+            }));
+          } else {
+            char.retainers = [];
+          }
+        });
+      }
+
+      // Calculate party resources
+      let totalGold = 0;
+      let totalTorches = 0;
+      let totalRations = 0;
+      party.forEach(char => {
+        if(char.derivedStats.hp.current > 0) { // Only count living gear? 
+           // Actually export assumes starting fresh delve, so bank gold.
+           totalGold += (char.equipment.gold || 0); 
+           // Reset supplies for new delve
+           totalTorches += 6;
+           totalRations += 7;
+        }
+      });
+
+
+      // Add retainer resources (each retainer consumes some resources)
+      party.forEach(char => {
+        char.retainers.forEach(() => {
+          totalRations += 7; // Each retainer needs rations
+          totalTorches += 6; // Each retainer needs torches
+        });
+      });
+
+      // Calculate encumbrance (BECMI style - characters bank gold)
+      let totalLoad = 0;
+      let totalCarryCapacity = 0;
+
+      party.forEach(char => {
+        // Characters bank their gold - don't carry it into dungeon
+        // Equipment weights based on BECMI (Rules Cyclopedia)
+        let equipmentWeight = 0;
+
+        // Armor
+        if (char.equipment.armor === 'Chain Mail') equipmentWeight += 400;
+        else if (char.equipment.armor === 'Leather') equipmentWeight += 150;
+
+        // Weapons
+        if (char.equipment.weapon === 'Sword') equipmentWeight += 60;
+        else if (char.equipment.weapon === 'Mace') equipmentWeight += 50;
+        else if (char.equipment.weapon === 'Dagger') equipmentWeight += 10;
+
+        // Shield
+        if (char.equipment.shield) equipmentWeight += 100;
+
+        // Backpack and contents
+        equipmentWeight += 20; // Backpack
+        equipmentWeight += 7 * 20; // 7 days rations (20 cn/day)
+        equipmentWeight += 6 * 10; // 6 torches (10 cn each)
+        equipmentWeight += 20; // Waterskin
+
+        // Class-specific items
+        if (char.class === 'Magic-User') equipmentWeight += 500; // Spellbook
+        if (char.class === 'Cleric') equipmentWeight += 10; // Holy symbol
+
+        totalLoad += equipmentWeight;
+
+        // Normal carrying capacity per character (BECMI: 1600 cn)
+        totalCarryCapacity += 1600;
+
+        // Add retainer load and capacity
+        char.retainers.forEach(retainer => {
+          if (retainer.class === 'Porter') {
+            // Porters carry extra gear (+50% capacity boost = 2400 cn)
+            totalCarryCapacity += 2400;
+            totalLoad += 50; // Porter's light equipment
+          } else if (retainer.class === 'Mercenary') {
+            // Mercenaries have chain mail
+            totalCarryCapacity += 1600; // Normal capacity
+            totalLoad += 400 + 60 + 100; // Chain mail + sword + shield
+          } else {
+            // Normal men, torch bearers
+            totalCarryCapacity += 1600; // Normal capacity
+            totalLoad += 10; // Dagger only
+          }
+
+          // Each retainer carries their own supplies
+          totalLoad += 6 * 10; // 6 torches (10 cn each = 60 cn)
+          totalLoad += 7 * 20; // 7 days rations (20 cn/day = 140 cn)
+        });
+      });
+
+      // Party resources are already included in personal loads above
+      // No additional load for shared resources in BECMI-style calculation
+
+      // Clean up temporary IDs before export
+      party.forEach(char => {
+        delete char.tempId;
+      });
+
+      const partyData = {
+        version: "1.0",
+        party: party,
+        partyResources: {
+          gold: 0,        // Loot sack starts empty
+          bankedGold: totalGold, // Starting gold goes to bank
+          torches: totalTorches,
+          rations: totalRations,
+          potions: 0,
+          scrolls: 0,
+          encumbrance: {
+            current: totalLoad,
+            max: totalCarryCapacity
+          }
+        },
+        campaignInfo: {
+          dungeonLevel: 1,
+          experienceBonus: 0,
+          magicItemBonus: false
+        }
+      };
+
+      // Create and download JSON file
+      const dataStr = JSON.stringify(partyData, null, 2);
+      const dataBlob = new Blob([dataStr], {type: 'application/json'});
+      const url = URL.createObjectURL(dataBlob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'party-export.json';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      alert('Party exported! Use this file in the Dungeon Delver.');
+    }
+
+    function createCharCard(char, isRetainer = false) {
+      const div = document.createElement('div');
+      div.className = `char-card ${isRetainer ? 'retainer' : ''}`;
+      div.id = `char-${char.id}`;
+      
+      // XP Bonus Calculation
+      let xpBonus = 0;
+      const prime = CLASSES[char.class.toLowerCase().replace('-','')].prime; // loose mapping
+      // Simplified XP logic
+      
+      div.innerHTML = `
+        <div class="char-header" style="${char.derivedStats.hp.current <= 0 ? 'text-decoration: line-through; color: #9ca3af;' : ''}">
+          <span class="char-name">${char.name}</span>
+          <span class="char-class">Lvl ${char.level} ${char.alignment} ${getBECMIClassDisplay(char)}</span>
+        </div>
+
+        ${char.derivedStats.hp.current <= 0 ? 
+            `<div style="background:#450a0a; color:#fca5a5; text-align:center; padding:6px; font-weight:bold; border-radius:4px; margin-bottom:8px; border:1px solid #f87171">
+                💀 DECEASED 💀
+                <button class="btn btn-sm" style="margin-top:4px; background:#7f1d1d; color:white" onclick="replaceCharacter('${char.id}', ${char.level})">Recruit Replacement</button>
+             </div>` 
+        : ''}
+
+        <div class="stat-block" style="${char.derivedStats.hp.current <= 0 ? 'opacity: 0.5;' : ''}">
+          <div class="stat-box"><span class="stat-lbl">STR</span><span class="stat-val">${char.abilityScores.str}</span><div class="stat-mod ${getMod(char.abilityScores.str)<0?'neg':''}">${getModStr(char.abilityScores.str)}</div></div>
+          <div class="stat-box"><span class="stat-lbl">INT</span><span class="stat-val">${char.abilityScores.int}</span><div class="stat-mod ${getMod(char.abilityScores.int)<0?'neg':''}">${getModStr(char.abilityScores.int)}</div></div>
+          <div class="stat-box"><span class="stat-lbl">WIS</span><span class="stat-val">${char.abilityScores.wis}</span><div class="stat-mod ${getMod(char.abilityScores.wis)<0?'neg':''}">${getModStr(char.abilityScores.wis)}</div></div>
+          <div class="stat-box"><span class="stat-lbl">DEX</span><span class="stat-val">${char.abilityScores.dex}</span><div class="stat-mod ${getMod(char.abilityScores.dex)<0?'neg':''}">${getModStr(char.abilityScores.dex)}</div></div>
+          <div class="stat-box"><span class="stat-lbl">CON</span><span class="stat-val">${char.abilityScores.con}</span><div class="stat-mod ${getMod(char.abilityScores.con)<0?'neg':''}">${getModStr(char.abilityScores.con)}</div></div>
+          <div class="stat-box"><span class="stat-lbl">CHA</span><span class="stat-val">${char.abilityScores.cha}</span><div class="stat-mod ${getMod(char.abilityScores.cha)<0?'neg':''}">${getModStr(char.abilityScores.cha)}</div></div>
+        </div>
+
+        <div class="derived-stats" style="${char.derivedStats.hp.current <= 0 ? 'opacity: 0.5;' : ''}">
+          <div class="d-stat"><div class="d-val" style="${char.derivedStats.hp.current <= 0 ? 'color:#f87171' : ''}">${char.derivedStats.hp.current}/${char.derivedStats.hp.max}</div><div class="d-lbl">Hit Points</div></div>
+          <div class="d-stat"><div class="d-val">${char.derivedStats.ac}</div><div class="d-lbl">AC</div></div>
+          <div class="d-stat"><div class="d-val">${char.derivedStats.thac0}</div><div class="d-lbl">THAC0</div></div>
+        </div>
+
+        <div style="font-size:0.65rem; color:#94a3b8; margin:8px 0; padding:6px; background:#1e293b; border-radius:4px; display:grid; grid-template-columns: repeat(5, 1fr); gap:4px; text-align:center">
+           <div><span style="display:block; color:#64748b">Death</span>${char.derivedStats.savingThrows.deathPoison}</div>
+           <div><span style="display:block; color:#64748b">Wand</span>${char.derivedStats.savingThrows.wands}</div>
+           <div><span style="display:block; color:#64748b">Para</span>${char.derivedStats.savingThrows.paraStone}</div>
+           <div><span style="display:block; color:#64748b">Breath</span>${char.derivedStats.savingThrows.breath}</div>
+           <div><span style="display:block; color:#64748b">Spell</span>${char.derivedStats.savingThrows.spells}</div>
+        </div>
+
+        ${char.thiefSkills ? `
+        <div style="font-size:0.65rem; color:#94a3b8; margin:8px 0; padding:6px; background:#1e293b; border-radius:4px; display:grid; grid-template-columns: repeat(4, 1fr); gap:4px;">
+          <div>OL: ${char.thiefSkills.pickLocks}%</div>
+          <div>FT: ${char.thiefSkills.findTraps}%</div>
+          <div>RT: ${char.thiefSkills.removeTraps}%</div>
+          <div>CW: ${char.thiefSkills.climbWalls}%</div>
+          <div>MS: ${char.thiefSkills.moveSilently}%</div>
+          <div>HS: ${char.thiefSkills.hideInShadows}%</div>
+          <div>PP: ${char.thiefSkills.pickPockets}%</div>
+          <div>HN: ${char.thiefSkills.detectNoise}%</div>
+        </div>
+        ` : ''}
+
+        ${char.spells.known.length > 0 ? `
+        <div style="font-size:0.7rem; color:#cbd5e1; margin:8px 0; padding:6px; background:#1e293b; border-radius:4px;">
+          <strong>Spells Prepared:</strong><br>
+          ${char.spells.known.map(s => `<span style="color:#93c5fd">${s.name}</span>`).join(", ")}
+        </div>
+        ` : ''}
+
+        <div class="equipment">
+          <strong>Gear:</strong> ${[char.equipment.weapon, char.equipment.armor, ...(char.equipment.shield ? [char.equipment.shield] : [])].join(", ")}
+        </div>
+
+        ${ !isRetainer ? `
+        <div class="retainer-section">
+          <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:0.75rem; color:#64748b">
+             <span>Retainers: <span id="ret-count-${char.tempId || char.id}">0</span> / ${char.maxRetainers}</span>
+             <span>Morale: ${char.retainerMorale}</span>
+          </div>
+          <button class="btn btn-sm" onclick="addRetainer('${char.tempId || char.id}', ${char.level})">+ Recruit Retainer</button>
+          <div id="ret-list-${char.tempId || char.id}" style="margin-top:5px; display:grid; gap:5px;"></div>
+        </div>
+        ` : ''}
+      `;
+      
+      return div;
+    }
+
+    // BECMI Retainer Types (Rules Cyclopedia p25-26)
+    const RETAINER_TYPES = {
+      'normal': {
+        name: 'Normal Man',
+        ac: 9,
+        hd: 6,
+        hpBonus: 0,
+        thac0: 20,
+        wage: 10,
+        description: 'Basic hireling'
+      },
+      'torchbearer': {
+        name: 'Torch Bearer',
+        ac: 9,
+        hd: 6,
+        hpBonus: 0,
+        thac0: 20,
+        wage: 10,
+        description: 'Carries torches and lights'
+      },
+      'porter': {
+        name: 'Porter',
+        ac: 9,
+        hd: 6,
+        hpBonus: 0,
+        thac0: 20,
+        wage: 15,
+        description: 'Carries extra gear (+20% encumbrance capacity)'
+      },
+      'mercenary': {
+        name: 'Mercenary',
+        ac: 4,
+        hd: 6,
+        hpBonus: 1,
+        thac0: 20,
+        wage: 25,
+        description: 'Armed fighter in chain mail'
+      }
+    };
+
+    function addRetainer(parentId, parentLvl) {
+      // Initialize retainer storage if it doesn't exist
+      if (!window.tempRetainers) {
+        window.tempRetainers = {};
+      }
+      if (!window.tempRetainers[parentId]) {
+        window.tempRetainers[parentId] = [];
+      }
+
+      const container = document.getElementById(`ret-list-${parentId}`);
+      const countSpan = document.getElementById(`ret-count-${parentId}`);
+      let count = parseInt(countSpan.innerText);
+
+      // BECMI Rules: Maximum 7 retainers total (modified by Charisma)
+      // Simplified: 7 max for now
+      const maxRetainers = 7;
+      if (count >= maxRetainers) {
+        alert(`Maximum retainers reached (${maxRetainers})`);
+        return;
+      }
+
+      // Create retainer selection dialog
+      const retainerOptions = Object.keys(RETAINER_TYPES).map(type =>
+        `<option value="${type}">${RETAINER_TYPES[type].name} (${RETAINER_TYPES[type].wage}gp/month)</option>`
+      ).join('');
+
+      const retainerType = prompt(
+        `Choose retainer type:\n\n${Object.values(RETAINER_TYPES).map(t => `${t.name}: ${t.description} - ${t.wage}gp/month`).join('\n')}\n\nEnter type:`,
+        'normal'
+      );
+
+      if (!retainerType || !RETAINER_TYPES[retainerType]) {
+        alert('Invalid retainer type. Try: normal, torchbearer, porter, or mercenary');
+        return;
+      }
+
+      const typeData = RETAINER_TYPES[retainerType];
+
+      // Generate retainer name from male/female lists
+      let nameList = (Math.random() < 0.5) ? female : male;
+      let name = nameList[Math.floor(Math.random() * nameList.length)];
+
+      // Generate retainer (BECMI style - 0-level, fixed stats)
+      const ret = {
+        id: Date.now() + Math.random(),
+        name: name,
+        type: retainerType,
+        class: typeData.name,
+        level: 0,
+        hp: {
+          current: d6() + typeData.hpBonus,
+          max: d6() + typeData.hpBonus
+        },
+        ac: typeData.ac,
+        thac0: typeData.thac0,
+        morale: d6() + d6() + 6, // 2d6+6 initial morale
+        wage: typeData.wage,
+        equipment: typeData.ac === 4 ? 'Chain mail, sword' : 'Leather armor, dagger'
+      };
+
+      // Store the retainer for export
+      window.tempRetainers[parentId].push(ret);
+
+      const retCard = document.createElement('div');
+      retCard.style.cssText = "background:#020617; padding:5px; border-radius:4px; font-size:0.75rem; border-left:2px solid #6366f1; margin-top:4px";
+      retCard.innerHTML = `
+        <div style="font-weight:bold; color:#e2e8f0">${ret.name} <span style="color:#94a3b8; font-weight:normal">(${ret.class})</span></div>
+        <div style="font-size:0.7rem; color:#64748b">HP: ${ret.hp.current}/${ret.hp.max} | AC: ${ret.ac} | Morale: ${ret.morale} | ${ret.wage}gp/month</div>
+        <div style="font-size:0.65rem; color:#64748b">${typeData.description}</div>
+      `;
+
+      container.appendChild(retCard);
+      countSpan.innerText = count + 1;
+    }
+
+  </script>
+</body>
+</html>

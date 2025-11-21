@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>War Machine: Field Manual</title>
+  <style>
+    /* --- SHARED DESIGN SYSTEM --- */
+    * { box-sizing: border-box; }
+    body { 
+      margin: 0; 
+      padding: 2rem; 
+      font-family: system-ui, -apple-system, sans-serif; 
+      background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%); 
+      color: #e5e7eb; 
+      line-height: 1.6;
+    }
+    
+    h1 { margin: 0 0 0.5rem 0; font-size: 2rem; letter-spacing: -0.03em; color: #f8fafc; }
+    h2 { margin: 2rem 0 1rem 0; font-size: 1.4rem; color: #e2e8f0; border-bottom: 1px solid #334155; padding-bottom: 0.5rem; }
+    h3 { margin: 1.5rem 0 0.5rem 0; font-size: 1.1rem; color: #cbd5e1; }
+    p { margin-bottom: 1rem; color: #94a3b8; font-size: 0.95rem; }
+    
+    /* Layout */
+    .container { max-width: 800px; margin: 0 auto; }
+    
+    /* Cards for Examples */
+    .card { 
+      border-radius: 0.75rem; 
+      border: 1px solid #1f2937; 
+      background: #0f172a; 
+      padding: 1.5rem; 
+      margin-bottom: 1.5rem; 
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Visual Elements */
+    .pill { 
+      font-size: 0.75rem; 
+      padding: 2px 10px; 
+      border-radius: 12px; 
+      text-transform: uppercase; 
+      font-weight: 600; 
+      letter-spacing: 0.05em;
+      display: inline-block;
+    }
+    .pill.att { background: rgba(220, 38, 38, 0.2); color: #fca5a5; border: 1px solid rgba(220, 38, 38, 0.4); }
+    .pill.def { background: rgba(37, 99, 235, 0.2); color: #93c5fd; border: 1px solid rgba(37, 99, 235, 0.4); }
+    .pill.highlight { background: rgba(79, 70, 229, 0.2); color: #c7d2fe; border: 1px solid rgba(79, 70, 229, 0.4); }
+
+    /* Lists */
+    ul { padding-left: 1.5rem; color: #94a3b8; }
+    li { margin-bottom: 0.5rem; }
+    strong { color: #e2e8f0; }
+
+    /* Buttons */
+    .btn { 
+      display: inline-block;
+      padding: 10px 20px; 
+      border-radius: 6px; 
+      text-decoration: none;
+      font-weight: 600; 
+      cursor: pointer; 
+      transition: all 0.2s; 
+      font-size: 0.9rem;
+    }
+    .btn-primary { background: #4f46e5; color: white; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); border: none; }
+    .btn-primary:hover { background: #4338ca; }
+    
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+    .back-link:hover { color: #fff; }
+
+    /* Table styles */
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+    th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #334155; }
+    th { color: #e2e8f0; font-weight: 600; background: #1e293b; }
+    td { color: #94a3b8; }
+    tr:last-child td { border-bottom: none; }
+
+    code { background: #1e293b; padding: 2px 5px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #e2e8f0; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <a href="index.html" class="back-link">← Back to Simulator</a>
+
+  <h1>War Machine: Field Manual</h1>
+  <p class="tagline">How to use the Definitive Edition calculator for BECMI mass combat.</p>
+
+  <div class="card">
+    <p style="margin:0">
+      <strong>Quick Start:</strong> This tool automates the math from the <em>Rules Cyclopedia</em> War Machine system. 
+      It calculates the <strong>Battle Rating (BR)</strong> for two opposing forces, applies tactical modifiers, 
+      rolls the dice, and determines casualties based on the authentic Combat Results Table (CRT).
+    </p>
+  </div>
+
+  <h2>1. Building Your Forces (BFR)</h2>
+  <p>
+    The core of War Machine is the <strong>Basic Force Rating (BFR)</strong>. You do not need to calculate this manually. 
+    Simply enter the stats into the <span class="pill att">Force A</span> and <span class="pill def">Force B</span> panels.
+  </p>
+  
+  <h3>The Four Factors</h3>
+  <p>The system calculates BFR based on these four components:</p>
+  <ul>
+    <li><strong>Leadership:</strong> The level and mental stats of the commander. High-level leaders significantly boost BFR.</li>
+    <li><strong>Experience:</strong> The average level of officers and troops, plus their history of victories (+1 BFR) or routs (-1 BFR).</li>
+    <li><strong>Training:</strong> Weeks spent training together. The base score starts at 5 and increases with every week of training.</li>
+    <li><strong>Equipment:</strong> Weapon quality (Good/Excellent), AC (AC 5 or better), and racial bonuses (Elves/Dwarves get +15).</li>
+  </ul>
+
+  <h3>Troop Class Bonuses</h3>
+  <p>
+    Once the BFR is set, the system adds bonuses based on the composition of the army. 
+    The value of these bonuses depends on the army's quality (BFR / 10).
+  </p>
+  <ul>
+    <li><strong>Mounted:</strong> Check if >20% of the force is cavalry.</li>
+    <li><strong>Missile:</strong> Check if >20% of the force has bows/crossbows.</li>
+    <li><strong>Magic:</strong> Check if >1% of the force can cast spells.</li>
+    <li><strong>Flying/Special:</strong> For armies with flyers, regenerators, or special abilities.</li>
+  </ul>
+
+  <h2>2. The Tactics Matrix</h2>
+  <p>
+    Before rolling, you must select a Tactic for each side. This is the "Rock-Paper-Scissors" element of the system. 
+    Choosing the right tactic against your opponent grants a massive <strong>+20 BR Bonus</strong>.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Your Tactic</th>
+        <th>Strong Against (+20)</th>
+        <th>Weak Against (-20)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Attack</strong></td>
+        <td>Trap</td>
+        <td>Envelop</td>
+      </tr>
+      <tr>
+        <td><strong>Envelop</strong></td>
+        <td>Attack, Hold</td>
+        <td>Trap</td>
+      </tr>
+      <tr>
+        <td><strong>Trap</strong></td>
+        <td>Envelop</td>
+        <td>Attack, Hold</td>
+      </tr>
+      <tr>
+        <td><strong>Hold</strong></td>
+        <td>Trap</td>
+        <td>Envelop</td>
+      </tr>
+      <tr>
+        <td><strong>Withdraw</strong></td>
+        <td>(Safe retreat)</td>
+        <td>(None)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>3. Modifiers & Situational Rules</h2>
+  <p>The center panel handles battlefield conditions. These toggle buttons apply instant math modifiers.</p>
+  
+  <ul>
+    <li><strong>Troop Ratio:</strong> The system automatically compares the size of the two armies. If one army is significantly larger (e.g., 2:1 or 4:1), they receive a BR bonus (up to +50).</li>
+    <li><strong>Fortified:</strong> Checking <span class="pill highlight">Defender Fortified</span> multiplies the defender's effective size by 4 for ratio calculations and adds +10 BR.</li>
+    <li><strong>Terrain:</strong> Gives +20 BR. Use this for high ground, defending a bridge, or fighting in favorable woods (Elves).</li>
+    <li><strong>Traitor:</strong> A specific +20 BR bonus for the attacker if they have a spy inside the walls.</li>
+  </ul>
+
+  <h2>4. Reading the Results</h2>
+  <p>When you click <span class="pill highlight">Roll Battle</span>, the system rolls d100 for both sides and adds it to their total BR. The difference determines the outcome.</p>
+
+  <div class="card" style="border-left: 4px solid #4f46e5;">
+    <h3>The Combat Log</h3>
+    <p>The log will display:</p>
+    <ol>
+      <li><strong>The Victor:</strong> Based on the Total Score (BR + d100).</li>
+      <li><strong>Casualties:</strong> The number of troops lost based on the CRT percentages.</li>
+      <li><strong>Location Change:</strong> Whether the loser holds the field, retreats, or routs.</li>
+    </ol>
+    <p>
+      <strong>Apply Casualties Button:</strong> Every log entry has a green button. Clicking this will automatically subtract the dead troops from the input fields for both armies, allowing you to immediately start the next turn or siege week.
+    </p>
+  </div>
+
+  <h2>5. Saving Your Data</h2>
+  <p>
+    The simulator uses your browser's <strong>Local Storage</strong>. 
+    This means you can close the tab or refresh the page, and your "Orc Horde" stats, current troop counts, and tactical choices will be exactly where you left them.
+  </p>
+
+  <div style="margin-top: 3rem; text-align: center;">
+    <a href="index.html" class="btn btn-primary">Open Simulator</a>
+  </div>
+
+</div>
+
+</body>
+</html>

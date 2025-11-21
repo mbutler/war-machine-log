@@ -1,0 +1,144 @@
+{
+  "version": "1.0",
+  "party": [
+    {
+      "id": "test-fighter-1",
+      "name": "Borogar",
+      "race": "Human",
+      "class": "Fighter",
+      "level": 1,
+      "alignment": "Neutral",
+      "abilityScores": {
+        "str": 15,
+        "int": 12,
+        "wis": 13,
+        "dex": 14,
+        "con": 16,
+        "cha": 10
+      },
+      "derivedStats": {
+        "hp": {
+          "current": 8,
+          "max": 8
+        },
+        "ac": 4,
+        "thac0": 20,
+        "savingThrows": {
+          "paralysis": 14,
+          "poison": 12,
+          "breath": 15,
+          "magic": 13,
+          "stone": 16
+        }
+      },
+      "spells": {
+        "slots": {
+          "1st": 0,
+          "2nd": 0,
+          "3rd": 0,
+          "4th": 0,
+          "5th": 0,
+          "6th": 0,
+          "7th": 0,
+          "8th": 0,
+          "9th": 0
+        },
+        "known": []
+      },
+      "thiefSkills": null,
+      "equipment": {
+        "weapon": "Sword",
+        "armor": "Chain Mail",
+        "shield": "Shield",
+        "backpack": ["Rations (7 days)", "Torch (6)", "Waterskin"],
+        "gold": 50
+      },
+      "retainers": [],
+      "maxRetainers": 7,
+      "retainerMorale": 9
+    },
+    {
+      "id": "test-mage-1",
+      "name": "Elara",
+      "race": "Elf",
+      "class": "Magic-User",
+      "level": 1,
+      "alignment": "Neutral",
+      "abilityScores": {
+        "str": 12,
+        "int": 16,
+        "wis": 13,
+        "dex": 15,
+        "con": 14,
+        "cha": 11
+      },
+      "derivedStats": {
+        "hp": {
+          "current": 4,
+          "max": 4
+        },
+        "ac": 9,
+        "thac0": 20,
+        "savingThrows": {
+          "paralysis": 14,
+          "poison": 13,
+          "breath": 16,
+          "magic": 13,
+          "stone": 13
+        }
+      },
+      "spells": {
+        "slots": {
+          "1st": 1,
+          "2nd": 0,
+          "3rd": 0,
+          "4th": 0,
+          "5th": 0,
+          "6th": 0,
+          "7th": 0,
+          "8th": 0,
+          "9th": 0
+        },
+        "known": [
+          {
+            "name": "Magic Missile",
+            "level": 1,
+            "memorized": true
+          },
+          {
+            "name": "Read Magic",
+            "level": 1,
+            "memorized": true
+          }
+        ]
+      },
+      "thiefSkills": null,
+      "equipment": {
+        "weapon": "Dagger",
+        "armor": "None",
+        "shield": null,
+        "backpack": ["Rations (7 days)", "Torch (6)", "Spellbook"],
+        "gold": 30
+      },
+      "retainers": [],
+      "maxRetainers": 6,
+      "retainerMorale": 8
+    }
+  ],
+  "partyResources": {
+    "gold": 80,
+    "torches": 12,
+    "rations": 14,
+    "potions": 0,
+    "scrolls": 0,
+    "encumbrance": {
+      "current": 800,
+      "max": 2400
+    }
+  },
+  "campaignInfo": {
+    "dungeonLevel": 1,
+    "experienceBonus": 0,
+    "magicItemBonus": false
+  }
+}

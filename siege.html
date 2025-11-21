@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BECMI War Machine</title>
+  <a href="manual.html" style="display: block; margin-top: -10px; margin-bottom: 1.5rem; font-size: 0.85rem; color: #6366f1; text-decoration: none; font-weight: 600;">Read Field Manual &rarr;</a>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 1.5rem; font-family: system-ui, -apple-system, sans-serif; background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%); color: #e5e7eb; }
+    h1 { margin: 0 0 0.3rem 0; font-size: 1.6rem; letter-spacing: -0.02em; }
+    .tagline { font-size: 0.85rem; color: #94a3b8; margin-bottom: 1.2rem; }
+    
+    .layout-main { display: grid; grid-template-columns: 350px 350px 1fr; gap: 1rem; margin-top: 0.75rem; }
+    @media (max-width: 1100px) { .layout-main { grid-template-columns: 1fr 1fr; } .panel-battle { grid-column: span 2; } }
+    @media (max-width: 700px) { .layout-main { grid-template-columns: 1fr; } .panel-battle { grid-column: span 1; } }
+
+    /* Cards */
+    .card { border-radius: 0.75rem; border: 1px solid #1f2937; background: #0f172a; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem; height: fit-content; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; border-bottom: 1px solid #1e293b; margin-bottom: 0.5rem; }
+    .card-title { font-weight: 700; font-size: 1rem; color: #f8fafc; }
+    
+    /* UI Elements */
+    .pill { font-size: 0.7rem; padding: 2px 8px; border-radius: 12px; text-transform: uppercase; font-weight: 600; }
+    .pill.att { background: rgba(220, 38, 38, 0.2); color: #fca5a5; border: 1px solid rgba(220, 38, 38, 0.4); }
+    .pill.def { background: rgba(37, 99, 235, 0.2); color: #93c5fd; border: 1px solid rgba(37, 99, 235, 0.4); }
+    
+    label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 2px; }
+    input[type="text"], input[type="number"], select {
+      width: 100%; background: #020617; border: 1px solid #334155; color: #e2e8f0;
+      padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;
+    }
+    input:focus { border-color: #6366f1; outline: none; }
+    .row { display: flex; gap: 8px; }
+    .row > div { flex: 1; }
+
+    /* Interactive Details */
+    details { background: #1e293b; border-radius: 6px; overflow: hidden; margin-bottom: 4px; }
+    summary { padding: 6px 10px; font-size: 0.8rem; font-weight: 600; cursor: pointer; user-select: none; background: #1e293b; color: #cbd5e1; }
+    summary:hover { background: #334155; }
+    .details-content { padding: 8px; border-top: 1px solid #334155; background: #0f172a; }
+
+    /* Stats */
+    .stat-box { background: #020617; padding: 8px; border-radius: 6px; border: 1px solid #334155; margin-top: auto; }
+    .stat-row { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 2px; }
+    .stat-total { border-top: 1px dashed #475569; margin-top: 4px; padding-top: 4px; font-weight: 700; color: #fff; font-size: 0.9rem; display: flex; justify-content: space-between; }
+
+    /* Controls */
+    .control-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; font-weight: 700; margin-bottom: 6px; }
+    .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #cbd5e1; cursor: pointer; }
+    .checkbox-item:hover { color: #fff; }
+    
+    .tactics-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #1e293b; padding: 10px; border-radius: 8px; border: 1px solid #334155; margin-bottom: 10px; }
+
+    /* Buttons */
+    .btn { width: 100%; padding: 10px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+    .btn-primary { background: #4f46e5; color: white; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+    .btn-primary:hover { background: #4338ca; }
+    .btn-secondary { background: #334155; color: #e2e8f0; margin-top: 8px; font-size: 0.8rem; padding: 6px; }
+    .btn-apply { background: #059669; color: white; font-size: 0.7rem; padding: 3px 8px; width: auto; margin-top: 5px; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+
+    /* Log */
+    .log-container { background: #000; border: 1px solid #334155; border-radius: 8px; height: 400px; overflow-y: auto; padding: 10px; font-family: 'Courier New', monospace; font-size: 0.8rem; }
+    .log-entry { margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed #333; }
+  </style>
+</head>
+<body>
+
+  <h1>BECMI War Machine</h1>
+  <p class="tagline">Accurate BFR Math + Detailed Modifiers + Authentic Results Table.</p>
+
+  <div class="layout-main">
+    
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Force A</span>
+        <span class="pill att">Attacker</span>
+      </div>
+      
+      <div class="row">
+        <div style="flex:2"><label>Name</label><input type="text" id="attName" value="Orc Horde" class="save"></div>
+        <div style="flex:1"><label>Troops</label><input type="number" id="attSize" value="800" class="save"></div>
+      </div>
+
+      <div class="control-title" style="margin-top:10px">Force Rating (BFR)</div>
+      
+      <details>
+        <summary>Leadership &amp; Experience</summary>
+        <div class="details-content">
+          <div class="row">
+            <div><label>Leader Lvl</label><input type="number" id="attLeadLvl" value="10" class="save"></div>
+            <div><label>Stat Adj.</label><input type="number" id="attLeadAdj" value="2" class="save"></div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <div><label>% Name Lvl</label><input type="number" id="attPercName" value="3" class="save"></div>
+            <div><label>Avg Off Lvl</label><input type="number" id="attOffLvl" value="4" class="save"></div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <div><label>Avg Trp Lvl</label><input type="number" id="attTrpLvl" value="1" class="save"></div>
+            <div><label>Victories</label><input type="number" id="attWins" value="2" class="save"></div>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Training &amp; Equipment</summary>
+        <div class="details-content">
+          <div class="row">
+            <div><label>Wks Train</label><input type="number" id="attTrain" value="12" class="save"></div>
+            <div><label>Quality</label>
+              <select id="attQual" class="save">
+                <option value="5">Average</option>
+                <option value="10">Good</option>
+                <option value="15">Excellent</option>
+              </select>
+            </div>
+          </div>
+          <div class="checkbox-grid" style="margin-top:8px">
+            <label class="checkbox-item"><input type="checkbox" id="attAC5" class="save"> AC ≤ 5 (+5)</label>
+            <label class="checkbox-item"><input type="checkbox" id="attElfDwarf" class="save"> Elf/Dwarf (+15)</label>
+            <label class="checkbox-item"><input type="checkbox" id="attMnt" class="save"> >20% Mount</label>
+            <label class="checkbox-item"><input type="checkbox" id="attBow" class="save"> >20% Missile</label>
+            <label class="checkbox-item"><input type="checkbox" id="attMag" class="save"> >1% Magic</label>
+            <label class="checkbox-item"><input type="checkbox" id="attFly" class="save"> Flyers/Special</label>
+          </div>
+        </div>
+      </details>
+      
+      <details>
+        <summary>Siege Engines</summary>
+        <div class="details-content">
+          <div class="row">
+            <div><label>Lt. Catapult</label><input type="number" id="attLtCat" value="0" class="save"></div>
+            <div><label>Hv. Catapult</label><input type="number" id="attHvCat" value="0" class="save"></div>
+          </div>
+          <div class="row" style="margin-top:5px">
+             <div><label>Ram/Bore</label><input type="number" id="attRam" value="0" class="save"></div>
+             <div><label>Tower</label><input type="number" id="attTower" value="0" class="save"></div>
+          </div>
+        </div>
+      </details>
+
+      <div class="stat-box">
+        <div class="stat-row"><span>BFR Score:</span> <span id="attBFRVal">0</span></div>
+        <div class="stat-row"><span>Class Bonus:</span> <span id="attClassVal">0</span></div>
+        <div class="stat-total"><span>Total BR:</span> <span id="attFinalBR" style="color:#fca5a5">0</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Force B</span>
+        <span class="pill def">Defender</span>
+      </div>
+      
+      <div class="row">
+        <div style="flex:2"><label>Name</label><input type="text" id="defName" value="Elven Garrison" class="save"></div>
+        <div style="flex:1"><label>Troops</label><input type="number" id="defSize" value="500" class="save"></div>
+      </div>
+
+      <div class="control-title" style="margin-top:10px">Force Rating (BFR)</div>
+      
+      <details>
+        <summary>Leadership &amp; Experience</summary>
+        <div class="details-content">
+          <div class="row">
+            <div><label>Leader Lvl</label><input type="number" id="defLeadLvl" value="12" class="save"></div>
+            <div><label>Stat Adj.</label><input type="number" id="defLeadAdj" value="4" class="save"></div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <div><label>% Name Lvl</label><input type="number" id="defPercName" value="10" class="save"></div>
+            <div><label>Avg Off Lvl</label><input type="number" id="defOffLvl" value="5" class="save"></div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <div><label>Avg Trp Lvl</label><input type="number" id="defTrpLvl" value="2" class="save"></div>
+            <div><label>Victories</label><input type="number" id="defWins" value="4" class="save"></div>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Training &amp; Equipment</summary>
+        <div class="details-content">
+          <div class="row">
+            <div><label>Wks Train</label><input type="number" id="defTrain" value="16" class="save"></div>
+            <div><label>Quality</label>
+              <select id="defQual" class="save">
+                <option value="5">Average</option>
+                <option value="10" selected>Good</option>
+                <option value="15">Excellent</option>
+              </select>
+            </div>
+          </div>
+          <div class="checkbox-grid" style="margin-top:8px">
+            <label class="checkbox-item"><input type="checkbox" id="defAC5" checked class="save"> AC ≤ 5 (+5)</label>
+            <label class="checkbox-item"><input type="checkbox" id="defElfDwarf" checked class="save"> Elf/Dwarf (+15)</label>
+            <label class="checkbox-item"><input type="checkbox" id="defMnt" class="save"> >20% Mount</label>
+            <label class="checkbox-item"><input type="checkbox" id="defBow" checked class="save"> >20% Missile</label>
+            <label class="checkbox-item"><input type="checkbox" id="defMag" checked class="save"> >1% Magic</label>
+            <label class="checkbox-item"><input type="checkbox" id="defFly" class="save"> Flyers/Special</label>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Siege Engines</summary>
+        <div class="details-content">
+          <div class="row">
+            <div><label>Lt. Catapult</label><input type="number" id="defLtCat" value="0" class="save"></div>
+            <div><label>Hv. Catapult</label><input type="number" id="defHvCat" value="0" class="save"></div>
+          </div>
+          <div class="row" style="margin-top:5px">
+             <div><label>Ballista</label><input type="number" id="defBall" value="2" class="save"></div>
+          </div>
+        </div>
+      </details>
+
+      <div class="stat-box">
+        <div class="stat-row"><span>BFR Score:</span> <span id="defBFRVal">0</span></div>
+        <div class="stat-row"><span>Class Bonus:</span> <span id="defClassVal">0</span></div>
+        <div class="stat-total"><span>Total BR:</span> <span id="defFinalBR" style="color:#93c5fd">0</span></div>
+      </div>
+    </div>
+
+    <div class="card panel-battle">
+      <div class="card-header">
+        <span class="card-title">Battle Resolution</span>
+      </div>
+
+      <div class="control-title">1. Tactics (Rock-Paper-Scissors)</div>
+      <div class="tactics-container">
+        <div>
+          <label>Attacker Tactic</label>
+          <select id="attTactic">
+            <option value="attack">Attack</option>
+            <option value="envelop">Envelop</option>
+            <option value="trap">Trap</option>
+            <option value="hold">Hold</option>
+            <option value="withdraw">Withdraw</option>
+          </select>
+        </div>
+        <div>
+          <label>Defender Tactic</label>
+          <select id="defTactic">
+            <option value="attack">Attack</option>
+            <option value="envelop">Envelop</option>
+            <option value="trap">Trap</option>
+            <option value="hold">Hold</option>
+            <option value="withdraw">Withdraw</option>
+          </select>
+        </div>
+      </div>
+      <div id="tacticsResult" style="font-size:0.75rem; color:#94a3b8; margin-bottom:12px; text-align:center"></div>
+
+      <div class="control-title">2. Conditions & Terrain</div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:1rem">
+        <div style="background:#1e293b; padding:8px; border-radius:6px;">
+          <div class="control-title" style="color:#fca5a5">Attacker Modifiers</div>
+          <div class="checkbox-grid" style="grid-template-columns:1fr">
+            <label class="checkbox-item"><input type="checkbox" id="attTerr" class="save"> Better Terrain (+20)</label>
+            <label class="checkbox-item"><input type="checkbox" id="attMorale" class="save"> High Morale (+10)</label>
+            <label class="checkbox-item"><input type="checkbox" id="attFatigue" class="save"> Fatigued (-10)</label>
+            <label class="checkbox-item"><input type="checkbox" id="attIntel" class="save"> Good Intel (+10)</label>
+            <label class="checkbox-item"><input type="checkbox" id="attTraitor" class="save"> Traitor in Walls (+20)</label>
+            <label class="checkbox-item"><input type="checkbox" id="attHero" class="save"> PC Heroics (+10)</label>
+          </div>
+        </div>
+        <div style="background:#1e293b; padding:8px; border-radius:6px;">
+           <div class="control-title" style="color:#93c5fd">Defender Modifiers</div>
+           <div class="checkbox-grid" style="grid-template-columns:1fr">
+            <label class="checkbox-item"><input type="checkbox" id="defFort" checked class="save"> Fortified (Size x4)</label>
+            <label class="checkbox-item"><input type="checkbox" id="defTerr" class="save"> Better Terrain (+20)</label>
+            <label class="checkbox-item"><input type="checkbox" id="defMorale" checked class="save"> High Morale (+10)</label>
+            <label class="checkbox-item"><input type="checkbox" id="defFatigue" class="save"> Fatigued (-10)</label>
+            <label class="checkbox-item"><input type="checkbox" id="defIntel" class="save"> Good Intel (+10)</label>
+            <label class="checkbox-item"><input type="checkbox" id="defHero" class="save"> PC Heroics (+10)</label>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:8px; margin-bottom:12px;">
+        <button class="btn btn-primary" onclick="resolveBattle()">Roll Battle</button>
+        <button class="btn btn-secondary" style="margin-top:0" onclick="clearLog()">Clear Log</button>
+      </div>
+
+      <div class="log-container" id="battleLog">
+        <div style="color:#64748b; text-align:center; padding-top:40px">Battle results will appear here...</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // --- ENGINE ---
+    
+    const getVal = (id) => parseInt(document.getElementById(id).value) || 0;
+    const isChk = (id) => document.getElementById(id).checked;
+    
+    function calculateSide(prefix) {
+      // 1. BFR MATH (Rules Cyclopedia)
+      let bfr = getVal(prefix+'LeadLvl') + getVal(prefix+'LeadAdj') + (getVal(prefix+'PercName') * 2);
+      bfr += (getVal(prefix+'OffLvl') * 3);
+      bfr += (getVal(prefix+'TrpLvl') * 2);
+      bfr += getVal(prefix+'Wins') - 0; // Victories - Routs (Simplified)
+      bfr += getVal(prefix+'Train') + 5; 
+      bfr += parseInt(document.getElementById(prefix+'Qual').value);
+      if(isChk(prefix+'AC5')) bfr += 5;
+      if(isChk(prefix+'ElfDwarf')) bfr += 15;
+
+      // 2. TROOP CLASS BONUS
+      const bonusUnit = Math.ceil(bfr / 10);
+      let bonuses = 0;
+      if(isChk(prefix+'Mnt')) bonuses++;
+      if(isChk(prefix+'Bow')) bonuses++;
+      if(isChk(prefix+'Mag')) bonuses++;
+      if(isChk(prefix+'Fly')) bonuses++;
+      const classBonus = bonuses * bonusUnit;
+
+      // 3. SIEGE BR
+      let siegeBR = 0;
+      if(prefix === 'att') {
+        siegeBR += (getVal('attLtCat')*4) + (getVal('attHvCat')*8) + (getVal('attRam')*4) + (getVal('attTower')*10);
+      } else {
+        siegeBR += (getVal('defLtCat')*4) + (getVal('defHvCat')*8) + (getVal('defBall')*2);
+      }
+
+      const total = bfr + classBonus + siegeBR;
+
+      // Render
+      document.getElementById(prefix+'BFRVal').textContent = bfr;
+      document.getElementById(prefix+'ClassVal').textContent = classBonus;
+      document.getElementById(prefix+'FinalBR').textContent = total;
+
+      return { size: getVal(prefix+'Size'), totalBR: total, name: document.getElementById(prefix+'Name').value };
+    }
+
+    function updateTacticsDisplay() {
+       const a = document.getElementById('attTactic').value;
+       const d = document.getElementById('defTactic').value;
+       const mods = getTacticsMod(a,d);
+       const div = document.getElementById('tacticsResult');
+       
+       let txt = "";
+       if(mods[0] > 0) txt = `Attacker advantage (+${mods[0]})`;
+       else if(mods[1] > 0) txt = `Defender advantage (+${mods[1]})`;
+       else txt = "No tactical advantage";
+       div.textContent = txt;
+    }
+
+    const tactics = {
+      'attack': { 'attack': 0, 'envelop': -20, 'trap': 20, 'hold': 0, 'withdraw': 0 },
+      'envelop': { 'attack': 20, 'envelop': 0, 'trap': -20, 'hold': 20, 'withdraw': 0 },
+      'trap': { 'attack': -20, 'envelop': 20, 'trap': 0, 'hold': 20, 'withdraw': 0 },
+      'hold': { 'attack': 0, 'envelop': -20, 'trap': -20, 'hold': 0, 'withdraw': 0 },
+      'withdraw': { 'attack': 0, 'envelop': 0, 'trap': 0, 'hold': 0, 'withdraw': 0 }
+    };
+
+    function getTacticsMod(att, def) {
+      const val = tactics[att][def];
+      return [val, -val];
+    }
+
+    // --- EXACT COMBAT RESULTS TABLE (Rules Cyclopedia) ---
+    const CRT = [
+      { max: 0,   wCas: 0,  lCas: 10, wLoc: 'Field',     lLoc: 'Retreat' },
+      { max: 8,   wCas: 0,  lCas: 10, wLoc: 'Field',     lLoc: 'Retreat' },
+      { max: 15,  wCas: 0,  lCas: 20, wLoc: 'Field',     lLoc: 'Retreat' },
+      { max: 24,  wCas: 10, lCas: 20, wLoc: 'Field',     lLoc: 'Retreat' },
+      { max: 30,  wCas: 10, lCas: 30, wLoc: 'Field',     lLoc: 'Retreat + 1 hex' },
+      { max: 38,  wCas: 20, lCas: 40, wLoc: 'Retreat',   lLoc: 'Retreat' }, // Weird case in book where winner retreats too
+      { max: 50,  wCas: 0,  lCas: 30, wLoc: 'Field',     lLoc: 'Retreat + 2 hexes' },
+      { max: 63,  wCas: 20, lCas: 50, wLoc: 'Field + 1', lLoc: 'Retreat + 3 hexes' },
+      { max: 80,  wCas: 30, lCas: 60, wLoc: 'Field + 1', lLoc: 'Retreat + 3 hexes' },
+      { max: 90,  wCas: 10, lCas: 50, wLoc: 'Field + 3', lLoc: 'Retreat + 2 hexes' },
+      { max: 100, wCas: 0,  lCas: 30, wLoc: 'Field + 3', lLoc: 'Rout' },
+      { max: 120, wCas: 20, lCas: 70, wLoc: 'Field + 3', lLoc: 'Rout' },
+      { max: 150, wCas: 10, lCas: 70, wLoc: 'Field + 3', lLoc: 'Rout' },
+      { max: 999, wCas: 10, lCas: 100, wLoc: 'Field + 5', lLoc: 'Rout' }
+    ];
+
+    function getResult(diff) {
+      return CRT.find(r => diff <= r.max);
+    }
+
+    function resolveBattle() {
+      const A = calculateSide('att');
+      const D = calculateSide('def');
+
+      let attBR = A.totalBR;
+      let defBR = D.totalBR;
+
+      // 1. Troop Ratio
+      let defSizeCalc = D.size;
+      if(isChk('defFort')) defSizeCalc *= 4;
+
+      const ratio = A.size > defSizeCalc ? (A.size / defSizeCalc) : (defSizeCalc / A.size);
+      let ratioBonus = 0;
+      if(ratio >= 1.5) ratioBonus = 10;
+      if(ratio >= 2) ratioBonus = 20;
+      if(ratio >= 3) ratioBonus = 30;
+      if(ratio >= 4) ratioBonus = 40;
+      if(ratio >= 8) ratioBonus = 50;
+
+      if(A.size > defSizeCalc) attBR += ratioBonus; 
+      else defBR += ratioBonus;
+
+      // 2. Tactics
+      const tMods = getTacticsMod(document.getElementById('attTactic').value, document.getElementById('defTactic').value);
+      attBR += tMods[0];
+      defBR += tMods[1];
+
+      // 3. Modifiers
+      if(isChk('attTerr')) attBR += 20;
+      if(isChk('attMorale')) attBR += 10;
+      if(isChk('attFatigue')) attBR -= 10;
+      if(isChk('attIntel')) attBR += 10;
+      if(isChk('attTraitor')) attBR += 20;
+      if(isChk('attHero')) attBR += 10;
+
+      if(isChk('defTerr')) defBR += 20;
+      if(isChk('defMorale')) defBR += 10;
+      if(isChk('defFatigue')) defBR -= 10;
+      if(isChk('defIntel')) defBR += 10;
+      if(isChk('defHero')) defBR += 10;
+      if(isChk('defFort')) defBR += 10;
+
+      // 4. Roll
+      const rollA = Math.floor(Math.random() * 100) + 1;
+      const rollB = Math.floor(Math.random() * 100) + 1;
+
+      const totalA = attBR + rollA;
+      const totalB = defBR + rollB;
+      const diff = Math.abs(totalA - totalB);
+
+      // 5. Lookup Result
+      const row = getResult(diff);
+      let wName, lName, wLoc, lLoc, wCasPct, lCasPct;
+
+      if(totalA > totalB) {
+        wName = A.name; lName = D.name;
+        wLoc = row.wLoc; lLoc = row.lLoc;
+        wCasPct = row.wCas; lCasPct = row.lCas;
+      } else {
+        wName = D.name; lName = A.name;
+        wLoc = row.wLoc; lLoc = row.lLoc;
+        wCasPct = row.wCas; lCasPct = row.lCas;
+      }
+
+      // Siege Tweak: Halve casualties if siege
+      const isSiege = isChk('defFort'); // Simple check for siege mode
+      if(isSiege) {
+         wCasPct = Math.floor(wCasPct / 2);
+         lCasPct = Math.floor(lCasPct / 2);
+         wLoc += " (Siege)";
+         lLoc += " (Siege)";
+      }
+
+      const casA = Math.floor(A.size * (totalA > totalB ? wCasPct : lCasPct) / 100);
+      const casB = Math.floor(D.size * (totalB > totalA ? wCasPct : lCasPct) / 100);
+
+      logBattle(A.name, D.name, totalA, totalB, rollA, rollB, attBR, defBR, wName, casA, casB, diff, wLoc, lLoc);
+    }
+
+    function logBattle(aName, dName, totA, totB, rA, rB, brA, brB, wName, casA, casB, diff, wLoc, lLoc) {
+      const log = document.getElementById('battleLog');
+      if(log.children.length > 0 && log.children[0].innerText.includes("Battle results")) log.innerHTML = "";
+
+      const id = Date.now();
+      const html = `
+        <div class="log-entry">
+          <div style="display:flex; justify-content:space-between; margin-bottom:4px">
+             <strong style="color:#fff">${wName} Wins</strong>
+             <span style="color:#64748b; font-size:0.7rem">Diff: ${diff}</span>
+          </div>
+          <div style="margin-bottom:6px; font-size:0.75rem; color:#94a3b8">
+             ${aName}: <strong>${totA}</strong> (BR ${brA} + d% ${rA})<br>
+             ${dName}: <strong>${totB}</strong> (BR ${brB} + d% ${rB})
+          </div>
+          <div style="background:#1e293b; padding:6px; border-radius:4px; font-size:0.75rem; display:grid; grid-template-columns:1fr 1fr; gap:8px">
+             <div>
+                <span style="color:#fca5a5">${aName}</span><br>
+                Lost: <strong>${casA}</strong><br>
+                Loc: ${totA > totB ? wLoc : lLoc}
+             </div>
+             <div>
+                <span style="color:#93c5fd">${dName}</span><br>
+                Lost: <strong>${casB}</strong><br>
+                Loc: ${totB > totA ? wLoc : lLoc}
+             </div>
+          </div>
+          <button class="btn btn-apply" id="btn-${id}" onclick="applyCas(${casA}, ${casB}, 'btn-${id}')">Apply Casualties</button>
+        </div>
+      `;
+      log.innerHTML = html + log.innerHTML;
+    }
+
+    function applyCas(aLoss, bLoss, btnId) {
+      const aInput = document.getElementById('attSize');
+      const bInput = document.getElementById('defSize');
+      aInput.value = Math.max(0, parseInt(aInput.value) - aLoss);
+      bInput.value = Math.max(0, parseInt(bInput.value) - bLoss);
+      
+      const btn = document.getElementById(btnId);
+      btn.innerText = "Applied";
+      btn.disabled = true;
+      btn.style.background = "#334155";
+      
+      saveData();
+      calculateSide('att'); 
+      calculateSide('def');
+    }
+
+    function clearLog() {
+      document.getElementById('battleLog').innerHTML = '<div style="color:#64748b; text-align:center; padding-top:40px">Battle results will appear here...</div>';
+    }
+
+    // --- DATA ---
+    function saveData() {
+      const inputs = document.querySelectorAll('.save');
+      const data = {};
+      inputs.forEach(i => data[i.id] = (i.type==='checkbox' ? i.checked : i.value));
+      localStorage.setItem('wm_definitive', JSON.stringify(data));
+    }
+
+    function loadData() {
+      const raw = localStorage.getItem('wm_definitive');
+      if(!raw) return;
+      const data = JSON.parse(raw);
+      const inputs = document.querySelectorAll('.save');
+      inputs.forEach(i => {
+        if(data[i.id] !== undefined) {
+          if(i.type === 'checkbox') i.checked = data[i.id];
+          else i.value = data[i.id];
+        }
+      });
+    }
+
+    document.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('change', () => {
+        calculateSide('att'); calculateSide('def'); updateTacticsDisplay(); saveData();
+      });
+      el.addEventListener('keyup', () => { calculateSide('att'); calculateSide('def'); });
+    });
+
+    loadData();
+    calculateSide('att');
+    calculateSide('def');
+    updateTacticsDisplay();
+
+  </script>
+</body>
+</html>

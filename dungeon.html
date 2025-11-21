@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Dungeon Delver</title>
+  <style>
+    /* --- SUITE DESIGN SYSTEM --- */
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 1.5rem; font-family: system-ui, -apple-system, sans-serif; background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%); color: #e5e7eb; }
+    h1 { margin: 0 0 0.3rem 0; font-size: 1.6rem; letter-spacing: -0.02em; }
+    .tagline { font-size: 0.85rem; color: #94a3b8; margin-bottom: 1.2rem; }
+    
+    .layout-main { display: grid; grid-template-columns: 320px 1fr 320px; gap: 1rem; margin-top: 0.75rem; }
+    @media (max-width: 1100px) { .layout-main { grid-template-columns: 1fr 1fr; } .panel-log { grid-column: span 2; } }
+    @media (max-width: 768px) { .layout-main { grid-template-columns: 1fr; } .panel-log { grid-column: span 1; } }
+
+    /* Cards */
+    .card { border-radius: 0.75rem; border: 1px solid #1f2937; background: #0f172a; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem; height: fit-content; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; border-bottom: 1px solid #1e293b; margin-bottom: 0.5rem; }
+    .card-title { font-weight: 700; font-size: 1rem; color: #f8fafc; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    /* UI Elements */
+    label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 3px; }
+    input[type="text"], input[type="number"], select {
+      width: 100%; background: #020617; border: 1px solid #334155; color: #e2e8f0;
+      padding: 6px 8px; border-radius: 4px; font-size: 0.9rem;
+    }
+    input:focus, select:focus { border-color: #6366f1; outline: none; }
+    
+    .row { display: flex; gap: 8px; }
+    .row > div { flex: 1; }
+    
+    /* Status Bars */
+    .status-bar { background: #1e293b; height: 6px; border-radius: 3px; overflow: hidden; margin-top: 4px; }
+    .status-fill { height: 100%; transition: width 0.3s; }
+    .fill-hp { background: #ef4444; }
+    .fill-light { background: #fbbf24; }
+    
+    /* Buttons */
+    .btn { width: 100%; padding: 12px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-primary { background: #4f46e5; color: white; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+    .btn-primary:hover { background: #4338ca; }
+    .btn-danger { background: #991b1b; color: white; }
+    .btn-sec { background: #334155; color: #cbd5e1; font-size: 0.8rem; padding: 8px; }
+    .btn-loot { background: #d97706; color: #fff; margin-top: 10px; }
+    .btn-parley { background: #059669; color: #fff; }
+
+    /* Log */
+    .log-container { background: #000; border: 1px solid #334155; border-radius: 8px; height: 500px; overflow-y: auto; padding: 10px; font-family: 'Courier New', monospace; font-size: 0.8rem; }
+    .log-entry { margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed #333; }
+    
+    .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; margin-right: 5px; }
+    .badge.loot { background: #f59e0b; color: #fffbeb; }
+    .badge.combat { background: #991b1b; color: #fecaca; }
+    .badge.event { background: #1e3a8a; color: #bfdbfe; }
+    .badge.magic { background: #7c3aed; color: #ddd6fe; }
+    .badge.death { background: #000; color: #ef4444; border:1px solid #ef4444; }
+    .badge.trap { background: #c2410c; color: #fed7aa; }
+    
+    /* Overlay */
+    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; display: none; align-items: center; justify-content: center; flex-direction: column; }
+    .overlay h2 { font-size: 2rem; color: #ef4444; margin-bottom: 1rem; }
+
+    .inv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 10px; }
+    .inv-item { background: #1e293b; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; color: #94a3b8; display: flex; justify-content: space-between; }
+  </style>
+</head>
+<body>
+
+  <h1>The Dungeon Delver</h1>
+  <p class="tagline">BECMI simulation: Combat, Traps, Morale & Obstacles.</p>
+
+  <div class="layout-main">
+
+    <!-- 1. PARTY ROSTER -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Expedition Party</span>
+      </div>
+      
+      <div class="row">
+        <div><label>Import Party File</label><input type="file" id="partyFile" accept=".json" onchange="loadPartyFromFile()"></div>
+      </div>
+      <div class="row" style="margin-top: 5px;">
+         <button class="btn btn-sec" onclick="exportPartyState()">Export Party State</button>
+      </div>
+
+      <div style="margin-top:10px; padding:8px; background:#1e293b; border-radius:6px; border:1px solid #334155">
+        <div style="font-size:0.75rem; color:#94a3b8; margin-bottom:4px">Party Status</div>
+        <div id="partyStatus" style="font-size:0.9rem; color:#64748b; font-weight:500">No party loaded</div>
+      </div>
+      
+      <!-- Party Members -->
+      <div style="margin-top:15px; border-top:1px solid #1e293b; padding-top:10px">
+        <div style="font-size:0.75rem; color:#94a3b8; margin-bottom:8px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em">Party Members</div>
+        <div id="partyMembers" style="display:grid; gap:6px; max-height:220px; overflow-y:auto">
+          <div style="color:#64748b; text-align:center; padding:20px; background:#1e293b; border-radius:6px; font-size:0.85rem">
+            Load a party file to see character cards here
+          </div>
+        </div>
+      </div>
+
+      <!-- Resources -->
+      <div style="margin-top:10px">
+        <div class="row" style="justify-content:space-between; margin-bottom:2px">
+          <label>Torches (Turns)</label>
+          <span style="font-size:0.7rem; color:#fcd34d" id="lightText">6 Turns</span>
+        </div>
+        <div class="status-bar"><div class="status-fill fill-light" id="barLight" style="width: 100%"></div></div>
+        
+        <div class="row" style="margin-top:8px">
+           <button class="btn btn-sec" onclick="lightTorch()">Use Torch (-1)</button>
+           <button class="btn btn-sec" onclick="eatRation()">Use Ration (-1)</button>
+        </div>
+      </div>
+      
+      <!-- Inventory / Encumbrance -->
+      <div style="margin-top:15px; background:#1e293b; padding:10px; border-radius:6px">
+        <div class="row" style="justify-content:space-between">
+           <label>Encumbrance</label>
+           <span style="font-size:0.7rem; font-weight:bold" id="moveRate">120' (Fast)</span>
+        </div>
+        <div class="row" style="font-size:0.75rem; color:#94a3b8; margin-top:4px">
+           <span id="weightDisplay">0 / 1600 cn</span>
+        </div>
+        
+        <div class="inv-grid" id="inventoryList">
+           <div class="inv-item"><span>Torches</span> <span>6</span></div>
+           <div class="inv-item"><span>Rations</span> <span>7</span></div>
+        </div>
+      </div>
+
+      <!-- Treasure & Bank -->
+      <div style="margin-top:10px; border:1px dashed #4b5563; padding:8px; border-radius:6px">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px">
+          <label style="margin:0">Loot Sack</label>
+          <span style="font-size:0.7rem; color:#94a3b8">Current Delve</span>
+        </div>
+        <div style="font-size:1.1rem; font-weight:bold; color:#fbbf24" id="lootTotal">0 gp</div>
+
+        <div style="margin-top:8px; padding-top:8px; border-top:1px solid #374151">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px">
+            <span style="font-size:0.8rem; color:#94a3b8">Banked Wealth</span>
+            <span style="font-size:0.7rem; color:#64748b" id="bankedTotal">0 gp</span>
+          </div>
+        </div>
+      </div>
+      
+      <button class="btn btn-sec" style="background:#064e3b; color:#a7f3d0; margin-top:10px" onclick="bankLoot()">Return & Restock</button>
+    </div>
+
+    <!-- 2. DUNGEON CONTROLS -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Current Location</span>
+      </div>
+      
+      <div class="row">
+        <div>
+           <label>Dungeon Level</label>
+           <select id="dungeonDepth">
+             <option value="1">Lvl 1 (Basic)</option>
+             <option value="2">Lvl 2 (Expert)</option>
+             <option value="3">Lvl 3 (Dangerous)</option>
+             <option value="5">Lvl 5 (Deadly)</option>
+             <option value="8">Lvl 8+ (Infernal)</option>
+           </select>
+        </div>
+        <div>
+           <label>Time Elapsed</label>
+           <div style="background:#020617; border:1px solid #334155; padding:6px 8px; border-radius:4px; font-size:0.9rem; color:#fff" id="turnDisplay">Turn 0</div>
+        </div>
+      </div>
+
+      <div style="margin-top:15px; border-top:1px solid #334155; padding-top:10px">
+        <label style="display:flex; align-items:center; cursor:pointer; color:#fcd34d; font-size:0.8rem">
+          <input type="checkbox" id="lairMode" style="width:auto; margin-right:8px"> 
+          Lair / Stronghold Mode
+        </label>
+        <div style="font-size:0.7rem; color:#64748b; margin-left:24px">
+           Increases monster numbers. Guarantees Treasure Type loot on victory.
+        </div>
+      </div>
+
+      <!-- ACTION DECK -->
+      <div style="margin-top:20px; display:flex; flex-direction:column; gap:10px">
+        
+        <button class="btn btn-primary" id="btnExplore" onclick="exploreRoom()">
+          <span>🚪</span> Explore New Room
+        </button>
+
+        <div class="row">
+          <button class="btn btn-sec" id="btnSearch" onclick="searchRoom()">
+            <span>🔍</span> Search
+          </button>
+          <button class="btn btn-sec" id="btnRest" onclick="restParty()">
+             <span>⛺</span> Rest & Eat
+          </button>
+        </div>
+        
+        <!-- OBSTACLE PANEL -->
+        <div id="obstacleControls" style="display:none; background:#27272a; padding:10px; border-radius:6px; margin-top:10px; border:1px solid #52525b">
+           <div style="color:#fbbf24; font-weight:bold; margin-bottom:4px">OBSTACLE</div>
+           <div style="color:#fff; font-size:0.9rem; margin-bottom:10px" id="obstacleName">Stuck Door</div>
+           <div class="row">
+             <button class="btn btn-danger" onclick="resolveObstacle('force')">Force (Loud/Fast)</button>
+             <button class="btn btn-sec" onclick="resolveObstacle('careful')">Careful (Quiet/Slow)</button>
+           </div>
+        </div>
+
+        <!-- SPELL CASTING PANEL -->
+        <div id="spellControls" style="display:none; background:#4c1d95; padding:10px; border-radius:6px; margin-top:10px; border:1px solid #7c3aed">
+           <div style="color:#ddd6fe; font-weight:bold; margin-bottom:8px">MAGIC</div>
+           <div id="spellCasterList" style="margin-bottom:10px">
+             <!-- Spell casters will be populated here -->
+           </div>
+        </div>
+
+        <!-- COMBAT PANEL -->
+        <div id="combatControls" style="display:none; background:#3f1414; padding:10px; border-radius:6px; margin-top:10px; border:1px solid #7f1d1d">
+           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+              <span style="color:#fca5a5; font-weight:bold">ENCOUNTER</span>
+              <span id="reactionBadge" style="font-size:0.7rem; padding:2px 6px; border-radius:4px; background:#000">Neutral</span>
+           </div>
+           <div style="color:#fff; font-size:1rem; text-align:center; margin-bottom:4px; font-weight:bold" id="enemyName"></div>
+           <div style="color:#fca5a5; font-size:0.7rem; text-align:center; margin-bottom:2px" id="enemyMorale">Morale: 7</div>
+           <div style="color:#ff6b6b; font-size:0.7rem; text-align:center; margin-bottom:10px" id="enemyHP">HP: 10/10</div>
+
+           <div class="row" id="combatActions">
+             <button class="btn btn-danger" onclick="resolveCombat('fight')">Fight</button>
+             <button class="btn btn-parley" id="btnParley" onclick="resolveCombat('parley')">Parley</button>
+             <button class="btn btn-sec" onclick="resolveCombat('flee')">Flee</button>
+           </div>
+        </div>
+
+        <div id="lootControls" style="display:none; margin-top:10px">
+           <button class="btn btn-loot" onclick="lootRoom()">
+             <span>💰</span> Loot the Room!
+           </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 3. DUNGEON LOG -->
+    <div class="card panel-log">
+      <div class="card-header">
+        <span class="card-title">Delver's Log</span>
+        <button style="background:none; border:none; color:#64748b; cursor:pointer; font-size:0.75rem" onclick="clearLog()">Clear</button>
+      </div>
+      <div class="log-container" id="log">
+        <div style="color:#64748b; text-align:center; padding-top:60px">
+          The darkness awaits...
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- OVERLAY -->
+  <div class="overlay" id="deathScreen">
+    <h2>PARTY WIPED OUT</h2>
+    <p style="color:#cbd5e1; margin-bottom:20px">Your torchlight fades into darkness.</p>
+    <button class="btn btn-sec" style="width:auto" onclick="location.reload()">Roll New Party</button>
+  </div>
+
+  <script>
+    // --- BECMI CONSTANTS ---
+    const TREASURE_TYPES = {
+      A: { cp: [1000, 6000], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [2, 8], jewelry: [0, 0], magic: [] },
+      B: { cp: [0, 0], sp: [1000, 6000], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: [] },
+      C: { cp: [0, 0], sp: [0, 0], ep: [1000, 6000], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: [] },
+      D: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [1000, 3000], pp: [0, 0], gems: [1, 6], jewelry: [0, 0], magic: [] },
+      E: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [1000, 6000], pp: [0, 0], gems: [1, 10], jewelry: [0, 0], magic: [] },
+      F: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [2000, 12000], gems: [2, 20], jewelry: [0, 3], magic: [] },
+      G: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [10000, 50000], gems: [4, 24], jewelry: [1, 6], magic: [] },
+      H: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [8, 32], jewelry: [3, 12], magic: ['any 1', 'any 2'] },
+      I: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: ['potion', 'scroll', 'any 1'] },
+      J: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: ['any 2', 'any 3'] },
+      K: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: ['any 2', 'any 3', 'potion'] },
+      L: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: ['any 1', 'any 2', 'potion', 'scroll'] },
+      M: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: ['any 2', 'any 3', 'potion', 'scroll'] },
+      N: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: ['any 2', 'potion', 'scroll', 'any 1'] },
+      O: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: ['potion', 'scroll', 'any 2', 'any 3'] }
+    };
+
+    const MAGIC_ITEMS = {
+      'any 1': ['Sword +1', 'Shield +1', 'Armor +1', 'Potion of Healing', 'Scroll of Protection'],
+      'any 2': ['Sword +2', 'Shield +2', 'Armor +2', 'Potion of Extra Healing', 'Wand of Magic Missiles'],
+      'any 3': ['Sword +3', 'Shield +3', 'Flame Tongue Sword', 'Potion of Giant Strength', 'Staff of Power'],
+      'potion': ['Potion of Healing', 'Potion of Extra Healing', 'Potion of Giant Strength', 'Potion of Invisibility', 'Potion of Speed'],
+      'scroll': ['Scroll of Protection from Evil', 'Scroll of Fireballs', 'Scroll of Lightning Bolts', 'Scroll of Teleportation']
+    };
+
+    // --- DATA TABLES ---
+    const MONSTERS = {
+      1: [
+        {name:"Goblins", hd:1, wander:"2d4", lair:"6d10", morale:7, treasure:'B', ac:6, thac0:19, dmg:'1d6'}, 
+        {name:"Kobolds", hd:0.5, wander:"4d4", lair:"6d10", morale:6, treasure:'A', ac:7, thac0:19, dmg:'1d4'},
+        {name:"Giant Rats", hd:0.5, wander:"3d6", lair:"3d10", morale:8, treasure:'C', ac:7, thac0:19, dmg:'1d3'}, 
+        {name:"Skeletons", hd:1, wander:"3d4", lair:"3d10", morale:12, treasure:'B', ac:7, thac0:19, dmg:'1d6'},
+        {name:"Stirges", hd:1, wander:"1d10", lair:"3d12", morale:9, treasure:'L', ac:7, thac0:19, dmg:'1d3'}, 
+        {name:"Bandits", hd:1, wander:"1d8", lair:"3d10", morale:8, treasure:'A', ac:6, thac0:19, dmg:'1d6'}
+      ],
+      2: [
+        {name:"Orcs", hd:1, wander:"2d4", lair:"10d6", morale:8, treasure:'C', ac:6, thac0:19, dmg:'1d6'}, 
+        {name:"Zombies", hd:2, wander:"2d4", lair:"4d6", morale:12, treasure:'B', ac:8, thac0:19, dmg:'1d8'},
+        {name:"Giant Spiders", hd:2, wander:"1d3", lair:"1d3", morale:7, treasure:'U', ac:6, thac0:19, dmg:'1d6'}, 
+        {name:"Troglodytes", hd:2, wander:"1d8", lair:"5d8", morale:9, treasure:'A', ac:5, thac0:19, dmg:'1d6'},
+        {name:"Carrion Crawler", hd:3, wander:"1d3", lair:"1d3", morale:9, treasure:'B', ac:7, thac0:17, dmg:'1d2'}, 
+        {name:"Gnolls", hd:2, wander:"1d6", lair:"3d6", morale:8, treasure:'E', ac:5, thac0:18, dmg:'1d6'}
+      ],
+      3: [
+        {name:"Ogres", hd:4, wander:"1d6", lair:"2d6", morale:10, treasure:'C', ac:5, thac0:17, dmg:'1d6+2'}, 
+        {name:"Wights", hd:3, wander:"1d6", lair:"1d8", morale:12, treasure:'B', ac:5, thac0:17, dmg:'1d6'},
+        {name:"Wererats", hd:3, wander:"1d8", lair:"2d8", morale:8, treasure:'C', ac:6, thac0:18, dmg:'1d6'}, 
+        {name:"Bugbears", hd:3, wander:"2d4", lair:"5d4", morale:9, treasure:'B', ac:5, thac0:17, dmg:'1d6+1'},
+        {name:"Gelatinous Cube", hd:4, wander:"1", lair:"1", morale:12, treasure:'V', ac:8, thac0:16, dmg:'2d4'}, 
+        {name:"Doppleganger", hd:4, wander:"1d6", lair:"1d6", morale:10, treasure:'E', ac:5, thac0:16, dmg:'1d12'}
+      ],
+      5: [
+        {name:"Trolls", hd:6, wander:"1d3", lair:"1d3", morale:10, treasure:'D', ac:4, thac0:14, dmg:'1d6+3'}, 
+        {name:"Wraiths", hd:4, wander:"1d4", lair:"1d6", morale:12, treasure:'E', ac:3, thac0:16, dmg:'1d6'},
+        {name:"Hydra", hd:5, wander:"1", lair:"1", morale:9, treasure:'B', ac:5, thac0:15, dmg:'1d6'}, 
+        {name:"Hill Giants", hd:8, wander:"1d4", lair:"2d4", morale:8, treasure:'E', ac:4, thac0:13, dmg:'2d8'},
+        {name:"Cockatrice", hd:5, wander:"1d4", lair:"1d8", morale:7, treasure:'D', ac:6, thac0:15, dmg:'1d3'}
+      ],
+      8: [
+        {name:"Red Dragon", hd:10, wander:"1", lair:"1", morale:10, treasure:'H', ac:1, thac0:11, dmg:'1d8'}, 
+        {name:"Vampire", hd:8, wander:"1d4", lair:"1d6", morale:11, treasure:'F', ac:2, thac0:13, dmg:'1d6+4'},
+        {name:"Purple Worm", hd:15, wander:"1d2", lair:"1d4", morale:12, treasure:'I', ac:6, thac0:9, dmg:'2d8'}, 
+        {name:"Chimera", hd:9, wander:"1d2", lair:"1d4", morale:9, treasure:'F', ac:4, thac0:12, dmg:'1d3'},
+        {name:"Lich", hd:11, wander:"1", lair:"1", morale:12, treasure:'H', ac:0, thac0:10, dmg:'1d6'}
+      ]
+    };
+
+    const TRAPS = {
+      1: [
+        { name: "Pit Trap", dmg: 10, msg: "You fall 10' into a pit.", time: 1 },
+        { name: "Tripwire", dmg: 5, msg: "A crossbow fires from the wall!", time: 0 },
+        { name: "Falling Net", dmg: 0, msg: "Entangled! You spend time cutting free.", time: 3 },
+        { name: "Poison Needle", dmg: 15, msg: "A needle pricks you. Save vs Poison!", time: 0 }
+      ],
+      2: [
+        { name: "Deep Pit", dmg: 20, msg: "You fall 20' onto spikes.", time: 1 },
+        { name: "Oil Spray", dmg: 10, msg: "Flaming oil sprays the party.", time: 0 },
+        { name: "Rolling Rock", dmg: 25, msg: "A massive boulder crushes the rear rank.", time: 0 },
+        { name: "Chute", dmg: 5, msg: "You slide down a chute to a lower level!", time: 1, effect: "descend" }
+      ],
+      3: [
+        { name: "Sleep Gas", dmg: 0, msg: "Gas fills the room. The party sleeps for 1 hour.", time: 6 },
+        { name: "Crushing Walls", dmg: 40, msg: "The walls close in! Massive damage.", time: 0 },
+        { name: "Poison Darts", dmg: 25, msg: "A volley of poisoned darts strikes everyone.", time: 0 },
+        { name: "Teleporter", dmg: 0, msg: "Zap! You are teleported to a random location.", time: 2, effect: "confuse" }
+      ],
+      5: [
+        { name: "Disintegration", dmg: 80, msg: "A beam of black energy strikes! Save vs Death!", time: 0 },
+        { name: "Death Gas", dmg: 50, msg: "Choking yellow fog burns your lungs.", time: 0 },
+        { name: "Sphere of Annihilation", dmg: 99, msg: "A void touches the party.", time: 0 }
+      ]
+    };
+
+    const DRESSING = [
+      "The air smells of ozone and stale sweat.",
+      "Faint scratching sounds come from the walls.",
+      "The floor is covered in strange, sticky slime.",
+      "A cold draft blows from the north wall.",
+      "You hear distant, rhythmic chanting.",
+      "The remains of a previous adventurer lie here.",
+      "Cobwebs hang thick from the ceiling.",
+      "Dust swirls in the torchlight."
+    ];
+    
+    const OBSTACLES = [
+      { name: "Stuck Door", failMsg: "It won't budge! You make a lot of noise." },
+      { name: "Locked Door", failMsg: "The lock is rusted shut. You have to smash it." },
+      { name: "Collapsed Ceiling", failMsg: "Rubble shifts loudly as you clear it." },
+      { name: "Portcullis", failMsg: "Heavy iron bars scream as you lift them." }
+    ];
+    
+    // Weights in CN (Coin Weight)
+    const W_COIN = 1;
+    const W_RATION = 200;
+    const W_TORCH = 20;
+    const W_POTION = 10;
+    const W_SCROLL = 5;
+
+    // Ability score modifiers (BECMI)
+    const MODS = [
+      { min: 1, max: 3, mod: -3 },
+      { min: 4, max: 5, mod: -2 },
+      { min: 6, max: 8, mod: -1 },
+      { min: 9, max: 12, mod: 0 },
+      { min: 13, max: 15, mod: 1 },
+      { min: 16, max: 17, mod: 2 },
+      { min: 18, max: 18, mod: 3 }
+    ];
+
+    // BECMI Attack Tables (2d6 required roll vs AC)
+    const ATTACK_TABLES = {
+      'Fighter': {
+        1: { 9: 10, 8: 9, 7: 8, 6: 7, 5: 6, 4: 5, 3: 4, 2: 3, 1: 2, 0: 2 },
+        2: { 9: 9, 8: 8, 7: 7, 6: 6, 5: 5, 4: 4, 3: 3, 2: 2, 1: 2, 0: 2 },
+        3: { 9: 8, 8: 7, 7: 6, 6: 5, 5: 4, 4: 3, 3: 2, 2: 2, 1: 2, 0: 2 },
+        4: { 9: 7, 8: 6, 7: 5, 6: 4, 5: 3, 4: 2, 3: 2, 2: 2, 1: 2, 0: 2 },
+        5: { 9: 6, 8: 5, 7: 4, 6: 3, 5: 2, 4: 2, 3: 2, 2: 2, 1: 2, 0: 2 }
+      },
+      'Cleric': {
+        1: { 9: 11, 8: 10, 7: 9, 6: 8, 5: 7, 4: 6, 3: 5, 2: 4, 1: 3, 0: 2 },
+        2: { 9: 10, 8: 9, 7: 8, 6: 7, 5: 6, 4: 5, 3: 4, 2: 3, 1: 2, 0: 2 },
+        3: { 9: 9, 8: 8, 7: 7, 6: 6, 5: 5, 4: 4, 3: 3, 2: 2, 1: 2, 0: 2 },
+        4: { 9: 8, 8: 7, 7: 6, 6: 5, 5: 4, 4: 3, 3: 2, 2: 2, 1: 2, 0: 2 },
+        5: { 9: 7, 8: 6, 7: 5, 6: 4, 5: 3, 4: 2, 3: 2, 2: 2, 1: 2, 0: 2 }
+      },
+      'MagicUser': {
+        1: { 9: 12, 8: 11, 7: 10, 6: 9, 5: 8, 4: 7, 3: 6, 2: 5, 1: 4, 0: 3 },
+        2: { 9: 11, 8: 10, 7: 9, 6: 8, 5: 7, 4: 6, 3: 5, 2: 4, 1: 3, 0: 2 },
+        3: { 9: 10, 8: 9, 7: 8, 6: 7, 5: 6, 4: 5, 3: 4, 2: 3, 1: 2, 0: 2 },
+        4: { 9: 9, 8: 8, 7: 7, 6: 6, 5: 5, 4: 4, 3: 3, 2: 2, 1: 2, 0: 2 },
+        5: { 9: 8, 8: 7, 7: 6, 6: 5, 5: 4, 4: 3, 3: 2, 2: 2, 1: 2, 0: 2 }
+      },
+      'Thief': {
+        1: { 9: 12, 8: 11, 7: 10, 6: 9, 5: 8, 4: 7, 3: 6, 2: 5, 1: 4, 0: 3 },
+        2: { 9: 11, 8: 10, 7: 9, 6: 8, 5: 7, 4: 6, 3: 5, 2: 4, 1: 3, 0: 2 },
+        3: { 9: 10, 8: 9, 7: 8, 6: 7, 5: 6, 4: 5, 3: 4, 2: 3, 1: 2, 0: 2 },
+        4: { 9: 9, 8: 8, 7: 7, 6: 6, 5: 5, 4: 4, 3: 3, 2: 2, 1: 2, 0: 2 },
+        5: { 9: 8, 8: 7, 7: 6, 6: 5, 5: 4, 4: 3, 3: 2, 2: 2, 1: 2, 0: 2 }
+      }
+    };
+
+    function getMod(score) {
+      const m = MODS.find(r => score >= r.min && score <= r.max);
+      return m ? m.mod : 0;
+    }
+
+    function getRequiredRoll(attackerClass, attackerLevel, targetAC) {
+      // Use BECMI attack tables
+      const table = ATTACK_TABLES[attackerClass];
+      if (!table) return 12; // Default
+
+      const levelTable = table[Math.min(attackerLevel, 5)] || table[5];
+      return levelTable[Math.max(targetAC, 0)] || 2; // AC 0 or better
+    }
+
+    // BECMI THAC0 calculation (RC p. 107)
+    function getTHAC0(cls, level) {
+      // Standard BECMI progressions
+      const c = cls.toLowerCase();
+      
+      if (c === 'fighter' || c === 'dwarf' || c === 'elf' || c === 'halfling' || c === 'mercenary') {
+        // Fighters improve by 2 every 3 levels roughly
+        // Level 1-3: 19, 4-6: 17, 7-9: 15, etc.
+        if (level <= 3) return 19;
+        if (level <= 6) return 17;
+        if (level <= 9) return 15;
+        if (level <= 12) return 13;
+        return 11; 
+      } else if (c === 'cleric' || c === 'thief') {
+        // Clerics/Thieves improve by 2 every 4 levels
+        // Level 1-4: 19, 5-8: 17, 9-12: 15, etc.
+        if (level <= 4) return 19;
+        if (level <= 8) return 17;
+        if (level <= 12) return 15;
+        return 13;
+      } else if (c === 'magic-user' || c === 'magicuser') {
+        // Magic-Users improve by 2 every 5 levels
+        // Level 1-5: 19, 6-10: 17, 11-15: 15
+        if (level <= 5) return 19;
+        if (level <= 10) return 17;
+        if (level <= 15) return 15;
+        return 13;
+      }
+      return 19; // Default for level 0 or normal humans
+    }
+
+    // --- STATE ---
+    let state = {
+      turn: 0,
+      light: 6, // Current light turns remaining (0-6)
+      party: [], // Array of character objects
+      partyResources: {
+        gold: 0,        // Current loot sack (treasure from current delve)
+        bankedGold: 0,  // Banked wealth (starting gold + returned treasure)
+        torches: 6,
+        rations: 7,
+        potions: 0,
+        scrolls: 0,
+        encumbrance: { current: 0, max: 1600 }
+      },
+
+      // Context
+      inCombat: false,
+      inObstacle: false,
+      pendingLoot: null,
+      monster: null,
+      activeObstacle: null,
+
+      // Current dungeon
+      dungeonLevel: 1
+    };
+
+    // --- PARTY MANAGEMENT ---
+    function loadPartyFromFile() {
+      const fileInput = document.getElementById('partyFile');
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const partyData = JSON.parse(e.target.result);
+          if (partyData.version && partyData.party) {
+            state.party = partyData.party;
+            state.partyResources = partyData.partyResources || state.partyResources;
+
+            // Load banked gold and start new delve with empty loot sack
+            state.partyResources.bankedGold = partyData.partyResources?.bankedGold || partyData.partyResources?.gold || 0;
+            state.partyResources.gold = 0; // Loot sack starts empty for new delve
+
+            state.dungeonLevel = partyData.campaignInfo?.dungeonLevel || 1;
+            state.light = 6; // Reset light when loading party
+            state.turn = 0; // Reset turn counter
+
+            updatePartyDisplay();
+            updateUI();
+            document.getElementById('partyStatus').innerText = `Loaded: ${state.party.length} characters`;
+            document.getElementById('partyStatus').style.color = '#4ade80';
+          } else {
+            throw new Error('Invalid party file format');
+          }
+        } catch (error) {
+          alert('Error loading party file: ' + error.message);
+          document.getElementById('partyStatus').innerText = 'Error loading file';
+          document.getElementById('partyStatus').style.color = '#f87171';
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function createCharacterCard(char) {
+      const div = document.createElement('div');
+      div.className = 'char-card';
+      div.style.cssText = 'background:#1e293b; border:1px solid #334155; border-radius:6px; padding:8px; font-size:0.8rem; margin-bottom:4px';
+
+      const hpPercent = Math.round((char.derivedStats.hp.current / char.derivedStats.hp.max) * 100);
+      const hpColor = hpPercent > 50 ? '#4ade80' : hpPercent > 25 ? '#fbbf24' : '#f87171';
+
+      let retainerInfo = '';
+      if (char.retainers && char.retainers.length > 0) {
+        retainerInfo = `<div style="font-size:0.65rem; color:#64748b; margin-top:4px; border-top:1px dashed #334155; padding-top:2px">
+          Retainers: ${char.retainers.map(r => r.name).join(', ')}
+        </div>`;
+      }
+
+      div.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px">
+          <strong style="color:#fff">${char.name}</strong>
+          <span style="color:#64748b; font-size:0.7rem">${char.race} ${char.class} ${char.level}</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:0.7rem; margin-bottom:4px">
+          <span style="color:${hpColor}">HP: ${char.derivedStats.hp.current}/${char.derivedStats.hp.max}</span>
+          <span style="color:#93c5fd">AC: ${char.derivedStats.ac}</span>
+          <span style="color:#fbbf24">THAC0: ${getTHAC0(char.class, char.level)}</span>
+        </div>
+        <div style="font-size:0.65rem; color:#64748b">
+          Weapon: ${char.equipment.weapon || 'None'}
+        </div>
+        ${retainerInfo}
+      `;
+
+      return div;
+    }
+
+    function updatePartyDisplay() {
+      const container = document.getElementById('partyMembers');
+      container.innerHTML = '';
+
+      if (state.party.length === 0) {
+        container.innerHTML = '<div style="color:#64748b; text-align:center; padding:20px; background:#1e293b; border-radius:6px">No party loaded</div>';
+        return;
+      }
+
+      state.party.forEach(char => {
+        container.appendChild(createCharacterCard(char));
+      });
+    }
+
+    // --- ENGINE ---
+
+    function getSpeedCost() {
+      if (state.speed >= 120) return 1;
+      if (state.speed >= 90) return 1;
+      if (state.speed >= 60) return 2;
+      return 3;
+    }
+
+    function updateLoad() {
+      const pSize = state.partyCount;
+      if(pSize <= 0) return;
+
+      let baseLoad = pSize * 400; 
+      
+      let itemLoad = (state.gold * W_COIN) + 
+                     (state.torches * W_TORCH) + 
+                     (state.rations * W_RATION) + 
+                     (state.potions * W_POTION) +
+                     (state.scrolls * W_SCROLL);
+      
+      state.load = Math.ceil(itemLoad / pSize) + 400; 
+      
+      if (state.load <= 400) state.speed = 120;
+      else if (state.load <= 800) state.speed = 90;
+      else if (state.load <= 1600) state.speed = 60;
+      else state.speed = 30;
+      
+      updateUI();
+    }
+
+    function advanceTurn(baseCost = 1) {
+      const cost = baseCost * getSpeedCost();
+      state.turn += cost;
+      state.light -= cost;
+
+      // Handle torch consumption
+      while (state.light <= 0 && state.partyResources.torches > 0) {
+        state.partyResources.torches--;
+        state.light += 6; // Each torch provides 6 turns of light
+        logEntry("Torch", "Consumed a torch. Light renewed!", "event");
+      }
+
+      if (state.light <= 0) {
+        logEntry("Darkness", "Your light has gone out! Danger increases.", "event");
+        state.light = 0;
+      } else if (state.light <= 2) {
+        logEntry("Warning", "Torches are sputtering...", "event");
+      }
+      
+      // Check for wandering monsters ONLY if exploring (moved logic to exploreRoom)
+      // advanceTurn handles time, but we don't want double-dipping on checks
+      // The caller of advanceTurn handles specific encounter checks usually
+      
+      updateUI();
+    }
+
+    // --- ACTIONS ---
+
+    function manualPartyUpdate() {
+      // Removed - party is now loaded from file
+    }
+
+    function exploreRoom() {
+      // Prevent exploration while in combat
+      if (state.inCombat) {
+        logEntry("Warning", "Cannot explore while in combat!", "event");
+        return;
+      }
+
+      if (checkDead()) return;
+      resetContext();
+
+      // 1. Time Passes (1 turn)
+      advanceTurn(1);
+      
+      // 1.5. Check if interrupted by Wandering Monster (1-in-6) - BECMI Rule
+      // We perform the check HERE, and if it hits, we STOP the room reveal.
+      if (state.inCombat) return; // Stop if advanceTurn triggered something (unlikely with current setup but good safety)
+
+      if (d6() === 1) {
+        logEntry("Warning", "You hear sounds of movement nearby...", "event");
+        triggerCombat(true); // Trigger WANDERING encounter
+        return; // **CRITICAL FIX**: Stop room generation. You are fighting in the corridor/doorway.
+      }
+
+      logEntry("Exploration", "The party moves deeper into the dungeon...", "event");
+
+      // 2. Room Contents (1d6)
+      const roll = d6();
+
+      if (roll <= 2) {
+        // Empty (1-2)
+        const dressing = DRESSING[Math.floor(Math.random() * DRESSING.length)];
+        logEntry("Room", `Empty chamber. ${dressing}`, "event");
+        if (d6() === 1) { // 1-in-6 hidden treasure
+           state.pendingLoot = 'hidden';
+           // Note: Hidden loot only found if searched
+        }
+      } else if (roll === 3) {
+        // Trap (3)
+        triggerTrap();
+        if (d6() === 1) state.pendingLoot = 'hidden'; // Treasure with trap
+      } else if (roll >= 4 && roll <= 5) {
+        // Monster (4-5)
+        triggerCombat(false); // Room Monster
+        if (d6() <= 3) state.pendingLoot = 'hidden'; // 50% chance extra hidden loot?
+      } else {
+        // Special (6)
+        logEntry("Feature", "You find a strange feature (Statue/Altar/Pool).", "magic");
+        state.pendingLoot = 'special';
+      }
+    }
+
+    // --- OBSTACLES ---
+    function triggerObstacle() {
+       state.inObstacle = true;
+       const obs = OBSTACLES[Math.floor(Math.random() * OBSTACLES.length)];
+       state.activeObstacle = obs;
+       
+       document.getElementById('obstacleControls').style.display = 'block';
+       document.getElementById('obstacleName').innerText = obs.name;
+       document.getElementById('btnExplore').disabled = true;
+       logEntry("Blocked", `The way forward is blocked by a ${obs.name}.`, "event");
+    }
+
+    function resolveObstacle(method) {
+       const obs = state.activeObstacle;
+       document.getElementById('obstacleControls').style.display = 'none';
+       document.getElementById('btnExplore').disabled = false;
+       state.inObstacle = false;
+
+       if(method === 'force') {
+          // Fast but noisy
+          advanceTurn(1);
+          const noiseRoll = d6();
+          if(noiseRoll <= 3) {
+             logEntry("Noise", `${obs.failMsg} (Wandering Monster Check)`, "combat");
+             // Immediate check with higher chance
+             if(d6() <= 3) triggerCombat(true); 
+          } else {
+             logEntry("Success", "You smashed through!", "event");
+          }
+       } else {
+          // Careful
+          logEntry("Slow Work", "You spend time dismantling the obstruction safely.", "event");
+          advanceTurn(3); // Takes 3x time
+       }
+    }
+
+    function searchRoom() {
+      if (state.inCombat) return;
+      if (checkDead()) return;
+      advanceTurn(1);
+
+      if (state.pendingLoot === 'hidden') {
+         const findRoll = d6();
+         if (findRoll === 1) { // 1-in-6 to find hidden
+            generateLoot("Secret Compartment");
+            state.pendingLoot = null;
+         } else {
+            logEntry("Search", "You find nothing hidden.", "event");
+         }
+      } else if (state.pendingLoot === 'special') {
+         // Special interaction logic...
+         logEntry("Search", "You investigate the strange feature...", "event");
+         // Simplified result
+         if(d6() <= 3) generateLoot("Hidden Niche");
+         else logEntry("Result", "It seems mundane.", "event");
+         state.pendingLoot = null;
+      } else {
+         // Wandering monster check on empty search?
+         if(d6() === 1) triggerCombat(true);
+         else logEntry("Search", "You find nothing of interest.", "event");
+      }
+    }
+
+    function restParty() {
+      if (state.inCombat) return;
+
+      if (state.partyResources.rations <= 0) {
+        logEntry("Starving", "No rations! Cannot rest.", "event");
+        return;
+      }
+      state.partyResources.rations--;
+      advanceTurn(1);
+
+      // Heal
+      let totalHealed = 0;
+      state.party.forEach(char => {
+         if (char.derivedStats.hp.current > 0 && char.derivedStats.hp.current < char.derivedStats.hp.max) {
+            const heal = Math.floor(Math.random() * 3) + 1; // 1d3 healing per rest
+            const oldHP = char.derivedStats.hp.current;
+            char.derivedStats.hp.current = Math.min(char.derivedStats.hp.max, oldHP + heal);
+            totalHealed += (char.derivedStats.hp.current - oldHP);
+         }
+         if (char.retainers) {
+            char.retainers.forEach(retainer => {
+               if (retainer.hp && retainer.hp.current > 0 && retainer.hp.current < retainer.hp.max) {
+                  const heal = 1; 
+                  retainer.hp.current = Math.min(retainer.hp.max, retainer.hp.current + heal);
+                  totalHealed += heal;
+               }
+            });
+         }
+      });
+
+      logEntry("Camp", `Ate rations and rested. Party healed ${totalHealed} HP total.`, "event");
+      updatePartyDisplay();
+      updateUI();
+    }
+
+    function lightTorch() {
+      if (state.partyResources.torches > 0) {
+        state.partyResources.torches--;
+        state.light = 6;
+        logEntry("Torch", "Lit a fresh torch.", "event");
+        updateUI();
+      } else {
+        logEntry("Empty", "No torches left!", "combat");
+      }
+    }
+    
+    function eatRation() {
+       if(state.partyResources.rations > 0) {
+         state.partyResources.rations--;
+         // Heal all living party members slightly
+         state.party.forEach(char => {
+           if (char.derivedStats.hp.current > 0 && char.derivedStats.hp.current < char.derivedStats.hp.max) {
+             char.derivedStats.hp.current = Math.min(char.derivedStats.hp.max, char.derivedStats.hp.current + 1);
+           }
+         });
+         logEntry("Supplies", "Ate a ration. +1 HP.", "event");
+         updateUI();
+         updatePartyDisplay();
+       } else {
+         logEntry("Starving", "No rations left!", "combat");
+       }
+    }
+
+    // --- COMBAT & REACTION ---
+
+    function triggerTrap() {
+      const depth = parseInt(document.getElementById('dungeonDepth').value);
+      let pool = TRAPS[depth] || TRAPS[1];
+      if(depth >= 5 && !TRAPS[depth]) pool = TRAPS[5];
+      if(depth >= 8 && TRAPS[8]) pool = TRAPS[8]; 
+
+      const trap = pool[Math.floor(Math.random() * pool.length)];
+      
+      logEntry("TRAP!", trap.msg, "trap");
+      
+      if(trap.dmg > 0) {
+        // Trap damages a random party member
+        const targets = state.party.filter(c => c.derivedStats.hp.current > 0);
+        if (targets.length > 0) {
+          const target = targets[Math.floor(Math.random() * targets.length)];
+          // For traps, apply percentage damage roughly or fixed?
+          // Simplified: Treat trap dmg as direct HP damage but scale it down
+          // trap.dmg is in %. Let's say 1% = 1 HP roughly for simplicity or use fixed
+          const actualDmg = Math.max(1, Math.floor(target.derivedStats.hp.max * (trap.dmg / 100)));
+          takeDamage(target.id, actualDmg);
+        }
+      }
+      
+      if(trap.time > 0) {
+        logEntry("Delay", `You lose ${trap.time} turns dealing with the trap.`, "event");
+        advanceTurn(trap.time);
+      }
+      
+      if(trap.effect === 'descend') {
+         const dSelect = document.getElementById('dungeonDepth');
+         if(dSelect.selectedIndex < dSelect.options.length - 1) {
+            dSelect.selectedIndex++;
+            logEntry("Level Down", "You have fallen to a deeper level!", "event");
+         }
+      }
+    }
+
+    function triggerCombat(wandering) {
+      if (state.inCombat) return;
+
+      const depth = state.dungeonLevel;
+      const list = MONSTERS[depth] || MONSTERS[1];
+      const monData = list[Math.floor(Math.random() * list.length)];
+      const name = monData.name;
+      const morale = monData.morale;
+      const isLair = document.getElementById('lairMode').checked;
+
+      // Calculate number
+      const diceStr = isLair ? monData.lair : monData.wander;
+      const numMonsters = Math.max(1, rollDice(diceStr));
+
+      // HP
+      const hpPerMonster = 4; // 1 HD approx 4 hp for simulation
+      const totalHP = numMonsters * hpPerMonster; 
+
+      const react = d6() + d6();
+      let mood = "Neutral";
+      let color = "#9ca3b8";
+      let canParley = true;
+
+      if (react <= 5) { mood = "Hostile"; color = "#fca5a5"; canParley = false; }
+      else if (react <= 8) { mood = "Uncertain"; color = "#fcd34d"; }
+      else { mood = "Friendly"; color = "#86efac"; }
+
+      state.inCombat = true;
+      
+      // TRACK FIRST DEATH and HALF STRENGTH for Morale
+      state.monster = { 
+        name, 
+        wandering, 
+        isLair,
+        depth, 
+        mood, 
+        morale, 
+        hp: { current: totalHP, max: totalHP }, 
+        count: numMonsters, 
+        initialCount: numMonsters,
+        ac: monData.ac, 
+        thac0: monData.thac0, 
+        dmg: monData.dmg, 
+        hd: monData.hd,
+        
+        // Morale Flags
+        checkedFirstDeath: false,
+        checkedHalf: false
+      };
+
+      document.getElementById('btnExplore').style.display = 'none';
+      document.getElementById('btnSearch').style.display = 'none';
+      document.getElementById('btnRest').style.display = 'none';
+
+      document.getElementById('combatControls').style.display = 'block';
+      document.getElementById('enemyName').innerText = `${name} (${numMonsters})`;
+      document.getElementById('enemyMorale').innerText = `Morale: ${morale}`;
+      document.getElementById('enemyHP').innerText = `HP: ${state.monster.hp.current}/${state.monster.hp.max}`;
+      document.getElementById('reactionBadge').innerText = mood;
+      document.getElementById('reactionBadge').style.background = color;
+      document.getElementById('reactionBadge').style.color = "#000";
+      document.getElementById('btnParley').style.display = canParley ? 'inline-block' : 'none';
+
+      updateSpellControls();
+
+      const encounterType = isLair ? "LAIR" : (wandering ? "WANDERING" : "ROOM");
+      logEntry("Encounter", `${encounterType}: ${numMonsters} ${name} appear! (${mood})`, "combat");
+    }
+
+    // ... (Spell functions same as before) ...
+
+    // Updated performCombatRound to check Morale correctly
+    function resolveCombat(action) {
+      if (!state.inCombat || !state.monster) return;
+
+      if (action === 'fight') {
+        performCombatRound(state.monster, false);
+      } else if (action === 'parley') {
+        if (state.monster.mood === 'Hostile') {
+           logEntry("Parley", "They ignore your words and attack!", "combat");
+           performCombatRound(state.monster, false);
+        } else {
+           logEntry("Parley", "You part ways peacefully.", "event");
+           endCombat(true);
+        }
+      } else if (action === 'flee') {
+        logEntry("Flee", "You turn and run!", "event");
+        performCombatRound(state.monster, true);
+        // If we survived the round of attacks while fleeing
+        if (state.inCombat) { 
+           logEntry("Escaped", "You managed to get away.", "event");
+           endCombat(true);
+        }
+      }
+      updateUI();
+    }
+
+    function performCombatRound(monster, fleeing = false) {
+      if (monster.hp.current <= 0) return;
+
+      const livingParty = state.party.filter(c => c.derivedStats.hp.current > 0);
+      
+      // Initiative
+      const partyInit = d6();
+      const monsterInit = d6();
+      const partyGoesFirst = partyInit >= monsterInit;
+      logEntry("Initiative", `Party: ${partyInit}, Monsters: ${monsterInit}. ${partyGoesFirst ? "Party" : "Monsters"} act first.`, "combat");
+
+      // Helper for Morale Check
+      const checkMorale = () => {
+          const roll = d6() + d6();
+          if(roll > monster.morale) {
+              logEntry("Morale", `The ${monster.name} break and flee! (Rolled ${roll} vs ${monster.morale})`, "event");
+              endCombat(true); // Count as win
+              return true; // Fled
+          }
+          return false; // Stayed
+      };
+
+      // Combat Execution
+      const doPartyAttacks = () => {
+          if (fleeing) return; 
+          let damageDealt = 0;
+          
+          // Logic for Party Attacks ...
+          // Re-check living status because monsters might have attacked first
+          const currentLivingParty = state.party.filter(c => c.derivedStats.hp.current > 0);
+
+          currentLivingParty.forEach(char => {
+             // (Attack logic same as before)
+             // Simplified for brevity in this diff block:
+             const hit = d20() >= (getTHAC0(char.class, char.level) - monster.ac);
+             if(hit) {
+                const dmg = d6(); // simplified
+                damageDealt += dmg;
+                logEntry("Attack", `${char.name} hits for ${dmg}.`, "combat");
+             }
+             
+             // Retainers
+             if(char.retainers) {
+                 char.retainers.forEach(r => {
+                    if(r.hp && r.hp.current > 0) {
+                        const rHit = d20() >= (19 - monster.ac); // Lvl 1 fighter
+                        if(rHit) {
+                            const rDmg = d6();
+                            damageDealt += rDmg;
+                            logEntry("Attack", `${r.name} hits for ${rDmg}.`, "combat");
+                        }
+                    }
+                 });
+             }
+          });
+          
+          if(damageDealt > 0) {
+              monster.hp.current -= damageDealt;
+              document.getElementById('enemyHP').innerText = `HP: ${monster.hp.current}/${monster.hp.max}`;
+              
+              // TRIGGER MORALE CHECKS
+              // 1. First Death? (Simplified: First 4 HP lost approx = 1 monster)
+              if (!monster.checkedFirstDeath && damageDealt >= 4) {
+                  monster.checkedFirstDeath = true;
+                  if(checkMorale()) return; // They fled
+              }
+              // 2. Half Strength?
+              if (!monster.checkedHalf && monster.hp.current <= (monster.hp.max / 2)) {
+                  monster.checkedHalf = true;
+                  if(checkMorale()) return; // They fled
+              }
+          }
+      };
+      
+      const doMonsterAttacks = () => {
+          // Active monsters calc (approx 1 monster per 4 HP)
+          const hpPerMonster = 4;
+          const activeCount = Math.ceil(monster.hp.current / hpPerMonster);
+          // Bonus to hit if target is fleeing
+          const hitBonus = fleeing ? 2 : 0;
+
+          // 1. Build Target Pool (Living PCs + Living Retainers)
+          let targets = [];
+          state.party.forEach(pc => {
+              if (pc.derivedStats.hp.current > 0) {
+                  targets.push({ type: 'pc', obj: pc, name: pc.name, ac: pc.derivedStats.ac });
+              }
+              if (pc.retainers) {
+                  pc.retainers.forEach(ret => {
+                      if (ret.hp && ret.hp.current > 0) {
+                          // Assume retainers have AC, default to 7 if missing
+                          targets.push({ type: 'ret', obj: ret, name: ret.name, ac: ret.ac !== undefined ? ret.ac : 7 });
+                      }
+                  });
+              }
+          });
+
+          if (targets.length === 0) return;
+
+          // 2. Execute Attacks
+          for (let i = 0; i < activeCount; i++) {
+              if (targets.length === 0) break; // All dead
+
+              // Pick random target
+              const targetIndex = Math.floor(Math.random() * targets.length);
+              const target = targets[targetIndex];
+
+              // Roll to Hit
+              const roll = d20();
+              const targetNum = monster.thac0 - target.ac;
+              
+              if ((roll + hitBonus) >= targetNum) {
+                  const dmg = rollDice(monster.dmg);
+                  logEntry("Enemy Attack", `${monster.name} attacks ${target.name} and hits for ${dmg} dmg!`, "combat");
+
+                  if (target.type === 'pc') {
+                      takeDamage(target.obj.id, dmg);
+                      if (target.obj.derivedStats.hp.current <= 0) {
+                          targets.splice(targetIndex, 1); // Remove dead target from pool
+                      }
+                  } else {
+                      // Retainer Damage
+                      target.obj.hp.current -= dmg;
+                      if (target.obj.hp.current <= 0) {
+                          target.obj.hp.current = 0;
+                          logEntry("Death", `Retainer ${target.name} has been slain!`, "death");
+                          targets.splice(targetIndex, 1);
+                      }
+                  }
+              } else {
+                  // Miss
+                  // logEntry("Enemy Miss", `${monster.name} attacks ${target.name} but misses.`, "combat");
+              }
+          }
+      };
+
+      if (partyGoesFirst) {
+          doPartyAttacks();
+          if (monster.hp.current > 0) doMonsterAttacks();
+      } else {
+          doMonsterAttacks();
+          if (livingParty.some(c => c.derivedStats.hp.current > 0)) doPartyAttacks();
+      }
+      
+      if (monster.hp.current <= 0) {
+          logEntry("Victory", `Defeated!`, "event");
+          endCombat(false); // Loot logic handles type
+      }
+    }
+
+    function updateSpellControls() {
+      const spellCasters = state.party.filter(c => c.class === 'Magic-User' && c.derivedStats.hp.current > 0);
+      const spellDiv = document.getElementById('spellControls');
+      const casterList = document.getElementById('spellCasterList');
+
+      if (spellCasters.length === 0) {
+        spellDiv.style.display = 'none';
+        return;
+      }
+
+      spellDiv.style.display = 'block';
+      casterList.innerHTML = '';
+
+      spellCasters.forEach(caster => {
+        const casterDiv = document.createElement('div');
+        casterDiv.style.cssText = 'margin-bottom:8px; padding:6px; background:#1e1b4b; border-radius:4px';
+
+        const availableSpells = [];
+        for (const [level, slots] of Object.entries(caster.spells.slots)) {
+          if (slots > 0) {
+            const levelSpells = caster.spells.known.filter(s => s.level == level && s.memorized);
+            availableSpells.push(...levelSpells);
+          }
+        }
+
+        let spellOptions = '<option value="">Select Spell</option>';
+        availableSpells.forEach(spell => {
+          spellOptions += `<option value="${spell.name}">${spell.name} (Lv.${spell.level})</option>`;
+        });
+
+        casterDiv.innerHTML = `
+          <div style="color:#ddd6fe; font-size:0.8rem; margin-bottom:4px">${caster.name}</div>
+          <select onchange="castSpell('${caster.id}', this.value)" style="width:100%; background:#020617; border:1px solid #334155; color:#e2e8f0; font-size:0.7rem; padding:2px">
+            ${spellOptions}
+          </select>
+        `;
+
+        casterList.appendChild(casterDiv);
+      });
+    }
+
+    function castSpell(casterId, spellName) {
+      if (!spellName) return;
+
+      const caster = state.party.find(c => c.id === casterId);
+      if (!caster) return;
+
+      const spell = caster.spells.known.find(s => s.name === spellName);
+      if (!spell) return;
+
+      // Use a spell slot
+      if (caster.spells.slots[spell.level] > 0) {
+        caster.spells.slots[spell.level]--;
+
+        // Basic spell effects (simplified)
+        if (spell.name === 'Magic Missile') {
+          const damage = d6() + d6() + 1; // 2d6+1 for Magic Missile
+          // Apply damage to monster
+          if (state.inCombat && state.monster) {
+             state.monster.hp.current -= damage;
+             logEntry("Magic", `${caster.name} casts Magic Missile for ${damage} damage!`, "magic");
+             document.getElementById('enemyHP').innerText = `HP: ${state.monster.hp.current}/${state.monster.hp.max}`;
+             if (state.monster.hp.current <= 0) {
+                logEntry("Victory", `The ${state.monster.name} has been defeated by magic!`, "event");
+                endCombat(true);
+             }
+          }
+        } else if (spell.name === 'Sleep') {
+          logEntry("Magic", `${caster.name} casts Sleep! The ${state.monster.name} falls asleep.`, "magic");
+          endCombat(true); // Sleep ends combat usually
+        } else {
+          logEntry("Magic", `${caster.name} casts ${spell.name}!`, "magic");
+        }
+
+        // Update spell controls
+        updateSpellControls();
+      } else {
+        logEntry("Magic", `${caster.name} has no ${spell.level}st level slots remaining!`, "magic");
+      }
+    }
+
+    function takeDamage(charId, damage) {
+      const char = state.party.find(c => c.id == charId); // Use == for type coercion
+      if (!char) {
+        console.error(`Character with ID ${charId} not found!`);
+        return;
+      }
+
+      char.derivedStats.hp.current -= damage;
+      if (char.derivedStats.hp.current <= 0) {
+        char.derivedStats.hp.current = 0;
+        logEntry("Death", `${char.name} has fallen!`, "death");
+      }
+
+      updatePartyDisplay();
+    }
+    
+    function endCombat(peaceful) {
+       state.inCombat = false;
+
+       // Hide combat UI
+       document.getElementById('combatControls').style.display = 'none';
+       document.getElementById('spellControls').style.display = 'none';
+
+       // Show exploration buttons again
+       document.getElementById('btnExplore').style.display = 'inline-block';
+       document.getElementById('btnSearch').style.display = 'inline-block';
+       document.getElementById('btnRest').style.display = 'inline-block';
+
+       checkDead();
+       updateUI();
+
+       // If monster was defeated (not peaceful), generate loot automatically
+       if (!peaceful && state.monster && state.monster.hp.current <= 0) {
+         // Generate monster loot automatically using their treasure type
+         const monsterData = findMonsterData(state.monster.name);
+         if (monsterData && monsterData.treasure) {
+           generateLoot("Monster", monsterData.treasure);
+         } else {
+           // Fallback: generate random loot based on dungeon level
+           generateLoot("Monster");
+         }
+       }
+
+       // Clear monster data
+       state.monster = null;
+    }
+
+    // --- LOOT ---
+
+    function lootRoom() {
+      const depth = state.dungeonLevel;
+      // For room searches, generate loot based on dungeon level
+      // Higher levels have better treasure types
+      const treasureTypes = ['A', 'B', 'C', 'D', 'E', 'F'];
+      const maxTypeIndex = Math.min(depth - 1, treasureTypes.length - 1);
+      const randomType = treasureTypes[Math.floor(Math.random() * (maxTypeIndex + 1))];
+      generateLoot("Room", randomType);
+      document.getElementById('lootControls').style.display = 'none';
+    }
+
+    function findMonsterData(monsterName) {
+      // Find monster data across all levels
+      for (let level in MONSTERS) {
+        const monster = MONSTERS[level].find(m => m.name === monsterName);
+        if (monster) return monster;
+      }
+      return null;
+    }
+
+    function generateLoot(source, treasureType = null) {
+      const depth = state.dungeonLevel;
+
+      if (!treasureType) {
+        // Generate random treasure type based on dungeon level
+        const types = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+        treasureType = types[Math.floor(Math.random() * Math.min(depth, types.length))];
+      }
+
+      const treasure = TREASURE_TYPES[treasureType];
+      let totalValue = 0;
+      let coinValue = 0;
+      let lootItems = [];
+
+      // Generate coins
+      ['cp', 'sp', 'ep', 'gp', 'pp'].forEach(coin => {
+        if (treasure[coin][1] > 0) {
+          const amount = Math.floor(Math.random() * (treasure[coin][1] - treasure[coin][0] + 1)) + treasure[coin][0];
+          if (amount > 0) {
+            const val = amount * (coin === 'cp' ? 0.01 : coin === 'sp' ? 0.1 : coin === 'ep' ? 0.5 : coin === 'gp' ? 1 : 5);
+            coinValue += val;
+            totalValue += val;
+          }
+        }
+      });
+
+      // Gems
+      if (treasure.gems[1] > 0) {
+        const gemCount = Math.floor(Math.random() * (treasure.gems[1] - treasure.gems[0] + 1)) + treasure.gems[0];
+        if (gemCount > 0) {
+          const gemVal = gemCount * (10 + Math.floor(Math.random() * 90)); // 10-100gp each
+          totalValue += gemVal;
+          lootItems.push(`${gemCount} gems (${gemVal}gp)`);
+        }
+      }
+
+      // Jewelry
+      if (treasure.jewelry[1] > 0) {
+        const jewelryCount = Math.floor(Math.random() * (treasure.jewelry[1] - treasure.jewelry[0] + 1)) + treasure.jewelry[0];
+        if (jewelryCount > 0) {
+          const jewelryVal = jewelryCount * (100 + Math.floor(Math.random() * 900)); // 100-1000gp each
+          totalValue += jewelryVal;
+          lootItems.push(`${jewelryCount} jewelry (${jewelryVal}gp)`);
+        }
+      }
+
+      // Magic items
+      treasure.magic.forEach(magicType => {
+        if (MAGIC_ITEMS[magicType]) {
+          const item = MAGIC_ITEMS[magicType][Math.floor(Math.random() * MAGIC_ITEMS[magicType].length)];
+          lootItems.push(item + ' (magic)');
+        }
+      });
+
+      // Apply loot
+      state.partyResources.gold += Math.floor(totalValue);
+
+      let lootMsg = `Found ${Math.floor(coinValue)} gp (coins)`;
+      if (lootItems.length > 0) {
+        lootMsg += ` + ${lootItems.join(', ')}`;
+      }
+      if (Math.floor(totalValue) > Math.floor(coinValue)) {
+        lootMsg += ` = ${Math.floor(totalValue)} gp total value`;
+      }
+      lootMsg += ` in ${source}. (Type ${treasureType})`;
+
+      logEntry("Treasure", lootMsg, "loot");
+      updateUI();
+    }
+
+    function bankLoot() {
+      const cost = 50; // Restocking cost
+      const lootFound = state.partyResources.gold;
+
+      // Add loot sack to banked wealth
+      state.partyResources.bankedGold += lootFound;
+
+      // Check if they can afford restocking
+      if (state.partyResources.bankedGold < cost) {
+         alert(`Insufficient funds! Need ${cost}gp to restock, but only have ${state.partyResources.bankedGold}gp banked.`);
+         // Still allow return but don't restock
+         state.partyResources.gold = 0;
+         state.light = 6;
+         state.turn = 0;
+         logEntry("Town", "Returned to surface but couldn't afford restocking.", "event");
+      } else {
+         // Pay for restocking from banked gold
+         state.partyResources.bankedGold -= cost;
+
+         // Reset party HP and resources
+         state.party.forEach(char => {
+           char.derivedStats.hp.current = char.derivedStats.hp.max;
+         });
+
+         state.partyResources.gold = 0; // Empty loot sack
+         state.partyResources.torches = 6;
+         state.partyResources.rations = 7;
+         state.light = 6; // Reset light
+         state.turn = 0;
+
+         alert(`Returned to surface!\nLoot banked: ${lootFound}gp\nRestocking cost: ${cost}gp\nBanked wealth: ${state.partyResources.bankedGold}gp`);
+         logEntry("Town", `Banked ${lootFound}gp treasure. Rested and restocked supplies.`, "event");
+      }
+
+      updateUI();
+      updatePartyDisplay();
+    }
+
+    // --- EXPORT ---
+    function exportPartyState() {
+      if (state.party.length === 0) {
+        alert("No party to export!");
+        return;
+      }
+
+      // Construct data matching party-schema.json
+      const exportData = {
+        version: "1.0",
+        party: state.party.map(char => {
+            // Ensure all fields from schema are preserved/updated
+            return {
+                id: char.id,
+                name: char.name,
+                race: char.race,
+                class: char.class,
+                level: char.level,
+                alignment: char.alignment || "Neutral",
+                abilityScores: char.abilityScores,
+                derivedStats: {
+                    hp: { 
+                        current: Math.max(0, char.derivedStats.hp.current), // Ensure no negative HP export
+                        max: char.derivedStats.hp.max 
+                    },
+                    ac: char.derivedStats.ac,
+                    thac0: char.derivedStats.thac0,
+                    savingThrows: char.derivedStats.savingThrows
+                },
+                spells: char.spells,
+                thiefSkills: char.thiefSkills,
+                equipment: char.equipment, // Gear remains
+                retainers: char.retainers ? char.retainers.map(ret => ({
+                    ...ret,
+                    hp: { 
+                        current: Math.max(0, ret.hp.current),
+                        max: ret.hp.max 
+                    }
+                })) : []
+            };
+        }),
+        partyResources: {
+            gold: state.partyResources.gold,          // Current loot sack
+            bankedGold: state.partyResources.bankedGold, // Banked total
+            torches: state.partyResources.torches,
+            rations: state.partyResources.rations,
+            potions: state.partyResources.potions,
+            scrolls: state.partyResources.scrolls,
+            encumbrance: state.partyResources.encumbrance
+        },
+        campaignInfo: {
+            dungeonLevel: state.dungeonLevel,
+            experienceBonus: 0,
+            magicItemBonus: false,
+            turnCount: state.turn
+        }
+      };
+
+      // Download File
+      const dataStr = JSON.stringify(exportData, null, 2);
+      const dataBlob = new Blob([dataStr], {type: 'application/json'});
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `dungeon-export-turn${state.turn}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // --- DEATH Logic ---
+    function checkDead() {
+      const livingParty = state.party.filter(c => c.derivedStats.hp.current > 0);
+      if (livingParty.length === 0) {
+        updateUI();
+        updatePartyDisplay();
+        document.getElementById('deathScreen').style.display = 'flex';
+        return true;
+      }
+      return false;
+    }
+
+    // --- UTILS ---
+    function d20() { return Math.floor(Math.random() * 20) + 1; }
+    function d6() { return Math.floor(Math.random() * 6) + 1; }
+
+    function rollDice(diceString) {
+      // Parse dice string like "1d6+2" or "2d8"
+      const match = diceString.match(/(\d+)d(\d+)(?:\+(\d+))?/);
+      if (!match) return d6(); // Fallback
+
+      const numDice = parseInt(match[1]);
+      const dieSize = parseInt(match[2]);
+      const bonus = match[3] ? parseInt(match[3]) : 0;
+
+      let total = bonus;
+      for (let i = 0; i < numDice; i++) {
+        total += Math.floor(Math.random() * dieSize) + 1;
+      }
+      return total;
+    }
+    
+    function resetContext() {
+      document.getElementById('lootControls').style.display = 'none';
+      document.getElementById('obstacleControls').style.display = 'none';
+    }
+
+    function logEntry(title, msg, type) {
+      const html = `
+        <div class="log-entry">
+           <div style="display:flex; align-items:center; margin-bottom:4px">
+              <span class="badge ${type}">${title}</span>
+              <span style="color:#64748b; font-size:0.7rem">Turn ${state.turn}</span>
+           </div>
+           <div style="color:#cbd5e1; font-size:0.85rem">${msg}</div>
+        </div>
+      `;
+      const log = document.getElementById('log');
+      log.innerHTML = html + log.innerHTML;
+    }
+
+    function updateUI() {
+      document.getElementById('turnDisplay').innerText = "Turn " + state.turn;
+
+      // Update party resources display
+      document.getElementById('lootTotal').innerText = state.partyResources.gold.toLocaleString() + " gp";
+      document.getElementById('bankedTotal').innerText = state.partyResources.bankedGold.toLocaleString() + " gp";
+      document.getElementById('weightDisplay').innerText = `${state.partyResources.encumbrance.current} / ${state.partyResources.encumbrance.max} cn`;
+
+      // Update light (current light turns remaining)
+      document.getElementById('lightText').innerText = state.light + " Turns";
+      const lPct = Math.min(100, (state.light/6)*100);
+      document.getElementById('barLight').style.width = lPct + "%";
+
+      // Calculate movement rate based on encumbrance utilization (BECMI rules)
+      const utilization = state.partyResources.encumbrance.current / state.partyResources.encumbrance.max;
+      let speed = 120; // Fast (up to 50% capacity)
+      if (utilization > 0.5) speed = 90;  // Normal (51-75%)
+      if (utilization > 0.75) speed = 60; // Slow (76-100%)
+      if (utilization > 1.0) speed = 30;  // Crawl (over 100%)
+
+      let spdLabel = "120' (Fast)";
+      if (speed === 90) spdLabel = "90' (Normal)";
+      if (speed === 60) spdLabel = "60' (Slow)";
+      if (speed === 30) spdLabel = "30' (Crawl)";
+      document.getElementById('moveRate').innerText = spdLabel;
+      if (speed < 90) document.getElementById('moveRate').style.color = "#fca5a5";
+      else document.getElementById('moveRate').style.color = "#fff";
+
+      // Update inventory display
+      let invHtml = `<div class="inv-item"><span>Torches</span> <span>${state.partyResources.torches}</span></div>
+                     <div class="inv-item"><span>Rations</span> <span>${state.partyResources.rations}</span></div>`;
+      if(state.partyResources.potions > 0) invHtml += `<div class="inv-item" style="color:#d8b4fe"><span>Potions</span> <span>${state.partyResources.potions}</span></div>`;
+      if(state.partyResources.scrolls > 0) invHtml += `<div class="inv-item" style="color:#d8b4fe"><span>Scrolls</span> <span>${state.partyResources.scrolls}</span></div>`;
+
+      document.getElementById('inventoryList').innerHTML = invHtml;
+    }
+
+    // Init
+    updateUI();
+    // updatePartyDisplay(); 
+  </script>
+</body>
+</html>
