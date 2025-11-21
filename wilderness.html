@@ -93,7 +93,7 @@
       </div>
       
       <div style="background:#1e293b; padding:8px; border-radius:4px; margin-top:10px; font-size:0.8rem; text-align:center">
-         <span style="color:#94a3b8">Days Elapsed:</span> <span id="dayCount" style="font-weight:bold; color:#fff">0</span>
+         <span style="color:#94a3b8">Time:</span> <span id="dayCount" style="font-weight:bold; color:#fff">0 days, 12/12 MP</span>
       </div>
 
       <div style="margin-top:20px; border-top:1px solid #334155; padding-top:15px">
@@ -194,28 +194,165 @@
 
   <script>
     // --- CONSTANTS ---
+    // BECMI Movement Points per terrain (Expert Set p. 15)
     const TERRAIN = {
-      'clear': { color: '#86efac', name: 'Clear', cost: 1, forage: 1, tables: {clear:12, woods:16, river:17, swamp:18, hills:19, mountain:20}, lost: 1, encounter: 1 },
-      'woods': { color: '#15803d', name: 'Woods', cost: 1.5, forage: 3, tables: {clear:5, woods:14, river:15, swamp:16, hills:17, mountain:20}, lost: 2, encounter: 2 },
-      'hills': { color: '#a1a1aa', name: 'Hills', cost: 1.5, forage: 2, tables: {clear:4, woods:7, river:8, swamp:9, hills:17, mountain:20}, lost: 2, encounter: 2 },
-      'mountain': { color: '#52525b', name: 'Mountain', cost: 2, forage: 1, tables: {clear:3, woods:6, river:8, hills:14, mountain:20}, lost: 3, encounter: 3 },
-      'swamp': { color: '#047857', name: 'Swamp', cost: 2, forage: 2, tables: {clear:3, woods:6, river:10, swamp:18, hills:19, mountain:20}, lost: 3, encounter: 3 },
-      'desert': { color: '#fdba74', name: 'Desert', cost: 2, forage: 0, tables: {clear:4, desert:18, hills:19, mountain:20}, lost: 3, encounter: 2 },
-      'city': { color: '#fcd34d', name: 'Settlement', cost: 1, forage: 6, tables: {clear:12, woods:16, river:17, swamp:18, hills:19, mountain:20}, lost: 0, encounter: 1 },
-      'river': { color: '#3b82f6', name: 'River', cost: 1, forage: 3, tables: {clear:12, woods:16, river:20}, lost: 0, encounter: 2 }, 
-      'ocean': { color: '#1e3a8a', name: 'Ocean', cost: 1, forage: 3, tables: {ocean:20}, lost: 3, encounter: 2 }
+      'clear': { color: '#86efac', name: 'Clear', mpCost: 1, forage: 1, tables: {clear:12, woods:16, river:17, swamp:18, hills:19, mountain:20}, lost: 1, encounter: 1 },
+      'woods': { color: '#15803d', name: 'Woods', cost: 1.5, mpCost: 2, forage: 3, tables: {clear:5, woods:14, river:15, swamp:16, hills:17, mountain:20}, lost: 2, encounter: 2 },
+      'hills': { color: '#a1a1aa', name: 'Hills', cost: 1.5, mpCost: 2, forage: 2, tables: {clear:4, woods:7, river:8, swamp:9, hills:17, mountain:20}, lost: 2, encounter: 2 },
+      'mountain': { color: '#52525b', name: 'Mountain', cost: 2, mpCost: 3, forage: 1, tables: {clear:3, woods:6, river:8, hills:14, mountain:20}, lost: 3, encounter: 3 },
+      'swamp': { color: '#047857', name: 'Swamp', cost: 2, mpCost: 3, forage: 2, tables: {clear:3, woods:6, river:10, swamp:18, hills:19, mountain:20}, lost: 3, encounter: 3 },
+      'desert': { color: '#fdba74', name: 'Desert', cost: 2, mpCost: 3, forage: 0, tables: {clear:4, desert:18, hills:19, mountain:20}, lost: 3, encounter: 2 },
+      'city': { color: '#fcd34d', name: 'Settlement', cost: 1, mpCost: 1, forage: 6, tables: {clear:12, woods:16, river:17, swamp:18, hills:19, mountain:20}, lost: 0, encounter: 1 },
+      'river': { color: '#3b82f6', name: 'River', cost: 1, mpCost: 1, forage: 3, tables: {clear:12, woods:16, river:20}, lost: 0, encounter: 2 },
+      'ocean': { color: '#1e3a8a', name: 'Ocean', cost: 1, mpCost: 2, forage: 3, tables: {ocean:20}, lost: 3, encounter: 2 }
     };
 
-    const MONSTER_TABLES = {
-      'clear': ['Bandits', 'Orcs', 'Gnolls', 'Halflings', 'Goblins', 'Werewolf', 'Ogres', 'Giant Bees'],
-      'woods': ['Bugbears', 'Sprites', 'Treant', 'Owlbear', 'Spiders', 'Dire Wolves', 'Unicorn', 'Bandits'],
-      'hills': ['Hill Giants', 'Gargoyles', 'Griffons', 'Dragons (Red)', 'Ogres', 'Wererat', 'Kobolds', 'Dwarves'],
-      'mountain': ['Stone Giants', 'Chimera', 'Roc', 'Wyvern', 'Dragons (White)', 'Dwarves', 'Sabre-Tooth Tiger', 'Trolls'],
-      'swamp': ['Hydra', 'Black Dragon', 'Trolls', 'Lizard Men', 'Medusa', 'Basilisk', 'Crocodile', 'Ghouls'],
-      'desert': ['Blue Dragon', 'Dust Dervish', 'Camels', 'Scorpions', 'Mummies', 'Djinni', 'Nomads', 'Thoul'],
-      'river': ['Freshwater Termites', 'Nixies', 'Crocodiles', 'Sturgeons', 'Giant Leech', 'Merfolk', 'Pirates'],
-      'ocean': ['Sea Hydra', 'Sea Serpent', 'Sharks', 'Whale', 'Buccaneers', 'Merfolk', 'Dragon Turtle'],
-      'city': ['Thieves', 'City Guard', 'Merchant', 'Noble', 'Rat Catchers', 'Drunkard', 'Doppelganger', 'Vampire']
+    // BECMI Movement Rates (MP per day) - Expert Set p. 14
+    const MOVEMENT_RATES = {
+      'Fighter': 12,
+      'Cleric': 12,
+      'Thief': 12,
+      'MagicUser': 12,
+      'Elf': 12,
+      'Dwarf': 12,
+      'Halfling': 12,
+      'Normal': 12  // For NPCs
+    };
+
+    // BECMI Wilderness Encounter Tables (Expert Set p. 44-47)
+    const ENCOUNTER_TABLES = {
+      // Level 1 Encounters (Clear/Open Terrain)
+      level1: {
+        'clear': [
+          { name: 'Bandits', qty: '2-8' },
+          { name: 'Berserkers', qty: '2-8' },
+          { name: 'Brigands', qty: '2-8' },
+          { name: 'Dwarves', qty: '2-8' },
+          { name: 'Elves', qty: '2-8' },
+          { name: 'Gnolls', qty: '2-8' },
+          { name: 'Goblins', qty: '2-12' },
+          { name: 'Halflings', qty: '2-12' },
+          { name: 'Hobgoblins', qty: '2-12' },
+          { name: 'Kobolds', qty: '4-16' },
+          { name: 'Orcs', qty: '2-8' },
+          { name: 'Ogres', qty: '1-3' }
+        ],
+        'woods': [
+          { name: 'Bandits', qty: '2-8' },
+          { name: 'Berserkers', qty: '2-8' },
+          { name: 'Brigands', qty: '2-8' },
+          { name: 'Dwarves', qty: '2-8' },
+          { name: 'Elves', qty: '2-8' },
+          { name: 'Gnolls', qty: '2-8' },
+          { name: 'Goblins', qty: '2-12' },
+          { name: 'Halflings', qty: '2-12' },
+          { name: 'Hobgoblins', qty: '2-12' },
+          { name: 'Kobolds', qty: '4-16' },
+          { name: 'Orcs', qty: '2-8' },
+          { name: 'Ogres', qty: '1-3' }
+        ]
+      },
+
+      // Level 2 Encounters (Woods/Hills)
+      level2: {
+        'woods': [
+          { name: 'Bugbears', qty: '2-8' },
+          { name: 'Centaurs', qty: '1-6' },
+          { name: 'Dryads', qty: '1-4' },
+          { name: 'Giants (Hill)', qty: '1-4' },
+          { name: 'Gnolls', qty: '3-12' },
+          { name: 'Goblins', qty: '4-16' },
+          { name: 'Hobgoblins', qty: '2-12' },
+          { name: 'Lycanthropes', qty: '1-4' },
+          { name: 'Nixies', qty: '2-8' },
+          { name: 'Ogres', qty: '1-3' },
+          { name: 'Orcs', qty: '3-18' },
+          { name: 'Sprites', qty: '4-16' }
+        ],
+        'hills': [
+          { name: 'Bugbears', qty: '2-8' },
+          { name: 'Centaurs', qty: '1-6' },
+          { name: 'Dryads', qty: '1-4' },
+          { name: 'Giants (Hill)', qty: '1-4' },
+          { name: 'Gnolls', qty: '3-12' },
+          { name: 'Goblins', qty: '4-16' },
+          { name: 'Hobgoblins', qty: '2-12' },
+          { name: 'Lycanthropes', qty: '1-4' },
+          { name: 'Nixies', qty: '2-8' },
+          { name: 'Ogres', qty: '1-3' },
+          { name: 'Orcs', qty: '3-18' },
+          { name: 'Sprites', qty: '4-16' }
+        ]
+      },
+
+      // Level 3 Encounters (Mountains/Swamps)
+      level3: {
+        'mountain': [
+          { name: 'Basilisks', qty: '1-2' },
+          { name: 'Chimera', qty: '1' },
+          { name: 'Dragons (young)', qty: '1' },
+          { name: 'Giants (Stone)', qty: '1-2' },
+          { name: 'Gorgons', qty: '1-2' },
+          { name: 'Griffons', qty: '1-4' },
+          { name: 'Harpies', qty: '2-8' },
+          { name: 'Hydras', qty: '1' },
+          { name: 'Lycanthropes', qty: '2-8' },
+          { name: 'Manticores', qty: '1-2' },
+          { name: 'Ogres', qty: '2-8' },
+          { name: 'Trolls', qty: '1-3' }
+        ],
+        'swamp': [
+          { name: 'Basilisks', qty: '1-2' },
+          { name: 'Chimera', qty: '1' },
+          { name: 'Dragons (young)', qty: '1' },
+          { name: 'Giants (Stone)', qty: '1-2' },
+          { name: 'Gorgons', qty: '1-2' },
+          { name: 'Griffons', qty: '1-4' },
+          { name: 'Harpies', qty: '2-8' },
+          { name: 'Hydras', qty: '1' },
+          { name: 'Lycanthropes', qty: '2-8' },
+          { name: 'Manticores', qty: '1-2' },
+          { name: 'Ogres', qty: '2-8' },
+          { name: 'Trolls', qty: '1-3' }
+        ]
+      },
+
+      // Special Encounter Tables
+      castle: [
+        { name: 'Bandits', qty: '10-40' },
+        { name: 'Brigands', qty: '5-20' },
+        { name: 'Orcs', qty: '20-80' },
+        { name: 'Goblins', qty: '30-120' },
+        { name: 'Hobgoblins', qty: '15-60' },
+        { name: 'Ogres', qty: '2-8' },
+        { name: 'Giants (Hill)', qty: '1-4' },
+        { name: 'Trolls', qty: '1-3' },
+        { name: 'Dragons (young)', qty: '1' }
+      ],
+
+      ruin: [
+        { name: 'Ghouls', qty: '3-12' },
+        { name: 'Skeletons', qty: '10-40' },
+        { name: 'Zombies', qty: '8-32' },
+        { name: 'Wights', qty: '1-4' },
+        { name: 'Wraiths', qty: '1-3' },
+        { name: 'Mummies', qty: '1-2' },
+        { name: 'Basilisks', qty: '1' },
+        { name: 'Gorgons', qty: '1' },
+        { name: 'Lycanthropes', qty: '1-3' }
+      ],
+
+      lair: [
+        { name: 'Orcs', qty: '10-40' },
+        { name: 'Goblins', qty: '20-80' },
+        { name: 'Hobgoblins', qty: '8-32' },
+        { name: 'Gnoll', qty: '5-20' },
+        { name: 'Bugbears', qty: '3-12' },
+        { name: 'Ogres', qty: '2-8' },
+        { name: 'Giants (Hill)', qty: '1-3' },
+        { name: 'Trolls', qty: '1-2' },
+        { name: 'Dragons (young)', qty: '1' }
+      ]
     };
 
     const CLASSES = ["Fighter", "Cleric", "Magic-User", "Thief", "Dwarf", "Elf"];
@@ -232,11 +369,13 @@
     ];
 
     // --- STATE ---
-    let map = {}; 
+    let map = {};
     let currentPos = { q: 0, r: 0 };
     let cameraOffset = { x: 0, y: 0 };
     let canvas, ctx;
     let days = 0;
+    let movementPoints = 0; // Current MP remaining today
+    let maxMovementPoints = 0; // Total MP available per day
 
     function init() {
       canvas = document.getElementById('mapCanvas');
@@ -249,17 +388,26 @@
       map = {};
       currentPos = { q: 0, r: 0 };
       days = 0;
+      movementPoints = calculatePartyMovementPoints();
+      maxMovementPoints = movementPoints;
       cameraOffset = { x: canvas.width / 2, y: canvas.height / 2 };
-      
+
       const start = document.getElementById('startTerrain').value;
       map["0,0"] = { type: start, visited: true, resources: [], feature: "Start", details: "Safe Haven" };
-      
-      document.getElementById('dayCount').innerText = 0;
+
+      document.getElementById('dayCount').innerText = '0 days';
       document.getElementById('rations').value = document.getElementById('partySize').value * 7;
-      
+
       drawMap();
       updateInfo();
       generateWeather();
+    }
+
+    function calculatePartyMovementPoints() {
+      // BECMI movement is based on the slowest party member
+      // For simplicity, we'll use the standard rate (12 MP/day) since all classes have similar rates
+      // In full BECMI, you'd need to know each character's class and equipment load
+      return 12; // Standard movement rate
     }
     
     function recenterMap() {
@@ -270,16 +418,25 @@
     }
 
     // --- RESOURCES ---
-    function consumeSupplies(daysPassed) {
+    function consumeMovementPoints(mpCost) {
+      movementPoints -= mpCost;
+      if (movementPoints <= 0) {
+        // Day ends, reset MP and consume rations
+        movementPoints = maxMovementPoints;
+        consumeDailySupplies();
+      }
+    }
+
+    function consumeDailySupplies() {
       const pSize = parseInt(document.getElementById('partySize').value);
       let rations = parseInt(document.getElementById('rations').value);
-      
-      const needed = pSize * daysPassed;
+
+      const needed = pSize; // 1 ration per person per day
       rations -= needed;
-      
-      days += daysPassed;
-      document.getElementById('dayCount').innerText = days.toFixed(1);
-      
+
+      days += 1;
+      document.getElementById('dayCount').innerText = `${days} days, ${movementPoints}/${maxMovementPoints} MP`;
+
       if(rations < 0) {
         rations = 0;
         logEntry(map[`${currentPos.q},${currentPos.r}`], currentPos, "STARVATION! Party takes damage.", "");
@@ -290,9 +447,9 @@
     function forage() {
       const key = `${currentPos.q},${currentPos.r}`;
       const terrain = TERRAIN[map[key].type];
-      
-      consumeSupplies(1);
-      
+
+      consumeDailySupplies(); // Foraging takes a full day
+
       const roll = Math.floor(Math.random() * 6) + 1;
       if(roll <= terrain.forage) {
          const found = Math.floor(Math.random() * 6) + 1;
@@ -347,10 +504,12 @@
          details = "Ancient crumbling walls. Dungeon entrance?";
       } else if (fRoll < 0.15) { // Lair
          feature = "Lair";
-         const list = MONSTER_TABLES[newType] || MONSTER_TABLES['clear'];
-         const mon = list[Math.floor(Math.random() * list.length)];
-         const qty = Math.floor(Math.random() * 10) + 2;
-         details = `Lair of ${qty} ${mon}.`;
+         const encounter = generateBECMIEncounter({type: newType, feature: "Lair"});
+         if (encounter) {
+            details = encounter.replace("ENCOUNTER: ", "Lair of ");
+         } else {
+            details = "Empty lair.";
+         }
       } else if (fRoll < 0.16) { // Settlement
          feature = "Town";
          details = "Small border settlement. Market available.";
@@ -402,10 +561,10 @@
          currentPos.r = nextR;
       }
 
-      // 3. Consume Resources
+      // 3. Consume Movement Points
       const finalHex = map[`${currentPos.q},${currentPos.r}`];
       const finalData = TERRAIN[finalHex.type];
-      consumeSupplies(finalData.cost);
+      consumeMovementPoints(finalData.mpCost);
 
       // 4. Updates
       const p = getPixelPos(currentPos.q, currentPos.r);
@@ -422,13 +581,10 @@
       updateInfo();
       generateWeather();
       
-      // 5. Encounter
+      // 5. Encounter (BECMI Rules)
       let encounterMsg = "";
       if (Math.floor(Math.random() * 6) + 1 <= finalData.encounter) {
-         const list = MONSTER_TABLES[finalHex.type] || MONSTER_TABLES['clear'];
-         const monster = list[Math.floor(Math.random() * list.length)];
-         const count = Math.floor(Math.random() * 6) + 1;
-         encounterMsg = `ENCOUNTER: ${count} ${monster}`;
+         encounterMsg = generateBECMIEncounter(finalHex);
       }
 
       logEntry(finalHex, currentPos, lostMsg, encounterMsg);
@@ -540,7 +696,7 @@
       const terEl = document.getElementById('currTerrain');
       terEl.innerText = data.name;
       terEl.style.color = data.color;
-      document.getElementById('currCost').innerText = data.cost + " Days";
+      document.getElementById('currCost').innerText = data.mpCost + " MP";
       
       const resDiv = document.getElementById('resList');
       let html = "";
@@ -558,6 +714,39 @@
          html += `<div>No resources.</div>`;
       }
       resDiv.innerHTML = html;
+    }
+
+    function generateBECMIEncounter(hex) {
+      // Determine encounter level (simplified - could be based on dungeon level or party level)
+      const encounterLevel = Math.min(3, Math.max(1, Math.floor(days / 10) + 1)); // Gets harder over time
+      const tableKey = `level${encounterLevel}`;
+
+      let encounterTable;
+
+      // Use special tables for features
+      if (hex.feature === 'Castle') {
+        encounterTable = ENCOUNTER_TABLES.castle;
+      } else if (hex.feature === 'Ruins') {
+        encounterTable = ENCOUNTER_TABLES.ruin;
+      } else if (hex.feature === 'Lair') {
+        encounterTable = ENCOUNTER_TABLES.lair;
+      } else {
+        // Use terrain-based table
+        encounterTable = ENCOUNTER_TABLES[tableKey][hex.type] || ENCOUNTER_TABLES[tableKey]['clear'];
+      }
+
+      if (!encounterTable) return "";
+
+      const encounter = encounterTable[Math.floor(Math.random() * encounterTable.length)];
+      const qty = rollEncounterQuantity(encounter.qty);
+
+      return `ENCOUNTER: ${qty} ${encounter.name}`;
+    }
+
+    function rollEncounterQuantity(qtyRange) {
+      // Parse ranges like "2-8" or "1-3"
+      const [min, max] = qtyRange.split('-').map(n => parseInt(n));
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     function logEntry(hex, pos, lostMsg, encounterMsg) {

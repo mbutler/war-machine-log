@@ -82,17 +82,21 @@
         <span class="card-title" style="font-size:0.8rem; margin-bottom:8px; display:block">Cargo Selection</span>
         <div class="row">
           <div>
-            <label>Investment (gp)</label>
-            <input type="number" id="cargoInvest" value="2000">
+            <label>Trade Good</label>
+            <select id="tradeGood">
+              <option value="food">Food (Grain, Livestock)</option>
+              <option value="metal">Metal (Iron, Copper)</option>
+              <option value="cloth">Cloth (Wool, Linen)</option>
+              <option value="wood">Wood (Timber, Lumber)</option>
+              <option value="spice">Spice (Pepper, Cinnamon)</option>
+              <option value="wine">Wine (Local Vintage)</option>
+              <option value="weapons">Weapons (Swords, Armor)</option>
+              <option value="gems">Gems (Precious Stones)</option>
+            </select>
           </div>
           <div>
-            <label>Type</label>
-            <select id="cargoType">
-              <option value="bulk">Bulk (Grain/Wood) - Heavy</option>
-              <option value="common">Common (Iron/Cloth) - Avg</option>
-              <option value="luxury">Luxury (Spice/Silk) - Light</option>
-              <option value="magic">Magic/Gems - Tiny</option>
-            </select>
+            <label>Quantity (gp value)</label>
+            <input type="number" id="cargoValue" value="2000">
           </div>
         </div>
       </div>
@@ -112,18 +116,43 @@
       
       <div class="row">
         <div>
-          <label>Terrain / Mode</label>
-          <select id="routeType">
-            <option value="road">Kings Road (Low Risk)</option>
-            <option value="border">Borderlands (Med Risk)</option>
-            <option value="wild">Wilderness (High Risk)</option>
-            <option value="sea_coast">Sea - Coastal (Med Risk)</option>
-            <option value="sea_deep">Sea - Deep Water (High Risk)</option>
+          <label>Origin Terrain</label>
+          <select id="originTerrain">
+            <option value="plains">Plains</option>
+            <option value="forest">Forest</option>
+            <option value="hills">Hills</option>
+            <option value="mountains">Mountains</option>
+            <option value="desert">Desert</option>
+            <option value="swamp">Swamp</option>
+            <option value="coast">Coastal</option>
           </select>
         </div>
         <div>
+          <label>Destination Terrain</label>
+          <select id="destTerrain">
+            <option value="plains">Plains</option>
+            <option value="forest">Forest</option>
+            <option value="hills">Hills</option>
+            <option value="mountains">Mountains</option>
+            <option value="desert">Desert</option>
+            <option value="swamp">Swamp</option>
+            <option value="coast">Coastal</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px">
+        <div>
            <label>Distance (Miles)</label>
            <input type="number" id="routeDist" value="100" step="10">
+        </div>
+        <div>
+          <label>Transport</label>
+          <select id="transportType">
+            <option value="wagon">Wagon Caravan</option>
+            <option value="ship">Merchant Ship</option>
+            <option value="camel">Camel Caravan</option>
+          </select>
         </div>
       </div>
 
@@ -131,17 +160,39 @@
         <div>
           <label>Guild Status</label>
           <select id="guildStatus">
-            <option value="none">Independent (Full Cost)</option>
-            <option value="member">Guild Member (Low Taxes)</option>
-            <option value="master">Guild Master (VIP)</option>
+            <option value="none">Independent</option>
+            <option value="member">Guild Member (-20% taxes)</option>
+            <option value="master">Guild Master (-50% taxes)</option>
           </select>
         </div>
         <div>
+           <label>Border Crossings</label>
+           <select id="borderCrossings">
+             <option value="0">No Borders</option>
+             <option value="1">1 Border</option>
+             <option value="2">2 Borders</option>
+             <option value="3">3+ Borders</option>
+           </select>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px">
+        <div>
            <label>Guards/Defense</label>
            <select id="guardLevel">
-             <option value="light">Light Guard (Cheap)</option>
-             <option value="standard" selected>Standard (Avg)</option>
-             <option value="heavy">Heavy Escort (Exp)</option>
+             <option value="none">No Guards</option>
+             <option value="light">Light Guard (+10% cost)</option>
+             <option value="standard" selected>Standard (+25% cost)</option>
+             <option value="heavy">Heavy Escort (+50% cost)</option>
+           </select>
+        </div>
+        <div>
+           <label>Market Conditions</label>
+           <select id="marketType">
+             <option value="normal">Normal Market</option>
+             <option value="festival">Festival (+20% demand)</option>
+             <option value="siege">Siege/Shortage (+50% demand)</option>
+             <option value="oversupply">Oversupply (-30% demand)</option>
            </select>
         </div>
       </div>
@@ -176,180 +227,342 @@
     const getVal = (id) => parseFloat(document.getElementById(id).value) || 0;
     const getTxt = (id) => document.getElementById(id).value;
     
-    // Constants derived from GAZ11
-    const WAGON_CAPACITY = 5000; // cn (coin weight)
-    const SHIP_CAPACITY = 30000; // cn (small merchant ship approx)
-    
-    // Weight Multipliers (CN per 1 GP value)
-    // Bulk is cheap but heavy. Magic is expensive but light.
-    const WEIGHT_RATIOS = {
-      'bulk': 10,    // 1gp buys 10cn of grain (very heavy)
-      'common': 1,   // 1gp buys 1cn of cloth/iron
-      'luxury': 0.1, // 1gp buys 0.1cn of spice
-      'magic': 0.01  // 1gp buys 0.01cn of gems
+    // BECMI Expert Set Trade Constants
+
+    // Trade Goods and their Demand Modifiers by Terrain (Expert Set p. 48-49)
+    const TRADE_GOODS = {
+      'food': {
+        name: 'Food (Grain/Livestock)',
+        baseValue: 1, // gp per unit
+        demandMod: {
+          'plains': 1.0,   // Normal demand
+          'forest': 0.8,   // Woods have game
+          'hills': 0.9,    // Some farming
+          'mountains': 1.2, // Hard to grow food
+          'desert': 1.5,   // Very hard to grow food
+          'swamp': 1.3,    // Poor soil
+          'coast': 1.0     // Normal fishing/farming
+        }
+      },
+      'metal': {
+        name: 'Metal (Iron/Copper)',
+        baseValue: 5,
+        demandMod: {
+          'plains': 1.0,
+          'forest': 1.1,   // Tools for lumber
+          'hills': 1.2,    // Mining areas
+          'mountains': 1.4, // Mining towns
+          'desert': 0.8,   // Few smiths
+          'swamp': 0.9,    // Rust problems
+          'coast': 1.1     // Shipbuilding
+        }
+      },
+      'cloth': {
+        name: 'Cloth (Wool/Linen)',
+        baseValue: 3,
+        demandMod: {
+          'plains': 1.0,
+          'forest': 1.1,   // Wool from sheep
+          'hills': 1.0,
+          'mountains': 0.9, // Cold weather
+          'desert': 0.8,   // Hot climate
+          'swamp': 1.2,    // Damp preservation
+          'coast': 1.0
+        }
+      },
+      'wood': {
+        name: 'Wood (Timber/Lumber)',
+        baseValue: 2,
+        demandMod: {
+          'plains': 1.2,   // Few trees
+          'forest': 0.7,   // Plenty of wood
+          'hills': 1.0,
+          'mountains': 1.1, // Building needs
+          'desert': 1.4,   // Very few trees
+          'swamp': 0.8,    // Hard to harvest
+          'coast': 1.3     // Shipbuilding
+        }
+      },
+      'spice': {
+        name: 'Spice (Pepper/Cinnamon)',
+        baseValue: 10,
+        demandMod: {
+          'plains': 1.0,
+          'forest': 0.9,
+          'hills': 1.0,
+          'mountains': 1.1, // Preservation
+          'desert': 0.7,   // Local spices
+          'swamp': 1.0,
+          'coast': 1.2     // Trade routes
+        }
+      },
+      'wine': {
+        name: 'Wine (Local Vintage)',
+        baseValue: 8,
+        demandMod: {
+          'plains': 1.0,
+          'forest': 1.1,   // Vineyards
+          'hills': 1.2,    // Good vineyards
+          'mountains': 1.3, // Mountain wines
+          'desert': 0.8,   // Hot climate
+          'swamp': 0.9,    // Damp storage
+          'coast': 1.1     // Trade routes
+        }
+      },
+      'weapons': {
+        name: 'Weapons (Swords/Armor)',
+        baseValue: 15,
+        demandMod: {
+          'plains': 1.0,
+          'forest': 1.2,   // Bandits/orcs
+          'hills': 1.1,
+          'mountains': 1.3, // Monsters/tribes
+          'desert': 1.2,   // Nomads/bandits
+          'swamp': 1.4,    // Dangerous creatures
+          'coast': 1.1     // Pirates/sea monsters
+        }
+      },
+      'gems': {
+        name: 'Gems (Precious Stones)',
+        baseValue: 50,
+        demandMod: {
+          'plains': 1.0,
+          'forest': 1.0,
+          'hills': 1.1,    // Mining
+          'mountains': 1.2, // Mining
+          'desert': 1.1,   // Caravan routes
+          'swamp': 0.9,    // Hard to find
+          'coast': 1.1     // Trade routes
+        }
+      }
     };
 
-    // Cost per 100 miles (percentage of cargo value in supplies/wages)
-    const GUARD_COSTS = { 'light': 0.02, 'standard': 0.05, 'heavy': 0.10 };
+    // Transport Capacities (cn)
+    const TRANSPORT_CAPACITY = {
+      'wagon': 5000,
+      'ship': 30000,
+      'camel': 3000
+    };
+
+    // Guard costs as percentage of cargo value
+    const GUARD_COSTS = {
+      'none': 0,
+      'light': 0.10,
+      'standard': 0.25,
+      'heavy': 0.50
+    };
+
+    // Border tax rates (percentage of cargo value)
+    const BORDER_TAXES = {
+      'none': 0,
+      'member': 0.20,  // Guild member: -20% tax
+      'master': 0.50   // Guild master: -50% tax
+    };
 
     function updateLogistics() {
-      const invest = getVal('cargoInvest');
-      const type = getTxt('cargoType');
-      const dist = getVal('routeDist');
-      const route = getTxt('routeType');
+      const cargoValue = getVal('cargoValue');
+      const tradeGood = getTxt('tradeGood');
+      const originTerrain = getTxt('originTerrain');
+      const destTerrain = getTxt('destTerrain');
+      const distance = getVal('routeDist');
+      const transport = getTxt('transportType');
       const guards = getTxt('guardLevel');
+      const guildStatus = getTxt('guildStatus');
+      const borders = parseInt(getTxt('borderCrossings'));
+      const marketType = getTxt('marketType');
 
-      // 1. Calculate Load
-      const ratio = WEIGHT_RATIOS[type];
-      const totalCN = invest * ratio;
-      
-      let transportStr = "";
-      let transportCost = 0; // Flat overhead
+      const good = TRADE_GOODS[tradeGood];
 
-      if(route.includes('sea')) {
-         const ships = Math.ceil(totalCN / SHIP_CAPACITY);
-         transportStr = `${ships} Ship${ships>1?'s':''}`;
-         // Ship charter approx 500gp per trip
-         transportCost = ships * 500;
-      } else {
-         const wagons = Math.ceil(totalCN / WAGON_CAPACITY);
-         transportStr = `${wagons} Wagon${wagons>1?'s':''}`;
-         // Wagon + horses approx 100gp overhead
-         transportCost = wagons * 100;
-      }
+      // 1. Calculate Transport Capacity and Cost
+      const capacity = TRANSPORT_CAPACITY[transport];
+      const units = Math.ceil(cargoValue / good.baseValue);
+      const vehicles = Math.ceil((units * 10) / capacity); // Rough CN calculation
+      const transportCost = vehicles * (transport === 'wagon' ? 100 : transport === 'ship' ? 500 : 50);
 
-      // 2. Calculate Operating Expenses (Food, Guards, Taxes)
-      // Guard cost is % of investment per 100 miles
-      const guardPct = GUARD_COSTS[guards];
-      const segments = Math.max(1, dist / 100);
-      const opsCost = Math.floor(invest * guardPct * segments);
-      
-      const totalOverhead = transportCost + opsCost;
+      // 2. Calculate Guard Costs
+      const guardCost = cargoValue * GUARD_COSTS[guards];
 
-      // 3. Projected Value Increase (Gazetteer Math)
-      // Value increases as you move away from source.
-      let distMod = 0;
-      if(route === 'road') distMod = 0.10; // 10% per 100mi
-      if(route === 'border') distMod = 0.15;
-      if(route === 'wild') distMod = 0.25; // High reward
-      if(route === 'sea_coast') distMod = 0.05; // Sea is cheap transport, lower margin
-      if(route === 'sea_deep') distMod = 0.15;
+      // 3. Calculate Border Taxes
+      const baseTaxRate = 0.10; // 10% base border tax per crossing
+      const guildReduction = BORDER_TAXES[guildStatus];
+      const taxRate = baseTaxRate * (1 - guildReduction);
+      const borderTax = cargoValue * taxRate * borders;
 
-      const baseMargin = (segments * distMod);
-      const projValue = Math.floor(invest * (1 + baseMargin));
-      const profit = projValue - invest - totalOverhead;
-      const marginPct = Math.round((profit / invest) * 100);
+      // 4. Calculate Demand Modifier
+      const originDemand = good.demandMod[originTerrain] || 1.0;
+      const destDemand = good.demandMod[destTerrain] || 1.0;
+      let demandModifier = destDemand / originDemand;
+
+      // Apply market condition modifiers
+      if (marketType === 'festival') demandModifier *= 1.2;
+      else if (marketType === 'siege') demandModifier *= 1.5;
+      else if (marketType === 'oversupply') demandModifier *= 0.7;
+
+      // 5. Calculate Distance Effects (longer distances = higher prices)
+      const distanceBonus = Math.max(0, (distance - 50) / 1000); // 1% per 10 miles beyond 50
+      demandModifier += distanceBonus;
+
+      // 6. Calculate Final Sale Price
+      const salePrice = Math.floor(cargoValue * demandModifier);
+      const totalCosts = transportCost + guardCost + borderTax;
+      const profit = salePrice - cargoValue - totalCosts;
+      const marginPct = Math.round((profit / cargoValue) * 100);
 
       // Update UI
       document.getElementById('logisticsOut').innerHTML = `
-        <strong>Load:</strong> ${totalCN.toLocaleString()} cn (${transportStr})<br>
-        <strong>Est. Overhead:</strong> ${totalOverhead} gp (Transport & Wages)<br>
-        <strong>Break Even:</strong> Need sale > ${(invest+totalOverhead)} gp
+        <strong>Cargo:</strong> ${units} units (${vehicles} ${transport}${vehicles > 1 ? 's' : ''})<br>
+        <strong>Transport:</strong> ${transportCost} gp<br>
+        <strong>Guards:</strong> ${Math.round(guardCost)} gp<br>
+        <strong>Border Taxes:</strong> ${Math.round(borderTax)} gp (${borders} crossing${borders !== 1 ? 's' : ''})<br>
+        <strong>Demand:</strong> ${destTerrain} (${(demandModifier * 100).toFixed(0)}% of origin)
       `;
-      
+
       const col = marginPct > 0 ? '#4ade80' : '#fca5a5';
       document.getElementById('projMargin').innerHTML = `<span style="color:${col}">${marginPct > 0 ? '+' : ''}${marginPct}%</span>`;
-      document.getElementById('projDesc').innerText = `Est. Profit: ${profit} gp`;
-      
-      return { totalCN, totalOverhead, baseMargin };
+      document.getElementById('projDesc').innerText = `Est. Sale: ${salePrice} gp | Profit: ${profit} gp`;
+
+      return {
+        salePrice,
+        totalCosts,
+        profit,
+        demandModifier,
+        units,
+        vehicles
+      };
     }
 
     function makeJourney() {
-      const invest = getVal('cargoInvest');
+      const cargoValue = getVal('cargoValue');
       const currentGold = getVal('merchGold');
-      
-      if(invest > currentGold) {
+
+      if(cargoValue > currentGold) {
         alert("Not enough gold in the treasury!");
         return;
       }
 
       const logis = updateLogistics();
-      const route = getTxt('routeType');
-      const guard = getTxt('guardLevel');
-      const guild = getTxt('guildStatus');
-      
-      // 1. Event Roll (The Journey)
-      let cargoHealth = 1.0; // 100% intact
+      const transport = getTxt('transportType');
+      const guards = getTxt('guardLevel');
+      const guildStatus = getTxt('guildStatus');
+      const borders = parseInt(getTxt('borderCrossings'));
+      const marketType = getTxt('marketType');
+      const tradeGood = getTxt('tradeGood');
+
+      // 1. Journey Events (Risk based on transport and guards)
+      let cargoMultiplier = 1.0;
       let eventMsg = "Uneventful journey.";
       let eventCost = 0;
-      
-      const d100 = Math.floor(Math.random() * 100) + 1;
-      
-      // Danger Thresholds
-      let danger = 10; // Road
-      if(route === 'border') danger = 20;
-      if(route === 'wild') danger = 40;
-      if(route === 'sea_deep') danger = 30;
-      
-      // Guard mitigation
-      if(guard === 'heavy') danger -= 15;
-      
-      if(d100 <= danger) {
-         // Something bad happened
-         const disaster = Math.floor(Math.random() * 6) + 1;
-         if(disaster === 1) { eventMsg = "Storm/Flood! Some cargo ruined."; cargoHealth = 0.7; }
-         else if(disaster === 2) { eventMsg = "Bandits! Bribe paid."; eventCost = invest * 0.1; }
-         else if(disaster === 3) { eventMsg = "Customs dispute. Fines levied."; eventCost = invest * 0.05; }
-         else if(disaster === 4) { eventMsg = "Monster attack! Guards lost."; eventCost = invest * 0.1; }
-         else if(disaster === 5) { eventMsg = "Spoilage / Rot."; cargoHealth = 0.8; }
-         else { eventMsg = "Major Disaster! Large loss."; cargoHealth = 0.5; }
-      } else if(d100 > 90) {
-         eventMsg = "Fair winds / Good roads. Arrived early.";
-         eventCost = - (logis.totalOverhead * 0.1); // Save 10% expenses
+
+      // Base risk by transport type
+      let baseRisk = 15; // Wagon
+      if(transport === 'ship') baseRisk = 10;
+      if(transport === 'camel') baseRisk = 20;
+
+      // Guard risk reduction
+      if(guards === 'light') baseRisk -= 5;
+      else if(guards === 'standard') baseRisk -= 10;
+      else if(guards === 'heavy') baseRisk -= 20;
+
+      baseRisk = Math.max(0, baseRisk);
+
+      const eventRoll = Math.floor(Math.random() * 100) + 1;
+
+      if(eventRoll <= baseRisk) {
+        // Bad event occurred
+        const events = [
+          { msg: "Bandits attacked! Lost some cargo.", loss: 0.2, cost: cargoValue * 0.1 },
+          { msg: "Storm damaged goods.", loss: 0.15, cost: 0 },
+          { msg: "Customs inspection. Bribe required.", loss: 0, cost: cargoValue * 0.05 },
+          { msg: "Animals died. Transport delayed.", loss: 0.1, cost: logis.totalCosts * 0.2 },
+          { msg: "Cargo spoiled in heat/cold.", loss: 0.25, cost: 0 },
+          { msg: "Major disaster! Heavy losses.", loss: 0.5, cost: cargoValue * 0.2 }
+        ];
+
+        const event = events[Math.floor(Math.random() * events.length)];
+        eventMsg = event.msg;
+        cargoMultiplier -= event.loss;
+        eventCost += event.cost;
+
+        // Guild can help with legal issues
+        if(guildStatus !== 'none' && eventMsg.includes("Customs")) {
+          eventCost *= (guildStatus === 'member' ? 0.5 : 0.2);
+          eventMsg += " (Guild assistance)";
+        }
+
+      } else if(eventRoll >= 90) {
+        // Good event
+        eventMsg = "Excellent journey! Bonus profit.";
+        cargoMultiplier += 0.1;
+        eventCost -= logis.totalCosts * 0.1;
       }
 
-      // Guild mitigation
-      if(guild === 'member' && eventCost > 0) {
-        eventCost *= 0.5; // Guild covers legal fees
-        eventMsg += " (Guild reduced fines)";
+      // 2. Market Fluctuations (2d6 roll with market condition modifier)
+      const marketRoll = Math.floor(Math.random() * 6) + Math.floor(Math.random() * 6) + 2;
+      let marketModifier = 1.0;
+      let marketMsg = "Normal market conditions";
+
+      // Base market fluctuation
+      if(marketRoll <= 4) {
+        marketModifier = 0.7;
+        marketMsg = "Poor market - low prices";
+      } else if(marketRoll <= 6) {
+        marketModifier = 0.85;
+        marketMsg = "Slow market";
+      } else if(marketRoll <= 9) {
+        marketModifier = 1.0;
+        marketMsg = "Normal market";
+      } else if(marketRoll <= 11) {
+        marketModifier = 1.2;
+        marketMsg = "Good market";
+      } else {
+        marketModifier = 1.5;
+        marketMsg = "Boom market! High demand";
       }
-      
-      // 2. Market Roll (Demand)
-      // 2d6 + mods. 7 is average.
-      const roll = Math.floor(Math.random() * 6) + Math.floor(Math.random() * 6) + 2;
-      let demandMod = 1.0;
-      let marketMsg = "Normal Demand";
-      
-      if(roll <= 3) { demandMod = 0.6; marketMsg = "Market Glut (Prices Crashed)"; }
-      else if(roll <= 5) { demandMod = 0.8; marketMsg = "Low Demand"; }
-      else if(roll <= 8) { demandMod = 1.0; marketMsg = "Average Demand"; }
-      else if(roll <= 10) { demandMod = 1.2; marketMsg = "High Demand"; }
-      else { demandMod = 1.5; marketMsg = "Scarcity! (Prices Soared)"; }
-      
-      // 3. Final Calculation
-      const remainingCargoVal = invest * cargoHealth;
-      const distanceBonus = 1 + logis.baseMargin;
-      
-      const grossSale = Math.floor(remainingCargoVal * distanceBonus * demandMod);
-      const totalExpenses = logis.totalOverhead + eventCost;
-      const netProfit = grossSale - invest - totalExpenses;
-      
+
+      // Apply market condition modifiers
+      if(marketType === 'festival') {
+        marketModifier *= 1.2;
+        marketMsg += " (Festival bonus)";
+      } else if(marketType === 'siege') {
+        marketModifier *= 1.5;
+        marketMsg += " (Shortage bonus)";
+      } else if(marketType === 'oversupply') {
+        marketModifier *= 0.7;
+        marketMsg += " (Oversupply penalty)";
+      }
+
+      // 3. Final Calculations
+      const actualCargoValue = Math.floor(cargoValue * cargoMultiplier);
+      const finalSalePrice = Math.floor(logis.salePrice * marketModifier);
+      const totalExpenses = logis.totalCosts + eventCost;
+      const netProfit = finalSalePrice - cargoValue - totalExpenses;
+
       const finalGold = currentGold + netProfit;
       document.getElementById('merchGold').value = finalGold;
 
-      // 4. Log It
-      const id = Date.now();
+      // 4. Log the Transaction
       const badge = netProfit >= 0 ? 'profit' : 'loss';
       const sign = netProfit >= 0 ? '+' : '';
-      
+      const good = TRADE_GOODS[tradeGood];
+
       const html = `
         <div class="log-entry">
           <div style="display:flex; justify-content:space-between; margin-bottom:6px">
             <span class="badge ${badge}">${netProfit >= 0 ? 'PROFIT' : 'LOSS'}</span>
-            <span style="color:#64748b; font-size:0.7rem">${getTxt('routeDist')} miles (${getTxt('routeType')})</span>
+            <span style="color:#64748b; font-size:0.7rem">${TRADE_GOODS[tradeGood].name}</span>
           </div>
           <div style="margin-bottom:8px; font-size:0.8rem">
              <div><em>"${eventMsg}"</em></div>
-             <div style="color:${demandMod >= 1 ? '#4ade80' : '#fca5a5'}">Market: ${marketMsg}</div>
+             <div style="color:${marketModifier >= 1 ? '#4ade80' : '#fca5a5'}">${marketMsg}</div>
           </div>
           <div style="background:#1e293b; padding:8px; border-radius:4px; font-size:0.8rem; display:grid; grid-template-columns:1fr 1fr; gap:8px">
              <div>
-               <div style="color:#94a3b8; font-size:0.7rem">EXPENSES</div>
+               <div style="color:#94a3b8; font-size:0.7rem">COSTS</div>
                <div>${Math.round(totalExpenses)} gp</div>
              </div>
              <div>
                <div style="color:#94a3b8; font-size:0.7rem">SALE</div>
-               <div>${grossSale} gp</div>
+               <div>${finalSalePrice} gp</div>
              </div>
           </div>
           <div style="margin-top:6px; text-align:right; font-weight:bold; color:${netProfit >= 0 ? '#4ade80' : '#f87171'}">
@@ -358,11 +571,11 @@
           <button class="btn btn-apply" onclick="revertGold(${netProfit})">Undo Transaction</button>
         </div>
       `;
-      
+
       const log = document.getElementById('log');
       if(log.innerText.includes("Transactions appear")) log.innerHTML = "";
       log.innerHTML = html + log.innerHTML;
-      
+
       saveData();
     }
 
