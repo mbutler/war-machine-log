@@ -267,72 +267,265 @@
   <script>
     // --- BECMI CONSTANTS ---
     const TREASURE_TYPES = {
-      A: { cp: [1000, 6000], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [2, 8], jewelry: [0, 0], magic: [] },
-      B: { cp: [0, 0], sp: [1000, 6000], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: [] },
-      C: { cp: [0, 0], sp: [0, 0], ep: [1000, 6000], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: [] },
-      D: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [1000, 3000], pp: [0, 0], gems: [1, 6], jewelry: [0, 0], magic: [] },
-      E: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [1000, 6000], pp: [0, 0], gems: [1, 10], jewelry: [0, 0], magic: [] },
-      F: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [2000, 12000], gems: [2, 20], jewelry: [0, 3], magic: [] },
-      G: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [10000, 50000], gems: [4, 24], jewelry: [1, 6], magic: [] },
-      H: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [8, 32], jewelry: [3, 12], magic: ['any 1', 'any 2'] },
-      I: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: ['potion', 'scroll', 'any 1'] },
-      J: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: ['any 2', 'any 3'] },
-      K: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: ['any 2', 'any 3', 'potion'] },
-      L: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: ['any 1', 'any 2', 'potion', 'scroll'] },
-      M: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: ['any 2', 'any 3', 'potion', 'scroll'] },
-      N: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: ['any 2', 'potion', 'scroll', 'any 1'] },
-      O: { cp: [0, 0], sp: [0, 0], ep: [0, 0], gp: [0, 0], pp: [0, 0], gems: [0, 0], jewelry: [0, 0], magic: ['potion', 'scroll', 'any 2', 'any 3'] }
+      A: { 
+        cp: { pct: 25, roll: '1d6', mult: 1000 }, 
+        sp: { pct: 30, roll: '1d6', mult: 1000 }, 
+        ep: { pct: 20, roll: '1d4', mult: 1000 }, 
+        gp: { pct: 35, roll: '2d6', mult: 1000 }, 
+        pp: { pct: 25, roll: '1d2', mult: 1000 }, 
+        gems: { pct: 50, roll: '6d6' }, 
+        jewelry: { pct: 50, roll: '6d6' }, 
+        magic: { pct: 30, count: 3, type: 'any' } 
+      },
+      B: { 
+        cp: { pct: 50, roll: '1d8', mult: 1000 }, 
+        sp: { pct: 25, roll: '1d6', mult: 1000 }, 
+        ep: { pct: 25, roll: '1d4', mult: 1000 }, 
+        gp: { pct: 25, roll: '1d3', mult: 1000 }, 
+        gems: { pct: 25, roll: '1d6' }, 
+        jewelry: { pct: 25, roll: '1d6' }, 
+        magic: { pct: 10, count: 1, type: 'weapon/armor' } 
+      },
+      C: { 
+        cp: { pct: 20, roll: '1d12', mult: 1000 }, 
+        sp: { pct: 30, roll: '1d4', mult: 1000 }, 
+        ep: { pct: 10, roll: '1d4', mult: 1000 }, 
+        gems: { pct: 25, roll: '1d4' }, 
+        jewelry: { pct: 25, roll: '1d4' }, 
+        magic: { pct: 10, count: 2, type: 'any' } 
+      },
+      D: { 
+        cp: { pct: 10, roll: '1d8', mult: 1000 }, 
+        sp: { pct: 15, roll: '1d12', mult: 1000 }, 
+        gp: { pct: 60, roll: '1d6', mult: 1000 }, 
+        gems: { pct: 30, roll: '1d8' }, 
+        jewelry: { pct: 30, roll: '1d8' }, 
+        magic: { pct: 15, count: 2, type: 'any', extra: ['potion'] } 
+      },
+      E: { 
+        cp: { pct: 5, roll: '1d10', mult: 1000 }, 
+        sp: { pct: 30, roll: '1d12', mult: 1000 }, 
+        ep: { pct: 25, roll: '1d4', mult: 1000 }, 
+        gp: { pct: 25, roll: '1d8', mult: 1000 }, 
+        gems: { pct: 10, roll: '1d10' }, 
+        jewelry: { pct: 10, roll: '1d10' }, 
+        magic: { pct: 25, count: 3, type: 'any', extra: ['scroll'] } 
+      },
+      F: { 
+        sp: { pct: 10, roll: '2d10', mult: 1000 }, 
+        ep: { pct: 20, roll: '1d8', mult: 1000 }, 
+        gp: { pct: 45, roll: '1d12', mult: 1000 }, 
+        pp: { pct: 30, roll: '1d3', mult: 1000 }, 
+        gems: { pct: 20, roll: '2d12' }, 
+        jewelry: { pct: 10, roll: '1d12' }, 
+        magic: { pct: 30, count: 3, type: 'no-weapon', extra: ['potion', 'scroll'] } 
+      },
+      G: { 
+        gp: { pct: 50, roll: '10d4', mult: 1000 }, 
+        pp: { pct: 50, roll: '1d20', mult: 1000 }, 
+        gems: { pct: 30, roll: '3d6' }, 
+        jewelry: { pct: 25, roll: '1d10' }, 
+        magic: { pct: 35, count: 4, type: 'any', extra: ['scroll'] } 
+      },
+      H: { 
+        cp: { pct: 25, roll: '3d8', mult: 1000 }, 
+        sp: { pct: 50, roll: '1d100', mult: 1000 }, 
+        ep: { pct: 50, roll: '1d4', mult: 10000 }, 
+        gp: { pct: 50, roll: '1d6', mult: 10000 }, 
+        pp: { pct: 25, roll: '5d4', mult: 1000 }, 
+        gems: { pct: 50, roll: '1d100' }, 
+        jewelry: { pct: 50, roll: '1d4', mult: 10 }, // 1d4x10 pieces
+        magic: { pct: 15, count: 4, type: 'any', extra: ['potion', 'scroll'] } 
+      },
+      I: { 
+        pp: { pct: 30, roll: '1d8', mult: 100 }, 
+        gems: { pct: 50, roll: '2d6' }, 
+        jewelry: { pct: 50, roll: '2d6' }, 
+        magic: { pct: 15, count: 1, type: 'any' } 
+      },
+      J: { cp: { pct: 25, roll: '1d4', mult: 1000 }, sp: { pct: 10, roll: '1d3', mult: 1000 } },
+      K: { sp: { pct: 30, roll: '1d6', mult: 1000 }, ep: { pct: 10, roll: '1d2', mult: 1000 } },
+      L: { gems: { pct: 50, roll: '1d4' } },
+      M: { gp: { pct: 40, roll: '2d4', mult: 1000 }, pp: { pct: 50, roll: '5d6', mult: 100 }, gems: { pct: 55, roll: '5d4' }, jewelry: { pct: 45, roll: '2d6' } },
+      N: { pp: { pct: 40, roll: '2d4', mult: 100 }, magic: { pct: 40, count: 0, extra: ['potion', 'potion', 'potion'] } }, // 2d4 potions, simplified
+      O: { magic: { pct: 50, count: 0, extra: ['scroll', 'scroll'] } }, // 1d4 scrolls, simplified
+      V: { 
+        sp: { pct: 10, roll: '1d100', mult: 1000 }, 
+        ep: { pct: 10, roll: '1d100', mult: 1000 }, 
+        gp: { pct: 10, roll: '1d100', mult: 1000 }, 
+        pp: { pct: 5, roll: '1d100', mult: 1000 }, 
+        gems: { pct: 10, roll: '1d100' }, 
+        jewelry: { pct: 10, roll: '1d100' }, 
+        magic: { pct: 5, count: 1, type: 'any' } 
+      }
     };
 
     const MAGIC_ITEMS = {
-      'any 1': ['Sword +1', 'Shield +1', 'Armor +1', 'Potion of Healing', 'Scroll of Protection'],
-      'any 2': ['Sword +2', 'Shield +2', 'Armor +2', 'Potion of Extra Healing', 'Wand of Magic Missiles'],
-      'any 3': ['Sword +3', 'Shield +3', 'Flame Tongue Sword', 'Potion of Giant Strength', 'Staff of Power'],
+      'any': ['Sword +1', 'Shield +1', 'Armor +1', 'Potion of Healing', 'Scroll of Protection', 'Ring of Protection', 'Wand of Trap Detection'],
+      'weapon/armor': ['Sword +1', 'Shield +1', 'Armor +1', 'Dagger +1', 'Mace +1'],
+      'no-weapon': ['Shield +1', 'Armor +1', 'Potion of Healing', 'Ring of Invisibility', 'Elven Cloak'],
       'potion': ['Potion of Healing', 'Potion of Extra Healing', 'Potion of Giant Strength', 'Potion of Invisibility', 'Potion of Speed'],
       'scroll': ['Scroll of Protection from Evil', 'Scroll of Fireballs', 'Scroll of Lightning Bolts', 'Scroll of Teleportation']
     };
 
-    // --- DATA TABLES ---
-    const MONSTERS = {
-      1: [
-        {name:"Goblins", hd:1, wander:"2d4", lair:"6d10", morale:7, treasure:'B', ac:6, thac0:19, dmg:'1d6'}, 
-        {name:"Kobolds", hd:0.5, wander:"4d4", lair:"6d10", morale:6, treasure:'A', ac:7, thac0:19, dmg:'1d4'},
-        {name:"Giant Rats", hd:0.5, wander:"3d6", lair:"3d10", morale:8, treasure:'C', ac:7, thac0:19, dmg:'1d3'}, 
-        {name:"Skeletons", hd:1, wander:"3d4", lair:"3d10", morale:12, treasure:'B', ac:7, thac0:19, dmg:'1d6'},
-        {name:"Stirges", hd:1, wander:"1d10", lair:"3d12", morale:9, treasure:'L', ac:7, thac0:19, dmg:'1d3'}, 
-        {name:"Bandits", hd:1, wander:"1d8", lair:"3d10", morale:8, treasure:'A', ac:6, thac0:19, dmg:'1d6'}
+    // BECMI Dungeon Wandering Monster Tables (Rules Cyclopedia p. 164-167)
+    const DUNGEON_ENCOUNTERS = {
+      // Level 1-3 Dungeons
+      level1: [
+        { roll: 1, name: "Bandit", qty: "1d6", hd: 1, ac: 6, dmg: "1d6", morale: 8, treasure: "A" },
+        { roll: 2, name: "Beetle, Fire", qty: "1d6", hd: 1, ac: 4, dmg: "2d4", morale: 7, treasure: "U" },
+        { roll: 3, name: "Cave Locust", qty: "1d6", hd: 2, ac: 4, dmg: "1d2", morale: 5, treasure: "U" },
+        { roll: 4, name: "Centipede, Giant", qty: "1d6", hd: 0.5, ac: 9, dmg: "special", morale: 7, treasure: "U" },
+        { roll: 5, name: "Ghoul", qty: "1d2", hd: 2, ac: 6, dmg: "1d3+1", morale: 9, treasure: "B" },
+        { roll: 6, name: "Goblin", qty: "1d6", hd: 0.5, ac: 6, dmg: "1d6", morale: 7, treasure: "R" },
+        { roll: [7,8,9,10], name: "Human", qty: "1d3", hd: 1, ac: 9, dmg: "1d6", morale: 8, treasure: "A" },
+        { roll: 11, name: "Kobold", qty: "2d6", hd: 0.5, ac: 7, dmg: "1d4", morale: 6, treasure: "J" },
+        { roll: 12, name: "Lizard, Gecko", qty: "1", hd: 1, ac: 5, dmg: "1d8", morale: 7, treasure: "U" },
+        { roll: 13, name: "NPC Party", qty: "1 party", hd: 1, ac: 9, dmg: "1d6", morale: 8, treasure: "A" },
+        { roll: 14, name: "Orc", qty: "1d6", hd: 1, ac: 6, dmg: "1d6", morale: 8, treasure: "D" },
+        { roll: 15, name: "Skeleton", qty: "1d6", hd: 0.5, ac: 7, dmg: "1d6", morale: 12, treasure: "B" },
+        { roll: 16, name: "Snake, Racer", qty: "1", hd: 1, ac: 9, dmg: "1d3", morale: 5, treasure: "U" },
+        { roll: 17, name: "Spider, Crab", qty: "1", hd: 0.5, ac: 7, dmg: "special", morale: 7, treasure: "U" },
+        { roll: 18, name: "Stirge", qty: "1d6", hd: 1, ac: 7, dmg: "1d3", morale: 9, treasure: "L" },
+        { roll: 19, name: "Troglodyte", qty: "1d3", hd: 2, ac: 5, dmg: "1d6", morale: 9, treasure: "A" },
+        { roll: 20, name: "Zombie", qty: "1d3", hd: 2, ac: 8, dmg: "1d8", morale: 12, treasure: "B" }
       ],
-      2: [
-        {name:"Orcs", hd:1, wander:"2d4", lair:"10d6", morale:8, treasure:'C', ac:6, thac0:19, dmg:'1d6'}, 
-        {name:"Zombies", hd:2, wander:"2d4", lair:"4d6", morale:12, treasure:'B', ac:8, thac0:19, dmg:'1d8'},
-        {name:"Giant Spiders", hd:2, wander:"1d3", lair:"1d3", morale:7, treasure:'U', ac:6, thac0:19, dmg:'1d6'}, 
-        {name:"Troglodytes", hd:2, wander:"1d8", lair:"5d8", morale:9, treasure:'A', ac:5, thac0:19, dmg:'1d6'},
-        {name:"Carrion Crawler", hd:3, wander:"1d3", lair:"1d3", morale:9, treasure:'B', ac:7, thac0:17, dmg:'1d2'}, 
-        {name:"Gnolls", hd:2, wander:"1d6", lair:"3d6", morale:8, treasure:'E', ac:5, thac0:18, dmg:'1d6'}
+
+      // Level 2 Dungeons (or Level 4-5)
+      level2: [
+        { roll: 1, name: "Beetle, Oil", qty: "1d6", hd: 2, ac: 4, dmg: "2d4", morale: 8, treasure: "U" },
+        { roll: 2, name: "Carrion Crawler", qty: "1", hd: 3, ac: 7, dmg: "special", morale: 9, treasure: "B" },
+        { roll: 3, name: "Ghoul", qty: "1d4", hd: 2, ac: 6, dmg: "1d3+1", morale: 9, treasure: "B" },
+        { roll: 4, name: "Gnoll", qty: "1d4", hd: 2, ac: 5, dmg: "1d6", morale: 8, treasure: "D" },
+        { roll: 5, name: "Goblin", qty: "2d4", hd: 0.5, ac: 6, dmg: "1d6", morale: 7, treasure: "R" },
+        { roll: 6, name: "Gray Ooze", qty: "1", hd: 3, ac: 8, dmg: "2d8", morale: 12, treasure: "U" },
+        { roll: 7, name: "Hobgoblin", qty: "1d6", hd: 1, ac: 5, dmg: "1d8", morale: 9, treasure: "D" },
+        { roll: [8,9,10], name: "Human", qty: "1d3", hd: 1, ac: 9, dmg: "1d6", morale: 8, treasure: "A" },
+        { roll: 11, name: "Lizard, Draco", qty: "1", hd: 4, ac: 5, dmg: "1d10", morale: 7, treasure: "U" },
+        { roll: 12, name: "Lizard Man", qty: "1", hd: 2, ac: 5, dmg: "1d6+1", morale: 12, treasure: "D" },
+        { roll: 13, name: "Neanderthal", qty: "1d6", hd: 2, ac: 8, dmg: "1d6", morale: 7, treasure: "C" },
+        { roll: 14, name: "NPC Party", qty: "1 party", hd: 1, ac: 9, dmg: "1d6", morale: 8, treasure: "A" },
+        { roll: 15, name: "Orc", qty: "2d6", hd: 1, ac: 6, dmg: "1d6", morale: 8, treasure: "D" },
+        { roll: 16, name: "Skeleton", qty: "1d6", hd: 0.5, ac: 7, dmg: "1d6", morale: 12, treasure: "B" },
+        { roll: 17, name: "Snake, Pit Viper", qty: "1", hd: 3, ac: 9, dmg: "1d4+1", morale: 5, treasure: "U" },
+        { roll: 18, name: "Spider, Black Widow", qty: "1", hd: 3, ac: 6, dmg: "2d6", morale: 8, treasure: "U" },
+        { roll: 19, name: "Troglodyte", qty: "1d6", hd: 2, ac: 5, dmg: "1d6", morale: 9, treasure: "A" },
+        { roll: 20, name: "Zombie", qty: "1d6", hd: 2, ac: 8, dmg: "1d8", morale: 12, treasure: "B" }
       ],
-      3: [
-        {name:"Ogres", hd:4, wander:"1d6", lair:"2d6", morale:10, treasure:'C', ac:5, thac0:17, dmg:'1d6+2'}, 
-        {name:"Wights", hd:3, wander:"1d6", lair:"1d8", morale:12, treasure:'B', ac:5, thac0:17, dmg:'1d6'},
-        {name:"Wererats", hd:3, wander:"1d8", lair:"2d8", morale:8, treasure:'C', ac:6, thac0:18, dmg:'1d6'}, 
-        {name:"Bugbears", hd:3, wander:"2d4", lair:"5d4", morale:9, treasure:'B', ac:5, thac0:17, dmg:'1d6+1'},
-        {name:"Gelatinous Cube", hd:4, wander:"1", lair:"1", morale:12, treasure:'V', ac:8, thac0:16, dmg:'2d4'}, 
-        {name:"Doppleganger", hd:4, wander:"1d6", lair:"1d6", morale:10, treasure:'E', ac:5, thac0:16, dmg:'1d12'}
+
+      // Level 3 Dungeons
+      level3: [
+        { roll: 1, name: "Ape, White", qty: "1d4", hd: 4, ac: 6, dmg: "1d6", morale: 7, treasure: "U" },
+        { roll: 2, name: "Beetle, Tiger", qty: "1", hd: 3, ac: 3, dmg: "2d6", morale: 9, treasure: "U" },
+        { roll: 3, name: "Bugbear", qty: "1d4", hd: 3, ac: 5, dmg: "1d6+1", morale: 9, treasure: "B" },
+        { roll: 4, name: "Carrion Crawler", qty: "1d3", hd: 3, ac: 7, dmg: "special", morale: 9, treasure: "B" },
+        { roll: 5, name: "Doppleganger", qty: "1d6", hd: 4, ac: 5, dmg: "1d12", morale: 10, treasure: "E" },
+        { roll: 6, name: "Gargoyle", qty: "1d3", hd: 4, ac: 5, dmg: "1d6", morale: 11, treasure: "C" },
+        { roll: 7, name: "Gelatinous Cube", qty: "1", hd: 4, ac: 8, dmg: "2d4", morale: 12, treasure: "V" },
+        { roll: 8, name: "Harpy", qty: "1d4", hd: 3, ac: 7, dmg: "1d4", morale: 8, treasure: "C" },
+        { roll: [9,10], name: "Human", qty: "1d6", hd: 1, ac: 9, dmg: "1d6", morale: 8, treasure: "A" },
+        { roll: 11, name: "Living Statue, Crystal", qty: "1d4", hd: 3, ac: 4, dmg: "1d6", morale: 11, treasure: "U" },
+        { roll: 12, name: "Lycanthrope, Wererat", qty: "1d6", hd: 3, ac: 6, dmg: "1d6", morale: 8, treasure: "C" },
+        { roll: 13, name: "Medusa", qty: "1", hd: 4, ac: 8, dmg: "1d6", morale: 8, treasure: "F" },
+        { roll: 14, name: "NPC Party", qty: "1 party", hd: 1, ac: 9, dmg: "1d6", morale: 8, treasure: "A" },
+        { roll: 15, name: "Ochre Jelly", qty: "1", hd: 5, ac: 8, dmg: "2d4", morale: 12, treasure: "U" },
+        { roll: 16, name: "Ogre", qty: "1d3", hd: 4, ac: 5, dmg: "1d6+2", morale: 10, treasure: "C" },
+        { roll: 17, name: "Shadow", qty: "1d4", hd: 2, ac: 7, dmg: "2d4", morale: 12, treasure: "C" },
+        { roll: 18, name: "Spider, Tarantella", qty: "1", hd: 4, ac: 5, dmg: "1d8", morale: 8, treasure: "U" },
+        { roll: 19, name: "Thoul", qty: "1d4", hd: 3, ac: 6, dmg: "1d6+1", morale: 10, treasure: "E" },
+        { roll: 20, name: "Wight", qty: "1d3", hd: 3, ac: 5, dmg: "1d6", morale: 12, treasure: "B" }
       ],
-      5: [
-        {name:"Trolls", hd:6, wander:"1d3", lair:"1d3", morale:10, treasure:'D', ac:4, thac0:14, dmg:'1d6+3'}, 
-        {name:"Wraiths", hd:4, wander:"1d4", lair:"1d6", morale:12, treasure:'E', ac:3, thac0:16, dmg:'1d6'},
-        {name:"Hydra", hd:5, wander:"1", lair:"1", morale:9, treasure:'B', ac:5, thac0:15, dmg:'1d6'}, 
-        {name:"Hill Giants", hd:8, wander:"1d4", lair:"2d4", morale:8, treasure:'E', ac:4, thac0:13, dmg:'2d8'},
-        {name:"Cockatrice", hd:5, wander:"1d4", lair:"1d8", morale:7, treasure:'D', ac:6, thac0:15, dmg:'1d3'}
+
+      // Level 4-5 Dungeons (uses Level 2 table above)
+
+      // Level 6-7 Dungeons
+      level6: [
+        { roll: 1, name: "Blink Dog", qty: "1d4", hd: 4, ac: 5, dmg: "1d6", morale: 6, treasure: "C" },
+        { roll: 2, name: "Bugbear", qty: "1d6+4", hd: 3, ac: 5, dmg: "1d6+1", morale: 9, treasure: "B" },
+        { roll: 3, name: "Caecilia", qty: "1", hd: 5, ac: 6, dmg: "special", morale: 12, treasure: "F" },
+        { roll: 4, name: "Cockatrice", qty: "1d2", hd: 5, ac: 6, dmg: "1d3", morale: 7, treasure: "D" },
+        { roll: 5, name: "Displacer Beast", qty: "1", hd: 6, ac: 4, dmg: "2d4", morale: 8, treasure: "E" },
+        { roll: 6, name: "Gargoyle", qty: "1d4+1", hd: 4, ac: 5, dmg: "1d6", morale: 11, treasure: "C" },
+        { roll: 7, name: "Giant, Hill", qty: "1", hd: 8, ac: 4, dmg: "2d8", morale: 8, treasure: "E" },
+        { roll: 8, name: "Harpy", qty: "1d4+1", hd: 3, ac: 7, dmg: "1d4", morale: 8, treasure: "C" },
+        { roll: 9, name: "Hellhound", qty: "1d4+1", hd: 4, ac: 4, dmg: "1d6", morale: 9, treasure: "C" },
+        { roll: 10, name: "Hydra", qty: "1", hd: 5, ac: 5, dmg: "1d6", morale: 9, treasure: "B" },
+        { roll: 11, name: "Lycanthrope, Werewolf", qty: "1d4", hd: 4, ac: 5, dmg: "1d6", morale: 8, treasure: "C" },
+        { roll: 12, name: "Medusa", qty: "1", hd: 4, ac: 8, dmg: "1d6", morale: 8, treasure: "F" },
+        { roll: 13, name: "Mummy", qty: "1", hd: 5, ac: 3, dmg: "1d12", morale: 12, treasure: "D" },
+        { roll: 14, name: "NPC Party", qty: "1", hd: 1, ac: 9, dmg: "1d6", morale: 8, treasure: "A" },
+        { roll: 15, name: "Ochre Jelly", qty: "1", hd: 5, ac: 8, dmg: "2d4", morale: 12, treasure: "U" },
+        { roll: 16, name: "Rhagodessa", qty: "1d3+1", hd: 4, ac: 5, dmg: "special", morale: 12, treasure: "U" },
+        { roll: 17, name: "Rust Monster", qty: "1d3", hd: 5, ac: 2, dmg: "special", morale: 8, treasure: "B" },
+        { roll: 18, name: "Scorpion, Giant", qty: "1d2", hd: 4, ac: 3, dmg: "1d10", morale: 11, treasure: "D" },
+        { roll: 19, name: "Troll", qty: "1d3", hd: 6, ac: 4, dmg: "1d6+3", morale: 10, treasure: "D" },
+        { roll: 20, name: "Wraith", qty: "1d4+1", hd: 4, ac: 3, dmg: "1d6", morale: 12, treasure: "E" }
       ],
-      8: [
-        {name:"Red Dragon", hd:10, wander:"1", lair:"1", morale:10, treasure:'H', ac:1, thac0:11, dmg:'1d8'}, 
-        {name:"Vampire", hd:8, wander:"1d4", lair:"1d6", morale:11, treasure:'F', ac:2, thac0:13, dmg:'1d6+4'},
-        {name:"Purple Worm", hd:15, wander:"1d2", lair:"1d4", morale:12, treasure:'I', ac:6, thac0:9, dmg:'2d8'}, 
-        {name:"Chimera", hd:9, wander:"1d2", lair:"1d4", morale:9, treasure:'F', ac:4, thac0:12, dmg:'1d3'},
-        {name:"Lich", hd:11, wander:"1", lair:"1", morale:12, treasure:'H', ac:0, thac0:10, dmg:'1d6'}
+
+      // Level 8-10 Dungeons
+      level8: [
+        { roll: 1, name: "Basilisk", qty: "1", hd: 6, ac: 4, dmg: "1d10", morale: 9, treasure: "F" },
+        { roll: 2, name: "Caecilia", qty: "1", hd: 5, ac: 6, dmg: "special", morale: 12, treasure: "F" },
+        { roll: 3, name: "Cockatrice", qty: "1", hd: 5, ac: 6, dmg: "1d3", morale: 7, treasure: "D" },
+        { roll: 4, name: "Giant, Hill", qty: "1", hd: 8, ac: 4, dmg: "2d8", morale: 8, treasure: "E" },
+        { roll: 5, name: "Giant, Stone", qty: "1", hd: 9, ac: 4, dmg: "3d6", morale: 9, treasure: "E" },
+        { roll: 6, name: "Hellhound", qty: "1d4+1", hd: 5, ac: 4, dmg: "1d6", morale: 9, treasure: "C" },
+        { roll: 7, name: "Hydra", qty: "1", hd: 6, ac: 5, dmg: "1d6", morale: 9, treasure: "B" },
+        { roll: 8, name: "Lycanthrope", qty: "1", hd: 4, ac: 5, dmg: "1d6", morale: 8, treasure: "C" },
+        { roll: 9, name: "Manticore", qty: "1", hd: 6, ac: 4, dmg: "1d6", morale: 9, treasure: "D" },
+        { roll: 10, name: "Minotaur", qty: "1", hd: 6, ac: 6, dmg: "2d4", morale: 12, treasure: "C" },
+        { roll: 11, name: "Mummy", qty: "1", hd: 5, ac: 3, dmg: "1d12", morale: 12, treasure: "D" },
+        { roll: 12, name: "NPC Party", qty: "1", hd: 1, ac: 9, dmg: "1d6", morale: 8, treasure: "A" },
+        { roll: 13, name: "Ochre Jelly", qty: "1", hd: 5, ac: 8, dmg: "2d4", morale: 12, treasure: "U" },
+        { roll: 14, name: "Ogre", qty: "1d4", hd: 4, ac: 5, dmg: "1d6+2", morale: 10, treasure: "C" },
+        { roll: 15, name: "Rust Monster", qty: "1", hd: 5, ac: 2, dmg: "special", morale: 8, treasure: "B" },
+        { roll: 16, name: "Spectre", qty: "1d4", hd: 6, ac: 2, dmg: "1d8", morale: 11, treasure: "E" },
+        { roll: 17, name: "Spider, Tarantella", qty: "1", hd: 4, ac: 5, dmg: "1d8", morale: 8, treasure: "U" },
+        { roll: 18, name: "Salamander, Flame", qty: "1", hd: 7, ac: 5, dmg: "1d6", morale: 8, treasure: "E" },
+        { roll: 19, name: "Troll", qty: "1d3", hd: 6, ac: 4, dmg: "1d6+3", morale: 10, treasure: "D" },
+        { roll: 20, name: "Vampire", qty: "1", hd: 7, ac: 2, dmg: "1d6+4", morale: 11, treasure: "F" }
       ]
     };
+
+    // Helper function to get dungeon encounter based on level
+    function getDungeonEncounter(dungeonLevel) {
+      let tableKey;
+      if (dungeonLevel <= 3) tableKey = 'level1';
+      else if (dungeonLevel <= 5) tableKey = 'level2';
+      else if (dungeonLevel <= 7) tableKey = 'level6';
+      else tableKey = 'level8';
+
+      const table = DUNGEON_ENCOUNTERS[tableKey];
+      const roll = Math.floor(Math.random() * 20) + 1; // d20 roll
+
+      // Find the monster for this roll
+      for (const monster of table) {
+        if (Array.isArray(monster.roll)) {
+          if (monster.roll.includes(roll)) return monster;
+        } else if (monster.roll === roll) {
+          return monster;
+        }
+      }
+
+      return table[0]; // Fallback
+    }
+
+    // Calculate monster HP based on HD (BECMI style)
+    function calculateMonsterHP(hd) {
+      if (hd === 0.5) return d6() / 2; // 1-3 HP for 1/2 HD
+      const fullHD = Math.floor(hd);
+      let hp = 0;
+      for (let i = 0; i < fullHD; i++) {
+        hp += d6();
+      }
+      // Add +1 HP per HD for monsters (BECMI average)
+      hp += fullHD;
+      // Handle fractional HD
+      if (hd % 1 > 0) {
+        hp += Math.floor(d6() / 2) + 1;
+      }
+      return Math.max(1, hp);
+    }
 
     const TRAPS = {
       1: [
@@ -471,6 +664,20 @@
         return 13;
       }
       return 19; // Default for level 0 or normal humans
+    }
+
+    // BECMI Monster THAC0 (Rules Cyclopedia p. 107)
+    function getMonsterTHAC0(hd) {
+      if (hd < 1) return 19; // Normal Man / < 1 HD
+      if (hd <= 3) return 19; // Up to 3 HD (but 1+ is better than NM?) RC table combines NM and Up to 1. 1+ to 3 is 19.
+      if (hd <= 5) return 17;
+      if (hd <= 7) return 15;
+      if (hd <= 9) return 13;
+      if (hd <= 11) return 11;
+      if (hd <= 13) return 9;
+      if (hd <= 15) return 7;
+      if (hd <= 17) return 5;
+      return 3; // 17+ HD
     }
 
     // --- STATE ---
@@ -691,7 +898,8 @@
       } else if (roll >= 4 && roll <= 5) {
         // Monster (4-5)
         triggerCombat(false); // Room Monster
-        if (d6() <= 3) state.pendingLoot = 'hidden'; // 50% chance extra hidden loot?
+        // Room treasure (container) is rare if not a lair. 1-in-6 chance.
+        if (d6() === 1) state.pendingLoot = 'hidden'; 
       } else {
         // Special (6)
         logEntry("Feature", "You find a strange feature (Statue/Altar/Pool).", "magic");
@@ -740,25 +948,26 @@
       if (checkDead()) return;
       advanceTurn(1);
 
+      // If loot was generated during exploration (hidden), searching finds it.
       if (state.pendingLoot === 'hidden') {
-         const findRoll = d6();
-         if (findRoll === 1) { // 1-in-6 to find hidden
-            generateLoot("Secret Compartment");
-            state.pendingLoot = null;
-         } else {
-            logEntry("Search", "You find nothing hidden.", "event");
-         }
+         // Previously required a second 1-in-6 roll. Now guaranteed if it exists.
+         // We still roll to see WHAT it is, if not already defined.
+         generateLoot("Hidden Stash");
+         state.pendingLoot = null;
       } else if (state.pendingLoot === 'special') {
-         // Special interaction logic...
          logEntry("Search", "You investigate the strange feature...", "event");
-         // Simplified result
-         if(d6() <= 3) generateLoot("Hidden Niche");
+         if(d6() <= 4) generateLoot("Feature"); // 2-in-3 chance of something good
          else logEntry("Result", "It seems mundane.", "event");
          state.pendingLoot = null;
       } else {
-         // Wandering monster check on empty search?
-         if(d6() === 1) triggerCombat(true);
-         else logEntry("Search", "You find nothing of interest.", "event");
+         // If nothing was pre-seeded (1-in-6 chance during Explore), then there is nothing to find.
+         logEntry("Search", "You find nothing of interest.", "event");
+         
+         // Wandering monster check on search (1-in-6)
+         if(d6() === 1) {
+             logEntry("Warning", "Your searching attracts attention...", "event");
+             triggerCombat(true);
+         }
       }
     }
 
@@ -868,18 +1077,20 @@
       if (state.inCombat) return;
 
       const depth = state.dungeonLevel;
-      const list = MONSTERS[depth] || MONSTERS[1];
-      const monData = list[Math.floor(Math.random() * list.length)];
+      const monData = getDungeonEncounter(depth);
       const name = monData.name;
       const morale = monData.morale;
       const isLair = document.getElementById('lairMode').checked;
 
-      // Calculate number
-      const diceStr = isLair ? monData.lair : monData.wander;
+      // Calculate number (use lair quantities for lair mode, otherwise wandering quantities)
+      let diceStr = monData.qty;
+      if (isLair && monData.qty.includes('party')) {
+        diceStr = '1d6'; // NPC parties in lairs
+      }
       const numMonsters = Math.max(1, rollDice(diceStr));
 
-      // HP
-      const hpPerMonster = 4; // 1 HD approx 4 hp for simulation
+      // HP - Use HD to calculate hit points properly
+      const hpPerMonster = calculateMonsterHP(monData.hd);
       const totalHP = numMonsters * hpPerMonster; 
 
       const react = d6() + d6();
@@ -894,6 +1105,9 @@
       state.inCombat = true;
       
       // TRACK FIRST DEATH and HALF STRENGTH for Morale
+      // Calculate Monster THAC0
+      const monsterTHAC0 = monData.thac0 || getMonsterTHAC0(monData.hd);
+
       state.monster = { 
         name, 
         wandering, 
@@ -905,9 +1119,10 @@
         count: numMonsters, 
         initialCount: numMonsters,
         ac: monData.ac, 
-        thac0: monData.thac0, 
+        thac0: monsterTHAC0, 
         dmg: monData.dmg, 
         hd: monData.hd,
+        hpPerMonster: hpPerMonster, // Store this for accurate count calculation
         
         // Morale Flags
         checkedFirstDeath: false,
@@ -930,6 +1145,9 @@
       updateSpellControls();
 
       const encounterType = isLair ? "LAIR" : (wandering ? "WANDERING" : "ROOM");
+      if (isLair && !wandering) {
+        logEntry("Encounter", "These monsters appear to be guarding a lair!", "warning");
+      }
       logEntry("Encounter", `${encounterType}: ${numMonsters} ${name} appear! (${mood})`, "combat");
     }
 
@@ -1021,9 +1239,13 @@
               monster.hp.current -= damageDealt;
               document.getElementById('enemyHP').innerText = `HP: ${monster.hp.current}/${monster.hp.max}`;
               
+              if (monster.hp.current <= 0) return; // Dead! No morale check needed.
+
               // TRIGGER MORALE CHECKS
-              // 1. First Death? (Simplified: First 4 HP lost approx = 1 monster)
-              if (!monster.checkedFirstDeath && damageDealt >= 4) {
+              const hpPer = monster.hpPerMonster || 4;
+              
+              // 1. First Death? (Damage > 1 monster HP)
+              if (!monster.checkedFirstDeath && damageDealt >= hpPer) {
                   monster.checkedFirstDeath = true;
                   if(checkMorale()) return; // They fled
               }
@@ -1036,8 +1258,10 @@
       };
       
       const doMonsterAttacks = () => {
-          // Active monsters calc (approx 1 monster per 4 HP)
-          const hpPerMonster = 4;
+          if (monster.hp.current <= 0) return;
+
+          // Active monsters calc 
+          const hpPerMonster = monster.hpPerMonster || 4;
           const activeCount = Math.ceil(monster.hp.current / hpPerMonster);
           // Bonus to hit if target is fleeing
           const hitBonus = fleeing ? 2 : 0;
@@ -1092,20 +1316,20 @@
                   }
               } else {
                   // Miss
-                  // logEntry("Enemy Miss", `${monster.name} attacks ${target.name} but misses.`, "combat");
+                  logEntry("Enemy Miss", `${monster.name} attacks ${target.name} but misses.`, "combat");
               }
           }
       };
 
       if (partyGoesFirst) {
           doPartyAttacks();
-          if (monster.hp.current > 0) doMonsterAttacks();
+          if (state.inCombat && monster.hp.current > 0) doMonsterAttacks();
       } else {
           doMonsterAttacks();
-          if (livingParty.some(c => c.derivedStats.hp.current > 0)) doPartyAttacks();
+          if (state.inCombat && livingParty.some(c => c.derivedStats.hp.current > 0)) doPartyAttacks();
       }
       
-      if (monster.hp.current <= 0) {
+      if (state.inCombat && monster.hp.current <= 0) {
           logEntry("Victory", `Defeated!`, "event");
           endCombat(false); // Loot logic handles type
       }
@@ -1223,15 +1447,33 @@
        checkDead();
        updateUI();
 
-       // If monster was defeated (not peaceful), generate loot automatically
+       // BECMI Rule: Search all defeated monsters for treasure
        if (!peaceful && state.monster && state.monster.hp.current <= 0) {
-         // Generate monster loot automatically using their treasure type
          const monsterData = findMonsterData(state.monster.name);
-         if (monsterData && monsterData.treasure) {
-           generateLoot("Monster", monsterData.treasure);
+
+         if (state.monster.wandering) {
+           // Wandering monsters never have treasure
+           logEntry("Search", `You search the ${state.monster.name} corpses but find no treasure.`, "event");
+         } else if (state.monster.isLair) {
+           // Lair monsters may have treasure (Types A-O)
+           if (monsterData && monsterData.treasure && monsterData.treasure !== 'U') {
+             logEntry("Treasure", `The defeated ${state.monster.name} lair guards treasure!`, "treasure");
+             generateLoot("Monster Lair", monsterData.treasure);
+           } else {
+             logEntry("Search", `You thoroughly search the ${state.monster.name} lair but find no treasure.`, "event");
+           }
          } else {
-           // Fallback: generate random loot based on dungeon level
-           generateLoot("Monster");
+           // Room monsters (not lair) - Have Individual Treasure (Types J-O)
+           // We map their Lair type to a smaller Individual type or just generic pocket loot
+           // Simplified: 30% chance of carrying generic individual loot
+           if (d6() <= 2) {
+              // Pick a random Individual Type (J-O)
+              const indivTypes = ['J', 'K', 'L', 'M', 'N', 'O'];
+              const type = indivTypes[Math.floor(Math.random() * indivTypes.length)];
+              generateLoot("Bodies", type);
+           } else {
+              logEntry("Search", `You search the ${state.monster.name} bodies but find nothing of value.`, "event");
+           }
          }
        }
 
@@ -1253,9 +1495,9 @@
     }
 
     function findMonsterData(monsterName) {
-      // Find monster data across all levels
-      for (let level in MONSTERS) {
-        const monster = MONSTERS[level].find(m => m.name === monsterName);
+      // Find monster data across all dungeon encounter tables
+      for (let tableKey in DUNGEON_ENCOUNTERS) {
+        const monster = DUNGEON_ENCOUNTERS[tableKey].find(m => m.name === monsterName);
         if (monster) return monster;
       }
       return null;
@@ -1264,72 +1506,132 @@
     function generateLoot(source, treasureType = null) {
       const depth = state.dungeonLevel;
 
-      if (!treasureType) {
-        // Generate random treasure type based on dungeon level
-        const types = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
-        treasureType = types[Math.floor(Math.random() * Math.min(depth, types.length))];
+      // Handle special treasure types
+      if (treasureType === 'U') {
+        logEntry("Treasure", `${source}: No treasure found.`, "event");
+        return;
+      }
+      
+      // If Type R (used for Goblins/Hobgoblins in old table), it often means Individual Treasure (Types P-T)
+      // or just a placeholder. We'll map it to Type J (Individual) for now or random if undefined.
+      if (treasureType === 'R') {
+        treasureType = null; 
+      }
+
+      if (!treasureType || !TREASURE_TYPES[treasureType]) {
+        // Generate random treasure type based on dungeon level if not specified
+        // Level 1: A-C, Level 2: D-F, etc? Or just random A-O weighted?
+        // Simplified: Pick from A-H based on depth
+        const types = ['J', 'K', 'L', 'M', 'N', 'O', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+        // Basic dungeon logic:
+        let pool = types.slice(0, 6); // J-O (Small/Indiv)
+        if (depth >= 2) pool = pool.concat(['A', 'B', 'C']);
+        if (depth >= 3) pool = pool.concat(['D', 'E', 'F']);
+        if (depth >= 5) pool = pool.concat(['G', 'H', 'I']);
+        
+        treasureType = pool[Math.floor(Math.random() * pool.length)];
       }
 
       const treasure = TREASURE_TYPES[treasureType];
+      if (!treasure) {
+        logEntry("Treasure", `${source}: No treasure found (Type ${treasureType}).`, "event");
+        return;
+      }
+
       let totalValue = 0;
       let coinValue = 0;
       let lootItems = [];
 
-      // Generate coins
+      // Process Coins
       ['cp', 'sp', 'ep', 'gp', 'pp'].forEach(coin => {
-        if (treasure[coin][1] > 0) {
-          const amount = Math.floor(Math.random() * (treasure[coin][1] - treasure[coin][0] + 1)) + treasure[coin][0];
-          if (amount > 0) {
-            const val = amount * (coin === 'cp' ? 0.01 : coin === 'sp' ? 0.1 : coin === 'ep' ? 0.5 : coin === 'gp' ? 1 : 5);
-            coinValue += val;
-            totalValue += val;
-          }
+        const data = treasure[coin];
+        if (data) {
+           // Check percentage
+           if (d100() <= data.pct) {
+              const base = rollDice(data.roll);
+              const amount = base * (data.mult || 1);
+              
+              if (amount > 0) {
+                 const val = amount * (coin === 'cp' ? 0.01 : coin === 'sp' ? 0.1 : coin === 'ep' ? 0.5 : coin === 'gp' ? 1 : 5);
+                 coinValue += val;
+                 totalValue += val;
+                 lootItems.push(`${amount} ${coin}`);
+              }
+           }
         }
       });
 
       // Gems
-      if (treasure.gems[1] > 0) {
-        const gemCount = Math.floor(Math.random() * (treasure.gems[1] - treasure.gems[0] + 1)) + treasure.gems[0];
-        if (gemCount > 0) {
-          const gemVal = gemCount * (10 + Math.floor(Math.random() * 90)); // 10-100gp each
-          totalValue += gemVal;
-          lootItems.push(`${gemCount} gems (${gemVal}gp)`);
+      if (treasure.gems && d100() <= treasure.gems.pct) {
+        const count = rollDice(treasure.gems.roll);
+        if (count > 0) {
+           // BECMI: Gems vary wildly. Simplified 10-1000gp average?
+           // Actually BECMI has a table. We'll use a simplified range 10-100 gp for now.
+           let gemsVal = 0;
+           for(let i=0; i<count; i++) gemsVal += (d100() * (depth >= 3 ? 5 : 1)); // Higher value deeper
+           totalValue += gemsVal;
+           lootItems.push(`${count} gems (${gemsVal}gp)`);
         }
       }
 
       // Jewelry
-      if (treasure.jewelry[1] > 0) {
-        const jewelryCount = Math.floor(Math.random() * (treasure.jewelry[1] - treasure.jewelry[0] + 1)) + treasure.jewelry[0];
-        if (jewelryCount > 0) {
-          const jewelryVal = jewelryCount * (100 + Math.floor(Math.random() * 900)); // 100-1000gp each
-          totalValue += jewelryVal;
-          lootItems.push(`${jewelryCount} jewelry (${jewelryVal}gp)`);
+      if (treasure.jewelry && d100() <= treasure.jewelry.pct) {
+        const count = rollDice(treasure.jewelry.roll) * (treasure.jewelry.mult || 1);
+        if (count > 0) {
+           // BECMI: 3d6 x 100 gp usually.
+           let jewelryVal = 0;
+           for(let i=0; i<count; i++) jewelryVal += (rollDice("3d6") * 100);
+           totalValue += jewelryVal;
+           lootItems.push(`${count} jewelry (${jewelryVal}gp)`);
         }
       }
 
       // Magic items
-      treasure.magic.forEach(magicType => {
-        if (MAGIC_ITEMS[magicType]) {
-          const item = MAGIC_ITEMS[magicType][Math.floor(Math.random() * MAGIC_ITEMS[magicType].length)];
-          lootItems.push(item + ' (magic)');
-        }
-      });
+      if (treasure.magic && d100() <= treasure.magic.pct) {
+         let count = treasure.magic.count;
+         // Some types have '2d4' count etc (Type N)
+         if (treasure.magic.roll) count = rollDice(treasure.magic.roll); // Custom logic if we added roll to magic
+         
+         const items = [];
+         // Specific extras
+         if (treasure.magic.extra) {
+             treasure.magic.extra.forEach(itemType => {
+                 items.push(getMagicItem(itemType));
+             });
+         }
+         // General items
+         for(let i=0; i<count; i++) {
+             items.push(getMagicItem(treasure.magic.type));
+         }
+         if (items.length > 0) {
+             lootItems.push(...items);
+         }
+      }
 
       // Apply loot
       state.partyResources.gold += Math.floor(totalValue);
 
-      let lootMsg = `Found ${Math.floor(coinValue)} gp (coins)`;
-      if (lootItems.length > 0) {
-        lootMsg += ` + ${lootItems.join(', ')}`;
+      let lootMsg = lootItems.length > 0 ? lootItems.join(', ') : "Nothing valuable.";
+      if (lootItems.length === 0 && Math.floor(totalValue) === 0) {
+          lootMsg = "Nothing of value found.";
+      } else {
+          lootMsg += ` (Total Value: ${Math.floor(totalValue)} gp)`;
       }
-      if (Math.floor(totalValue) > Math.floor(coinValue)) {
-        lootMsg += ` = ${Math.floor(totalValue)} gp total value`;
-      }
-      lootMsg += ` in ${source}. (Type ${treasureType})`;
 
-      logEntry("Treasure", lootMsg, "loot");
+      logEntry("Treasure", `${source} (Type ${treasureType}): ${lootMsg}`, "loot");
       updateUI();
     }
+    
+    function getMagicItem(type) {
+        if (type === 'any') {
+             const categories = ['weapon/armor', 'potion', 'scroll', 'no-weapon'];
+             type = categories[Math.floor(Math.random() * categories.length)];
+        }
+        const list = MAGIC_ITEMS[type] || MAGIC_ITEMS['potion']; // Fallback
+        return list[Math.floor(Math.random() * list.length)] + " (Magic)";
+    }
+    
+    function d100() { return Math.floor(Math.random() * 100) + 1; }
 
     function bankLoot() {
       const cost = 50; // Restocking cost
