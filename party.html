@@ -337,6 +337,15 @@
       return selectedClass;
     }
 
+    // BECMI Equipment Prices (Rules Cyclopedia p. 63-64)
+    const PRICES = {
+      "Sword": 10, "Mace": 5, "Dagger": 3,
+      "Chain Mail": 40, "Leather": 20, "Shield": 10,
+      "Backpack": 5, "Rations (7 days)": 5, "Torch (6)": 1, "Waterskin": 1,
+      "Holy Symbol": 25, "Spellbook": 0, // Spellbook is free at lvl 1 usually, or cost varies. Assuming free starter.
+      "Thieves' Tools": 25
+    };
+
     function generateCharacter(level, method, isRetainer = false) {
       const stats = generateStats(method);
       const clsKey = selectClass(stats);
@@ -365,38 +374,51 @@
       }
 
       // Calc Gold
-      const gold = (d6() + d6() + d6()) * 10;
+      let gold = (d6() + d6() + d6()) * 10;
 
       // Calc AC (BECMI Rules Cyclopedia p. 27)
       const dexMod = getMod(stats.dex);
-      let baseAC = 10; // No armor
+      let baseAC = 9; // No armor (AC 9 in BECMI)
       let armorName = "None";
       let hasShield = false;
 
-      // BECMI Armor Rules
-      if (['fighter','cleric','dwarf','elf'].includes(clsKey)) {
-        baseAC = 5; // Chain mail
-        armorName = "Chain Mail";
-        hasShield = true; // Fighters, clerics, dwarves, elves get shields
+      // BECMI Armor Rules & Purchasing
+      // We try to buy best armor possible with starting gold
+      
+      let boughtArmor = false;
+      
+      // 1. Buy Armor
+      if (['fighter','cleric','dwarf','elf','halfling'].includes(clsKey)) {
+         // Try Chain Mail (40gp)
+         if (gold >= PRICES["Chain Mail"]) {
+            gold -= PRICES["Chain Mail"];
+            armorName = "Chain Mail";
+            baseAC = 5;
+            boughtArmor = true;
+         } else if (gold >= PRICES["Leather"]) {
+            gold -= PRICES["Leather"];
+            armorName = "Leather";
+            baseAC = 7;
+            boughtArmor = true;
+         }
       } else if (clsKey === 'thief') {
-        baseAC = 8; // Leather armor
-        armorName = "Leather";
-      } else if (clsKey === 'halfling') {
-        baseAC = 5; // Chain mail (halflings can wear it)
-        armorName = "Chain Mail";
-        // Halflings don't get shield bonus due to size
-      } else if (clsKey === 'magicuser') {
-        baseAC = 10; // No armor allowed
-        armorName = "None";
+         if (gold >= PRICES["Leather"]) {
+            gold -= PRICES["Leather"];
+            armorName = "Leather";
+            baseAC = 7;
+            boughtArmor = true;
+         }
       }
-
-      // Apply shield bonus (-1 AC) if character has one
-      if (hasShield) {
-        baseAC -= 1;
+      
+      // 2. Buy Shield (Fighter, Cleric, Dwarf, Elf only - Halfling no shield)
+      if (['fighter','cleric','dwarf','elf'].includes(clsKey) && gold >= PRICES["Shield"]) {
+         gold -= PRICES["Shield"];
+         hasShield = true;
+         baseAC -= 1; // Shield improves AC by 1
       }
-
+      
       // Apply dexterity bonus (BECMI allows dex AC bonuses)
-      let ac = baseAC - dexMod; // Lower AC is better
+      let ac = baseAC - dexMod; 
 
       // THAC0 Calculation
       let thac0Class = clsData.name.replace('-', ''); // Remove hyphens for table lookup
@@ -418,146 +440,116 @@
       const alignments = ["Lawful", "Neutral", "Chaotic"];
       const alignment = alignments[Math.floor(Math.random() * alignments.length)];
 
-      // Spells
+      // Spells (Logic omitted for brevity, same as before)
       let spells = { slots: {"1st":0,"2nd":0,"3rd":0,"4th":0,"5th":0,"6th":0,"7th":0,"8th":0,"9th":0}, known: [] };
+      
+      // ... (Existing spell logic) ... 
+      // RE-INSERT SPELL LOGIC HERE TO PREVENT BREAKING
+      // Since search_replace replaces the whole function, we need the full function content.
+      // I will implement a minimal spell restore or use existing blocks.
       
       // --- MAGIC-USER SPELLS ---
       if (clsKey === 'magicuser' || clsKey === 'elf') {
-        // Elf uses MU table? RC says Elves are same as MU but capped.
-        // MU Slots (Rules Cyclopedia)
         const muSlots = [
-          [1], [2], [2,1], [2,2], [2,2,1], [2,2,2], [3,2,2,1], [3,3,2,2], [3,3,3,2,1], // 1-9
-          [3,3,3,3,2], [4,3,3,3,2,1], [4,4,3,3,3,2], [4,4,4,3,3,2,1], [4,4,4,4,3,3,2], // 10-14
-          [5,4,4,4,4,3,2,1], [5,5,4,4,4,3,2,1], [6,5,5,4,4,3,2,1], [6,6,5,5,4,4,3,2], // 15-18
-          [7,6,6,5,5,4,4,3], [7,7,6,6,5,5,4,4], [8,7,7,6,6,5,5,4], [8,8,7,7,6,6,5,5], // 19-22
-          [9,8,8,7,7,6,6,5], [9,9,8,8,7,7,6,6], [9,9,9,8,8,7,7,6], [9,9,9,9,8,8,7,7], // 23-26
-          [9,9,9,9,9,8,8,7], [9,9,9,9,9,9,8,8], [9,9,9,9,9,9,9,8], [9,9,9,9,9,9,9,9], // 27-30
-          [9,9,9,9,9,9,9,9,1], [9,9,9,9,9,9,9,9,2], [9,9,9,9,9,9,9,9,3], // 31-33
-          [9,9,9,9,9,9,9,9,4], [9,9,9,9,9,9,9,9,5], [9,9,9,9,9,9,9,9,6]  // 34-36
+          [1], [2], [2,1], [2,2], [2,2,1], [2,2,2], [3,2,2,1], [3,3,2,2], [3,3,3,2,1], 
+          [3,3,3,3,2], [4,3,3,3,2,1], [4,4,3,3,3,2], [4,4,4,3,3,2,1], [4,4,4,4,3,3,2], 
+          [5,4,4,4,4,3,2,1], [5,5,4,4,4,3,2,1], [6,5,5,4,4,3,2,1], [6,6,5,5,4,4,3,2], 
+          [7,6,6,5,5,4,4,3], [7,7,6,6,5,5,4,4], [8,7,7,6,6,5,5,4], [8,8,7,7,6,6,5,5], 
+          [9,8,8,7,7,6,6,5], [9,9,8,8,7,7,6,6], [9,9,9,8,8,7,7,6], [9,9,9,9,8,8,7,7], 
+          [9,9,9,9,9,8,8,7], [9,9,9,9,9,9,8,8], [9,9,9,9,9,9,9,8], [9,9,9,9,9,9,9,9], 
+          [9,9,9,9,9,9,9,9,1], [9,9,9,9,9,9,9,9,2], [9,9,9,9,9,9,9,9,3], 
+          [9,9,9,9,9,9,9,9,4], [9,9,9,9,9,9,9,9,5], [9,9,9,9,9,9,9,9,6] 
         ];
-        
         const mySlots = muSlots[Math.min(level, 36) - 1] || [1];
         const suffixes = ["1st","2nd","3rd","4th","5th","6th","7th","8th","9th"];
-        
-        mySlots.forEach((count, idx) => {
-            if(idx < suffixes.length) spells.slots[suffixes[idx]] = count;
-        });
-
-        // Known spells logic
-        spells.known = [{name: "Read Magic", level: 1, memorized: true}]; // Always known
-        
-        // Add random spells for book based on slots (simplified: full book for level)
+        mySlots.forEach((count, idx) => { if(idx < suffixes.length) spells.slots[suffixes[idx]] = count; });
+        spells.known = [{name: "Read Magic", level: 1, memorized: true}];
         for (let i = 0; i < mySlots.length; i++) {
             const slvl = i + 1;
-            const count = Math.max(1, mySlots[i]); // Assume at least 1 known per level available
+            const count = Math.max(1, mySlots[i]);
             const pool = MU_SPELLS[slvl] || [];
             if(pool.length === 0) continue;
-            
-            for(let k=0; k < count + 1; k++) { // Know slightly more than slots
+            for(let k=0; k < count + 1; k++) {
                  const sp = pool[Math.floor(Math.random() * pool.length)];
-                 if(!spells.known.find(x => x.name === sp)) {
-                     spells.known.push({name: sp, level: slvl, memorized: (k < mySlots[i])});
-                 }
+                 if(!spells.known.find(x => x.name === sp)) spells.known.push({name: sp, level: slvl, memorized: (k < mySlots[i])});
             }
         }
       }
-
       // --- CLERIC SPELLS ---
       if (clsKey === 'cleric') {
-          // Cleric Slots (RC Table 4)
           const clSlots = [
-             [], [1], [2], [2,1], [2,2], [2,2,1], [3,2,2], [3,3,2,1], [3,3,3,2], // 1-9
-             [4,4,3,2,1], [4,4,3,3,2], [5,4,4,3,2,1], [5,5,4,4,3,2], [6,5,5,4,4,3], // 10-14
-             [6,6,5,5,4,4], [7,6,6,5,5,4], [7,7,6,6,5,5,1], [8,7,7,6,6,5,2], // 15-18
-             [8,8,7,7,6,6,3], [9,8,8,7,7,6,4], [9,9,8,8,7,7,5], [9,9,9,8,8,7,6], // 19-22
-             [9,9,9,9,8,8,7], [9,9,9,9,9,8,8], [9,9,9,9,9,9,8], [9,9,9,9,9,9,9], // 23-26
-             [9,9,9,9,9,9,9,1], [9,9,9,9,9,9,9,2], [9,9,9,9,9,9,9,3], // 27-29
-             [9,9,9,9,9,9,9,4], [9,9,9,9,9,9,9,5], [9,9,9,9,9,9,9,6], // 30-32
-             [9,9,9,9,9,9,9,7], [9,9,9,9,9,9,9,8], [9,9,9,9,9,9,9,9], [9,9,9,9,9,9,9,9] // 33-36
+             [], [1], [2], [2,1], [2,2], [2,2,1], [3,2,2], [3,3,2,1], [3,3,3,2], 
+             [4,4,3,2,1], [4,4,3,3,2], [5,4,4,3,2,1], [5,5,4,4,3,2], [6,5,5,4,4,3], 
+             [6,6,5,5,4,4], [7,6,6,5,5,4], [7,7,6,6,5,5,1], [8,7,7,6,6,5,2], 
+             [8,8,7,7,6,6,3], [9,8,8,7,7,6,4], [9,9,8,8,7,7,5], [9,9,9,8,8,7,6], 
+             [9,9,9,9,8,8,7], [9,9,9,9,9,8,8], [9,9,9,9,9,9,8], [9,9,9,9,9,9,9], 
+             [9,9,9,9,9,9,9,1], [9,9,9,9,9,9,9,2], [9,9,9,9,9,9,9,3], 
+             [9,9,9,9,9,9,9,4], [9,9,9,9,9,9,9,5], [9,9,9,9,9,9,9,6], 
+             [9,9,9,9,9,9,9,7], [9,9,9,9,9,9,9,8], [9,9,9,9,9,9,9,9], [9,9,9,9,9,9,9,9] 
           ];
-          
           let mySlots = [...(clSlots[Math.min(level, 36) - 1] || [])];
-          
-          // Wisdom Bonus (RC Table 3)
-          // 13-15: +1 1st
-          // 16-17: +1 1st, +1 2nd
-          // 18: +1 1st, +1 2nd, +1 3rd
-          if (stats.wis >= 13) {
-             if(!mySlots[0]) mySlots[0] = 0; 
-             mySlots[0] += 1;
-          }
-          if (stats.wis >= 16) {
-             if(!mySlots[1]) mySlots[1] = 0;
-             mySlots[1] += 1;
-          }
-          if (stats.wis >= 18) {
-             if(!mySlots[2]) mySlots[2] = 0;
-             mySlots[2] += 1;
-          }
-          
+          if (stats.wis >= 13) { if(!mySlots[0]) mySlots[0] = 0; mySlots[0] += 1; }
+          if (stats.wis >= 16) { if(!mySlots[1]) mySlots[1] = 0; mySlots[1] += 1; }
+          if (stats.wis >= 18) { if(!mySlots[2]) mySlots[2] = 0; mySlots[2] += 1; }
           const suffixes = ["1st","2nd","3rd","4th","5th","6th","7th"];
           mySlots.forEach((count, idx) => {
               if(idx < suffixes.length) spells.slots[suffixes[idx]] = count;
-              
-              // Clerics know ALL spells of the level they can cast
               if (count > 0) {
                   const slvl = idx + 1;
                   const pool = CLERIC_SPELLS[slvl] || [];
-                  pool.forEach(sp => {
-                      // Mark as "known" (Clerics pray for them, effectively know all)
-                      // We'll just list them all as available options
-                      if (!spells.known.find(s => s.name === sp)) {
-                          spells.known.push({name: sp, level: slvl, memorized: false});
-                      }
-                  });
+                  pool.forEach(sp => { if (!spells.known.find(s => s.name === sp)) spells.known.push({name: sp, level: slvl, memorized: false}); });
               }
           });
-          // For UI cleanliness, maybe we don't list EVERY cleric spell in the box, 
-          // but just say "All Level X". But user wants generation.
-          // Let's keep the list but maybe limit display if too long.
       }
 
       // Thief Skills
       let thiefSkills = null;
       if (clsKey === 'thief') {
         const dexMod = getMod(stats.dex);
-        // BECMI: Dex adjustment for Thief Skills (RC p. 10)
-        // Logic: +5% per +1 dex adj? No, specific table.
-        // RC Table: Dex 9-12 (0), 13-15 (+5% OL/FT/RT/PP/MS/HS), 16-17 (+10%), 18 (+15%)
-        // We'll just use simple 5% * mod logic which approximates it well enough
         const modVal = Math.max(0, dexMod * 5); 
-        
-        const lvlIdx = Math.min(level, 14); // Cap at 14 for table lookup, extrapolate if needed
+        const lvlIdx = Math.min(level, 14);
         const base = THIEF_TABLE[lvlIdx] || THIEF_TABLE[14];
-        
         thiefSkills = {
           pickLocks: Math.min(99, base.ol + modVal),
           findTraps: Math.min(99, base.ft + modVal),
           removeTraps: Math.min(99, base.rt + modVal),
-          climbWalls: base.cw, // No dex mod usually
+          climbWalls: base.cw, 
           moveSilently: Math.min(99, base.ms + modVal),
           hideInShadows: Math.min(99, base.hs + modVal),
-          pickPockets: Math.min(125, base.pp + modVal), // Can go over 100
-          detectNoise: base.hn, // Usually no dex mod
+          pickPockets: Math.min(125, base.pp + modVal), 
+          detectNoise: base.hn,
           readLanguages: base.rl || 0
         };
         if(level >= 4 && !thiefSkills.readLanguages) thiefSkills.readLanguages = 80;
       }
 
-      // Gear
+      // Gear Purchasing (Continued)
       let gear = [armorName];
-      if (['fighter','dwarf','elf'].includes(clsKey)) {
-        gear.push("Sword");
-        if (hasShield) gear.push("Shield");
+      if (hasShield) gear.push("Shield");
+      
+      // Weapons
+      if (['fighter','dwarf','elf','halfling'].includes(clsKey)) {
+         if(gold >= PRICES["Sword"]) { gold -= PRICES["Sword"]; gear.push("Sword"); }
+         else if(gold >= PRICES["Mace"]) { gold -= PRICES["Mace"]; gear.push("Mace"); } // Fallback
+         else { gold -= PRICES["Dagger"]; gear.push("Dagger"); }
+      } else if (clsKey === 'cleric') {
+         if(gold >= PRICES["Mace"]) { gold -= PRICES["Mace"]; gear.push("Mace"); }
+      } else if (clsKey === 'thief') {
+         if(gold >= PRICES["Sword"]) { gold -= PRICES["Sword"]; gear.push("Sword"); }
+         gold -= PRICES["Dagger"]; gear.push("Dagger");
+      } else if (clsKey === 'magicuser') {
+         gold -= PRICES["Dagger"]; gear.push("Dagger");
       }
-      if (clsKey === 'cleric') {
-        gear.push("Mace", "Holy Symbol");
-        if (hasShield) gear.push("Shield");
-      }
-      if (clsKey === 'halfling') gear.push("Sword"); // Halflings get swords but no shields
-      if (clsKey === 'thief') gear.push("Dagger", "Thieves' Tools");
-      if (clsKey === 'magicuser') gear.push("Dagger", "Spellbook");
-      gear.push("Backpack", "Rations (1wk)", "Torches (6)");
+      
+      // Misc Gear
+      if(gold >= PRICES["Backpack"]) { gold -= PRICES["Backpack"]; gear.push("Backpack"); }
+      if(gold >= PRICES["Rations (7 days)"]) { gold -= PRICES["Rations (7 days)"]; gear.push("Rations (7 days)"); }
+      if(gold >= PRICES["Waterskin"]) { gold -= PRICES["Waterskin"]; gear.push("Waterskin"); }
+      if(gold >= PRICES["Torch (6)"]) { gold -= PRICES["Torch (6)"]; gear.push("Torches (6)"); }
+      
+      if(clsKey === 'cleric' && gold >= PRICES["Holy Symbol"]) { gold -= PRICES["Holy Symbol"]; gear.push("Holy Symbol"); }
+      if(clsKey === 'thief' && gold >= PRICES["Thieves' Tools"]) { gold -= PRICES["Thieves' Tools"]; gear.push("Thieves' Tools"); }
+      if((clsKey === 'magicuser' || clsKey === 'elf')) gear.push("Spellbook"); // Assumed free/inheritance
 
       return {
         id: Date.now() + Math.random(),
@@ -576,10 +568,10 @@
         spells: spells,
         thiefSkills: thiefSkills,
         equipment: {
-          weapon: gear[1] || "Dagger",
+          weapon: gear.find(g => g==='Sword'||g==='Mace'||g==='Dagger') || "Dagger",
           armor: armorName,
-          shield: gear.includes("Shield") ? "Shield" : null,
-          backpack: ["Rations (7 days)", "Torch (6)", "Waterskin"],
+          shield: hasShield ? "Shield" : null,
+          backpack: gear.filter(g => !['Sword','Mace','Dagger','Shield','Chain Mail','Leather','None'].includes(g)),
           gold: gold
         },
         retainers: [],
@@ -921,7 +913,13 @@
         ` : ''}
 
         <div class="equipment">
-          <strong>Gear:</strong> ${[char.equipment.weapon, char.equipment.armor, ...(char.equipment.shield ? [char.equipment.shield] : [])].join(", ")}
+          <div style="margin-bottom:4px">
+             <span class="badge bg-gold">${char.equipment.gold} gp</span>
+             <strong>Gear:</strong> ${[char.equipment.weapon, char.equipment.armor, ...(char.equipment.shield ? [char.equipment.shield] : [])].join(", ")}
+          </div>
+          <div style="color:#64748b; font-style:italic">
+             ${char.equipment.backpack.join(", ")}
+          </div>
         </div>
 
         ${ !isRetainer ? `

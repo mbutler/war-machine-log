@@ -19,10 +19,10 @@ Rules Gap: Saving Throws and THAC0 tables are not displayed, which are critical 
 merchant.html (Merchant of Darokin)
 Rules Gap: Based more on the Gazetteer (GAZ11) economy than the generic Expert set trade rules. It lacks the specific "Demand Modifiers" based on location (e.g., selling Wood in a Desert should have a specific multiplier).
 Missing: No mechanic for Tax/Tariffs at borders, which is a huge gold sink in the rules.
-lab.html (Artificer's Lab)
-Rules Gap: The success formula 40 + (Lvl * 2)... is a homebrew approximation. The actual BECMI formula (Companion Set) involves a base chance minus spell level plus Intelligence bonuses, but it relies heavily on the specific value of the library relative to the item cost.
-Missing: No Recipe/Formula discovery mechanic. You can't just make a Golem; you need the tome for it.
-wilderness.html (Royal Cartographer)
+    lab.html (Artificer's Lab)
+    (Up to Date) - Correct BECMI formula and Formula Research mechanics implemented.
+
+    wilderness.html (Royal Cartographer)
 Rules Gap: Movement is simplified to "Days." BECMI tracks Movement Points (MP) per day (e.g., 12/24/36) vs Terrain Cost (e.g., 2/3 MP per hex).
 Rules Gap: Encounter Tables are hardcoded. It needs to reference the actual Level 1-3 Wilderness Encounter tables (Castle vs. Ruin vs. Lair probabilities).
 2. Gaps in the Suite (Missing Simulators)

@@ -121,6 +121,17 @@
          <button class="btn btn-sec" onclick="manualSet()" style="margin-top:8px">Update Date</button>
       </div>
 
+      <div style="border-top:1px solid #334155; padding-top:10px; margin-top:10px">
+         <label>Data Management</label>
+         <div class="row">
+            <button class="btn btn-primary" onclick="exportCalendarData()">Export JSON</button>
+            <label class="btn btn-sec" style="margin-bottom:0; cursor:pointer; text-align:center">
+               Import JSON
+               <input type="file" accept=".json" style="display:none" onchange="importCalendarData(this)">
+            </label>
+         </div>
+      </div>
+
     </div>
 
     <!-- RIGHT: Log & Trackers -->
@@ -183,6 +194,7 @@
     };
     
     let trackers = [];
+    let logs = [];
 
     // --- INIT ---
     function init() {
@@ -393,20 +405,29 @@
     }
 
     function logEntry(action, detail) {
+       logs.unshift({ action, detail, timestamp: Date.now() });
+       renderLog();
+    }
+    
+    function renderLog() {
        const log = document.getElementById('log');
-       if(log.innerText.includes("Time stands")) log.innerHTML = "";
+       if (logs.length === 0) {
+          log.innerHTML = '<div style="text-align:center; color:#64748b; padding-top:40px">Time stands still...</div>';
+          return;
+       }
        
-       const div = document.createElement('div');
-       div.className = 'log-entry';
-       div.innerHTML = `
-          <div class="log-time">${action}</div>
-          <div class="log-msg">${detail}</div>
-       `;
-       log.prepend(div);
+       log.innerHTML = logs.map(l => `
+          <div class="log-entry">
+             <div class="log-time">${l.action}</div>
+             <div class="log-msg">${l.detail}</div>
+          </div>
+       `).join('');
     }
     
     function clearLog() {
-       document.getElementById('log').innerHTML = '<div style="text-align:center; color:#64748b; padding-top:40px">Time stands still...</div>';
+       logs = [];
+       renderLog();
+       saveData();
     }
 
     function manualSet() {
@@ -422,7 +443,8 @@
     function saveData() {
        const data = {
           clock: clock,
-          trackers: trackers
+          trackers: trackers,
+          logs: logs
        };
        localStorage.setItem('master_clock', JSON.stringify(data));
     }
@@ -430,11 +452,64 @@
     function loadData() {
        const raw = localStorage.getItem('master_clock');
        if(raw) {
-          const data = JSON.parse(raw);
-          if(data.clock) clock = data.clock;
-          if(data.trackers) trackers = data.trackers;
+          try {
+            const data = JSON.parse(raw);
+            if(data.clock) clock = data.clock;
+            if(data.trackers) trackers = data.trackers;
+            if(data.logs) logs = data.logs;
+          } catch(e) { console.error(e); }
        }
        renderTrackers();
+       renderLog();
+    }
+
+    function exportCalendarData() {
+       const data = {
+          clock: clock,
+          trackers: trackers,
+          logs: logs,
+          exportDate: new Date().toISOString()
+       };
+       
+       const dataStr = JSON.stringify(data, null, 2);
+       const blob = new Blob([dataStr], {type: "application/json"});
+       const url = URL.createObjectURL(blob);
+       const link = document.createElement('a');
+       link.href = url;
+       link.download = `calendar_log_${clock.year}_${MONTHS[clock.month]}.json`;
+       document.body.appendChild(link);
+       link.click();
+       document.body.removeChild(link);
+    }
+
+    function importCalendarData(input) {
+       const file = input.files[0];
+       if(!file) return;
+       
+       const reader = new FileReader();
+       reader.onload = function(e) {
+          try {
+             const data = JSON.parse(e.target.result);
+             if(data.clock) {
+                clock = data.clock;
+                trackers = data.trackers || [];
+                logs = data.logs || [];
+                
+                saveData(); // Update local storage
+                updateDisplay();
+                renderTrackers();
+                renderLog();
+                
+                alert("Calendar data loaded successfully.");
+             } else {
+                alert("Invalid calendar file.");
+             }
+          } catch(err) {
+             alert("Error reading file: " + err.message);
+          }
+       };
+       reader.readAsText(file);
+       input.value = '';
     }
 
     init();
