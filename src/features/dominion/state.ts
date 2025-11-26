@@ -9,6 +9,7 @@ import { processDominionTurn, projectDominionTurn, type DominionProjection } fro
 import { createId } from "../../utils/id";
 import { startTimedAction } from "../calendar/actions";
 import { onCalendarEvent } from "../calendar/state";
+import { recordTaxIncome, recordTithe, recordExpense } from "../ledger/state";
 
 export type DominionListener = (state: DominionState) => void;
 
@@ -67,13 +68,27 @@ export function clearDominionLog() {
 
 export function processDominionSeason(): DominionLogEntry {
   let logEntry: DominionLogEntry | null = null;
+  let grossIncome = 0;
+  let titheAmount = 0;
+  let expenses = 0;
+  let holidaySpending = 0;
   const state = getDominionState();
   if (state.activeTrackerId) {
     throw new Error("Season processing already underway via the calendar.");
   }
 
   updateState((state) => {
-    const result = processDominionTurn(state.dominion, state.dominion.turn);
+    const turn = state.dominion.turn;
+    const result = processDominionTurn(state.dominion, turn);
+
+    // Capture values for ledger recording
+    const population = Math.max(0, state.dominion.families);
+    const resourceValue = state.dominion.resources.reduce((sum, r) => sum + r.value, 0);
+    grossIncome = population * (turn.taxRate + resourceValue);
+    titheAmount = Math.floor(grossIncome * (turn.tithePercent / 100));
+    expenses = turn.expenses;
+    holidaySpending = turn.holidaySpending;
+
     state.dominion.treasury = result.treasuryAfter;
     state.dominion.confidence = result.finalConfidence;
     state.dominion.families = result.familiesAfter;
@@ -84,6 +99,20 @@ export function processDominionSeason(): DominionLogEntry {
 
   if (!logEntry) {
     throw new Error("Failed to process dominion season");
+  }
+
+  // Record transactions in the central ledger
+  if (grossIncome > 0) {
+    recordTaxIncome(grossIncome, logEntry.season);
+  }
+  if (titheAmount > 0) {
+    recordTithe(titheAmount, `Tithe: ${logEntry.season}`);
+  }
+  if (expenses > 0) {
+    recordExpense(expenses, "dominion", "misc", `Dominion expenses: ${logEntry.season}`);
+  }
+  if (holidaySpending > 0) {
+    recordExpense(holidaySpending, "dominion", "misc", `Holiday spending: ${logEntry.season}`);
   }
 
   const tracker = startTimedAction({

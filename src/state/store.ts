@@ -3,12 +3,14 @@ import {
   STATE_VERSION,
   WarMachineState,
   createDefaultLabState,
+  createDefaultLedgerState,
   createDefaultSiegeState,
   createDefaultStrongholdState,
 } from "./schema";
 import type {
   DominionState,
   LabState,
+  LedgerState,
   MerchantJourney,
   MerchantState,
   SiegeState,
@@ -154,6 +156,7 @@ function applyStateMigrations(state: WarMachineState) {
   state.calendar = ensureCalendarState(state.calendar);
   state.dominion = ensureDominionState(state.dominion);
   state.merchant = ensureMerchantState(state.merchant);
+  state.ledger = ensureLedgerState(state.ledger);
 }
 
 function ensureStrongholdState(state?: StrongholdState): StrongholdState {
@@ -377,5 +380,16 @@ function sanitizeTactic(value: unknown, fallback: SiegeTactic): SiegeTactic {
     value === "withdraw"
     ? value
     : fallback;
+}
+
+function ensureLedgerState(state?: LedgerState): LedgerState {
+  if (!state) {
+    return createDefaultLedgerState();
+  }
+  return {
+    balance: typeof state.balance === "number" ? state.balance : 0,
+    transactions: Array.isArray(state.transactions) ? state.transactions : [],
+    recurringExpenses: Array.isArray(state.recurringExpenses) ? state.recurringExpenses : [],
+  };
 }
 

@@ -18,6 +18,7 @@ import "./features/treasure";
 import "./features/lab";
 import "./features/siege";
 import "./features/calendar";
+import "./features/ledger";
 import { onCalendarEvent } from "./features/calendar/state";
 
 const root = document.getElementById("app");

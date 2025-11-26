@@ -14,6 +14,7 @@ import { getState, subscribe, updateState } from "../../state/store";
 import { TRADE_GOODS, TRANSPORT_CAPACITY, GUARD_COSTS, GUILD_REDUCTION } from "./constants";
 import { startTimedAction, cancelTimedAction } from "../calendar/actions";
 import { onCalendarEvent } from "../calendar/state";
+import { recordTradeProfit } from "../ledger/state";
 
 export type MerchantListener = (state: MerchantState) => void;
 
@@ -401,14 +402,30 @@ onCalendarEvent((event) => {
   if (!trackerIds.size) {
     return;
   }
+
+  // Collect journeys that completed to record in ledger after state update
+  const completedJourneys: { id: string; profit: number; goodName: string }[] = [];
+
   updateState((state) => {
     state.merchant.ledger.forEach((entry) => {
       if (entry.trackerId && trackerIds.has(entry.trackerId)) {
         entry.trackerId = null;
         entry.status = "complete";
         entry.deliveredAt = Date.now();
+
+        // Queue for ledger recording
+        completedJourneys.push({
+          id: entry.id,
+          profit: entry.netProfit,
+          goodName: TRADE_GOODS[entry.tradeGood]?.name ?? entry.tradeGood,
+        });
       }
     });
+  });
+
+  // Record completed journeys in the central ledger
+  completedJourneys.forEach((journey) => {
+    recordTradeProfit(journey.profit, journey.goodName, journey.id);
   });
 });
 

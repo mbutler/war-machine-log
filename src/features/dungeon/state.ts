@@ -1,5 +1,4 @@
 import type { DungeonEncounter, DungeonLogEntry, DungeonObstacle } from "../../state/schema";
-import type { DungeonEncounter, DungeonLogEntry, DungeonObstacle } from "../../state/schema";
 import { DEFAULT_STATE, DungeonStatus, DungeonState } from "../../state/schema";
 import { getState, subscribe, updateState } from "../../state/store";
 import { calculatePartySnapshot } from "../party/resources";
@@ -10,6 +9,7 @@ import { MAGIC_ITEMS, TREASURE_TYPES } from "../../rules/dungeon/treasure";
 import { createId } from "../../utils/id";
 import { markSpellExpended } from "../party/state";
 import { describeClock, advanceClock, addCalendarLog } from "../calendar/state";
+import { recordLoot } from "../ledger/state";
 
 type DungeonListener = (state: ReturnType<typeof getDungeonState>) => void;
 
@@ -406,10 +406,16 @@ export function lootRoom() {
 export function bankLoot() {
   updateState((state) => {
     const dungeon = state.dungeon;
-    dungeon.bankedGold += dungeon.loot;
-    addLogEntry(dungeon, "loot", "Returned to safety", `Banked ${dungeon.loot} gp.`);
+    const lootAmount = dungeon.loot;
+    dungeon.bankedGold += lootAmount;
+    addLogEntry(dungeon, "loot", "Returned to safety", `Banked ${lootAmount} gp.`);
     dungeon.loot = 0;
     dungeon.status = "idle";
+
+    // Record in the central ledger
+    if (lootAmount > 0) {
+      recordLoot(lootAmount, `Dungeon loot (depth ${dungeon.depth})`);
+    }
   });
 }
 

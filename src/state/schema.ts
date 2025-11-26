@@ -569,6 +569,70 @@ export interface DungeonState {
   log: DungeonLogEntry[];
 }
 
+// ============================================================================
+// LEDGER (Gold Tracking)
+// ============================================================================
+
+export type LedgerSource =
+  | "party"
+  | "dominion"
+  | "merchant"
+  | "lab"
+  | "stronghold"
+  | "dungeon"
+  | "treasure"
+  | "wilderness"
+  | "siege"
+  | "manual";
+
+export type LedgerCategory =
+  | "loot"           // Monster treasure, dungeon finds
+  | "tax"            // Dominion tax income
+  | "trade"          // Merchant profits/losses
+  | "wage"           // Retainer/hireling wages
+  | "construction"   // Stronghold building costs
+  | "research"       // Magic item creation, spell research
+  | "equipment"      // Buy/sell gear
+  | "supplies"       // Rations, torches, ammunition
+  | "tithe"          // Religious contributions
+  | "misc";          // Other transactions
+
+export interface LedgerTransaction {
+  id: string;
+  timestamp: number;           // Real-world timestamp
+  calendarYear: number;        // In-game year
+  calendarMonth: number;       // In-game month (0-11)
+  calendarDay: number;         // In-game day (1-28)
+  source: LedgerSource;        // Which module initiated
+  category: LedgerCategory;    // Type of transaction
+  amount: number;              // Positive = income, negative = expense
+  balance: number;             // Running balance after transaction
+  description: string;         // Human-readable description
+  linkedEntityId?: string;     // Optional link to related entity (project, journey, etc.)
+  linkedEntityType?: string;   // Type of linked entity
+}
+
+export interface LedgerRecurringExpense {
+  id: string;
+  name: string;
+  amount: number;
+  frequency: "daily" | "weekly" | "monthly" | "seasonal";
+  source: LedgerSource;
+  category: LedgerCategory;
+  nextDueYear: number;
+  nextDueMonth: number;
+  nextDueDay: number;
+  active: boolean;
+  linkedEntityId?: string;
+  linkedEntityType?: string;
+}
+
+export interface LedgerState {
+  balance: number;                        // Current total gold
+  transactions: LedgerTransaction[];      // Transaction history
+  recurringExpenses: LedgerRecurringExpense[];  // Scheduled payments (wages, etc.)
+}
+
 export interface WarMachineState {
   meta: {
     version: string;
@@ -584,6 +648,7 @@ export interface WarMachineState {
   treasure: TreasureState;
   lab: LabState;
   dungeon: DungeonState;
+  ledger: LedgerState;
 }
 
 const STRONGHOLD_DEFAULT_STATE: StrongholdState = {
@@ -705,6 +770,16 @@ export function createDefaultSiegeState(): SiegeState {
   return JSON.parse(JSON.stringify(SIEGE_DEFAULT_STATE));
 }
 
+const LEDGER_DEFAULT_STATE: LedgerState = {
+  balance: 0,
+  transactions: [],
+  recurringExpenses: [],
+};
+
+export function createDefaultLedgerState(): LedgerState {
+  return JSON.parse(JSON.stringify(LEDGER_DEFAULT_STATE));
+}
+
 export const DEFAULT_STATE: WarMachineState = {
   meta: {
     version: STATE_VERSION,
@@ -813,5 +888,6 @@ export const DEFAULT_STATE: WarMachineState = {
     status: "idle",
     log: [],
   },
+  ledger: createDefaultLedgerState(),
 };
 
