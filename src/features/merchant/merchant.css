@@ -85,6 +85,16 @@
   color: #f87171;
 }
 
+.merchant-badge.transit {
+  background: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+}
+
+.merchant-badge.delivered {
+  background: rgba(139, 92, 246, 0.15);
+  color: #c4b5fd;
+}
+
 .merchant-grid .input-group {
   display: flex;
   flex-direction: column;
@@ -99,5 +109,14 @@
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+}
+
+.merchant-transit-banner {
+  border-left: 3px solid rgba(59, 130, 246, 0.8);
+  background: rgba(59, 130, 246, 0.08);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  color: #bfdbfe;
 }
 

@@ -1,6 +1,8 @@
 import type { SiegeForce, SiegeState, SiegeTactic } from "../../state/schema";
 import { getState, subscribe, updateState } from "../../state/store";
 import { resolveBattle } from "./logic";
+import { startTimedAction, cancelTimedAction } from "../calendar/actions";
+import { onCalendarEvent } from "../calendar/state";
 
 const LOG_LIMIT = 15;
 
@@ -53,6 +55,23 @@ export function updateModifier(side: ModifierSide, key: AttackerModifierKey | De
 export function rollBattle() {
   const current = getSiegeState();
   const { logEntry } = resolveBattle(current);
+  const recoveryDays = calculateRecoveryDays(logEntry.attackerLosses, logEntry.defenderLosses);
+  if (recoveryDays > 0) {
+    const trackerUnit = recoveryDays >= 14 ? "week" : "day";
+    const duration = trackerUnit === "week" ? Math.max(1, Math.ceil(recoveryDays / 7)) : recoveryDays;
+    const tracker = startTimedAction({
+      name: `Siege Recovery: ${logEntry.winner}`,
+      duration,
+      unit: trackerUnit,
+      kind: "siege",
+      blocking: false,
+    });
+    if (tracker) {
+      logEntry.recoveryTrackerId = tracker.trackerId;
+      logEntry.recoveryReady = false;
+      logEntry.recoveryDays = recoveryDays;
+    }
+  }
   mutateSiege((draft) => {
     draft.log.unshift(logEntry);
     draft.log = draft.log.slice(0, LOG_LIMIT);
@@ -61,6 +80,12 @@ export function rollBattle() {
 }
 
 export function clearSiegeLog() {
+  const state = getSiegeState();
+  state.log.forEach((entry) => {
+    if (entry.recoveryTrackerId) {
+      cancelTimedAction(entry.recoveryTrackerId);
+    }
+  });
   mutateSiege((draft) => {
     draft.log = [];
   });
@@ -72,9 +97,38 @@ export function applySiegeCasualties(entryId: string) {
     if (!entry || entry.applied) {
       return;
     }
+    if (entry.recoveryTrackerId && entry.recoveryReady === false) {
+      return;
+    }
     draft.attacker.troops = Math.max(0, draft.attacker.troops - entry.attackerLosses);
     draft.defender.troops = Math.max(0, draft.defender.troops - entry.defenderLosses);
     entry.applied = true;
   });
 }
+
+function calculateRecoveryDays(attackerLosses: number, defenderLosses: number): number {
+  const total = attackerLosses + defenderLosses;
+  if (total <= 0) {
+    return 0;
+  }
+  return Math.max(1, Math.ceil(total / 200));
+}
+
+onCalendarEvent((event) => {
+  if (event.type !== "timers-expired") {
+    return;
+  }
+  const trackerIds = new Set(event.trackers.filter((tracker) => tracker.kind === "siege").map((tracker) => tracker.id));
+  if (!trackerIds.size) {
+    return;
+  }
+  mutateSiege((draft) => {
+    draft.log.forEach((entry) => {
+      if (entry.recoveryTrackerId && trackerIds.has(entry.recoveryTrackerId)) {
+        entry.recoveryTrackerId = null;
+        entry.recoveryReady = true;
+      }
+    });
+  });
+});
 

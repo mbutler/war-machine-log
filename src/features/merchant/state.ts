@@ -12,10 +12,17 @@ import type {
 } from "../../state/schema";
 import { getState, subscribe, updateState } from "../../state/store";
 import { TRADE_GOODS, TRANSPORT_CAPACITY, GUARD_COSTS, GUILD_REDUCTION } from "./constants";
+import { startTimedAction, cancelTimedAction } from "../calendar/actions";
+import { onCalendarEvent } from "../calendar/state";
 
 export type MerchantListener = (state: MerchantState) => void;
 
 const BASE_BORDER_TAX = 0.1;
+const TRANSPORT_PACE_MPD: Record<TransportType, number> = {
+  wagon: 18,
+  ship: 72,
+  camel: 28,
+};
 
 export function getMerchantState(): MerchantState {
   return sanitizeMerchantState(getState().merchant);
@@ -42,6 +49,12 @@ export function recomputePreview() {
 }
 
 export function resetTreasury(amount = 10000) {
+  const state = getMerchantState();
+  state.ledger.forEach((entry) => {
+    if (entry.trackerId) {
+      cancelTimedAction(entry.trackerId);
+    }
+  });
   updateState((state) => {
     state.merchant.form.treasury = amount;
     state.merchant.ledger = [];
@@ -53,6 +66,9 @@ export function undoLedgerEntry(entryId: string) {
   updateState((state) => {
     const entry = state.merchant.ledger.find((journey) => journey.id === entryId);
     if (!entry) return;
+    if (entry.trackerId) {
+      cancelTimedAction(entry.trackerId);
+    }
     state.merchant.ledger = state.merchant.ledger.filter((journey) => journey.id !== entryId);
     state.merchant.form.treasury -= entry.netProfit;
   });
@@ -60,6 +76,9 @@ export function undoLedgerEntry(entryId: string) {
 
 export function makeJourney(): MerchantJourney | null {
   let journey: MerchantJourney | null = null;
+  let travelDays = 0;
+  let destinationTerrain: TerrainKey = "plains";
+  let houseName = "";
 
   updateState((state) => {
     const merchant = sanitizeMerchantState(state.merchant);
@@ -73,6 +92,10 @@ export function makeJourney(): MerchantJourney | null {
     if (!preview.valid) {
       throw new Error("Unable to compute logistics; check inputs.");
     }
+
+    travelDays = estimateTravelDays(form);
+    destinationTerrain = form.destinationTerrain;
+    houseName = form.houseName;
 
     const eventOutcome = simulateJourney(form, preview);
     const netProfit = eventOutcome.netProfit;
@@ -89,11 +112,19 @@ export function makeJourney(): MerchantJourney | null {
       eventSummary: eventOutcome.eventMsg,
       marketSummary: eventOutcome.marketMsg,
       details: eventOutcome.detailMsg,
+      status: "pending",
+      trackerId: null,
+      travelDays,
+      deliveredAt: null,
     };
 
     state.merchant.ledger.unshift(journey);
     state.merchant.preview = calculatePreview(form);
   });
+
+  if (journey) {
+    assignJourneyTimer(journey.id, travelDays, houseName, destinationTerrain);
+  }
 
   return journey;
 }
@@ -272,6 +303,50 @@ function rollDice(input: string): number {
   return Math.max(1, total + mod);
 }
 
+function assignJourneyTimer(id: string, travelDays: number, houseName: string, destination: TerrainKey) {
+  if (!id || travelDays <= 0) {
+    return;
+  }
+  const unit = travelDays >= 14 ? "week" : "day";
+  const duration = unit === "week" ? Math.max(1, Math.ceil(travelDays / 7)) : travelDays;
+  const tracker = startTimedAction({
+    name: `Merchant: ${houseName || "Caravan"} → ${formatTerrainLabel(destination)}`,
+    duration,
+    unit,
+    kind: "merchant",
+    blocking: false,
+  });
+  updateState((state) => {
+    const entry = state.merchant.ledger.find((journey) => journey.id === id);
+    if (!entry) return;
+    entry.travelDays = travelDays;
+    if (!tracker) {
+      entry.status = "complete";
+      entry.trackerId = null;
+      entry.deliveredAt = Date.now();
+      return;
+    }
+    entry.status = "pending";
+    entry.trackerId = tracker.trackerId;
+    entry.deliveredAt = null;
+  });
+}
+
+function estimateTravelDays(form: MerchantState["form"]): number {
+  const pace = TRANSPORT_PACE_MPD[form.transport] ?? 20;
+  const distance = Math.max(1, form.distance);
+  let modifier = 1;
+  if (form.guardLevel === "heavy") modifier = 0.8;
+  else if (form.guardLevel === "light") modifier = 1.1;
+  else if (form.guardLevel === "none") modifier = 1.15;
+  const adjustedPace = Math.max(1, Math.floor(pace * modifier));
+  return Math.max(1, Math.ceil(distance / adjustedPace));
+}
+
+function formatTerrainLabel(terrain: TerrainKey): string {
+  return terrain.charAt(0).toUpperCase() + terrain.slice(1);
+}
+
 function sanitizeMerchantState(state: MerchantState | undefined): MerchantState {
   if (
     !state ||
@@ -299,12 +374,41 @@ function sanitizeMerchantState(state: MerchantState | undefined): MerchantState 
     };
   }
 
+  const ledger = Array.isArray(state.ledger)
+    ? state.ledger.map((entry) => ({
+        ...entry,
+        status: entry.status === "pending" ? "pending" : "complete",
+        trackerId: entry.trackerId ?? null,
+        travelDays: entry.travelDays,
+        deliveredAt: typeof entry.deliveredAt === "number" ? entry.deliveredAt : entry.status === "complete" ? entry.timestamp : null,
+      }))
+    : [];
+
   return {
     form: {
       ...state.form,
     },
     preview: state.preview ?? invalidPreview("Enter cargo value > 0."),
-    ledger: Array.isArray(state.ledger) ? state.ledger : [],
+    ledger,
   };
 }
+
+onCalendarEvent((event) => {
+  if (event.type !== "timers-expired") {
+    return;
+  }
+  const trackerIds = new Set(event.trackers.filter((tracker) => tracker.kind === "merchant").map((tracker) => tracker.id));
+  if (!trackerIds.size) {
+    return;
+  }
+  updateState((state) => {
+    state.merchant.ledger.forEach((entry) => {
+      if (entry.trackerId && trackerIds.has(entry.trackerId)) {
+        entry.trackerId = null;
+        entry.status = "complete";
+        entry.deliveredAt = Date.now();
+      }
+    });
+  });
+});
 

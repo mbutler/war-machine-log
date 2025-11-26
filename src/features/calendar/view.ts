@@ -1,4 +1,4 @@
-import type { CalendarState, CalendarTracker } from "../../state/schema";
+import type { CalendarState, CalendarTracker, CalendarTrackerKind } from "../../state/schema";
 import { createPanel } from "../../layout/panels";
 import { showNotification } from "../../layout/notifications";
 import {
@@ -57,6 +57,17 @@ const CONTROL_GROUPS: ControlGroup[] = [
     ],
   },
 ];
+
+const TRACKER_KIND_LABELS: Record<CalendarTrackerKind, string> = {
+  lab: "Lab",
+  stronghold: "Stronghold",
+  merchant: "Trade",
+  dominion: "Dominion",
+  siege: "Siege",
+  wilderness: "Wilderness",
+  dungeon: "Dungeon",
+  other: "Other",
+};
 
 export function renderCalendarPanel(target: HTMLElement) {
   const { element, body } = createPanel(
@@ -383,7 +394,8 @@ function renderTrackers(container: HTMLElement, trackers: CalendarTracker[]) {
 
   trackers.forEach((tracker) => {
     const row = document.createElement("div");
-    row.className = `calendar-tracker${tracker.remainingMinutes <= 0 ? " expired" : ""}`;
+    row.className = `calendar-tracker${tracker.blocking ? " blocking" : ""}`;
+    row.dataset.kind = tracker.kind;
 
     const info = document.createElement("div");
     info.className = "calendar-tracker-info";
@@ -392,10 +404,23 @@ function renderTrackers(container: HTMLElement, trackers: CalendarTracker[]) {
     name.textContent = tracker.name;
     info.appendChild(name);
 
+    const badgeRow = document.createElement("div");
+    badgeRow.className = "calendar-tracker-badges";
+    const kindBadge = document.createElement("span");
+    kindBadge.className = `calendar-kind-badge calendar-kind-${tracker.kind}`;
+    kindBadge.textContent = TRACKER_KIND_LABELS[tracker.kind] ?? "Other";
+    badgeRow.appendChild(kindBadge);
+    if (tracker.blocking) {
+      const blockingBadge = document.createElement("span");
+      blockingBadge.className = "calendar-kind-badge blocking";
+      blockingBadge.textContent = "Blocking";
+      badgeRow.appendChild(blockingBadge);
+    }
+    info.appendChild(badgeRow);
+
     const remaining = document.createElement("span");
     remaining.className = "nav-meta";
-    remaining.textContent =
-      tracker.remainingMinutes <= 0 ? "Expired" : `${formatDuration(tracker.remainingMinutes)} remaining`;
+    remaining.textContent = `${formatDuration(tracker.remainingMinutes)} remaining`;
     info.appendChild(remaining);
 
     const total = document.createElement("span");
@@ -403,11 +428,21 @@ function renderTrackers(container: HTMLElement, trackers: CalendarTracker[]) {
     total.textContent = `Duration ${formatDuration(tracker.initialMinutes)}`;
     info.appendChild(total);
 
+    const started = document.createElement("span");
+    started.className = "nav-meta";
+    started.textContent = `Started ${new Date(tracker.startedAt).toLocaleString()}`;
+    info.appendChild(started);
+
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
-    removeBtn.className = "button";
-    removeBtn.textContent = "Dismiss";
-    removeBtn.addEventListener("click", () => removeCalendarTracker(tracker.id));
+    removeBtn.className = tracker.blocking ? "button danger" : "button";
+    removeBtn.textContent = tracker.blocking ? "Abort" : "Cancel";
+    removeBtn.addEventListener("click", () => {
+      if (tracker.blocking && !window.confirm("Abort this blocking timer?")) {
+        return;
+      }
+      removeCalendarTracker(tracker.id);
+    });
 
     row.append(info, removeBtn);
     container.appendChild(row);

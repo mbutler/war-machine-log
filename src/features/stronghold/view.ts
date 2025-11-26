@@ -3,12 +3,14 @@ import { showNotification } from "../../layout/notifications";
 import type { StrongholdState } from "../../state/schema";
 import {
   addComponent,
+  cancelStrongholdConstruction,
   exportStrongholdPlan,
   getStrongholdState,
   removeComponent,
   resetStrongholdState,
   setStrongholdName,
   setTerrainModifier,
+  startStrongholdConstruction,
   subscribeToStronghold,
   updateComponentQuantity,
 } from "./state";
@@ -111,10 +113,33 @@ export function renderStrongholdPanel(target: HTMLElement) {
   summaryHeading.textContent = "Project Summary";
   const summaryGrid = document.createElement("div");
   summaryGrid.className = "stat-grid stronghold-summary-grid";
-  summaryCard.append(summaryHeading, summaryGrid);
+  const statusNotice = document.createElement("div");
+  statusNotice.className = "stronghold-status";
+  summaryCard.append(summaryHeading, summaryGrid, statusNotice);
 
   const actionGroup = document.createElement("div");
   actionGroup.className = "stronghold-actions";
+  const buildBtn = document.createElement("button");
+  buildBtn.type = "button";
+  buildBtn.className = "button primary";
+  buildBtn.textContent = "Start Construction";
+  buildBtn.addEventListener("click", () => {
+    const result = startStrongholdConstruction();
+    if (!result.success) {
+      showNotification({
+        title: "Cannot start construction",
+        message: result.error ?? "Unknown error.",
+        variant: "warning",
+      });
+      return;
+    }
+    showNotification({
+      title: "Project scheduled",
+      message: "Construction timer added to the calendar.",
+      variant: "success",
+    });
+  });
+
   const exportBtn = document.createElement("button");
   exportBtn.type = "button";
   exportBtn.className = "button";
@@ -140,7 +165,24 @@ export function renderStrongholdPanel(target: HTMLElement) {
     }
   });
 
-  actionGroup.append(exportBtn, resetBtn);
+  const cancelBuildBtn = document.createElement("button");
+  cancelBuildBtn.type = "button";
+  cancelBuildBtn.className = "button danger";
+  cancelBuildBtn.textContent = "Abort Build";
+  cancelBuildBtn.hidden = true;
+  cancelBuildBtn.addEventListener("click", () => {
+    if (!window.confirm("Cancel the active construction timer?")) {
+      return;
+    }
+    cancelStrongholdConstruction();
+    showNotification({
+      title: "Construction canceled",
+      message: "Timer removed from the calendar.",
+      variant: "info",
+    });
+  });
+
+  actionGroup.append(buildBtn, exportBtn, resetBtn, cancelBuildBtn);
   overviewColumn.append(nameField, terrainField, summaryCard, actionGroup);
 
   // --- Builder column ---
@@ -253,6 +295,12 @@ export function renderStrongholdPanel(target: HTMLElement) {
       { label: "Build Time", value: `${summary.buildDays.toLocaleString()} days` },
       { label: "Engineers", value: summary.engineers.toLocaleString() },
     ];
+    const activeProject = state.projects.find((project) => project.id === state.activeProjectId && project.status === "active");
+    stats.push({
+      label: "Active Build",
+      value: activeProject ? activeProject.name : "Idle",
+      meta: state.activeTrackerId ? "Tracking via calendar timer" : undefined,
+    });
 
     stats.forEach((stat) => {
       const statNode = document.createElement("div");
@@ -264,8 +312,15 @@ export function renderStrongholdPanel(target: HTMLElement) {
       val.className = "stat-value";
       val.textContent = stat.value;
       statNode.append(lbl, val);
+      if (stat.meta) {
+        const meta = document.createElement("div");
+        meta.className = "nav-meta";
+        meta.textContent = stat.meta;
+        statNode.appendChild(meta);
+      }
       summaryGrid.appendChild(statNode);
     });
+    return summary;
   }
 
   function renderComponents(state: StrongholdState) {
@@ -339,8 +394,25 @@ export function renderStrongholdPanel(target: HTMLElement) {
   function sync(state: StrongholdState) {
     syncName(state.projectName);
     syncTerrain(String(state.terrainMod));
-    renderSummary(state);
+    const summary = renderSummary(state);
     renderComponents(state);
+    const hasPlan = summary.items.length > 0 && summary.buildDays > 0;
+    const activeProject = state.projects.find((project) => project.id === state.activeProjectId && project.status === "active");
+    const building = Boolean(state.activeTrackerId);
+    buildBtn.disabled = !hasPlan || building;
+    buildBtn.textContent = building ? "Construction In Progress" : "Start Construction";
+    const lastComplete = state.projects.find((project) => project.status === "complete");
+    cancelBuildBtn.hidden = !building;
+    statusNotice.dataset.state = building ? "active" : "idle";
+    if (building && activeProject) {
+      statusNotice.textContent = `Building ${activeProject.name}. Track progress in the calendar.`;
+    } else if (building) {
+      statusNotice.textContent = "Construction running — track progress in the calendar.";
+    } else if (lastComplete) {
+      statusNotice.textContent = `Last completed: ${lastComplete.name}`;
+    } else {
+      statusNotice.textContent = "No builds underway.";
+    }
   }
 
   const unsubscribe = subscribeToStronghold(sync);

@@ -6,7 +6,20 @@ import {
   createDefaultSiegeState,
   createDefaultStrongholdState,
 } from "./schema";
-import type { LabState, SiegeState, SiegeForce, SiegeTactic, StrongholdState, TreasureState } from "./schema";
+import type {
+  DominionState,
+  LabState,
+  MerchantJourney,
+  MerchantState,
+  SiegeState,
+  SiegeForce,
+  SiegeTactic,
+  StrongholdProject,
+  StrongholdState,
+  TreasureState,
+  SiegeBattleLogEntry,
+} from "./schema";
+import { createId } from "../utils/id";
 
 type Listener = (state: WarMachineState) => void;
 
@@ -139,6 +152,8 @@ function applyStateMigrations(state: WarMachineState) {
   state.lab = ensureLabState(state.lab);
   state.siege = ensureSiegeState(state.siege);
   state.calendar = ensureCalendarState(state.calendar);
+  state.dominion = ensureDominionState(state.dominion);
+  state.merchant = ensureMerchantState(state.merchant);
 }
 
 function ensureStrongholdState(state?: StrongholdState): StrongholdState {
@@ -146,11 +161,33 @@ function ensureStrongholdState(state?: StrongholdState): StrongholdState {
     return createDefaultStrongholdState();
   }
   const defaults = createDefaultStrongholdState();
+  const components = Array.isArray(state.components) ? state.components : defaults.components;
+  const projects = Array.isArray(state.projects) ? state.projects : defaults.projects;
   return {
-    projectName: state.projectName ?? defaults.projectName,
+    projectName: typeof state.projectName === "string" ? state.projectName : defaults.projectName,
     terrainMod: typeof state.terrainMod === "number" ? state.terrainMod : defaults.terrainMod,
-    components: Array.isArray(state.components) ? state.components : defaults.components,
-    projects: Array.isArray(state.projects) ? state.projects : defaults.projects,
+    components: components.map((entry) => ({
+      id: entry.id,
+      qty: typeof entry.qty === "number" ? entry.qty : 1,
+    })),
+    projects: projects.map((project) => sanitizeStrongholdProject(project)),
+    activeProjectId: typeof state.activeProjectId === "string" ? state.activeProjectId : null,
+    activeTrackerId: typeof state.activeTrackerId === "string" ? state.activeTrackerId : null,
+  };
+}
+
+function sanitizeStrongholdProject(project: StrongholdProject): StrongholdProject {
+  const status: StrongholdProject["status"] =
+    project.status === "active" || project.status === "complete" ? project.status : "planned";
+  return {
+    id: project.id ?? createId(),
+    name: typeof project.name === "string" && project.name.length ? project.name : "Stronghold Project",
+    cost: typeof project.cost === "number" ? project.cost : 0,
+    status,
+    buildDays: typeof project.buildDays === "number" ? project.buildDays : 0,
+    startedAt: typeof project.startedAt === "number" ? project.startedAt : Date.now(),
+    completedAt: typeof project.completedAt === "number" ? project.completedAt : null,
+    trackerId: typeof project.trackerId === "string" ? project.trackerId : null,
   };
 }
 
@@ -228,7 +265,16 @@ function ensureSiegeState(state?: SiegeState): SiegeState {
         heroics: Boolean(state.modifiers?.defender?.heroics),
       },
     },
-    log: Array.isArray(state.log) ? state.log : [],
+    log: Array.isArray(state.log) ? state.log.map((entry) => sanitizeSiegeLog(entry)) : [],
+  };
+}
+
+function sanitizeSiegeLog(entry: SiegeBattleLogEntry): SiegeBattleLogEntry {
+  return {
+    ...entry,
+    recoveryTrackerId: typeof entry.recoveryTrackerId === "string" ? entry.recoveryTrackerId : null,
+    recoveryReady: entry.recoveryReady === false ? false : true,
+    recoveryDays: typeof entry.recoveryDays === "number" ? entry.recoveryDays : undefined,
   };
 }
 
@@ -240,6 +286,47 @@ function ensureCalendarState(calendar: WarMachineState["calendar"]) {
     startedAt: tracker.startedAt ?? Date.now(),
   }));
   return calendar;
+}
+
+function ensureDominionState(state?: DominionState): DominionState {
+  if (!state) {
+    return cloneState(DEFAULT_STATE.dominion);
+  }
+  return {
+    ...state,
+    activeTrackerId: typeof state.activeTrackerId === "string" ? state.activeTrackerId : null,
+  };
+}
+
+function ensureMerchantState(state?: MerchantState): MerchantState {
+  const defaults = cloneState(DEFAULT_STATE.merchant);
+  if (!state) {
+    return defaults;
+  }
+  const form = { ...defaults.form, ...(state.form ?? {}) };
+  const preview = state.preview ?? defaults.preview;
+  const ledger = Array.isArray(state.ledger) ? state.ledger.map((entry) => sanitizeMerchantJourney(entry)) : [];
+  return {
+    form,
+    preview,
+    ledger,
+  };
+}
+
+function sanitizeMerchantJourney(entry: MerchantJourney): MerchantJourney {
+  const status: MerchantJourney["status"] = entry.status === "pending" ? "pending" : "complete";
+  return {
+    ...entry,
+    status,
+    trackerId: typeof entry.trackerId === "string" ? entry.trackerId : null,
+    travelDays: typeof entry.travelDays === "number" ? entry.travelDays : undefined,
+    deliveredAt:
+      typeof entry.deliveredAt === "number"
+        ? entry.deliveredAt
+        : status === "complete"
+          ? entry.timestamp
+          : null,
+  };
 }
 
 function sanitizeForce(force: SiegeForce | undefined, fallback: SiegeForce): SiegeForce {

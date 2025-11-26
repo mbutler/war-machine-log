@@ -110,6 +110,23 @@ export function renderMerchantPanel(target: HTMLElement) {
   });
   routeCard.appendChild(makeJourneyButton);
 
+  const transitNotice = document.createElement("div");
+  transitNotice.className = "merchant-transit-banner";
+  transitNotice.style.display = "none";
+  routeCard.appendChild(transitNotice);
+
+  const updateTransitBanner = (merchant: MerchantState) => {
+    const pending = merchant.ledger.filter((entry) => entry.status === "pending").length;
+    if (!pending) {
+      transitNotice.style.display = "none";
+      transitNotice.textContent = "";
+      return;
+    }
+    transitNotice.style.display = "block";
+    const label = pending === 1 ? "caravan" : "caravans";
+    transitNotice.textContent = `${pending} ${label} en route — calendar timers will signal arrival.`;
+  };
+
   const ledgerHeader = document.createElement("div");
   ledgerHeader.className = "panel-heading";
   ledgerHeader.textContent = "Trading Ledger";
@@ -138,9 +155,11 @@ export function renderMerchantPanel(target: HTMLElement) {
     marginDescription,
   });
   renderLedger(state.ledger, ledgerList);
+  updateTransitBanner(state);
 
   const unsubscribe = subscribeToMerchant((merchant) => {
     syncForm(bindings, merchant);
+    updateTransitBanner(merchant);
     renderLedger(merchant.ledger, ledgerList);
   });
 
@@ -237,13 +256,24 @@ function renderLedger(entries: MerchantJourney[], container: HTMLElement) {
     header.style.display = "flex";
     header.style.justifyContent = "space-between";
     header.style.marginBottom = "0.35rem";
+    const badgeGroup = document.createElement("div");
+    badgeGroup.style.display = "flex";
+    badgeGroup.style.gap = "0.35rem";
     const badge = document.createElement("span");
     badge.className = `merchant-badge ${entry.netProfit >= 0 ? "profit" : "loss"}`;
     badge.textContent = entry.netProfit >= 0 ? "Profit" : "Loss";
+    const statusBadge = document.createElement("span");
+    statusBadge.className = `merchant-badge ${entry.status === "pending" ? "transit" : "delivered"}`;
+    statusBadge.textContent = entry.status === "pending" ? "En Route" : "Settled";
+    badgeGroup.append(badge, statusBadge);
     const timestamp = document.createElement("span");
     timestamp.className = "timestamp";
-    timestamp.textContent = new Date(entry.timestamp).toLocaleString();
-    header.append(badge, timestamp);
+    const deliveredAt = entry.deliveredAt ?? entry.timestamp;
+    timestamp.textContent =
+      entry.status === "pending"
+        ? `Departed ${new Date(entry.timestamp).toLocaleString()}`
+        : `Delivered ${new Date(deliveredAt).toLocaleString()}`;
+    header.append(badgeGroup, timestamp);
     card.appendChild(header);
 
     const summary = document.createElement("div");
@@ -261,6 +291,20 @@ function renderLedger(entries: MerchantJourney[], container: HTMLElement) {
     market.style.color = entry.netProfit >= 0 ? "#4ade80" : "#fca5a5";
     market.textContent = entry.marketSummary;
     card.appendChild(market);
+
+    if (entry.status === "pending") {
+      const eta = document.createElement("div");
+      eta.className = "nav-meta";
+      eta.textContent = entry.travelDays
+        ? `ETA ~ ${entry.travelDays} day(s). Arrival will be announced via the calendar.`
+        : "Calendar tracker running — advance time to settle.";
+      card.appendChild(eta);
+    } else if (entry.deliveredAt) {
+      const deliveredNote = document.createElement("div");
+      deliveredNote.className = "nav-meta";
+      deliveredNote.textContent = `Settled via calendar at ${new Date(entry.deliveredAt).toLocaleString()}`;
+      card.appendChild(deliveredNote);
+    }
 
     const statRow = document.createElement("div");
     statRow.style.display = "grid";

@@ -159,6 +159,9 @@ export function resolveBattle(state: SiegeState): { computation: BattleComputati
     defenderLosses,
     notes,
     applied: false,
+    recoveryTrackerId: null,
+    recoveryReady: true,
+    recoveryDays: 0,
   };
 
   return { computation, logEntry };

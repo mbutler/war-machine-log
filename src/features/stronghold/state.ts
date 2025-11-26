@@ -2,7 +2,10 @@ import type { StrongholdState } from "../../state/schema";
 import { createDefaultStrongholdState } from "../../state/schema";
 import { getState, subscribe, updateState } from "../../state/store";
 import { getComponentById } from "./components";
-import { buildStrongholdExportPayload, normalizeSelection } from "./logic";
+import { buildStrongholdExportPayload, calculateStrongholdSummary, normalizeSelection } from "./logic";
+import { startTimedAction, cancelTimedAction } from "../calendar/actions";
+import { onCalendarEvent } from "../calendar/state";
+import { createId } from "../../utils/id";
 
 export type StrongholdListener = (state: StrongholdState) => void;
 
@@ -71,11 +74,17 @@ export function removeComponent(componentId: string) {
 
 export function resetStrongholdState() {
   const defaults = createDefaultStrongholdState();
+  const current = getStrongholdState();
+  if (current.activeTrackerId) {
+    cancelTimedAction(current.activeTrackerId);
+  }
   mutateStronghold((draft) => {
     draft.projectName = defaults.projectName;
     draft.terrainMod = defaults.terrainMod;
     draft.components = defaults.components;
     draft.projects = defaults.projects;
+    draft.activeProjectId = defaults.activeProjectId;
+    draft.activeTrackerId = defaults.activeTrackerId;
   });
 }
 
@@ -83,4 +92,91 @@ export function exportStrongholdPlan(): string {
   const payload = buildStrongholdExportPayload(getStrongholdState());
   return JSON.stringify(payload, null, 2);
 }
+
+export function startStrongholdConstruction(): { success: boolean; error?: string } {
+  const state = getStrongholdState();
+  if (state.activeTrackerId) {
+    return { success: false, error: "A construction project is already underway." };
+  }
+  const summary = calculateStrongholdSummary(state);
+  if (!summary.items.length || summary.buildDays <= 0) {
+    return { success: false, error: "Add at least one component before starting construction." };
+  }
+  const projectName = state.projectName?.trim() || "Stronghold Project";
+  const durationDays = Math.max(1, summary.buildDays);
+  const useWeeks = durationDays >= 14;
+  const unit = useWeeks ? "week" : "day";
+  const duration = useWeeks ? Math.max(1, Math.ceil(durationDays / 7)) : durationDays;
+  const tracker = startTimedAction({
+    name: `Stronghold: ${projectName}`,
+    duration,
+    unit,
+    kind: "stronghold",
+    blocking: true,
+  });
+  if (!tracker) {
+    return { success: false, error: "Unable to attach construction timer to the calendar." };
+  }
+  const projectId = createId();
+  mutateStronghold((draft) => {
+    draft.activeTrackerId = tracker.trackerId;
+    draft.activeProjectId = projectId;
+    draft.projects.unshift({
+      id: projectId,
+      name: projectName,
+      cost: summary.totalCost,
+      status: "active",
+      buildDays: summary.buildDays,
+      startedAt: Date.now(),
+      completedAt: null,
+      trackerId: tracker.trackerId,
+    });
+    draft.components = [];
+  });
+  return { success: true };
+}
+
+export function cancelStrongholdConstruction(): boolean {
+  const state = getStrongholdState();
+  if (!state.activeTrackerId) {
+    return false;
+  }
+  cancelTimedAction(state.activeTrackerId);
+  mutateStronghold((draft) => {
+    draft.projects.forEach((project) => {
+      if (project.id === draft.activeProjectId) {
+        project.status = "planned";
+        project.trackerId = null;
+        project.completedAt = null;
+      }
+    });
+    draft.activeTrackerId = null;
+    draft.activeProjectId = null;
+  });
+  return true;
+}
+
+onCalendarEvent((event) => {
+  if (event.type !== "timers-expired") {
+    return;
+  }
+  const completed = event.trackers.filter((tracker) => tracker.kind === "stronghold");
+  if (!completed.length) {
+    return;
+  }
+  const trackerIds = new Set(completed.map((tracker) => tracker.id));
+  mutateStronghold((draft) => {
+    if (draft.activeTrackerId && trackerIds.has(draft.activeTrackerId)) {
+      draft.activeTrackerId = null;
+      draft.activeProjectId = null;
+    }
+    draft.projects.forEach((project) => {
+      if (project.trackerId && trackerIds.has(project.trackerId)) {
+        project.status = "complete";
+        project.completedAt = Date.now();
+        project.trackerId = null;
+      }
+    });
+  });
+});
 

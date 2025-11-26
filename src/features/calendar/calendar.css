@@ -84,21 +84,77 @@
   border: 1px solid var(--panel-border);
   border-left: 3px solid var(--accent-a);
   border-radius: var(--panel-radius);
-  padding: 0.4rem 0.5rem;
+  padding: 0.5rem 0.65rem;
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
   align-items: center;
+  background: rgba(255, 255, 255, 0.02);
 }
 
-.calendar-tracker.expired {
-  border-left-color: rgba(243, 139, 168, 0.8);
+.calendar-tracker .button {
+  white-space: nowrap;
+}
+
+.calendar-tracker.blocking {
+  border-left-color: rgba(248, 113, 113, 0.9);
+  background: rgba(248, 113, 113, 0.08);
+}
+
+.calendar-tracker[data-kind="lab"] {
+  border-left-color: rgba(192, 132, 252, 0.9);
+}
+
+.calendar-tracker[data-kind="stronghold"] {
+  border-left-color: rgba(251, 191, 36, 0.9);
+}
+
+.calendar-tracker[data-kind="merchant"] {
+  border-left-color: rgba(59, 130, 246, 0.9);
+}
+
+.calendar-tracker[data-kind="dominion"] {
+  border-left-color: rgba(16, 185, 129, 0.9);
+}
+
+.calendar-tracker[data-kind="siege"] {
+  border-left-color: rgba(248, 113, 113, 0.9);
+}
+
+.calendar-tracker[data-kind="wilderness"] {
+  border-left-color: rgba(45, 212, 191, 0.9);
+}
+
+.calendar-tracker[data-kind="dungeon"] {
+  border-left-color: rgba(148, 163, 184, 0.9);
 }
 
 .calendar-tracker-info {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+}
+
+.calendar-tracker-badges {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.calendar-kind-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  border: 1px solid var(--panel-border);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.calendar-kind-badge.blocking {
+  border-color: rgba(248, 113, 113, 0.8);
+  color: #fecaca;
 }
 
 .calendar-log {

@@ -41,12 +41,28 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 @media (min-width: 520px) {
   .stronghold-actions {
     flex-direction: row;
   }
+}
+
+.stronghold-status {
+  border-left: 3px solid rgba(99, 102, 241, 0.6);
+  padding: 0.5rem 0.65rem;
+  border-radius: 0.4rem;
+  background: rgba(99, 102, 241, 0.04);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.stronghold-status[data-state="active"] {
+  border-left-color: rgba(248, 113, 113, 0.8);
+  background: rgba(248, 113, 113, 0.08);
+  color: #fca5a5;
 }
 
 .stronghold-add {

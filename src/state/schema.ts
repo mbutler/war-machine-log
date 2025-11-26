@@ -172,6 +172,7 @@ export interface DominionState {
   resources: DominionResource[];
   turn: DominionTurnSettings;
   log: DominionLogEntry[];
+  activeTrackerId: string | null;
 }
 
 export type WildernessTerrainType =
@@ -334,6 +335,9 @@ export interface SiegeBattleLogEntry {
   defenderLosses: number;
   notes: string;
   applied: boolean;
+  recoveryTrackerId?: string | null;
+  recoveryReady?: boolean;
+  recoveryDays?: number;
 }
 
 export interface SiegeState {
@@ -380,6 +384,10 @@ export interface MerchantJourney {
   eventSummary: string;
   marketSummary: string;
   details?: string;
+  status: "pending" | "complete";
+  trackerId?: string | null;
+  travelDays?: number;
+  deliveredAt?: number | null;
 }
 
 export interface MerchantLogisticsPreview {
@@ -407,6 +415,10 @@ export interface StrongholdProject {
   name: string;
   cost: number;
   status: "planned" | "active" | "complete";
+  buildDays: number;
+  startedAt: number;
+  completedAt?: number | null;
+  trackerId?: string | null;
 }
 
 export interface StrongholdComponentSelection {
@@ -419,6 +431,8 @@ export interface StrongholdState {
   terrainMod: number;
   components: StrongholdComponentSelection[];
   projects: StrongholdProject[];
+  activeProjectId: string | null;
+  activeTrackerId: string | null;
 }
 
 export type CoinDenomination = "cp" | "sp" | "ep" | "gp" | "pp";
@@ -572,6 +586,8 @@ const STRONGHOLD_DEFAULT_STATE: StrongholdState = {
   terrainMod: 1,
   components: [],
   projects: [],
+  activeProjectId: null,
+  activeTrackerId: null,
 };
 
 export function createDefaultStrongholdState(): StrongholdState {
@@ -729,6 +745,7 @@ export const DEFAULT_STATE: WarMachineState = {
       tithePercent: 20,
     },
     log: [],
+    activeTrackerId: null,
   },
   wilderness: {
     map: {

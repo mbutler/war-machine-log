@@ -515,7 +515,15 @@ export function renderDominionPanel(target: HTMLElement) {
   processButton.className = "button";
   processButton.textContent = "Process Turn";
   processButton.addEventListener("click", () => {
-    processDominionSeason();
+    try {
+      processDominionSeason();
+    } catch (error) {
+      showNotification({
+        title: "Season blocked",
+        message: (error as Error).message,
+        variant: "warning",
+      });
+    }
   });
 
   const clearLogButton = document.createElement("button");
@@ -530,6 +538,11 @@ export function renderDominionPanel(target: HTMLElement) {
 
   turnActions.append(processButton, clearLogButton);
   turnPanel.body.appendChild(turnActions);
+
+  const cooldownNotice = document.createElement("div");
+  cooldownNotice.className = "dominion-cooldown";
+  cooldownNotice.style.display = "none";
+  turnPanel.body.appendChild(cooldownNotice);
 
   const logPanel = createPanel("Dominion Chronicle", "Season-by-season record of income, confidence, and events.");
   logPanel.body.classList.add("scrollbox");
@@ -566,6 +579,11 @@ export function renderDominionPanel(target: HTMLElement) {
     renderResources(resourceList, state);
     renderProjection(projectionBlock, state);
     renderLog(logPanel.body, state);
+    const locked = Boolean(state.activeTrackerId);
+    processButton.disabled = locked;
+    processButton.textContent = locked ? "Season In Progress" : "Process Turn";
+    cooldownNotice.style.display = locked ? "block" : "none";
+    cooldownNotice.textContent = locked ? "Calendar timer running — advance four weeks to unlock." : "";
   };
 
   render(getDominionState());

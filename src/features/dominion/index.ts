@@ -1,5 +1,6 @@
 import { registerRoute } from "../../router";
 import { renderDominionPanel } from "./view";
+import "./dominion.css";
 
 registerRoute({
   id: "dominion",

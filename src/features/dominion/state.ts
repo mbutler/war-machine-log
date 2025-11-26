@@ -7,6 +7,8 @@ import type {
 import { getState, subscribe, updateState } from "../../state/store";
 import { processDominionTurn, projectDominionTurn, type DominionProjection } from "../../rules/dominion";
 import { createId } from "../../utils/id";
+import { startTimedAction } from "../calendar/actions";
+import { onCalendarEvent } from "../calendar/state";
 
 export type DominionListener = (state: DominionState) => void;
 
@@ -65,6 +67,10 @@ export function clearDominionLog() {
 
 export function processDominionSeason(): DominionLogEntry {
   let logEntry: DominionLogEntry | null = null;
+  const state = getDominionState();
+  if (state.activeTrackerId) {
+    throw new Error("Season processing already underway via the calendar.");
+  }
 
   updateState((state) => {
     const result = processDominionTurn(state.dominion, state.dominion.turn);
@@ -80,6 +86,19 @@ export function processDominionSeason(): DominionLogEntry {
     throw new Error("Failed to process dominion season");
   }
 
+  const tracker = startTimedAction({
+    name: `Dominion Season: ${logEntry.season}`,
+    duration: 4,
+    unit: "week",
+    kind: "dominion",
+    blocking: true,
+  });
+  if (tracker) {
+    updateState((state) => {
+      state.dominion.activeTrackerId = tracker.trackerId;
+    });
+  }
+
   return logEntry;
 }
 
@@ -87,4 +106,19 @@ export function getDominionProjection(): DominionProjection {
   const state = getDominionState();
   return projectDominionTurn(state, state.turn);
 }
+
+onCalendarEvent((event) => {
+  if (event.type !== "timers-expired") {
+    return;
+  }
+  const ids = new Set(event.trackers.filter((tracker) => tracker.kind === "dominion").map((tracker) => tracker.id));
+  if (!ids.size) {
+    return;
+  }
+  updateState((state) => {
+    if (state.dominion.activeTrackerId && ids.has(state.dominion.activeTrackerId)) {
+      state.dominion.activeTrackerId = null;
+    }
+  });
+});
 

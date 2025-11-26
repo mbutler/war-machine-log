@@ -369,17 +369,34 @@ export function renderSiegePanel(target: HTMLElement) {
       notes.className = "siege-log-notes";
       notes.textContent = entry.notes;
 
+      let recoveryNode: HTMLDivElement | null = null;
+      if (entry.recoveryTrackerId || entry.recoveryDays) {
+        recoveryNode = document.createElement("div");
+        recoveryNode.className = "siege-log-recovery";
+        if (entry.recoveryTrackerId && entry.recoveryReady === false) {
+          recoveryNode.textContent = `Recovery underway (${entry.recoveryDays ?? "?"} day(s)) — see calendar timer.`;
+        } else {
+          recoveryNode.textContent = `Recovered after ${entry.recoveryDays ?? "?"} day(s).`;
+          recoveryNode.dataset.state = "ready";
+        }
+      }
+
       const actions = document.createElement("div");
       actions.className = "siege-log-actions";
       const applyBtn = document.createElement("button");
       applyBtn.type = "button";
       applyBtn.className = "button";
-      applyBtn.textContent = entry.applied ? "Applied" : "Apply Casualties";
-      applyBtn.disabled = entry.applied;
+      const waiting = Boolean(entry.recoveryTrackerId && entry.recoveryReady === false);
+      applyBtn.textContent = entry.applied ? "Applied" : waiting ? "Recovering..." : "Apply Casualties";
+      applyBtn.disabled = entry.applied || waiting;
       applyBtn.addEventListener("click", () => applySiegeCasualties(entry.id));
       actions.appendChild(applyBtn);
 
-      card.append(header, totals, losses, notes, actions);
+      card.append(header, totals, losses, notes);
+      if (recoveryNode) {
+        card.appendChild(recoveryNode);
+      }
+      card.appendChild(actions);
       logList.appendChild(card);
     });
   }
