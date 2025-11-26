@@ -519,7 +519,23 @@ export interface LabState {
   activeTrackerId: string | null;
 }
 
-export type DungeonStatus = "idle" | "encounter" | "obstacle" | "loot";
+export type DungeonStatus = "idle" | "surprise" | "encounter" | "obstacle" | "loot";
+export type LightingCondition = "bright" | "dim" | "dark";
+export type EncounterReaction = "hostile" | "aggressive" | "cautious" | "neutral" | "friendly";
+
+export interface SurpriseState {
+  partyRoll: number;
+  monsterRoll: number;
+  partySurprised: boolean;
+  monsterSurprised: boolean;
+}
+
+export interface ReactionRollRecord {
+  roll: number;
+  modifier: number;
+  total: number;
+  result: EncounterReaction;
+}
 
 export interface DungeonEncounter {
   id: string;
@@ -532,17 +548,40 @@ export interface DungeonEncounter {
   treasureType: string;
   hp: number;
   hpMax: number;
-  reaction: "hostile" | "neutral" | "friendly";
+  reaction: EncounterReaction;
+  distance: number; // feet
+  special?: string; // Special abilities like poison, paralysis, etc.
+  
+  // Surprise tracking
+  surprise?: SurpriseState;
+  
+  // Reaction roll tracking
+  reactionRolls?: ReactionRollRecord[];
+  
+  // Morale tracking (BECMI checks at specific triggers)
+  moraleChecked: {
+    firstHit: boolean;      // When creature first takes damage
+    quarterHp: boolean;     // Reduced to 1/4 HP or less
+    firstDeath: boolean;    // First death on either side
+    halfIncapacitated: boolean; // Half creatures unable to act
+  };
+  
   spellsCasterIds?: string[];
-  moraleCheck?: boolean;
-  checkedFirstDeath?: boolean;
-  checkedHalf?: boolean;
 }
+
+export type ObstacleType = "door" | "trap" | "hazard" | "feature";
 
 export interface DungeonObstacle {
   id: string;
   name: string;
   description: string;
+  type: ObstacleType;
+  turnCost: number; // Turns required to resolve
+  alertsMonsters: boolean;
+  damage?: string; // Dice formula for damage
+  saveType?: "death" | "wands" | "paralysis" | "breath" | "spells";
+  resolved: boolean;
+  attemptsMade: number; // For doors - multiple attempts allowed per round
 }
 
 export interface DungeonLogEntry {
@@ -561,6 +600,7 @@ export interface DungeonState {
   rations: number;
   loot: number;
   lairMode: boolean;
+  lighting: LightingCondition; // Affects encounter distance
   status: DungeonStatus;
   encounter?: DungeonEncounter;
   obstacle?: DungeonObstacle;
@@ -880,6 +920,7 @@ export const DEFAULT_STATE: WarMachineState = {
     rations: 7,
     loot: 0,
     lairMode: false,
+    lighting: "dim",
     status: "idle",
     log: [],
   },
