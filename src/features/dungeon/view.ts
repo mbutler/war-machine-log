@@ -194,11 +194,16 @@ function renderControls(container: HTMLElement, dungeon = getDungeonState(), par
   actionButtons.className = "flex flex-col gap-sm";
 
   if (dungeon.status === "idle") {
-    actionButtons.append(
-      makeButton("Explore New Room", "button", () => exploreRoom()),
-      makeButton("Search the Area", "button", () => searchRoom()),
-      makeButton("Rest & Eat", "button", () => restParty()),
-    );
+    const buttons = [makeButton("Explore New Room", "button", () => exploreRoom())];
+
+    // Only show search button if room hasn't been searched yet
+    if (!dungeon.roomSearched) {
+      buttons.push(makeButton("Search the Area", "button", () => searchRoom()));
+    }
+
+    buttons.push(makeButton("Rest & Eat", "button", () => restParty()));
+
+    actionButtons.append(...buttons);
   }
 
   container.appendChild(actionButtons);

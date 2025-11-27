@@ -15,7 +15,8 @@ const MOVEMENT_POINTS_PER_DAY = 24;
 const WATER_REFILL_DAYS = 7;
 const LOG_LIMIT = 200;
 
-const REFILL_TERRAINS: WildernessTerrainType[] = ["clear", "woods", "river", "swamp", "city", "ocean"];
+// Fresh water sources only - BECMI compliant
+const REFILL_TERRAINS: WildernessTerrainType[] = ["river"];
 
 const VALID_TERRAINS: WildernessTerrainType[] = [
   "clear",
@@ -31,6 +32,7 @@ const VALID_TERRAINS: WildernessTerrainType[] = [
 
 // Terrain type mapping from Python BECMI generator to Wilderness system
 const PYTHON_TO_WILDERNESS_TERRAIN: Record<string, WildernessTerrainType> = {
+  // Exact matches
   "Clear": "clear",      // Grasslands
   "Forest": "woods",     // Woods
   "Hills": "hills",      // Hills
@@ -43,6 +45,28 @@ const PYTHON_TO_WILDERNESS_TERRAIN: Record<string, WildernessTerrainType> = {
   "Deep Sea": "ocean",   // Deep Sea -> Ocean
   "Sea": "ocean",        // Sea -> Ocean
   "Coast": "clear",      // Coast -> Clear (could be city, but clear for now)
+
+  // Case variations
+  "clear": "clear",
+  "forest": "woods",
+  "hills": "hills",
+  "mountains": "mountain",
+  "swamp": "swamp",
+  "desert": "desert",
+  "jungle": "woods",
+  "glacier": "mountain",
+  "barren": "desert",
+  "deep sea": "ocean",
+  "sea": "ocean",
+  "coast": "clear",
+
+  // Alternative names
+  "Grassland": "clear",
+  "Plains": "clear",
+  "Woodland": "woods",
+  "Woods": "woods",
+  "Mountain": "mountain", // singular
+  "Desert": "desert",     // already included but keeping for clarity
 };
 
 const TERRAIN_DATA: Record<
@@ -141,20 +165,102 @@ const TERRAIN_DATA: Record<
 };
 
 // BECMI Wilderness Encounters Table
-// Main table: Roll 1d8 to determine subtable, then roll 1d12 on subtable by terrain
-const MAIN_ENCOUNTER_TABLE: Record<number, string> = {
-  1: "Human",
-  2: "Humanoid",
-  3: "Animal",    // Varies by terrain: Animal/Insect/Swimmer
-  4: "Animal",    // Varies by terrain: Animal/Unusual/Swimmer
-  5: "Unusual",   // Varies by terrain: Unusual/Animal/Swimmer
-  6: "Dragon",    // Varies by terrain: Dragon/Animal/Animal
-  7: "Insect",    // Varies by terrain: Insect/Dragon/Dragon
-  8: "Special",   // For city terrain
+// Main table: Roll 1d8 to determine subtable, varies by terrain type
+const MAIN_ENCOUNTER_TABLE: Record<WildernessTerrainType, Record<number, string>> = {
+  clear: {
+    1: "Human",
+    2: "Flyer",
+    3: "Humanoid",
+    4: "Animal",
+    5: "Animal",
+    6: "Unusual",
+    7: "Dragon",
+    8: "Insect"
+  },
+  woods: {
+    1: "Human",
+    2: "Flyer",
+    3: "Humanoid",
+    4: "Insect",
+    5: "Unusual",
+    6: "Animal",
+    7: "Animal",
+    8: "Dragon"
+  },
+  hills: {
+    1: "Human",
+    2: "Flyer",
+    3: "Humanoid",
+    4: "Unusual",
+    5: "Humanoid",
+    6: "Humanoid",
+    7: "Humanoid",
+    8: "Dragon"
+  },
+  mountain: {
+    1: "Human",
+    2: "Flyer",
+    3: "Humanoid",
+    4: "Unusual",
+    5: "Humanoid",
+    6: "Humanoid",
+    7: "Humanoid",
+    8: "Dragon"
+  },
+  swamp: {
+    1: "Human",
+    2: "Flyer",
+    3: "Humanoid",
+    4: "Swimmer",
+    5: "Undead",
+    6: "Undead",
+    7: "Insect",
+    8: "Dragon"
+  },
+  desert: {
+    1: "Human",
+    2: "Flyer",
+    3: "Humanoid",
+    4: "Human",
+    5: "Animal",
+    6: "Undead",
+    7: "Animal",
+    8: "Animal"
+  },
+  city: {
+    1: "Human",
+    2: "Undead",
+    3: "Humanoid",
+    4: "Human",
+    5: "Human",
+    6: "Human",
+    7: "Human",
+    8: "Special"
+  },
+  river: {
+    1: "Human",
+    2: "Flyer",
+    3: "Humanoid",
+    4: "Insect",
+    5: "Swimmer",
+    6: "Animal",
+    7: "Dragon",
+    8: "Dragon"
+  },
+  ocean: {
+    1: "Human",
+    2: "Flyer",
+    3: "Swimmer",
+    4: "Swimmer",
+    5: "Swimmer",
+    6: "Swimmer",
+    7: "Swimmer",
+    8: "Dragon"
+  }
 };
 
-// Terrain groupings for subtable lookups
-const TERRAIN_GROUPINGS = {
+// Terrain groupings for subtable lookups (BECMI terrain categories)
+const TERRAIN_GROUPINGS: Record<WildernessTerrainType, string> = {
   clear: "Clear",
   woods: "Woods",
   hills: "Hills",
@@ -166,135 +272,451 @@ const TERRAIN_GROUPINGS = {
   ocean: "Ocean",
 } as const;
 
-// BECMI Wilderness Encounter Subtables
-const ENCOUNTER_DATA: Record<string, Array<{ name: string; qty: string; treasure?: string }>> = {
-  // Subtable 3: Humans (varies by terrain - simplified to core types)
-  menus: [
-    { name: "Adventurer", qty: "1d6", treasure: "V" },
-    { name: "Bandit", qty: "1d6+3", treasure: "(U) A" },
-    { name: "Berserker", qty: "1d6", treasure: "(Q) B" },
-    { name: "Brigand", qty: "2d4", treasure: "(T) A" },
-    { name: "Buccaneer", qty: "1d6", treasure: "(S) A" },
-    { name: "Caveman", qty: "1d6", treasure: "Nil" },
-    { name: "Cleric", qty: "1d3", treasure: "V" },
-    { name: "Dervish", qty: "1d6", treasure: "(T) A" },
-    { name: "Fighter", qty: "1d6", treasure: "V" },
-    { name: "Magic-User", qty: "1d3", treasure: "V" },
-    { name: "Merchant", qty: "1d20", treasure: "(U) C" },
-    { name: "NPC Party", qty: "1d6+2", treasure: "V" },
-  ],
+// BECMI Wilderness Encounter Subtables - Full Implementation
+const ENCOUNTER_DATA: Record<string, Record<string, Array<{ name: string; qty: string; treasure?: string }>>> = {
+  // Subtable 1: Animals (terrain-specific)
+  animal: {
+    Clear: [
+      { name: "Animal Herd", qty: "2d10", treasure: "Nil" },
+      { name: "Baboon, Rock", qty: "1d6", treasure: "Nil" },
+      { name: "Boar", qty: "1d6", treasure: "Nil" },
+      { name: "Cat, Lion", qty: "1d4", treasure: "Nil" },
+      { name: "Elephant", qty: "1", treasure: "Nil" },
+      { name: "Ferret, Giant", qty: "1d6", treasure: "Nil" },
+      { name: "Horse, Riding", qty: "1d6", treasure: "Nil" },
+      { name: "Lizard, Draco", qty: "1d6", treasure: "Nil" },
+      { name: "Mule", qty: "1d6", treasure: "Nil" },
+      { name: "Snake, Viper", qty: "1d6", treasure: "Nil" },
+      { name: "Snake, Rattler", qty: "1d6", treasure: "Nil" },
+      { name: "Weasel, Giant", qty: "1d4", treasure: "Nil" }
+    ],
+    Woods: [
+      { name: "Animal Herd", qty: "2d10", treasure: "Nil" },
+      { name: "Boar", qty: "1d6", treasure: "Nil" },
+      { name: "Cat, Panther", qty: "1d4", treasure: "Nil" },
+      { name: "Cat, Tiger", qty: "1d4", treasure: "Nil" },
+      { name: "Lizard, Gecko", qty: "1d6", treasure: "Nil" },
+      { name: "Lizard, Draco", qty: "1d6", treasure: "Nil" },
+      { name: "Lizard, Tuatara", qty: "1d6", treasure: "Nil" },
+      { name: "Snake, Viper", qty: "1d6", treasure: "Nil" },
+      { name: "Spider, Crab", qty: "1d6", treasure: "Nil" },
+      { name: "Unicorn", qty: "1d6", treasure: "Nil" },
+      { name: "Wolf", qty: "2d6", treasure: "Nil" },
+      { name: "Wolf, Dire", qty: "1d4", treasure: "Nil" }
+    ],
+    River: [
+      { name: "Animal Herd", qty: "2d10", treasure: "Nil" },
+      { name: "Boar", qty: "1d6", treasure: "Nil" },
+      { name: "Cat, Panther", qty: "1d4", treasure: "Nil" },
+      { name: "Cat, Tiger", qty: "1d4", treasure: "Nil" },
+      { name: "Crab, Giant", qty: "1d6", treasure: "Nil" },
+      { name: "Crocodile", qty: "1d6", treasure: "Nil" },
+      { name: "Crocodile, Large", qty: "1d3", treasure: "D" },
+      { name: "Fish, Rock", qty: "1d6", treasure: "Nil" },
+      { name: "Leech, Giant", qty: "1d4", treasure: "Nil" },
+      { name: "Rat, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Shrew, Giant", qty: "1d4", treasure: "Nil" },
+      { name: "Toad, Giant", qty: "1d6", treasure: "Nil" }
+    ],
+    Swamp: [
+      { name: "Animal Herd", qty: "2d10", treasure: "Nil" },
+      { name: "Boar", qty: "1d6", treasure: "Nil" },
+      { name: "Cat, Panther", qty: "1d4", treasure: "Nil" },
+      { name: "Cat, Tiger", qty: "1d4", treasure: "Nil" },
+      { name: "Crab, Giant", qty: "1d6", treasure: "Nil" },
+      { name: "Crocodile", qty: "1d6", treasure: "Nil" },
+      { name: "Crocodile, Large", qty: "1d3", treasure: "D" },
+      { name: "Fish, Rock", qty: "1d6", treasure: "Nil" },
+      { name: "Leech, Giant", qty: "1d4", treasure: "Nil" },
+      { name: "Rat, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Shrew, Giant", qty: "1d4", treasure: "Nil" },
+      { name: "Toad, Giant", qty: "1d6", treasure: "Nil" }
+    ],
+    Mountain: [
+      { name: "Animal Herd", qty: "2d10", treasure: "Nil" },
+      { name: "Ape, Snow", qty: "1d4", treasure: "Nil" },
+      { name: "Ape, White", qty: "1d4", treasure: "Nil" },
+      { name: "Baboon, Rock", qty: "1d6", treasure: "Nil" },
+      { name: "Bear, Cave", qty: "1d4", treasure: "Nil" },
+      { name: "Bear, Grizzly", qty: "1d4", treasure: "Nil" },
+      { name: "Cat, Mountain Lion", qty: "1d4", treasure: "Nil" },
+      { name: "Mule", qty: "1d6", treasure: "Nil" },
+      { name: "Snake, Viper", qty: "1d6", treasure: "Nil" },
+      { name: "Snake, Rattler", qty: "1d6", treasure: "Nil" },
+      { name: "Wolf", qty: "2d6", treasure: "Nil" },
+      { name: "Wolf, Dire", qty: "1d4", treasure: "Nil" }
+    ],
+    Desert: [
+      { name: "Animal Herd", qty: "2d10", treasure: "Nil" },
+      { name: "Animal Herd", qty: "2d10", treasure: "Nil" },
+      { name: "Camel", qty: "1d6", treasure: "Nil" },
+      { name: "Camel", qty: "1d6", treasure: "Nil" },
+      { name: "Cat, Lion", qty: "1d4", treasure: "Nil" },
+      { name: "Cat, Lion", qty: "1d4", treasure: "Nil" },
+      { name: "Lizard, Gecko", qty: "1d6", treasure: "Nil" },
+      { name: "Lizard, Tuatara", qty: "1d6", treasure: "Nil" },
+      { name: "Snake, Viper", qty: "1d6", treasure: "Nil" },
+      { name: "Snake, Rattler", qty: "1d6", treasure: "Nil" },
+      { name: "Spider, Widow", qty: "1d2", treasure: "Nil" },
+      { name: "Spider, Tarantella", qty: "1d6", treasure: "Nil" }
+    ],
+    Jungle: [
+      { name: "Animal Herd", qty: "2d10", treasure: "Nil" },
+      { name: "Boar", qty: "1d6", treasure: "Nil" },
+      { name: "Cat, Panther", qty: "1d4", treasure: "Nil" },
+      { name: "Lizard, Draco", qty: "1d6", treasure: "Nil" },
+      { name: "Lizard, Gecko", qty: "1d6", treasure: "Nil" },
+      { name: "Lizard, Horned", qty: "1d6", treasure: "Nil" },
+      { name: "Rat, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Shrew, Giant", qty: "1d4", treasure: "Nil" },
+      { name: "Snake, Viper", qty: "1d6", treasure: "Nil" },
+      { name: "Snake, Python", qty: "1d6", treasure: "Nil" },
+      { name: "Snake, Spitting", qty: "1d6", treasure: "Nil" },
+      { name: "Spider, Crab", qty: "1d6", treasure: "Nil" }
+    ],
+    Prehistoric: [
+      { name: "Bear, Cave", qty: "1d4", treasure: "Nil" },
+      { name: "Cat, Sabretooth", qty: "1d2", treasure: "Nil" },
+      { name: "Crocodile, Giant", qty: "1", treasure: "D" },
+      { name: "Elephant, Mastodon", qty: "1", treasure: "Nil" },
+      { name: "Pterodactyl", qty: "1d4", treasure: "Nil" },
+      { name: "Pteranodon", qty: "1d4", treasure: "Nil" },
+      { name: "Snake, Racer", qty: "1d6", treasure: "Nil" },
+      { name: "Snake, Viper", qty: "1d6", treasure: "Nil" },
+      { name: "Triceratops", qty: "1d6", treasure: "Nil" },
+      { name: "Triceratops", qty: "1d6", treasure: "Nil" },
+      { name: "Tyrannosaurus", qty: "1", treasure: "Nil" },
+      { name: "Wolf, Dire", qty: "2d6", treasure: "Nil" }
+    ]
+  },
 
   // Subtable 2: Humanoids
-  humanoid: [
-    { name: "Bugbear", qty: "1d6", treasure: "B" },
-    { name: "Cyclops", qty: "1", treasure: "E" },
-    { name: "Dwarf", qty: "2d4", treasure: "(M) G" },
-    { name: "Elf", qty: "1d6", treasure: "(E) E" },
-    { name: "Giant, Cloud", qty: "1", treasure: "E" },
-    { name: "Giant, Fire", qty: "1", treasure: "E" },
-    { name: "Giant, Frost", qty: "1", treasure: "E" },
-    { name: "Giant, Hill", qty: "1d4", treasure: "D" },
-    { name: "Giant, Stone", qty: "1", treasure: "E" },
-    { name: "Giant, Storm", qty: "1", treasure: "E" },
-    { name: "Gnome", qty: "1d6", treasure: "(O) N" },
-    { name: "Goblin", qty: "2d4", treasure: "(R) C" },
-  ],
+  humanoid: {
+    Clear: [
+      { name: "Bugbear", qty: "1d6", treasure: "B" },
+      { name: "Elf", qty: "1d6", treasure: "(E) E" },
+      { name: "Giant, Hill", qty: "1d4", treasure: "D" },
+      { name: "Gnoll", qty: "2d4", treasure: "(R) C" },
+      { name: "Goblin", qty: "2d4", treasure: "(R) C" },
+      { name: "Halfing", qty: "1d6", treasure: "(O) N" },
+      { name: "Hobgoblin", qty: "1d6", treasure: "(Q) D" },
+      { name: "Ogre", qty: "1d6", treasure: "(C) E" },
+      { name: "Orc", qty: "2d6", treasure: "(Q) D" },
+      { name: "Pixie", qty: "2d4", treasure: "(S) R" },
+      { name: "Thoul", qty: "1d6", treasure: "(B) F" },
+      { name: "Troll", qty: "1d3", treasure: "(D) E" }
+    ],
+    Woods: [
+      { name: "Bugbear", qty: "1d6", treasure: "B" },
+      { name: "Cyclops", qty: "1", treasure: "E" },
+      { name: "Dryad", qty: "1", treasure: "(B) E" },
+      { name: "Elf", qty: "1d6", treasure: "(E) E" },
+      { name: "Giant, Hill", qty: "1d4", treasure: "D" },
+      { name: "Gnoll", qty: "2d4", treasure: "(R) C" },
+      { name: "Goblin", qty: "2d4", treasure: "(R) C" },
+      { name: "Hobgoblin", qty: "1d6", treasure: "(Q) D" },
+      { name: "Ogre", qty: "1d6", treasure: "(C) E" },
+      { name: "Orc", qty: "2d6", treasure: "(Q) D" },
+      { name: "Thoul", qty: "1d6", treasure: "(B) F" },
+      { name: "Troll", qty: "1d3", treasure: "(D) E" }
+    ],
+    River: [
+      { name: "Bugbear", qty: "1d6", treasure: "B" },
+      { name: "Elf", qty: "1d6", treasure: "(E) E" },
+      { name: "Gnoll", qty: "2d4", treasure: "(R) C" },
+      { name: "Hobgoblin", qty: "1d6", treasure: "(Q) D" },
+      { name: "Lizard Man", qty: "2d4", treasure: "D" },
+      { name: "Lizard Man", qty: "2d4", treasure: "D" },
+      { name: "Nixie", qty: "2d4", treasure: "(B) E" },
+      { name: "Ogre", qty: "1d6", treasure: "(C) E" },
+      { name: "Orc", qty: "2d6", treasure: "(Q) D" },
+      { name: "Sprite", qty: "2d4", treasure: "(S) R" },
+      { name: "Thoul", qty: "1d6", treasure: "(B) F" },
+      { name: "Troll", qty: "1d3", treasure: "(D) E" }
+    ],
+    Swamp: [
+      { name: "Gnoll", qty: "2d4", treasure: "(R) C" },
+      { name: "Goblin", qty: "2d4", treasure: "(R) C" },
+      { name: "Hobgoblin", qty: "1d6", treasure: "(Q) D" },
+      { name: "Lizard Man", qty: "2d4", treasure: "D" },
+      { name: "Lizard Man", qty: "2d4", treasure: "D" },
+      { name: "Nixie", qty: "2d4", treasure: "(B) E" },
+      { name: "Nixie", qty: "2d4", treasure: "(B) E" },
+      { name: "Ogre", qty: "1d6", treasure: "(C) E" },
+      { name: "Orc", qty: "2d6", treasure: "(Q) D" },
+      { name: "Troglodyte", qty: "1d6", treasure: "(Q) D" },
+      { name: "Troll", qty: "1d3", treasure: "(D) E" },
+      { name: "Troll", qty: "1d3", treasure: "(D) E" }
+    ],
+    Mountain: [
+      { name: "Dwarf", qty: "2d4", treasure: "(M) G" },
+      { name: "Giant, Cloud", qty: "1", treasure: "E" },
+      { name: "Giant, Frost", qty: "1", treasure: "E" },
+      { name: "Giant, Hill", qty: "1d4", treasure: "D" },
+      { name: "Giant, Stone", qty: "1", treasure: "E" },
+      { name: "Giant, Storm", qty: "1", treasure: "E" },
+      { name: "Gnome", qty: "1d6", treasure: "(O) N" },
+      { name: "Goblin", qty: "2d4", treasure: "(R) C" },
+      { name: "Hobgoblin", qty: "1d6", treasure: "(Q) D" },
+      { name: "Orc", qty: "2d6", treasure: "(Q) D" },
+      { name: "Troglodyte", qty: "1d6", treasure: "(Q) D" },
+      { name: "Troll", qty: "1d3", treasure: "(D) E" }
+    ],
+    Desert: [
+      { name: "Giant, Fire", qty: "1", treasure: "E" },
+      { name: "Goblin", qty: "2d4", treasure: "(R) C" },
+      { name: "Hobgoblin", qty: "1d6", treasure: "(Q) D" },
+      { name: "Hobgoblin", qty: "1d6", treasure: "(Q) D" },
+      { name: "Ogre", qty: "1d6", treasure: "(C) E" },
+      { name: "Ogre", qty: "1d6", treasure: "(C) E" },
+      { name: "Ogre", qty: "1d6", treasure: "(C) E" },
+      { name: "Orc", qty: "2d6", treasure: "(Q) D" },
+      { name: "Orc", qty: "2d6", treasure: "(Q) D" },
+      { name: "Pixie", qty: "2d4", treasure: "(S) R" },
+      { name: "Sprite", qty: "2d4", treasure: "(S) R" },
+      { name: "Thoul", qty: "1d6", treasure: "(B) F" }
+    ],
+    Settled: [
+      { name: "Dwarf", qty: "2d4", treasure: "(M) G" },
+      { name: "Elf", qty: "1d6", treasure: "(E) E" },
+      { name: "Giant, Hill", qty: "1d4", treasure: "D" },
+      { name: "Gnome", qty: "1d6", treasure: "(O) N" },
+      { name: "Gnoll", qty: "2d4", treasure: "(R) C" },
+      { name: "Goblin", qty: "2d4", treasure: "(R) C" },
+      { name: "Halfing", qty: "1d6", treasure: "(O) N" },
+      { name: "Hobgoblin", qty: "1d6", treasure: "(Q) D" },
+      { name: "Ogre", qty: "1d6", treasure: "(C) E" },
+      { name: "Orc", qty: "2d6", treasure: "(Q) D" },
+      { name: "Sprite", qty: "2d4", treasure: "(S) R" },
+      { name: "Sprite", qty: "2d4", treasure: "(S) R" }
+    ],
+    Jungle: [
+      { name: "Bugbear", qty: "1d6", treasure: "B" },
+      { name: "Cyclops", qty: "1", treasure: "E" },
+      { name: "Elf", qty: "1d6", treasure: "(E) E" },
+      { name: "Giant, Fire", qty: "1", treasure: "E" },
+      { name: "Giant, Hill", qty: "1d4", treasure: "D" },
+      { name: "Gnoll", qty: "2d4", treasure: "(R) C" },
+      { name: "Goblin", qty: "2d4", treasure: "(R) C" },
+      { name: "Lizard Man", qty: "2d4", treasure: "D" },
+      { name: "Ogre", qty: "1d6", treasure: "(C) E" },
+      { name: "Orc", qty: "2d6", treasure: "(Q) D" },
+      { name: "Troglodyte", qty: "1d6", treasure: "(Q) D" },
+      { name: "Troll", qty: "1d3", treasure: "(D) E" }
+    ]
+  },
 
-  // Subtable 4: Flyers
-  flyer: [
-    { name: "Bee, Giant", qty: "1d6", treasure: "Nil" },
-    { name: "Gargoyle", qty: "1d6", treasure: "C" },
-    { name: "Griffon", qty: "1d6", treasure: "D" },
-    { name: "Harpy", qty: "1d6", treasure: "C" },
-    { name: "Hippogriff", qty: "2d8", treasure: "C" },
-    { name: "Insect Swarm", qty: "1", treasure: "Nil" },
-    { name: "Manticore", qty: "1d4", treasure: "D" },
-    { name: "Pegasus", qty: "1d12", treasure: "Nil" },
-    { name: "Robber Fly", qty: "1d6", treasure: "Nil" },
-    { name: "Roc, Small", qty: "1", treasure: "I" },
-    { name: "Roc, Large", qty: "1", treasure: "I" },
-    { name: "Roc, Giant", qty: "1", treasure: "I" },
-  ],
 
-  // Subtable 1: Animals (simplified - BECMI has terrain-specific variants)
-  animal: [
-    { name: "Animal Herd", qty: "2d10", treasure: "Nil" },
-    { name: "Ape, Snow", qty: "1d4", treasure: "Nil" },
-    { name: "Ape, White", qty: "1d4", treasure: "Nil" },
-    { name: "Baboon, Rock", qty: "1d6", treasure: "Nil" },
-    { name: "Bear, Cave", qty: "1d4", treasure: "Nil" },
-    { name: "Bear, Grizzly", qty: "1d4", treasure: "Nil" },
-    { name: "Boar", qty: "1d6", treasure: "Nil" },
-    { name: "Camel", qty: "1d6", treasure: "Nil" },
-    { name: "Cat, Lion", qty: "1d4", treasure: "Nil" },
-    { name: "Cat, Panther", qty: "1d4", treasure: "Nil" },
-    { name: "Cat, Sabretooth", qty: "1d2", treasure: "Nil" },
-    { name: "Cat, Tiger", qty: "1d4", treasure: "Nil" },
-  ],
+  // Subtable 4: Flyers (universal)
+  flyer: {
+    Mountain: [
+      { name: "Bee, Giant", qty: "1d6", treasure: "Nil" },
+      { name: "Gargoyle", qty: "1d6", treasure: "C" },
+      { name: "Griffon", qty: "1d6", treasure: "D" },
+      { name: "Harpy", qty: "1d6", treasure: "C" },
+      { name: "Hippogriff", qty: "2d8", treasure: "C" },
+      { name: "Insect Swarm", qty: "1", treasure: "Nil" },
+      { name: "Manticore", qty: "1d4", treasure: "D" },
+      { name: "Pegasus", qty: "1d12", treasure: "Nil" },
+      { name: "Robber Fly", qty: "1d6", treasure: "Nil" },
+      { name: "Roc, Small", qty: "1", treasure: "I" },
+      { name: "Roc, Large", qty: "1", treasure: "I" },
+      { name: "Roc, Giant", qty: "1", treasure: "I" }
+    ],
+    Desert: [
+      { name: "Bee, Giant", qty: "1d6", treasure: "Nil" },
+      { name: "Gargoyle", qty: "1d6", treasure: "C" },
+      { name: "Griffon", qty: "1d6", treasure: "D" },
+      { name: "Harpy", qty: "1d6", treasure: "C" },
+      { name: "Hippogriff", qty: "2d8", treasure: "C" },
+      { name: "Insect Swarm", qty: "1", treasure: "Nil" },
+      { name: "Manticore", qty: "1d4", treasure: "D" },
+      { name: "Pegasus", qty: "1d12", treasure: "Nil" },
+      { name: "Robber Fly", qty: "1d6", treasure: "Nil" },
+      { name: "Roc, Small", qty: "1", treasure: "I" },
+      { name: "Roc, Large", qty: "1", treasure: "I" },
+      { name: "Roc, Giant", qty: "1", treasure: "I" }
+    ],
+    AllOther: [
+      { name: "Bee, Giant", qty: "1d6", treasure: "Nil" },
+      { name: "Gargoyle", qty: "1d6", treasure: "C" },
+      { name: "Griffon", qty: "1d6", treasure: "D" },
+      { name: "Harpy", qty: "1d6", treasure: "C" },
+      { name: "Hippogriff", qty: "2d8", treasure: "C" },
+      { name: "Insect Swarm", qty: "1", treasure: "Nil" },
+      { name: "Manticore", qty: "1d4", treasure: "D" },
+      { name: "Pegasus", qty: "1d12", treasure: "Nil" },
+      { name: "Robber Fly", qty: "1d6", treasure: "Nil" },
+      { name: "Roc, Small", qty: "1", treasure: "I" },
+      { name: "Roc, Large", qty: "1", treasure: "I" },
+      { name: "Roc, Giant", qty: "1", treasure: "I" }
+    ]
+  },
 
-  // Subtable 5: Swimmers
-  swimmer: [
-    { name: "Crocodile", qty: "1d6", treasure: "Nil" },
-    { name: "Crocodile, Large", qty: "1d3", treasure: "D" },
-    { name: "Fish, Rock", qty: "1d6", treasure: "Nil" },
-    { name: "Giant Fish", qty: "1d6", treasure: "Nil" },
-    { name: "Leech, Giant", qty: "1d4", treasure: "Nil" },
-    { name: "Lizard Man", qty: "2d4", treasure: "D" },
-    { name: "Toad, Giant", qty: "1d6", treasure: "Nil" },
-    { name: "Shrew, Giant", qty: "1d4", treasure: "Nil" },
-    { name: "Snake, Python", qty: "1d6", treasure: "Nil" },
-    { name: "Snake, Rattler", qty: "1d6", treasure: "Nil" },
-    { name: "Snake, Viper", qty: "1d6", treasure: "Nil" },
-    { name: "Turtle, Giant", qty: "1d2", treasure: "Nil" },
-  ],
+  // Subtable 5: Swimmers (terrain-specific)
+  swimmer: {
+    River: [
+      { name: "Crocodile", qty: "1d6", treasure: "Nil" },
+      { name: "Crocodile, Large", qty: "1d3", treasure: "D" },
+      { name: "Fish, Rock", qty: "1d6", treasure: "Nil" },
+      { name: "Giant Fish", qty: "1d6", treasure: "Nil" },
+      { name: "Leech, Giant", qty: "1d4", treasure: "Nil" },
+      { name: "Lizard Man", qty: "2d4", treasure: "D" },
+      { name: "Toad, Giant", qty: "1d6", treasure: "Nil" },
+      { name: "Shrew, Giant", qty: "1d4", treasure: "Nil" },
+      { name: "Snake, Python", qty: "1d6", treasure: "Nil" },
+      { name: "Snake, Rattler", qty: "1d6", treasure: "Nil" },
+      { name: "Snake, Viper", qty: "1d6", treasure: "Nil" },
+      { name: "Turtle, Giant", qty: "1d2", treasure: "Nil" }
+    ],
+    Ocean: [
+      { name: "Crocodile", qty: "1d6", treasure: "Nil" },
+      { name: "Crocodile, Large", qty: "1d3", treasure: "D" },
+      { name: "Fish, Rock", qty: "1d6", treasure: "Nil" },
+      { name: "Giant Fish", qty: "1d6", treasure: "Nil" },
+      { name: "Leech, Giant", qty: "1d4", treasure: "Nil" },
+      { name: "Lizard Man", qty: "2d4", treasure: "D" },
+      { name: "Toad, Giant", qty: "1d6", treasure: "Nil" },
+      { name: "Shrew, Giant", qty: "1d4", treasure: "Nil" },
+      { name: "Snake, Python", qty: "1d6", treasure: "Nil" },
+      { name: "Snake, Rattler", qty: "1d6", treasure: "Nil" },
+      { name: "Snake, Viper", qty: "1d6", treasure: "Nil" },
+      { name: "Turtle, Giant", qty: "1d2", treasure: "Nil" }
+    ]
+  },
 
-  // Subtable 6: Dragons
-  dragon: [
-    { name: "Chimera", qty: "1d2", treasure: "F" },
-    { name: "Dragon, Black", qty: "1", treasure: "H" },
-    { name: "Dragon, Blue", qty: "1", treasure: "H" },
-    { name: "Dragon, Gold", qty: "1", treasure: "H" },
-    { name: "Dragon, Green", qty: "1", treasure: "H" },
-    { name: "Dragon, Red", qty: "1", treasure: "H" },
-    { name: "Dragon, White", qty: "1", treasure: "H" },
-    { name: "Hydra", qty: "1", treasure: "B" },
-    { name: "Salamander, Flame", qty: "1d4", treasure: "E" },
-    { name: "Salamander, Frost", qty: "1d4", treasure: "E" },
-    { name: "Wyvern", qty: "1d3", treasure: "E" },
-    { name: "Dragon, White", qty: "1", treasure: "H" }, // Duplicate for 12th slot
-  ],
+  // Subtable 6: Dragons (universal, with sea variation)
+  dragon: {
+    Land: [
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Chimera", qty: "1d2", treasure: "F" },
+      { name: "Dragon, Black", qty: "1", treasure: "H" },
+      { name: "Dragon, Blue", qty: "1", treasure: "H" },
+      { name: "Dragon, Gold", qty: "1", treasure: "H" },
+      { name: "Dragon, Green", qty: "1", treasure: "H" },
+      { name: "Dragon, Red", qty: "1", treasure: "H" },
+      { name: "Dragon, White", qty: "1", treasure: "H" },
+      { name: "Hydra", qty: "1", treasure: "B" },
+      { name: "Hydra", qty: "1", treasure: "B" },
+      { name: "Wyvern", qty: "1d3", treasure: "E" },
+      { name: "Salamander, Flame", qty: "1d4", treasure: "E" },
+      { name: "Salamander, Frost", qty: "1d4", treasure: "E" }
+    ],
+    Sea: [
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" }
+    ]
+  },
 
-  // Subtable 8: Undead
-  undead: [
-    { name: "Ghoul", qty: "1d6", treasure: "Nil" },
-    { name: "Ghoul", qty: "1d6", treasure: "Nil" },
-    { name: "Ghoul", qty: "1d6", treasure: "Nil" },
-    { name: "Mummy", qty: "1", treasure: "D" },
-    { name: "Skeleton", qty: "3d4", treasure: "Nil" },
-    { name: "Skeleton", qty: "3d4", treasure: "Nil" },
-    { name: "Spectre", qty: "1d2", treasure: "E" },
-    { name: "Wight", qty: "1d3", treasure: "B" },
-    { name: "Wraith", qty: "1d3", treasure: "E" },
-    { name: "Vampire", qty: "1", treasure: "F" },
-    { name: "Zombie", qty: "2d4", treasure: "Nil" },
-    { name: "Zombie", qty: "2d4", treasure: "Nil" },
-  ],
+  // Subtable 7: Insect (universal)
+  insect: {
+    All: [
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" },
+      { name: "Ant, Giant", qty: "2d6", treasure: "Nil" }
+    ]
+  },
 
-  // Subtable 9: Unusual
-  unusual: [
-    { name: "Basilisk", qty: "1d6", treasure: "F" },
-    { name: "Blink Dog", qty: "1d6", treasure: "C" },
-    { name: "Centaur", qty: "1d6", treasure: "D" },
-    { name: "Displacer Beast", qty: "1d2", treasure: "E" },
-    { name: "Gorgon", qty: "1d2", treasure: "E" },
-    { name: "Lycanthrope, Werebear", qty: "1d4", treasure: "C" },
-    { name: "Lycanthrope, Wereboar", qty: "1d4", treasure: "D" },
-    { name: "Lycanthrope, Wererat", qty: "1d6", treasure: "C" },
-    { name: "Lycanthrope, Weretiger", qty: "1d4", treasure: "C" },
-    { name: "Lycanthrope, Werewolf", qty: "1d6", treasure: "C" },
-    { name: "Medusa", qty: "1d3", treasure: "F" },
-    { name: "Treant", qty: "1d6", treasure: "C" },
-  ],
+  // Subtable 8: Undead (universal)
+  undead: {
+    All: [
+      { name: "Ghoul", qty: "1d6", treasure: "Nil" },
+      { name: "Ghoul", qty: "1d6", treasure: "Nil" },
+      { name: "Ghoul", qty: "1d6", treasure: "Nil" },
+      { name: "Mummy", qty: "1", treasure: "D" },
+      { name: "Skeleton", qty: "3d4", treasure: "Nil" },
+      { name: "Skeleton", qty: "3d4", treasure: "Nil" },
+      { name: "Spectre", qty: "1d2", treasure: "E" },
+      { name: "Wight", qty: "1d3", treasure: "B" },
+      { name: "Wraith", qty: "1d3", treasure: "E" },
+      { name: "Vampire", qty: "1", treasure: "F" },
+      { name: "Zombie", qty: "2d4", treasure: "Nil" },
+      { name: "Zombie", qty: "2d4", treasure: "Nil" }
+    ]
+  },
+
+  // Subtable 9: Unusual (universal)
+  unusual: {
+    All: [
+      { name: "Basilisk", qty: "1d6", treasure: "F" },
+      { name: "Blink Dog", qty: "1d6", treasure: "C" },
+      { name: "Centaur", qty: "1d6", treasure: "D" },
+      { name: "Displacer Beast", qty: "1d2", treasure: "E" },
+      { name: "Gorgon", qty: "1d2", treasure: "E" },
+      { name: "Lycanthrope, Werebear", qty: "1d4", treasure: "C" },
+      { name: "Lycanthrope, Wereboar", qty: "1d4", treasure: "D" },
+      { name: "Lycanthrope, Wererat", qty: "1d6", treasure: "C" },
+      { name: "Lycanthrope, Weretiger", qty: "1d4", treasure: "C" },
+      { name: "Lycanthrope, Werewolf", qty: "1d6", treasure: "C" },
+      { name: "Medusa", qty: "1d3", treasure: "F" },
+      { name: "Treant", qty: "1d6", treasure: "C" }
+    ]
+  },
+
+  // Subtable 10: Castle Encounters
+  castle: {
+    All: [
+      { name: "Castle Encounter", qty: "1", treasure: "V", castle: { class: "Cleric", level: "1d20+8", alignment: "Lawful" } },
+      { name: "Castle Encounter", qty: "1", treasure: "V", castle: { class: "Magic-User", level: "1d20+8", alignment: "Neutral" } },
+      { name: "Castle Encounter", qty: "1", treasure: "V", castle: { class: "Demihuman", level: "varies", alignment: "Chaotic" } },
+      { name: "Castle Encounter", qty: "1", treasure: "V", castle: { class: "Fighter", level: "1d20+8", alignment: "Neutral" } },
+      { name: "Castle Encounter", qty: "1", treasure: "V", castle: { class: "Fighter", level: "1d20+8", alignment: "Lawful" } },
+      { name: "Castle Encounter", qty: "1", treasure: "V", castle: { class: "Fighter", level: "1d20+8", alignment: "Lawful" } }
+    ]
+  },
+
+  // Subtable 11: City Encounters (8 sections, 1d20 each)
+  city: {
+    Section1: [
+      "Alchemist", "Animal Trainer", "Apothecary", "Archaeologist", "Armorer", "Artist/Sculptor", "Assassin", "Astrologer", "Astronomer", "Athlete",
+      "Baker", "Banker", "Barber", "Bartender", "Basketweaver", "Bazaar Merchant", "Beeceeper", "Beggar", "Blacksmith", "Boardinghouse Keeper"
+    ],
+    Section2: [
+      "Boatman/Gondolier", "Bodyguard", "Bonecarver", "Bootmaker", "Bowyer", "Brewer", "Broommaker", "Butcher", "Candlemaker", "Caravan Master",
+      "Carter", "Chandler", "Charcoalmaker", "Chef", "Chemist", "Church/Temple", "Employee", "Cleric Adventurer", "Coachman", "Bootmaker"
+    ],
+    Section3: [
+      "Construction Worker", "Cooper", "Craft Guildsman", "Dairy Worker", "Dancer", "Diplomat", "Driver", "Dockman/Wharfsman", "Doctor/Dentist", "Droid Adventurer",
+      "Dwarf Adventurer", "Elf Adventurer", "Entertainer", "Farmer", "Ferryman", "Fighter Adventurer", "Church/Temple", "Fighter, Mercenary", "Fisherman", "Fletcher"
+    ],
+    Section4: [
+      "Freighter", "Furnituremaker", "Furrier", "Gambler", "Gemcutter", "Gentleman/Lady", "Geologist", "Glassblower", "Goldsmith", "Government Official",
+      "Graveyard Keeper", "Guardsman", "Guide", "Guild Officer", "Halffling Adventurer", "Harlot", "Healer", "Herbalist", "Hunter", "Innkeeper"
+    ],
+    Section5: [
+      "Freighter", "Jeweler", "Judge", "Juggler/Mime", "Kennel Keeper", "Laborer", "Land Officer", "Lawyer", "Leatherworker", "Magic-User Adventurer",
+      "Magic-User Guild Officer", "Majordomo", "Mason", "Mayor", "Madame", "Madman", "Thief Adventurer", "Thieves' Guild Officer", "Town Drunk", "Town Hall Employee"
+    ],
+    Section6: [
+      "Trading Post Employee", "Translator", "Treasurer", "Undertaker", "Vagrant", "Vigilante", "Warehouse Worker", "Watchman", "Watering-Hole Worker", "Weaver",
+      "Welldigger", "Wellkeeper", "Wheelwright", "Winemaker", "Woodcarver", "Woodcutter", "Schoolteacher", "Scribe", "Serf", "Servant, Hired"
+    ],
+    Section7: [
+      "Servant, Indentured", "Shipwright", "Singer", "Slave", "Smuggler", "Soapmaker", "Spy", "Stablekeeper", "Stoneworker", "Tailor",
+      "Tanner", "Tavernkeeper", "Tax Assessor", "Taxidermist", "Thatcher", "Schoolteacher", "Scribe", "Serf", "Servant, Hired", "Servant, Indentured"
+    ],
+    Section8: [
+      "Shipwright", "Singer", "Slave", "Smuggler", "Soapmaker", "Spy", "Stablekeeper", "Stoneworker", "Tailor", "Tanner",
+      "Tavernkeeper", "Tax Assessor", "Taxidermist", "Thatcher", "Town Drunk", "Town Hall Employee", "Trading Post Employee", "Translator", "Treasurer", "Undertaker"
+    ]
+  }
 };
 
 const CLASSES = ["Fighter", "Cleric", "Magic-User", "Thief", "Dwarf", "Elf"];
@@ -433,20 +855,74 @@ export function moveParty(directionIndex: number) {
   });
 }
 
+export function forageFullDay() {
+  updateState((state) => {
+    const wilderness = state.wilderness;
+    const currentHex = sanitizeHex(wilderness.map[keyFromPos(wilderness.currentPos)]);
+    if (!currentHex) return;
+
+    // Check for required resources (Animal or Vegetable)
+    const hasResources = currentHex.resources && (currentHex.resources.includes("Animal") || currentHex.resources.includes("Vegetable"));
+    if (!hasResources) {
+      addLogEntry(wilderness, {
+        terrain: currentHex.type,
+        summary: "Cannot forage here.",
+        notes: "No suitable food sources in this area.",
+      });
+      return;
+    }
+
+    // Advance calendar directly in the same updateState transaction - full day
+    const calendar = state.calendar;
+    const before = describeClock(calendar.clock);
+    advanceClock(calendar.clock, "hour", 24);
+    const after = describeClock(calendar.clock);
+    addCalendarLog(calendar, `Time passed: +1 day`, `${before} → ${after}`);
+
+    // BECMI: Full day foraging is automatically successful
+    const found = randomRange(6, 12); // More food when spending full day
+    wilderness.rations += found;
+    addLogEntry(wilderness, {
+      terrain: currentHex.type,
+      summary: "Full day foraging successful.",
+      notes: `Found ${found} rations.`,
+    });
+    wilderness.weather = generateWeather(wilderness.climate);
+  });
+}
+
 export function forageCurrentHex() {
   updateState((state) => {
     const wilderness = state.wilderness;
     const currentHex = sanitizeHex(wilderness.map[keyFromPos(wilderness.currentPos)]);
     if (!currentHex) return;
+
+    // Check for required resources (Animal or Vegetable)
+    const hasResources = currentHex.resources && (currentHex.resources.includes("Animal") || currentHex.resources.includes("Vegetable"));
+    if (!hasResources) {
+      addLogEntry(wilderness, {
+        terrain: currentHex.type,
+        summary: "Cannot forage here.",
+        notes: "No suitable food sources in this area.",
+      });
+      return;
+    }
+
     // Advance calendar directly in the same updateState transaction
     const calendar = state.calendar;
     const before = describeClock(calendar.clock);
     advanceClock(calendar.clock, "hour", 2);
     const after = describeClock(calendar.clock);
     addCalendarLog(calendar, `Time passed: +2 hours`, `${before} → ${after}`);
+
+    // BECMI foraging: 50% base chance (1-3 on d6) modified by terrain
     const terrain = TERRAIN_DATA[currentHex.type];
+    const baseChance = 3; // 1-3 on d6 (50% success)
+    const terrainModifier = terrain.forage - 3; // Adjust based on terrain (woods/river = +0, hills/swamp = -1, etc.)
+    const finalChance = Math.max(1, Math.min(6, baseChance + terrainModifier));
+
     const roll = randomRange(1, 6);
-    if (roll <= terrain.forage) {
+    if (roll <= finalChance) {
       const found = randomRange(1, 6);
       wilderness.rations += found;
       addLogEntry(wilderness, {
@@ -468,18 +944,31 @@ export function forageCurrentHex() {
 export function refillWater() {
   updateState((state) => {
     const wilderness = state.wilderness;
+    const currentHex = sanitizeHex(wilderness.map[keyFromPos(wilderness.currentPos)]);
+    if (!currentHex) return;
+
     if (!canRefillWater(wilderness)) {
       addLogEntry(wilderness, {
-        terrain: wilderness.map[keyFromPos(wilderness.currentPos)]?.type ?? "clear",
-        summary: "No water source nearby.",
+        terrain: currentHex.type,
+        summary: "No fresh water source nearby.",
       });
       return;
     }
+
+    // Small time cost for refilling waterskins
+    const calendar = state.calendar;
+    const before = describeClock(calendar.clock);
+    advanceClock(calendar.clock, "hour", 1);
+    const after = describeClock(calendar.clock);
+    addCalendarLog(calendar, `Time passed: +1 hour`, `${before} → ${after}`);
+
     wilderness.water = wilderness.partySize * WATER_REFILL_DAYS;
     addLogEntry(wilderness, {
-      terrain: wilderness.map[keyFromPos(wilderness.currentPos)]?.type ?? "clear",
+      terrain: currentHex.type,
       summary: "Waterskins refilled.",
+      notes: "Fresh water found and collected.",
     });
+    wilderness.weather = generateWeather(wilderness.climate);
   });
 }
 
@@ -487,7 +976,14 @@ export function canRefillWater(state: WildernessState = getWildernessState()): b
   const map = state.map ?? {};
   const hex = map[keyFromPos(state.currentPos)];
   if (!hex) return false;
-  return REFILL_TERRAINS.includes(hex.type);
+
+  // Check terrain type (rivers)
+  if (REFILL_TERRAINS.includes(hex.type)) return true;
+
+  // Check for lake features (from static maps)
+  if (hex.feature === "Lake") return true;
+
+  return false;
 }
 
 export function exportWildernessData(): string {
@@ -555,13 +1051,26 @@ function ensureHex(state: WildernessState, q: number, r: number, fromType: Wilde
     return staticHex;
   }
 
+  // In static map mode, if no static data exists for this hex, use a default terrain
+  // instead of procedural generation to ensure consistency
+  if (state.staticMapMode) {
+    const defaultHex: WildernessHex = {
+      type: "clear", // Default to clear terrain
+      resources: [],
+      visited: true,
+      color: TERRAIN_DATA.clear.color,
+    };
+    map[key] = defaultHex;
+    return defaultHex;
+  }
+
   if (map[key]) {
     map[key] = sanitizeHex(map[key]);
     map[key]!.visited = true;
     return map[key]!;
   }
 
-  const generated = generateHex(fromType);
+  const generated = generateHex(fromType, q, r);
   map[key] = generated;
   return generated;
 }
@@ -587,35 +1096,48 @@ function ensureMap(state: WildernessState): Record<string, WildernessHex> {
   return state.map;
 }
 
-function generateHex(fromType: WildernessTerrainType): WildernessHex {
-  const type = selectTerrain(fromType);
+function generateHex(fromType: WildernessTerrainType, q?: number, r?: number): WildernessHex {
+  // Use coordinates as seed for deterministic generation
+  const seed = q !== undefined && r !== undefined ? (q * 1000 + r) : Math.random();
+  const seededRandom = seededRandomGenerator(seed);
+
+  const type = selectTerrain(fromType, seededRandom);
   const resources: DominionResourceType[] = [];
-  if (Math.random() < 0.2) resources.push("Animal");
-  if (Math.random() < 0.2) resources.push("Vegetable");
-  if (Math.random() < 0.1) resources.push("Mineral");
+  if (seededRandom() < 0.2) resources.push("Animal");
+  if (seededRandom() < 0.2) resources.push("Vegetable");
+  if (seededRandom() < 0.1) resources.push("Mineral");
 
   let feature: string | null = null;
   let details: string | null = null;
 
-  const roll = Math.random();
-  if (roll < 0.02) {
-    feature = "Castle";
-    const ownerLvl = randomRange(9, 14);
-    const ownerClass = CLASSES[randomRange(0, CLASSES.length - 1)];
-    const align = ALIGNMENTS[randomRange(0, ALIGNMENTS.length - 1)];
-    const troops = randomRange(1, 4) * 10;
-    const patrol = maybeGenerateEncounter({ type } as WildernessHex)?.replace("ENCOUNTER: ", "") ?? "Militia";
-    details = `${align} ${ownerClass} (Lvl ${ownerLvl}). Garrison: ${troops}. Patrol: ${patrol}.`;
-  } else if (roll < 0.05) {
-    feature = "Ruins";
-    details = "Ancient crumbling walls. Dungeon entrance?";
-  } else if (roll < 0.15) {
-    feature = "Lair";
-    details = maybeGenerateEncounter({ type } as WildernessHex)?.replace("ENCOUNTER: ", "Lair of ") ?? "Empty lair.";
-  } else if (roll < 0.2 || type === "city") {
+  // BECMI-compliant hex features - NOT random probabilities, should be DM-placed
+  // For procedural generation, we use reasonable default distributions with comments
+  // In a proper BECMI campaign, these would be placed by the DM based on campaign needs
+
+  // Towns: Should be DM-placed near water sources. For procedural gen, 15% chance in suitable terrain
+  if (type === "city" || (type === "clear" && seededRandom() < 0.15)) { // NOT RAW: procedural town placement
     feature = "Town";
-    const settlement = generateSettlement();
+    const settlement = generateSettlement(seededRandom);
     details = `${settlement.size} (Pop: ${settlement.population}). Ruler: ${settlement.ruler}. Services: ${settlement.services}.`;
+  }
+  // Castles: Should be DM-placed in strategic locations. For procedural gen, rare in hills/mountains
+  else if ((type === "hills" || type === "mountain") && seededRandom() < 0.03) { // NOT RAW: procedural castle placement
+    feature = "Castle";
+    const ownerLvl = Math.floor(seededRandom() * 6) + 9; // 9-14
+    const ownerClass = CLASSES[Math.floor(seededRandom() * CLASSES.length)];
+    const align = ALIGNMENTS[Math.floor(seededRandom() * ALIGNMENTS.length)];
+    const troops = (Math.floor(seededRandom() * 4) + 1) * 10;
+    details = `${align} ${ownerClass} (Lvl ${ownerLvl}). Garrison: ${troops}.`;
+  }
+  // Ruins: Should be DM-placed for adventure hooks. For procedural gen, rare everywhere
+  else if (seededRandom() < 0.02) { // NOT RAW: procedural ruin placement
+    feature = "Ruins";
+    details = "Ancient crumbling walls. Possible dungeon entrance.";
+  }
+  // Lairs: Should result from encounters. For procedural gen, occasional lairs
+  else if (seededRandom() < 0.08) { // NOT RAW: procedural lair placement
+    feature = "Lair";
+    details = "Monster lair - roll for encounter when investigated.";
   }
 
   return {
@@ -628,11 +1150,20 @@ function generateHex(fromType: WildernessTerrainType): WildernessHex {
   };
 }
 
-function selectTerrain(fromType: WildernessTerrainType): WildernessTerrainType {
+// Simple seeded random number generator for deterministic procedural generation
+function seededRandomGenerator(seed: number) {
+  let x = Math.sin(seed) * 10000;
+  return function() {
+    x = Math.sin(x) * 10000;
+    return x - Math.floor(x);
+  };
+}
+
+function selectTerrain(fromType: WildernessTerrainType, randomFn = Math.random): WildernessTerrainType {
   const normalized = normalizeTerrainType(fromType);
   const table = TERRAIN_DATA[normalized]?.tables;
   if (!table) return normalized;
-  const roll = randomRange(1, 20);
+  const roll = Math.floor(randomFn() * 20) + 1;
   const sortedEntries = Object.entries(table).sort((a, b) => a[1] - b[1]);
   for (const [terrain, threshold] of sortedEntries) {
     if (roll <= threshold) {
@@ -742,9 +1273,9 @@ function generateEncounter(type: WildernessTerrainType): string {
   const normalized = normalizeTerrainType(type);
   const terrainGroup = TERRAIN_GROUPINGS[normalized] || "Clear";
 
-  // Roll 1d8 on main table to determine subtable
+  // Roll 1d8 on terrain-specific main table to determine subtable
   const mainRoll = randomRange(1, 8);
-  const subtableName = MAIN_ENCOUNTER_TABLE[mainRoll];
+  const subtableName = MAIN_ENCOUNTER_TABLE[normalized][mainRoll];
 
   // Get the appropriate subtable based on main roll and terrain
   const { categoryName, encounter } = rollOnSubtable(subtableName, terrainGroup);
@@ -763,60 +1294,113 @@ function generateEncounter(type: WildernessTerrainType): string {
   return `ENCOUNTER: ${qty} ${encounter.name} (${categoryName}) - ${distance} yards away${surpriseText}${treasureText}`;
 }
 
-function rollOnSubtable(subtableName: string, terrainGroup: string): { categoryName: string; encounter: { name: string; qty: string } } {
+function rollOnSubtable(subtableName: string, terrainGroup: string): { categoryName: string; encounter: { name: string; qty: string; treasure?: string; castle?: any } } {
   let tableKey: string;
+  let subKey: string;
   let roll: number;
 
-  // Handle terrain-specific subtable variations from BECMI main table
+  // Map subtable names to table keys and determine appropriate sub-key
   switch (subtableName) {
     case "Human":
-      tableKey = "menus";
+      tableKey = "human";
+      // Map terrain group to appropriate human subtable
+      if (terrainGroup === "Clear") subKey = "Clear";
+      else if (terrainGroup === "Settled") subKey = "Settled";
+      else if (terrainGroup === "Woods") subKey = "Woods";
+      else if (terrainGroup === "River") subKey = "River";
+      else if (terrainGroup === "Mountain") subKey = "Mountain";
+      else if (terrainGroup === "Desert") subKey = "Desert";
+      else if (terrainGroup === "Ocean") subKey = "Ocean";
+      else if (terrainGroup === "Jungle") subKey = "Jungle";
+      else if (terrainGroup === "Swamp") subKey = "Swamp";
+      else subKey = "Clear"; // Default
       roll = randomRange(1, 12);
       break;
 
     case "Humanoid":
       tableKey = "humanoid";
+      subKey = terrainGroup;
       roll = randomRange(1, 12);
       break;
 
     case "Animal":
       tableKey = "animal";
+      subKey = terrainGroup;
+      roll = randomRange(1, 12);
+      break;
+
+    case "Flyer":
+      tableKey = "flyer";
+      if (terrainGroup === "Mountain") subKey = "Mountain";
+      else if (terrainGroup === "Desert") subKey = "Desert";
+      else subKey = "AllOther";
+      roll = randomRange(1, 12);
+      break;
+
+    case "Insect":
+      tableKey = "insect";
+      subKey = "All";
+      roll = randomRange(1, 12);
+      break;
+
+    case "Swimmer":
+      tableKey = "swimmer";
+      subKey = terrainGroup; // River or Ocean
       roll = randomRange(1, 12);
       break;
 
     case "Unusual":
       tableKey = "unusual";
+      subKey = "All";
       roll = randomRange(1, 12);
       break;
 
     case "Dragon":
       tableKey = "dragon";
-      roll = randomRange(1, 12);
+      subKey = terrainGroup === "Ocean" ? "Sea" : "Land";
+      roll = randomRange(1, subKey === "Sea" ? 10 : 12);
       break;
 
-    case "Insect":
-      // Insect encounters use the unusual table in BECMI
-      tableKey = "unusual";
+    case "Undead":
+      tableKey = "undead";
+      subKey = "All";
       roll = randomRange(1, 12);
       break;
 
     case "Special":
       if (terrainGroup === "City") {
-        // City special encounters - for now use humans, but should be city-specific
-        tableKey = "menus";
-        roll = randomRange(1, 12);
+        // City special encounters - use city table
+        tableKey = "city";
+        const sectionRoll = randomRange(1, 8);
+        subKey = `Section${sectionRoll}`;
+        roll = randomRange(1, 20);
+        // For city encounters, we need to handle this differently
+        const cityTable = ENCOUNTER_DATA[tableKey][subKey];
+        const encounterName = cityTable[roll - 1];
+        return {
+          categoryName: "City Encounter",
+          encounter: { name: encounterName, qty: "1", treasure: "V" }
+        };
       } else {
-        tableKey = "menus"; // Fallback
-        roll = randomRange(1, 12);
+        // Castle encounters for settled/castle terrain
+        tableKey = "castle";
+        subKey = "All";
+        roll = randomRange(1, 6);
       }
       break;
 
     default:
-      tableKey = "menus";
+      tableKey = "animal";
+      subKey = "Clear";
       roll = randomRange(1, 12);
   }
 
-  const table = ENCOUNTER_DATA[tableKey.toLowerCase()] ?? ENCOUNTER_DATA.menus;
+  const table = ENCOUNTER_DATA[tableKey]?.[subKey];
+  if (!table) {
+    // Fallback
+    return { categoryName: "Unknown", encounter: { name: "Unknown Creature", qty: "1", treasure: "Nil" } };
+  }
+
   const encounter = table[roll - 1] ?? table[0];
 
   return { categoryName: tableKey, encounter };
@@ -883,21 +1467,22 @@ function calculateEncounterDistance(isSurprised: boolean = false): number {
   return distance;
 }
 
-function generateSettlement() {
-  const popRoll = rollDice("2d6");
+function generateSettlement(seededRandom = Math.random) {
+  // Convert dice rolls to seeded random
+  const popRoll = Math.floor(seededRandom() * 6) + Math.floor(seededRandom() * 6) + 2; // 2d6
   let size = "Village";
-  let population = rollDice("1d10") * 50;
+  let population = (Math.floor(seededRandom() * 10) + 1) * 50; // 1d10 * 50
 
   if (popRoll >= 11) {
     size = "City";
-    population = rollDice("2d10") * 1000;
+    population = (Math.floor(seededRandom() * 10) + Math.floor(seededRandom() * 10) + 2) * 1000; // 2d10 * 1000
   } else if (popRoll >= 8) {
     size = "Town";
-    population = rollDice("1d10") * 200 + 500;
+    population = (Math.floor(seededRandom() * 10) + 1) * 200 + 500; // 1d10 * 200 + 500
   }
 
-  const rulerLevel = rollDice("1d6") + 8;
-  const rulerClass = CLASSES[randomRange(0, CLASSES.length - 1)];
+  const rulerLevel = Math.floor(seededRandom() * 6) + 8 + 1; // 1d6 + 8
+  const rulerClass = CLASSES[Math.floor(seededRandom() * CLASSES.length)];
 
   const services = ["Market"];
   if (size !== "Village") {
@@ -1020,9 +1605,29 @@ export function setStaticMapMode(enabled: boolean) {
   });
 }
 
+// Removed complex coordinate conversion - now expects axial coordinates directly
+
 // Helper function to convert Python BECMI terrain to Wilderness terrain
 function convertPythonTerrain(pythonTerrain: string): WildernessTerrainType {
-  return PYTHON_TO_WILDERNESS_TERRAIN[pythonTerrain] || "clear";
+  // Try exact match first
+  let converted = PYTHON_TO_WILDERNESS_TERRAIN[pythonTerrain];
+
+  // If no exact match, try case-insensitive match
+  if (!converted) {
+    const lowerCaseTerrain = pythonTerrain.toLowerCase();
+    for (const [key, value] of Object.entries(PYTHON_TO_WILDERNESS_TERRAIN)) {
+      if (key.toLowerCase() === lowerCaseTerrain) {
+        converted = value;
+        break;
+      }
+    }
+  }
+
+  if (!converted) {
+    console.warn(`Unknown terrain type "${pythonTerrain}" - defaulting to "clear". Expected types:`, Object.keys(PYTHON_TO_WILDERNESS_TERRAIN));
+    return "clear";
+  }
+  return converted;
 }
 
 export function loadStaticMapFromJSON(jsonData: string): void {
@@ -1030,29 +1635,33 @@ export function loadStaticMapFromJSON(jsonData: string): void {
     const data = JSON.parse(jsonData);
 
     if (!Array.isArray(data)) {
-      throw new Error("Invalid static map format: expected array of hex data");
+      throw new Error("Invalid static map format: expected array of hex objects with q,r,terrain");
     }
+
+    console.log("Loading static map with", data.length, "hexes");
 
     const staticMap: Record<string, WildernessHex> = {};
 
     data.forEach((hex: any) => {
-      if (!hex.x || !hex.y || !hex.terrain) {
-        return; // Skip invalid entries
+      if (hex.q === undefined || hex.r === undefined || !hex.terrain) {
+        console.warn("Skipping invalid hex:", hex);
+        return;
       }
 
-      const key = `${hex.x},${hex.y}`;
+      const key = `${hex.q},${hex.r}`;
       const wildernessTerrain = convertPythonTerrain(hex.terrain);
 
       staticMap[key] = {
         type: wildernessTerrain,
         resources: [],
-        visited: false, // Static map starts unvisited
+        visited: false,
         color: TERRAIN_DATA[wildernessTerrain].color,
-        // Add feature for rivers/lakes
-        feature: hex.is_river ? "River" : hex.is_lake ? "Lake" : undefined,
-        details: hex.is_river ? "Fresh water source" : hex.is_lake ? "Standing water" : undefined,
+        feature: hex.feature || undefined,
+        details: hex.details || undefined,
       };
     });
+
+    console.log(`Loaded ${Object.keys(staticMap).length} static hexes`);
 
     updateState((state) => {
       state.wilderness.staticMapData = staticMap;

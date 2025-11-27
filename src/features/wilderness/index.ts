@@ -5,7 +5,7 @@ import "./wilderness.css";
 registerRoute({
   id: "wilderness",
   label: "Royal Cartographer",
-  description: "Hex exploration & encounters",
+  description: "BECMI hex exploration with foraging & water management",
   section: "Exploration",
   order: 1,
   mount(target) {

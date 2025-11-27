@@ -605,6 +605,7 @@ export interface DungeonState {
   status: DungeonStatus;
   encounter?: DungeonEncounter;
   obstacle?: DungeonObstacle;
+  roomSearched: boolean; // Whether current room has been searched
   log: DungeonLogEntry[];
 }
 
@@ -923,6 +924,7 @@ export const DEFAULT_STATE: WarMachineState = {
     lairMode: false,
     lighting: "dim",
     status: "idle",
+    roomSearched: false,
     log: [],
   },
   ledger: createDefaultLedgerState(),

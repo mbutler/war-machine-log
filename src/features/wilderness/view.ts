@@ -5,6 +5,7 @@ import {
   canRefillWater,
   exportWildernessData,
   forageCurrentHex,
+  forageFullDay,
   getWildernessState,
   importWildernessData,
   loadStaticMapFromJSON,
@@ -50,6 +51,19 @@ export function renderWildernessPanel(target: HTMLElement) {
     "BECMI wilderness surveying with travel clocks, weather, and hex encounters.",
   );
 
+  // Add mode indicator to panel title
+  const titleElement = element.querySelector('.panel-title');
+  let titleBadge: HTMLElement | null = null;
+  if (titleElement) {
+    titleBadge = document.createElement("span");
+    titleBadge.style.fontSize = "0.75rem";
+    titleBadge.style.fontWeight = "normal";
+    titleBadge.style.marginLeft = "0.5rem";
+    titleBadge.style.padding = "0.1rem 0.3rem";
+    titleBadge.style.borderRadius = "0.2rem";
+    titleElement.appendChild(titleBadge);
+  }
+
   const grid = document.createElement("div");
   grid.className = "wilderness-grid";
   body.appendChild(grid);
@@ -61,6 +75,36 @@ export function renderWildernessPanel(target: HTMLElement) {
   const mapCard = document.createElement("section");
   mapCard.className = "wilderness-card wilderness-map-card";
   grid.appendChild(mapCard);
+
+  // Add map mode overlay for additional visual cue
+  const mapOverlay = document.createElement("div");
+  mapOverlay.style.position = "absolute";
+  mapOverlay.style.top = "0.5rem";
+  mapOverlay.style.right = "0.5rem";
+  mapOverlay.style.padding = "0.25rem 0.5rem";
+  mapOverlay.style.borderRadius = "0.3rem";
+  mapOverlay.style.fontSize = "0.7rem";
+  mapOverlay.style.fontWeight = "bold";
+  mapOverlay.style.zIndex = "10";
+  mapOverlay.style.pointerEvents = "none";
+
+  function updateMapOverlay(state = getWildernessState()) {
+    if (state.staticMapMode) {
+      mapOverlay.textContent = "STATIC MAP";
+      mapOverlay.style.background = "rgba(34, 197, 94, 0.9)";
+      mapOverlay.style.color = "white";
+      mapOverlay.style.border = "2px solid #16a34a";
+    } else {
+      mapOverlay.textContent = "PROCEDURAL";
+      mapOverlay.style.background = "rgba(59, 130, 246, 0.9)";
+      mapOverlay.style.color = "white";
+      mapOverlay.style.border = "2px solid #1d4ed8";
+    }
+  }
+
+  updateMapOverlay();
+  mapCard.style.position = "relative";
+  mapCard.appendChild(mapOverlay);
 
   const detailsCard = document.createElement("section");
   detailsCard.className = "wilderness-card";
@@ -118,9 +162,16 @@ export function renderWildernessPanel(target: HTMLElement) {
   const forageButton = document.createElement("button");
   forageButton.type = "button";
   forageButton.className = "button";
-  forageButton.textContent = "Hunt / Forage";
+  forageButton.textContent = "Forage (2h)";
   forageButton.style.flex = "1";
   forageButton.addEventListener("click", () => forageCurrentHex());
+
+  const forageFullButton = document.createElement("button");
+  forageFullButton.type = "button";
+  forageFullButton.className = "button";
+  forageFullButton.textContent = "Forage (Full Day)";
+  forageFullButton.style.flex = "1";
+  forageFullButton.addEventListener("click", () => forageFullDay());
 
   const refillButton = document.createElement("button");
   refillButton.type = "button";
@@ -129,7 +180,7 @@ export function renderWildernessPanel(target: HTMLElement) {
   refillButton.style.flex = "1";
   refillButton.addEventListener("click", () => refillWater());
 
-  actionRow.append(forageButton, refillButton);
+  actionRow.append(forageButton, forageFullButton, refillButton);
   travelBlock.appendChild(actionRow);
 
   const generatorBlock = document.createElement("div");
@@ -235,8 +286,81 @@ export function renderWildernessPanel(target: HTMLElement) {
 
   const staticMapTitle = document.createElement("div");
   staticMapTitle.className = "panel-heading";
-  staticMapTitle.textContent = "Static Map (Python Generated)";
+  staticMapTitle.textContent = "Static Map";
   staticMapBlock.appendChild(staticMapTitle);
+
+  // Mode Status Indicator - highly visible
+  const modeIndicator = document.createElement("div");
+  modeIndicator.style.padding = "0.5rem";
+  modeIndicator.style.borderRadius = "0.4rem";
+  modeIndicator.style.fontWeight = "bold";
+  modeIndicator.style.textAlign = "center";
+  modeIndicator.style.fontSize = "0.9rem";
+  modeIndicator.style.marginTop = "0.5rem";
+  modeIndicator.style.border = "2px solid";
+
+  function updateModeIndicators(state = getWildernessState()) {
+    const hasStaticData = state.staticMapData && Object.keys(state.staticMapData).length > 0;
+
+    // Update main mode indicator
+    if (state.staticMapMode && hasStaticData) {
+      modeIndicator.textContent = "🗺️ STATIC MAP MODE - Using Pre-generated Map";
+      modeIndicator.style.background = "rgba(34, 197, 94, 0.1)";
+      modeIndicator.style.borderColor = "#22c55e";
+      modeIndicator.style.color = "#16a34a";
+    } else if (state.staticMapMode && !hasStaticData) {
+      modeIndicator.textContent = "⚠️ STATIC MAP MODE - No Map Data Loaded";
+      modeIndicator.style.background = "rgba(245, 101, 101, 0.1)";
+      modeIndicator.style.borderColor = "#ef4444";
+      modeIndicator.style.color = "#dc2626";
+    } else {
+      modeIndicator.textContent = "🎲 PROCEDURAL MODE - Generating Terrain on Demand";
+      modeIndicator.style.background = "rgba(59, 130, 246, 0.1)";
+      modeIndicator.style.borderColor = "#3b82f6";
+      modeIndicator.style.color = "#1d4ed8";
+    }
+
+    // Update title badge
+    if (titleBadge) {
+      if (state.staticMapMode && hasStaticData) {
+        titleBadge.textContent = "STATIC MAP";
+        titleBadge.style.background = "rgba(34, 197, 94, 0.2)";
+        titleBadge.style.color = "#16a34a";
+        titleBadge.style.border = "1px solid #22c55e";
+      } else if (state.staticMapMode && !hasStaticData) {
+        titleBadge.textContent = "STATIC (NO DATA)";
+        titleBadge.style.background = "rgba(245, 101, 101, 0.2)";
+        titleBadge.style.color = "#dc2626";
+        titleBadge.style.border = "1px solid #ef4444";
+      } else {
+        titleBadge.textContent = "PROCEDURAL";
+        titleBadge.style.background = "rgba(59, 130, 246, 0.2)";
+        titleBadge.style.color = "#1d4ed8";
+        titleBadge.style.border = "1px solid #3b82f6";
+      }
+    }
+
+    // Update map overlay
+    if (state.staticMapMode && hasStaticData) {
+      mapOverlay.textContent = "STATIC MAP";
+      mapOverlay.style.background = "rgba(34, 197, 94, 0.9)";
+      mapOverlay.style.color = "white";
+      mapOverlay.style.border = "2px solid #16a34a";
+    } else if (state.staticMapMode && !hasStaticData) {
+      mapOverlay.textContent = "STATIC (NO DATA)";
+      mapOverlay.style.background = "rgba(245, 101, 101, 0.9)";
+      mapOverlay.style.color = "white";
+      mapOverlay.style.border = "2px solid #ef4444";
+    } else {
+      mapOverlay.textContent = "PROCEDURAL";
+      mapOverlay.style.background = "rgba(59, 130, 246, 0.9)";
+      mapOverlay.style.color = "white";
+      mapOverlay.style.border = "2px solid #1d4ed8";
+    }
+  }
+
+  updateModeIndicators();
+  staticMapBlock.appendChild(modeIndicator);
 
   const staticMapButtons = document.createElement("div");
   staticMapButtons.style.display = "flex";
@@ -253,6 +377,15 @@ export function renderWildernessPanel(target: HTMLElement) {
       unloadStaticMap();
       showNotification({ title: "Map mode changed", message: "Switched to procedural generation.", variant: "info" });
     } else {
+      // Only allow static mode if static map data exists
+      if (!state.staticMapData || Object.keys(state.staticMapData).length === 0) {
+        showNotification({
+          title: "No Static Map Loaded",
+          message: "Import a static map file first before enabling static map mode.",
+          variant: "warning"
+        });
+        return;
+      }
       setStaticMapMode(true);
       showNotification({ title: "Map mode changed", message: "Switched to static map mode.", variant: "info" });
     }
@@ -260,7 +393,7 @@ export function renderWildernessPanel(target: HTMLElement) {
 
   const importStaticLabel = document.createElement("label");
   importStaticLabel.className = "button";
-  importStaticLabel.textContent = "Import Static Map (JSON)";
+  importStaticLabel.textContent = "Import Static Map";
 
   const importStaticInput = document.createElement("input");
   importStaticInput.type = "file";
@@ -413,6 +546,9 @@ export function renderWildernessPanel(target: HTMLElement) {
     startSelect.value = state.startTerrain;
     climateSelect.value = state.climate;
     refillButton.disabled = !canRefillWater(state);
+
+    // Update mode indicators
+    updateModeIndicators(state);
 
     const lightCondition = getLightCondition();
     const lightLabel = LIGHT_CONDITION_LABELS[lightCondition];
@@ -593,7 +729,9 @@ function drawMap(ctx: CanvasRenderingContext2D | null, state: WildernessState, c
     const x = base.x + offsetX;
     const y = base.y + offsetY;
     if (isOnScreen(x, y, canvas)) {
-      drawHexagon(ctx, x, y, hex);
+      const hasStaticData = state.staticMapData && Object.keys(state.staticMapData).length > 0;
+      const isUsingStaticData = state.staticMapMode && hasStaticData && state.staticMapData[key];
+      drawHexagon(ctx, x, y, hex, isUsingStaticData);
       if (hex.feature) {
         ctx.beginPath();
         ctx.arc(x, y + 10, 3, 0, Math.PI * 2);
@@ -621,7 +759,14 @@ function axialToBase(q: number, r: number) {
   return { x, y };
 }
 
-function drawHexagon(ctx: CanvasRenderingContext2D, x: number, y: number, hex: WildernessHex) {
+function baseToAxial(x: number, y: number) {
+  // Convert pixel coordinates back to axial coordinates
+  const q = Math.round(x / (HEX_SIZE * 1.5));
+  const r = Math.round(y / (HEX_SIZE * Math.sqrt(3)) - 0.5 * (Math.abs(q) % 2));
+  return { q, r };
+}
+
+function drawHexagon(ctx: CanvasRenderingContext2D, x: number, y: number, hex: WildernessHex, isUsingStaticData: boolean) {
   ctx.beginPath();
   for (let i = 0; i < 6; i += 1) {
     const angle = (Math.PI / 3) * i;
@@ -633,8 +778,15 @@ function drawHexagon(ctx: CanvasRenderingContext2D, x: number, y: number, hex: W
   ctx.closePath();
   ctx.fillStyle = getTerrainColor(hex);
   ctx.fill();
-  ctx.strokeStyle = "#1e293b";
-  ctx.lineWidth = 1;
+
+  // Different border for static map data
+  if (isUsingStaticData) {
+    ctx.strokeStyle = "#22c55e"; // Green border for actual static map data
+    ctx.lineWidth = 2;
+  } else {
+    ctx.strokeStyle = "#1e293b"; // Default border for procedural generation
+    ctx.lineWidth = 1;
+  }
   ctx.stroke();
 
   ctx.fillStyle = "rgba(0,0,0,0.25)";

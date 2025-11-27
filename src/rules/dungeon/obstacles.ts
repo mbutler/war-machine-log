@@ -74,7 +74,7 @@ export const OBSTACLES: ObstacleDefinition[] = [
   {
     id: "pit-trap",
     name: "Pit Trap",
-    description: "A concealed pit yawns open beneath you! Save vs. Wands to grab the edge, or fall and take damage.",
+    description: "A concealed pit yawns open beneath you! Victims may attempt to grab the edge to avoid falling.",
     type: "trap",
     resolution: {
       method: "save",
@@ -87,7 +87,7 @@ export const OBSTACLES: ObstacleDefinition[] = [
   {
     id: "spiked-pit",
     name: "Spiked Pit Trap",
-    description: "The pit floor is lined with cruel iron spikes! Save vs. Wands or take extra damage from the fall and spikes.",
+    description: "The pit floor is lined with cruel iron spikes! Victims may attempt to avoid the spikes during the fall.",
     type: "trap",
     resolution: {
       method: "save",
@@ -114,7 +114,7 @@ export const OBSTACLES: ObstacleDefinition[] = [
   {
     id: "poison-needle",
     name: "Poison Needle Trap",
-    description: "A tiny needle springs out when the object is touched! Nearly impossible to see. Save vs. Poison or suffer the effects.",
+    description: "A tiny needle springs out when the object is touched! Nearly impossible to see. The needle may be coated with poison.",
     type: "trap",
     resolution: {
       method: "save",
@@ -127,7 +127,7 @@ export const OBSTACLES: ObstacleDefinition[] = [
   {
     id: "falling-block",
     name: "Falling Block Trap",
-    description: "A massive stone block drops from the ceiling! Save vs. Wands to dodge, or take crushing damage.",
+    description: "A massive stone block drops from the ceiling! Victims may attempt to dodge the falling stone.",
     type: "trap",
     resolution: {
       method: "save",
@@ -140,7 +140,7 @@ export const OBSTACLES: ObstacleDefinition[] = [
   {
     id: "blade-trap",
     name: "Swinging Blade Trap",
-    description: "A razor-sharp blade sweeps across the passage! Save vs. Wands to duck in time.",
+    description: "A razor-sharp blade sweeps across the passage! Victims may attempt to duck or dodge the blade.",
     type: "trap",
     resolution: {
       method: "save",
@@ -153,7 +153,7 @@ export const OBSTACLES: ObstacleDefinition[] = [
   {
     id: "gas-trap",
     name: "Poison Gas Trap",
-    description: "Noxious vapors fill the area when the trap triggers! Save vs. Poison or take damage.",
+    description: "Noxious vapors fill the area when the trap triggers! Victims may attempt to resist the poisonous effects.",
     type: "trap",
     resolution: {
       method: "save",

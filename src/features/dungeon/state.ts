@@ -81,6 +81,7 @@ export function exploreRoom() {
     } else {
       // Empty room
       dungeon.status = "idle";
+      dungeon.roomSearched = false; // Reset search state for new room
       addLogEntry(dungeon, "event", "Empty room", roomResult.description);
     }
 
@@ -918,11 +919,12 @@ function checkMonsterMorale(dungeon: typeof DEFAULT_STATE.dungeon, trigger: stri
   if (moraleRoll > adjustedMorale) {
     const triggerDesc = trigger.replace(/_/g, ' ');
     addLogEntry(
-      dungeon, 
-      "combat", 
-      "Morale check failed!", 
+      dungeon,
+      "combat",
+      "Morale check failed!",
       `${encounter.name} flee! (Rolled ${moraleRoll} vs morale ${adjustedMorale}, trigger: ${triggerDesc})`
     );
+    addLogEntry(dungeon, "event", "Encounter ended", "The surviving monsters have fled. You may continue exploring.");
     dungeon.status = "idle";
     dungeon.encounter = undefined;
     return true;
@@ -941,7 +943,17 @@ export function searchRoom() {
   let turnsSpent = 0;
   updateState((state) => {
     const dungeon = state.dungeon;
+
+    // Check if room has already been searched
+    if (dungeon.roomSearched) {
+      addLogEntry(dungeon, "event", "Already searched", "This room has already been thoroughly searched.");
+      return;
+    }
+
     turnsSpent = advanceTurn(dungeon, 1, state.party.roster);
+
+    // Mark room as searched
+    dungeon.roomSearched = true;
 
     // Search results: vary based on thoroughness and luck
     const searchRoll = rollDie(100);

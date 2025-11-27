@@ -104,6 +104,14 @@ def _pseudo_random(x: float, y: float, seed: float) -> float:
     return frac if frac >= 0 else frac + 1.0
 
 
+def cartesian_to_axial(x: int, y: int) -> tuple[int, int]:
+    """Convert Cartesian coordinates to axial coordinates for hex grid."""
+    # For odd-q vertical layout: q is column, r is row adjusted for staggering
+    q = x
+    r = y - (x // 2) if x % 2 == 0 else y - (x // 2) - 1
+    return q, r
+
+
 def _sample_perlin(x: float, y: float, scale: float, base: int, octaves: int, persistence: float, lacunarity: float) -> float:
     """Isotropic Perlin sampling by averaging several rotated inputs."""
     acc = 0.0
@@ -469,30 +477,40 @@ class WorldGenerator:
             print(f"Database Error: {e}")
 
     def export_json(self, filename: str):
-        """Exports the world data as JSON compatible with the wilderness system."""
-        print(f"Exporting JSON data to {filename}...")
+        """Exports the world data as simplified JSON compatible with the wilderness static map system."""
+        print(f"Exporting static map JSON data to {filename}...")
 
-        # Convert grid to JSON format
+        # Convert grid to simplified axial coordinate format
         hex_data = []
         for row in self.grid:
             for hex in row:
+                # Convert Cartesian coordinates to axial coordinates
+                q, r = cartesian_to_axial(hex.x, hex.y)
+
+                # Convert terrain enum to lowercase string matching wilderness system
+                terrain_name = hex.terrain.value.lower()
+
                 hex_dict = {
-                    "x": hex.x,
-                    "y": hex.y,
-                    "terrain": hex.terrain.value,
-                    "elevation": hex.elevation,
-                    "moisture": hex.moisture,
-                    "is_river": hex.is_river,
-                    "is_lake": hex.is_lake,
-                    "road_level": hex.road_level,
+                    "q": q,
+                    "r": r,
+                    "terrain": terrain_name,
                 }
+
+                # Add optional feature and details for rivers/lakes
+                if hex.is_river:
+                    hex_dict["feature"] = "River"
+                    hex_dict["details"] = "Fresh water source"
+                elif hex.is_lake:
+                    hex_dict["feature"] = "Lake"
+                    hex_dict["details"] = "Standing water"
+
                 hex_data.append(hex_dict)
 
         try:
             import json
             with open(filename, "w", encoding="utf-8") as json_file:
                 json.dump(hex_data, json_file, indent=2)
-            print(f"JSON export complete: {len(hex_data)} hexes saved.")
+            print(f"Static map JSON export complete: {len(hex_data)} hexes saved.")
         except Exception as e:
             print(f"JSON Export Error: {e}")
 
@@ -620,7 +638,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--json-output",
         type=str,
-        help="Write the hex data as JSON (compatible with wilderness system) to the given file path."
+        help="Write the hex data as static map JSON (compatible with wilderness system) to the given file path."
     )
     parser.add_argument(
         "--no-color",
