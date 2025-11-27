@@ -329,3 +329,4 @@ export function getMaxLevel(classKey: string): number {
   const levels = Object.keys(table).map(Number).sort((a, b) => b - a);
   return levels[0] || 1;
 }
+

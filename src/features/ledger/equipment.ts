@@ -348,3 +348,4 @@ export function getSaleValue(item: EquipmentItem, condition: "good" | "fair" | "
   return Math.floor(item.cost * multiplier * 100) / 100; // Round to 2 decimal places
 }
 
+

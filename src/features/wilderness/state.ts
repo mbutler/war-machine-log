@@ -750,14 +750,85 @@ export function subscribeToWilderness(listener: WildernessListener): () => void 
   return subscribe((state) => listener(state.wilderness));
 }
 
+// Helper function to check if a hex and its neighbors are safe for starting
+function isSafeStartingArea(staticMapData: Record<string, WildernessHex>, q: number, r: number): boolean {
+  // Check the starting hex itself
+  const centerKey = `${q},${r}`;
+  const centerHex = staticMapData[centerKey];
+  if (!centerHex || centerHex.type === 'ocean') {
+    return false;
+  }
+
+  // Check immediate neighbors (hex ring distance 1)
+  const neighbors = [
+    { q: q + 1, r: r },     // East
+    { q: q + 1, r: r - 1 }, // Southeast
+    { q: q, r: r - 1 },     // Southwest
+    { q: q - 1, r: r },     // West
+    { q: q - 1, r: r + 1 }, // Northwest
+    { q: q, r: r + 1 },     // Northeast
+  ];
+
+  // At least 3 out of 6 neighbors should be non-ocean for a safe starting area
+  let safeNeighbors = 0;
+  for (const neighbor of neighbors) {
+    const neighborKey = `${neighbor.q},${neighbor.r}`;
+    const neighborHex = staticMapData[neighborKey];
+    if (neighborHex && neighborHex.type !== 'ocean') {
+      safeNeighbors++;
+    }
+  }
+
+  return safeNeighbors >= 3;
+}
+
+// Helper function to find a suitable starting position in static map mode
+function findStaticMapStartingPosition(staticMapData: Record<string, WildernessHex>): { q: number; r: number } {
+  // First, collect all non-ocean hexes
+  const candidateStarts: { q: number; r: number }[] = [];
+
+  for (const [key, hex] of Object.entries(staticMapData)) {
+    if (hex.type !== 'ocean') {
+      const [q, r] = key.split(',').map(Number);
+      candidateStarts.push({ q, r });
+    }
+  }
+
+  // If no candidates, default to origin
+  if (candidateStarts.length === 0) {
+    return { q: 0, r: 0 };
+  }
+
+  // Filter to hexes that have a safe starting area (non-ocean center + enough safe neighbors)
+  const safeStarts = candidateStarts.filter(pos => isSafeStartingArea(staticMapData, pos.q, pos.r));
+
+  // If we have safe starts, use those; otherwise fall back to any non-ocean hex
+  const validStarts = safeStarts.length > 0 ? safeStarts : candidateStarts;
+
+  // Randomly select from valid starting positions
+  const randomIndex = Math.floor(Math.random() * validStarts.length);
+  const selectedPos = validStarts[randomIndex];
+
+  // Debug: log starting position selection
+  console.log(`Selected starting position: (${selectedPos.q}, ${selectedPos.r}) from ${validStarts.length} safe options`);
+
+  return selectedPos;
+}
+
 export function resetWilderness(options: { startTerrain?: WildernessTerrainType; climate?: WildernessClimate } = {}) {
   updateState((state) => {
     const start = normalizeTerrainType(options.startTerrain ?? state.wilderness.startTerrain);
     const partySize = state.wilderness.partySize || 6;
 
+    // Determine starting position - use random non-ocean hex if static map is available
+    let startingPos = { q: 0, r: 0 };
+    if (state.wilderness.staticMapMode && state.wilderness.staticMapData) {
+      startingPos = findStaticMapStartingPosition(state.wilderness.staticMapData);
+    }
+
     state.wilderness = {
       map: {
-        "0,0": {
+        [`${startingPos.q},${startingPos.r}`]: {
           type: start,
           resources: [],
           feature: "Start",
@@ -766,7 +837,7 @@ export function resetWilderness(options: { startTerrain?: WildernessTerrainType;
           visited: true,
         },
       },
-      currentPos: { q: 0, r: 0 },
+      currentPos: startingPos,
       camera: { x: 0, y: 0 },
       days: 0,
       movementPoints: MOVEMENT_POINTS_PER_DAY,
@@ -1630,6 +1701,15 @@ function convertPythonTerrain(pythonTerrain: string): WildernessTerrainType {
   return converted;
 }
 
+/**
+ * Loads a static wilderness map from JSON data.
+ *
+ * Expected JSON format: Array of hex objects with:
+ * - q, r: Axial coordinates (centered around 0,0)
+ * - terrain: Lowercase terrain type (forest, hills, mountains, etc.)
+ * - feature?: Optional feature like "River" or "Lake"
+ * - details?: Optional descriptive text for the feature
+ */
 export function loadStaticMapFromJSON(jsonData: string): void {
   try {
     const data = JSON.parse(jsonData);

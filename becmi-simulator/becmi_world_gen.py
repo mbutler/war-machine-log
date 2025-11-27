@@ -105,8 +105,12 @@ def _pseudo_random(x: float, y: float, seed: float) -> float:
 
 
 def cartesian_to_axial(x: int, y: int) -> tuple[int, int]:
-    """Convert Cartesian coordinates to axial coordinates for hex grid."""
-    # For odd-q vertical layout: q is column, r is row adjusted for staggering
+    """Convert Cartesian coordinates to axial coordinates for hex grid.
+
+    Uses odd-q vertical layout where:
+    - q is the column coordinate
+    - r is the row coordinate, adjusted for hexagonal staggering
+    """
     q = x
     r = y - (x // 2) if x % 2 == 0 else y - (x // 2) - 1
     return q, r
@@ -477,15 +481,24 @@ class WorldGenerator:
             print(f"Database Error: {e}")
 
     def export_json(self, filename: str):
-        """Exports the world data as simplified JSON compatible with the wilderness static map system."""
+        """Exports the world data as simplified JSON compatible with the wilderness static map system.
+
+        Centers the coordinate system around (0,0) so the static map covers both positive and negative
+        coordinates that the wilderness exploration system may encounter during gameplay.
+        """
         print(f"Exporting static map JSON data to {filename}...")
 
-        # Convert grid to simplified axial coordinate format
+        # Convert grid to simplified axial coordinate format, centered around (0,0)
+        # This ensures the static map covers exploration areas in all directions from the starting point
         hex_data = []
+        center_x = self.width // 2
+        center_y = self.height // 2
         for row in self.grid:
             for hex in row:
-                # Convert Cartesian coordinates to axial coordinates
-                q, r = cartesian_to_axial(hex.x, hex.y)
+                # Center coordinates around (0,0) before converting to axial
+                centered_x = hex.x - center_x
+                centered_y = hex.y - center_y
+                q, r = cartesian_to_axial(centered_x, centered_y)
 
                 # Convert terrain enum to lowercase string matching wilderness system
                 terrain_name = hex.terrain.value.lower()
