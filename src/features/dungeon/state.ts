@@ -10,6 +10,7 @@ import { createId } from "../../utils/id";
 import { markSpellExpended } from "../party/state";
 import { describeClock, advanceClock, addCalendarLog } from "../calendar/state";
 import { recordLoot } from "../ledger/state";
+import { addXpToCharacter } from "../party/generator";
 
 type DungeonListener = (state: ReturnType<typeof getDungeonState>) => void;
 
@@ -50,14 +51,14 @@ export function toggleLairMode(enabled: boolean) {
 export function exploreRoom() {
   updateState((state) => {
     const dungeon = state.dungeon;
-    const turnsSpent = advanceTurn(dungeon);
+    const turnsSpent = advanceTurn(dungeon, 1, state.party.roster);
 
     // BECMI dungeon exploration: Most rooms are empty or have features
     const roomResult = determineRoomContents();
 
     if (roomResult.type === "encounter") {
       // Room contains monsters (placed encounter)
-      startEncounter(dungeon, false);
+      startEncounter(dungeon, false, state.party.roster);
     } else if (roomResult.type === "obstacle") {
       // Room has a feature or trap - pick appropriate type
       const roll = rollDie(100);
@@ -110,7 +111,7 @@ function buildObstacle(def: ObstacleDefinition): DungeonObstacle {
 }
 
 // Start an encounter with proper BECMI mechanics
-function startEncounter(dungeon: typeof DEFAULT_STATE.dungeon, isWandering: boolean) {
+function startEncounter(dungeon: typeof DEFAULT_STATE.dungeon, isWandering: boolean, party?: any[]) {
   const encounterRoll = rollDie(20);
   const definition = pickEncounter(dungeon.depth, encounterRoll);
   
@@ -174,11 +175,17 @@ function startEncounter(dungeon: typeof DEFAULT_STATE.dungeon, isWandering: bool
     dungeon.status = "surprise";
     addLogEntry(dungeon, "event", "Tactical Advantage", "The party may evade automatically, attack with a free round, or attempt negotiation.");
   } else if (surprise.partySurprised && !surprise.monsterSurprised) {
-    // Monsters have advantage
+    // Monsters have advantage - BECMI: free attack round before party can respond
     dungeon.status = "encounter";
-    if (finalResult === "hostile") {
+    if ((finalResult === "hostile" || finalResult === "aggressive") && party && party.length > 0) {
+      addLogEntry(dungeon, "combat", "⚔️ Ambush!", "The monsters attack before you can react!");
+      // Execute the monster's free attack round
+      const livingParty = party.filter((c: any) => c.derivedStats?.hp?.current > 0);
+      if (livingParty.length > 0) {
+        resolveMonsterAttacks(dungeon, livingParty, false);
+      }
+    } else if (finalResult === "hostile") {
       addLogEntry(dungeon, "combat", "Ambush!", "The monsters attack before you can react!");
-      // Monsters get free attack round
     }
   } else {
     // Normal encounter
@@ -236,7 +243,7 @@ export function resolveObstacle(strategy: "force" | "careful" | "avoid") {
     // Apply turn cost if resolved or significant time spent
     if (obstacle.resolved || obstacle.turnCost > 0) {
       const turnsSpent = Math.max(1, obstacle.turnCost);
-      advanceTurn(dungeon, turnsSpent);
+      advanceTurn(dungeon, turnsSpent, state.party.roster);
       
       const calendar = state.calendar;
       const before = describeClock(calendar.clock);
@@ -934,7 +941,7 @@ export function searchRoom() {
   let turnsSpent = 0;
   updateState((state) => {
     const dungeon = state.dungeon;
-    turnsSpent = advanceTurn(dungeon);
+    turnsSpent = advanceTurn(dungeon, 1, state.party.roster);
 
     // Search results: vary based on thoroughness and luck
     const searchRoll = rollDie(100);
@@ -994,7 +1001,7 @@ export function restParty() {
   let turnsSpent = 0;
   updateState((state) => {
     const dungeon = state.dungeon;
-    turnsSpent = advanceTurn(dungeon);
+    turnsSpent = advanceTurn(dungeon, 1, state.party.roster);
     if (dungeon.rations > 0) {
       dungeon.rations -= 1;
       addLogEntry(dungeon, "event", "Party rests and eats.");
@@ -1016,10 +1023,21 @@ export function restParty() {
 export function lootRoom() {
   updateState((state) => {
     const dungeon = state.dungeon;
-    const type = dungeon.encounter?.treasureType ?? "A";
+    const encounter = dungeon.encounter;
+
+    // Award XP for defeated monsters
+    if (encounter) {
+      const xpAwarded = calculateMonsterXP(encounter);
+      awardXpToParty(state.party.roster, xpAwarded, encounter.name);
+      addLogEntry(dungeon, "loot", `XP Awarded: ${xpAwarded} total`, `Each surviving party member gains XP from defeating ${encounter.name}`);
+    }
+
+    // Generate treasure
+    const type = encounter?.treasureType ?? "A";
     const loot = generateTreasure(type);
     dungeon.loot += loot.totalGold;
     addLogEntry(dungeon, "loot", "Loot recovered", loot.summary);
+
     dungeon.status = "idle";
     dungeon.encounter = undefined;
   });
@@ -1063,7 +1081,7 @@ export function attemptReturn() {
         `${encountersTriggered} encounter${encountersTriggered > 1 ? 's' : ''} triggered! You must fight or flee before reaching safety.`);
       
       // Start the encounter - can't bank until resolved
-      startEncounter(dungeon, true); // true = wandering monster
+      startEncounter(dungeon, true, state.party.roster); // true = wandering monster
       dungeon.status = "encounter";
       
       // Mark that we're trying to exit (so after combat resolves, we continue)
@@ -1082,7 +1100,7 @@ function completeReturn(dungeon: typeof DEFAULT_STATE.dungeon, state: any) {
   const turnsToExit = depth * 3;
   
   // Advance time for the journey back
-  advanceTurn(dungeon, turnsToExit);
+  advanceTurn(dungeon, turnsToExit, state.party.roster);
   
   // Update calendar
   const calendar = state.calendar;
@@ -1167,7 +1185,7 @@ export function continueReturn() {
     const turnsToExit = depth * 3;
     
     // Advance time for remainder of journey
-    advanceTurn(dungeon, turnsToExit);
+    advanceTurn(dungeon, turnsToExit, state.party.roster);
     
     // Update calendar
     const calendar = state.calendar;
@@ -1254,7 +1272,7 @@ export function castSpellDuringDelve(characterId: string, spellName: string) {
   });
 }
 
-function advanceTurn(dungeon: typeof DEFAULT_STATE.dungeon, turns = 1): number {
+function advanceTurn(dungeon: typeof DEFAULT_STATE.dungeon, turns = 1, party?: any[]): number {
   if (turns <= 0) return 0;
   dungeon.turn += turns;
 
@@ -1279,7 +1297,7 @@ function advanceTurn(dungeon: typeof DEFAULT_STATE.dungeon, turns = 1): number {
 
   // Check for wandering monsters every 2 turns (BECMI rule)
   if (dungeon.turn % 2 === 0) {
-    checkWanderingMonsters(dungeon);
+    checkWanderingMonsters(dungeon, party);
   }
 
   return turns;
@@ -1315,12 +1333,12 @@ function determineRoomContents(): { type: "empty" | "obstacle" | "encounter"; de
   }
 }
 
-function checkWanderingMonsters(dungeon: typeof DEFAULT_STATE.dungeon) {
+function checkWanderingMonsters(dungeon: typeof DEFAULT_STATE.dungeon, party?: any[]) {
   // BECMI wandering monster check: 1d6, encounter on roll of 1
   const roll = rollDie(6);
   if (roll === 1) {
     // Wandering monster encountered during travel
-    startEncounter(dungeon, true);
+    startEncounter(dungeon, true, party);
   }
 }
 
@@ -1437,6 +1455,72 @@ function convertToGold(kind: string, amount: number): number {
     default:
       return amount;
   }
+}
+
+// BECMI Monster XP Table (simplified - base XP by HD, modified by special abilities)
+function calculateMonsterXP(encounter: DungeonEncounter): number {
+  const hd = encounter.hitDice;
+  const quantity = resolveQuantity(encounter.quantity);
+
+  // Base XP per HD (from BECMI monster XP table)
+  const baseXpPerHd = [
+    0,   // 0 HD
+    10,  // 1 HD
+    20,  // 2 HD
+    35,  // 3 HD
+    75,  // 4 HD
+    175, // 5 HD
+    350, // 6 HD
+    700, // 7 HD
+    1100, // 8 HD
+    1600, // 9 HD
+    2200, // 10 HD
+    3000, // 11 HD
+    4000, // 12 HD
+    5000, // 13 HD
+    6000, // 14 HD
+    7500, // 15 HD
+    9000, // 16 HD
+    10500, // 17 HD
+    12000, // 18 HD
+    13500, // 19 HD
+    15000, // 20 HD
+  ];
+
+  const baseXp = (baseXpPerHd[Math.min(hd, baseXpPerHd.length - 1)] || 15000);
+
+  // Special abilities multiplier (asterisks in BECMI)
+  let multiplier = 1;
+  if (encounter.special) {
+    // Count asterisks or special abilities
+    const specialIndicators = (encounter.special.match(/\*/g) || []).length;
+    if (specialIndicators > 0) {
+      // Each asterisk roughly doubles XP value
+      multiplier = Math.pow(2, specialIndicators);
+    } else if (encounter.special.toLowerCase().includes('magic') ||
+               encounter.special.toLowerCase().includes('spell') ||
+               encounter.special.toLowerCase().includes('breath')) {
+      multiplier = 2; // Special abilities typically double XP
+    }
+  }
+
+  // Calculate total XP for all monsters of this type
+  const totalXp = Math.floor(baseXp * multiplier * quantity);
+
+  return Math.max(1, totalXp); // Minimum 1 XP
+}
+
+// Award XP to party members (BECMI: XP divided equally among surviving party members)
+function awardXpToParty(party: any[], totalXp: number, monsterName: string) {
+  const survivingMembers = party.filter(char => char.derivedStats.hp.current > 0);
+
+  if (survivingMembers.length === 0) return;
+
+  const xpPerMember = Math.floor(totalXp / survivingMembers.length);
+
+  survivingMembers.forEach(char => {
+    addXpToCharacter(char, xpPerMember);
+  });
 }
 
 function normalizeDungeonState(raw: DungeonState | undefined): DungeonState {

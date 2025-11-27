@@ -176,3 +176,50 @@ export const CLERIC_SPELLS: Record<SpellLevel, readonly string[]> = {
   9: [],
 };
 
+export const DRUID_SPELLS: Record<SpellLevel, readonly string[]> = {
+  1: [
+    "Detect Danger",
+    "Faerie Fire",
+    "Locate",
+    "Predict Weather",
+  ],
+  2: [
+    "Heat Metal",
+    "Obscure",
+    "Produce Fire",
+    "Warp Wood",
+  ],
+  3: [
+    "Call Lightning",
+    "Hold Animal",
+    "Protection from Poison",
+    "Water Breathing",
+  ],
+  4: [
+    "Control Temperature",
+    "Plant Door",
+    "Protection from Lightning",
+    "Summon Animals",
+  ],
+  5: [
+    "Anti-Plant Shell",
+    "Pass Plant",
+    "Stoneskin",
+    "Wall of Thorns",
+  ],
+  6: [
+    "Anti-Animal Shell",
+    "Summon Weather",
+    "Transport Through Plants",
+    "Turn Wood",
+  ],
+  7: [
+    "Creeping Doom",
+    "Metal to Wood",
+    "Summon Elemental",
+    "Weather Control",
+  ],
+  8: [],
+  9: [],
+};
+

@@ -84,6 +84,7 @@ export interface Character {
   classKey: string;
   className: string;
   level: number;
+  xp: number;
   alignment: Alignment;
   abilityScores: AbilityScores;
   derivedStats: {

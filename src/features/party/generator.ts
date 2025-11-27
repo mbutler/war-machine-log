@@ -4,9 +4,10 @@ import { DEMIHUMAN_CLASSES, CLASS_DEFINITIONS, HUMAN_CLASSES } from "../../rules
 import { THAC0_TABLE, lookupThac0 } from "../../rules/tables/thac0";
 import { SAVING_THROWS, lookupSavingThrow } from "../../rules/tables/savingThrows";
 import { MAGIC_USER_SLOTS, CLERIC_SLOTS } from "../../rules/tables/spellSlots";
-import { MAGIC_USER_SPELLS, CLERIC_SPELLS } from "../../rules/tables/spells";
+import { MAGIC_USER_SPELLS, CLERIC_SPELLS, DRUID_SPELLS } from "../../rules/tables/spells";
 import { getThiefSkills } from "../../rules/tables/thiefSkills";
 import { EQUIPMENT_PRICES } from "../../rules/tables/equipment";
+import { canLevelUp, getXpForNextLevel, getMaxLevel } from "../../rules/tables/experience";
 import { getRandomName } from "./nameBag";
 import { createId } from "../../utils/id";
 import type {
@@ -119,7 +120,7 @@ function buildMagicUserSpells(level: number): SpellBook {
   return { slots, known: Array.from(known.values()) };
 }
 
-function buildClericSpells(level: number, wisScore: number): SpellBook {
+function buildClericSpells(level: number, wisScore: number, isDruid: boolean = false): SpellBook {
   const slots = buildSpellSlots();
   const template = [...(CLERIC_SLOTS[Math.min(Math.max(level, 1), CLERIC_SLOTS.length) - 1] ?? [])];
 
@@ -146,7 +147,7 @@ function buildClericSpells(level: number, wisScore: number): SpellBook {
       return;
     }
     const spellLevel = (index + 1) as SpellTier;
-    const pool = CLERIC_SPELLS[spellLevel];
+    const pool = isDruid ? DRUID_SPELLS[spellLevel] : CLERIC_SPELLS[spellLevel];
     pool?.forEach((name) => {
       if (!known.find((entry) => entry.name === name)) {
         known.push({ name, level: spellLevel, memorized: false });
@@ -162,7 +163,10 @@ function buildSpellBook(classKey: ClassKey, level: number, stats: AbilityScores)
     return buildMagicUserSpells(level);
   }
   if (classKey === "cleric") {
-    return buildClericSpells(level, stats.wis);
+    return buildClericSpells(level, stats.wis, false);
+  }
+  if (classKey === "druid") {
+    return buildClericSpells(level, stats.wis, true);
   }
   return { slots: buildSpellSlots(), known: [] };
 }
@@ -218,16 +222,26 @@ function buyEquipment(classKey: ClassKey, gold: number, dexMod: number) {
     cleric: ["Mace", "Dagger"],
     thief: ["Sword", "Dagger"],
     magicuser: ["Dagger"],
+    mystic: ["Unarmed"], // Mystics fight unarmed
   } as Record<string, string[]>;
 
   let weapon = "Dagger";
   const priorities = weaponsByPriority[classKey] ?? ["Dagger"];
   for (const candidate of priorities) {
-    if (gold >= (EQUIPMENT_PRICES[candidate] ?? 0)) {
-      gold -= EQUIPMENT_PRICES[candidate] ?? 0;
+    if (candidate === "Unarmed" || gold >= (EQUIPMENT_PRICES[candidate] ?? 0)) {
+      if (candidate !== "Unarmed") {
+        gold -= EQUIPMENT_PRICES[candidate] ?? 0;
+      }
       weapon = candidate;
       break;
     }
+  }
+
+  // Mystics can't wear armor
+  if (classKey === "mystic") {
+    armor = "None";
+    ac = 9;
+    hasShield = false;
   }
 
   const pack: string[] = [];
@@ -278,9 +292,16 @@ function buyEquipment(classKey: ClassKey, gold: number, dexMod: number) {
 }
 
 function computeSavingThrows(classKey: ClassKey, level: number) {
-  const lookupKey = (["dwarf", "elf", "halfling"].includes(classKey)
-    ? "Fighter"
-    : CLASS_DEFINITIONS[classKey].name.replace("-", "")) as keyof typeof SAVING_THROWS;
+  let lookupKey: keyof typeof SAVING_THROWS;
+  if (classKey === "dwarf") {
+    lookupKey = "Dwarf";
+  } else if (classKey === "elf") {
+    lookupKey = "Elf";
+  } else if (classKey === "halfling") {
+    lookupKey = "Halfling";
+  } else {
+    lookupKey = CLASS_DEFINITIONS[classKey].name.replace("-", "") as keyof typeof SAVING_THROWS;
+  }
   const track = SAVING_THROWS[lookupKey];
   return {
     deathPoison: lookupSavingThrow(track.deathPoison, level),
@@ -292,7 +313,8 @@ function computeSavingThrows(classKey: ClassKey, level: number) {
 }
 
 function computeThac0(classKey: ClassKey, level: number) {
-  const tableKey = (["dwarf", "elf", "halfling"].includes(classKey)
+  // Demihumans use Fighter THAC0 progression (attack ranks correspond to fighter levels)
+  const tableKey = (["dwarf", "elf", "halfling", "mystic"].includes(classKey)
     ? "Fighter"
     : CLASS_DEFINITIONS[classKey].name.replace("-", "")) as keyof typeof THAC0_TABLE;
   const table = THAC0_TABLE[tableKey];
@@ -332,6 +354,7 @@ export function generateCharacter(options: GenerateCharacterOptions): Character 
     classKey,
     className: classDef.name,
     level,
+    xp: 0,
     alignment,
     abilityScores,
     derivedStats: {
@@ -350,5 +373,110 @@ export function generateCharacter(options: GenerateCharacterOptions): Character 
   };
 
   return character;
+}
+
+// Level up a character if they have enough XP
+export function levelUpCharacter(character: Character): Character {
+  if (!canLevelUp(character.classKey, character.xp, character.level)) {
+    return character;
+  }
+
+  const newLevel = character.level + 1;
+  const classDef = CLASS_DEFINITIONS[character.classKey];
+  const conMod = getAbilityMod(character.abilityScores.con);
+
+  // Calculate new HP
+  let newHpMax = character.derivedStats.hp.max;
+  if (newLevel <= 9) {
+    // Normal HD progression
+    newHpMax += Math.max(1, rollDie(classDef.hd) + conMod);
+  } else {
+    // Fixed HP after level 9
+    const extraHp = ["fighter", "dwarf"].includes(character.classKey) ? 3 : 2;
+    newHpMax += extraHp;
+  }
+
+  // Recalculate derived stats
+  const newThac0 = computeThac0(character.classKey, newLevel);
+  const newSavingThrows = computeSavingThrows(character.classKey, newLevel);
+  const newSpells = buildSpellBook(character.classKey, newLevel, character.abilityScores);
+  const newThiefSkills = buildThiefSkills(character.classKey, newLevel, character.abilityScores.dex);
+
+  return {
+    ...character,
+    level: newLevel,
+    derivedStats: {
+      ...character.derivedStats,
+      hp: { current: newHpMax, max: newHpMax },
+      thac0: newThac0,
+      savingThrows: newSavingThrows,
+    },
+    spells: newSpells,
+    thiefSkills: newThiefSkills,
+  };
+}
+
+// Add XP to a character and level up if necessary
+export function addXpToCharacter(character: Character, xpGained: number): Character {
+  // Apply prime requisite bonus
+  const bonusPercent = getPrimeRequisiteBonus(character);
+  const bonusXp = Math.floor(xpGained * (bonusPercent / 100));
+  const totalXpGained = xpGained + bonusXp;
+
+  const newXp = character.xp + totalXpGained;
+  let updatedCharacter = {
+    ...character,
+    xp: newXp,
+  };
+
+  // Level up as many times as possible
+  while (canLevelUp(updatedCharacter.classKey, updatedCharacter.xp, updatedCharacter.level)) {
+    updatedCharacter = levelUpCharacter(updatedCharacter);
+  }
+
+  return updatedCharacter;
+}
+
+// Calculate prime requisite bonus percentage
+function getPrimeRequisiteBonus(character: Character): number {
+  const stats = character.abilityScores;
+  const classDef = CLASS_DEFINITIONS[character.classKey];
+  const primeReq = classDef.prime;
+
+  let bonus = 0;
+
+  if (primeReq === "str_dex") {
+    // Mystic: bonus based on Strength
+    if (stats.str >= 16) bonus = 10;
+    else if (stats.str >= 13) bonus = 5;
+  } else if (primeReq === "str_int") {
+    // Elf: bonus if either Str or Int is high
+    const strBonus = stats.str >= 13 ? (stats.str >= 16 ? 10 : 5) : 0;
+    const intBonus = stats.int >= 13 ? (stats.int >= 16 ? 10 : 5) : 0;
+    bonus = Math.max(strBonus, intBonus);
+  } else if (primeReq.includes("_")) {
+    // Halfling: bonus if either prime req is high
+    const [req1, req2] = primeReq.split("_");
+    const bonus1 = (stats as any)[req1] >= 13 ? ((stats as any)[req1] >= 16 ? 10 : 5) : 0;
+    const bonus2 = (stats as any)[req2] >= 13 ? ((stats as any)[req2] >= 16 ? 10 : 5) : 0;
+    bonus = Math.max(bonus1, bonus2);
+  } else {
+    // Single prime requisite
+    const primeScore = (stats as any)[primeReq];
+    if (primeScore >= 16) bonus = 10;
+    else if (primeScore >= 13) bonus = 5;
+  }
+
+  return bonus;
+}
+
+// Get XP needed for next level
+export function getXpNeededForNextLevel(character: Character): number {
+  return getXpForNextLevel(character.classKey, character.level);
+}
+
+// Get maximum level for character's class
+export function getCharacterMaxLevel(character: Character): number {
+  return getMaxLevel(character.classKey);
 }
 

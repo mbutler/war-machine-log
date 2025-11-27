@@ -19,8 +19,10 @@ export const CLASS_DEFINITIONS: Record<string, ClassDefinition> = {
   dwarf: { key: "dwarf", name: "Dwarf", hd: 8, req: { con: 9 }, prime: "str", type: "demihuman" },
   elf: { key: "elf", name: "Elf", hd: 6, req: { int: 9, str: 9 }, prime: "str_int", type: "demihuman" },
   halfling: { key: "halfling", name: "Halfling", hd: 6, req: { dex: 9, con: 9 }, prime: "str_dex", type: "demihuman" },
+  druid: { key: "druid", name: "Druid", hd: 6, req: { wis: 13 }, prime: "wis", type: "human" },
+  mystic: { key: "mystic", name: "Mystic", hd: 6, req: { str: 9, dex: 13, wis: 13 }, prime: "str_dex", type: "human" },
 };
 
-export const HUMAN_CLASSES = ["cleric", "fighter", "magicuser", "thief"] as const;
+export const HUMAN_CLASSES = ["cleric", "fighter", "magicuser", "thief", "druid", "mystic"] as const;
 export const DEMIHUMAN_CLASSES = ["dwarf", "elf", "halfling"] as const;
 
