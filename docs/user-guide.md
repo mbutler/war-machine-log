@@ -153,7 +153,7 @@ When your party leaves civilization, they enter the **wilderness hexcrawl**—on
 
 ### Understanding Hex Travel
 
-The BECMI wilderness is mapped in **hexes**, each representing about **8 miles** (or 24 miles for large-scale maps). Travel time depends on terrain:
+The BECMI wilderness is mapped in **hexes**, each representing **24 miles** Travel time depends on terrain:
 
 - **Clear/Grassland**: 6 miles per day (3/4 of a hex)
 - **Woods/Hills**: 9 miles per day (slightly more than 1 hex)

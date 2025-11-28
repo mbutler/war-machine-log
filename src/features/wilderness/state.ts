@@ -672,15 +672,15 @@ const ENCOUNTER_DATA: Record<string, Record<string, Array<{ name: string; qty: s
     ]
   },
 
-  // Subtable 10: Castle Encounters
+  // Subtable 10: Castle Encounters (BECMI p.98)
   castle: {
     All: [
-      { name: "Castle Encounter", qty: "1", treasure: "V", castle: { class: "Cleric", level: "1d20+8", alignment: "Lawful" } },
-      { name: "Castle Encounter", qty: "1", treasure: "V", castle: { class: "Magic-User", level: "1d20+8", alignment: "Neutral" } },
-      { name: "Castle Encounter", qty: "1", treasure: "V", castle: { class: "Demihuman", level: "varies", alignment: "Chaotic" } },
-      { name: "Castle Encounter", qty: "1", treasure: "V", castle: { class: "Fighter", level: "1d20+8", alignment: "Neutral" } },
-      { name: "Castle Encounter", qty: "1", treasure: "V", castle: { class: "Fighter", level: "1d20+8", alignment: "Lawful" } },
-      { name: "Castle Encounter", qty: "1", treasure: "V", castle: { class: "Fighter", level: "1d20+8", alignment: "Lawful" } }
+      { name: "Castle Patrol", qty: "2d6", treasure: "Nil", castle: { class: "Cleric", level: "1d20+8", alignment: "Lawful" } },
+      { name: "Castle Patrol", qty: "2d6", treasure: "Nil", castle: { class: "Magic-User", level: "1d20+8", alignment: "Neutral" } },
+      { name: "Castle Patrol", qty: "2d6", treasure: "Nil", castle: { class: "Demihuman", level: "varies", alignment: "Chaotic" } },
+      { name: "Castle Patrol", qty: "2d6", treasure: "Nil", castle: { class: "Fighter", level: "1d20+8", alignment: "Neutral" } },
+      { name: "Castle Patrol", qty: "2d6", treasure: "Nil", castle: { class: "Fighter", level: "1d20+8", alignment: "Lawful" } },
+      { name: "Castle Patrol", qty: "2d6", treasure: "Nil", castle: { class: "Fighter", level: "1d20+8", alignment: "Lawful" } }
     ]
   },
 
@@ -723,6 +723,20 @@ const ENCOUNTER_DATA: Record<string, Record<string, Array<{ name: string; qty: s
 
 const CLASSES = ["Fighter", "Cleric", "Magic-User", "Thief", "Dwarf", "Elf"];
 const ALIGNMENTS = ["Lawful", "Neutral", "Chaotic"];
+
+function shouldGenerateCastle(terrainType: WildernessTerrainType, randomValue: number): boolean {
+  // Terrain-based castle generation probabilities (DM discretion, no BECMI rules)
+  switch (terrainType) {
+    case "mountain":
+      return randomValue < 0.60; // 60% chance - very likely, strategic high ground
+    case "hills":
+      return randomValue < 0.30; // 30% chance - likely, good defensive positions
+    case "woods":
+      return randomValue < 0.05; // 5% chance - hard to defend and maintain
+    default:
+      return randomValue < 0.01; // 1% chance - uncommon in poor terrain
+  }
+}
 
 export type LightCondition = "clear_daylight" | "dim_light" | "no_light";
 
@@ -828,13 +842,25 @@ export function resetWilderness(options: { startTerrain?: WildernessTerrainType;
       startingPos = findStaticMapStartingPosition(state.wilderness.staticMapData);
     }
 
+    // Generate starting feature based on terrain type
+    let startFeature = "Start";
+    let startDetails = "Safe Haven";
+    let startResources: DominionResourceType[] = [];
+
+    if (start === "city") {
+      // Create a large starting city
+      const settlement = generateLargeCity();
+      startFeature = `${settlement.name} (${settlement.size}) - START`;
+      startDetails = `Population: ${settlement.population}. Ruler: ${settlement.ruler}. Services: ${settlement.services}. Your party's starting location.`;
+    }
+
     state.wilderness = {
       map: {
         [`${startingPos.q},${startingPos.r}`]: {
           type: start,
-          resources: [],
-          feature: "Start",
-          details: "Safe Haven",
+          resources: startResources,
+          feature: startFeature,
+          details: startDetails,
           color: TERRAIN_DATA[start].color,
           visited: true,
         },
@@ -1209,14 +1235,57 @@ function generateHex(fromType: WildernessTerrainType, q?: number, r?: number): W
     feature = `${settlement.name} (${settlement.size})`;
     details = `Population: ${settlement.population}. Ruler: ${settlement.ruler}. Services: ${settlement.services}.`;
   }
-  // Castles: Should be DM-placed in strategic locations. For procedural gen, rare in hills/mountains
-  else if ((type === "hills" || type === "mountain") && seededRandom() < 0.03) { // NOT RAW: procedural castle placement
+  // Castles: Terrain-based frequency (no BECMI rules, DM discretion)
+  // Mountains: 80% chance (extremely likely, strategic high ground)
+  // Hills: 50% chance (good defensive positions)
+  // Woods: 5% chance (hard to defend, maintain)
+  // Everything else: 1% chance (uncommon in poor terrain)
+  else if (shouldGenerateCastle(type, seededRandom())) { // Custom terrain-based castle placement
     const castleNameIndex = Math.floor(seededRandom() * PLACES.length);
     const castleName = PLACES[castleNameIndex];
     feature = `${castleName} Castle`;
-    const ownerLvl = Math.floor(seededRandom() * 6) + 9; // 9-14
-    const ownerClass = CLASSES[Math.floor(seededRandom() * CLASSES.length)];
-    const align = ALIGNMENTS[Math.floor(seededRandom() * ALIGNMENTS.length)];
+
+    // BECMI Subtable 10: Castle Encounters
+    const classRoll = Math.floor(seededRandom() * 6) + 1; // 1d6
+    let ownerClass: string;
+    let ownerLvl: number;
+
+    if (classRoll === 1) {
+      ownerClass = "Cleric";
+      ownerLvl = Math.floor(seededRandom() * 20) + 9; // 1d20 + 8
+    } else if (classRoll === 2) {
+      ownerClass = "Magic-User";
+      ownerLvl = Math.floor(seededRandom() * 20) + 9; // 1d20 + 8
+    } else if (classRoll === 3) {
+      // Demihuman - roll 1d6 for sub-type
+      const demihumanRoll = Math.floor(seededRandom() * 6) + 1;
+      if (demihumanRoll <= 2) {
+        ownerClass = "Dwarf";
+        ownerLvl = 12; // Fixed level per BECMI
+      } else if (demihumanRoll <= 4) {
+        ownerClass = "Elf";
+        ownerLvl = 10; // Fixed level per BECMI
+      } else {
+        ownerClass = "Halfling";
+        ownerLvl = 8; // Fixed level per BECMI
+      }
+    } else {
+      // classRoll 4-6
+      ownerClass = "Fighter";
+      ownerLvl = Math.floor(seededRandom() * 20) + 9; // 1d20 + 8
+    }
+
+    // Alignment: 1d6 - Chaotic 1/6, Neutral 3/6, Lawful 2/6
+    const alignRoll = Math.floor(seededRandom() * 6) + 1;
+    let align: string;
+    if (alignRoll === 1) {
+      align = "Chaotic";
+    } else if (alignRoll <= 4) {
+      align = "Neutral";
+    } else {
+      align = "Lawful";
+    }
+
     const troops = (Math.floor(seededRandom() * 4) + 1) * 10;
     details = `${align} ${ownerClass} (Lvl ${ownerLvl}). Garrison: ${troops}.`;
   }
@@ -1487,6 +1556,34 @@ function rollOnSubtable(subtableName: string, terrainGroup: string): { categoryN
         tableKey = "castle";
         subKey = "All";
         roll = randomRange(1, 6);
+
+        // Handle demihuman sub-roll if roll = 3
+        if (roll === 3) {
+          const demihumanRoll = randomRange(1, 6);
+          let demihumanType: string;
+          let demihumanLevel: number;
+
+          if (demihumanRoll <= 2) {
+            demihumanType = "Dwarf";
+            demihumanLevel = 12;
+          } else if (demihumanRoll <= 4) {
+            demihumanType = "Elf";
+            demihumanLevel = 10;
+          } else {
+            demihumanType = "Halfling";
+            demihumanLevel = 8;
+          }
+
+          // Update the encounter with specific demihuman details
+          const table = ENCOUNTER_DATA[tableKey]?.[subKey];
+          if (table && table[roll - 1]) {
+            table[roll - 1].castle = {
+              class: demihumanType,
+              level: demihumanLevel.toString(),
+              alignment: table[roll - 1].castle?.alignment || "Chaotic"
+            };
+          }
+        }
       }
       break;
 
@@ -1596,6 +1693,29 @@ function generateSettlement(seededRandom = Math.random) {
   if (size === "City") {
     services.push("Magic Guild", "Thieves Guild", "Arena");
   }
+
+  return {
+    name,
+    size,
+    population,
+    ruler: `Lvl ${rulerLevel} ${rulerClass}`,
+    services: services.join(", "),
+  };
+}
+
+function generateLargeCity(seededRandom = Math.random) {
+  // Select a random name from the PLACES array
+  const nameIndex = Math.floor(seededRandom() * PLACES.length);
+  const name = PLACES[nameIndex];
+
+  // Force city generation - use a high population roll
+  const size = "City";
+  const population = (Math.floor(seededRandom() * 10) + Math.floor(seededRandom() * 10) + 2) * 1000; // 2d10 * 1000
+
+  const rulerLevel = Math.floor(seededRandom() * 6) + 8 + 1; // 1d6 + 8
+  const rulerClass = CLASSES[Math.floor(seededRandom() * CLASSES.length)];
+
+  const services = ["Market", "Inn", "Blacksmith", "Temple", "Magic Guild", "Thieves Guild", "Arena"];
 
   return {
     name,

@@ -886,7 +886,7 @@ export const DEFAULT_STATE: WarMachineState = {
     partySize: 6,
     rations: 42,
     water: 42,
-    startTerrain: "clear",
+    startTerrain: "city",
     climate: "normal",
     weather: {
       temperature: "Moderate",
