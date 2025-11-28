@@ -8,6 +8,7 @@ import type {
 import { getState, subscribe, updateState } from "../../state/store";
 import { createId } from "../../utils/id";
 import { advanceCalendar, advanceClock, addCalendarLog, describeClock, getCalendarMoonPhase } from "../calendar/state";
+import { PLACES } from "../../data/places";
 
 export type WildernessListener = (state: WildernessState) => void;
 
@@ -15,8 +16,9 @@ const MOVEMENT_POINTS_PER_DAY = 24;
 const WATER_REFILL_DAYS = 7;
 const LOG_LIMIT = 200;
 
-// Fresh water sources only - BECMI compliant
+// Fresh water sources - BECMI doesn't specify, so we use reasonable defaults
 const REFILL_TERRAINS: WildernessTerrainType[] = ["river"];
+const REFILL_FEATURES: string[] = ["Lake", "Spring", "Well", "Pond", "Stream"];
 
 const VALID_TERRAINS: WildernessTerrainType[] = [
   "clear",
@@ -932,9 +934,12 @@ export function forageFullDay() {
     const currentHex = sanitizeHex(wilderness.map[keyFromPos(wilderness.currentPos)]);
     if (!currentHex) return;
 
-    // Check for required resources (Animal or Vegetable)
+    // Check for required resources (Animal or Vegetable) - BECMI allows foraging in suitable terrain
     const hasResources = currentHex.resources && (currentHex.resources.includes("Animal") || currentHex.resources.includes("Vegetable"));
-    if (!hasResources) {
+    const terrain = TERRAIN_DATA[currentHex.type];
+    const terrainAllowsForaging = terrain.forage > 0; // Desert doesn't allow foraging
+
+    if (!hasResources && !terrainAllowsForaging) {
       addLogEntry(wilderness, {
         terrain: currentHex.type,
         summary: "Cannot forage here.",
@@ -968,9 +973,12 @@ export function forageCurrentHex() {
     const currentHex = sanitizeHex(wilderness.map[keyFromPos(wilderness.currentPos)]);
     if (!currentHex) return;
 
-    // Check for required resources (Animal or Vegetable)
+    // Check for required resources (Animal or Vegetable) - BECMI allows foraging in suitable terrain
     const hasResources = currentHex.resources && (currentHex.resources.includes("Animal") || currentHex.resources.includes("Vegetable"));
-    if (!hasResources) {
+    const terrain = TERRAIN_DATA[currentHex.type];
+    const terrainAllowsForaging = terrain.forage > 0; // Desert doesn't allow foraging
+
+    if (!hasResources && !terrainAllowsForaging) {
       addLogEntry(wilderness, {
         terrain: currentHex.type,
         summary: "Cannot forage here.",
@@ -987,9 +995,9 @@ export function forageCurrentHex() {
     addCalendarLog(calendar, `Time passed: +2 hours`, `${before} → ${after}`);
 
     // BECMI foraging: 50% base chance (1-3 on d6) modified by terrain
-    const terrain = TERRAIN_DATA[currentHex.type];
     const baseChance = 3; // 1-3 on d6 (50% success)
-    const terrainModifier = terrain.forage - 3; // Adjust based on terrain (woods/river = +0, hills/swamp = -1, etc.)
+    // Better terrain improves foraging success: forage value acts as bonus
+    const terrainModifier = Math.max(0, terrain.forage - 1); // Desert=0, Clear/Mountain=0, Hills/Swamp=1, Woods/River=2, City=5
     const finalChance = Math.max(1, Math.min(6, baseChance + terrainModifier));
 
     const roll = randomRange(1, 6);
@@ -1051,8 +1059,11 @@ export function canRefillWater(state: WildernessState = getWildernessState()): b
   // Check terrain type (rivers)
   if (REFILL_TERRAINS.includes(hex.type)) return true;
 
-  // Check for lake features (from static maps)
-  if (hex.feature === "Lake") return true;
+  // Check for water features (from static maps or procedural generation)
+  if (hex.feature && REFILL_FEATURES.includes(hex.feature)) return true;
+
+  // In settlements, assume access to wells/springs
+  if (hex.type === "city") return true;
 
   return false;
 }
@@ -1174,9 +1185,16 @@ function generateHex(fromType: WildernessTerrainType, q?: number, r?: number): W
 
   const type = selectTerrain(fromType, seededRandom);
   const resources: DominionResourceType[] = [];
-  if (seededRandom() < 0.2) resources.push("Animal");
-  if (seededRandom() < 0.2) resources.push("Vegetable");
-  if (seededRandom() < 0.1) resources.push("Mineral");
+
+  // Resource availability based on terrain type - better foraging terrain has more resources
+  const terrainData = TERRAIN_DATA[type];
+  const animalChance = Math.min(0.8, 0.1 + (terrainData.forage * 0.2)); // Desert=10%, Clear/Mountain=30%, Woods/River=70%, City=100%
+  const vegetableChance = Math.min(0.8, 0.1 + (terrainData.forage * 0.2));
+  const mineralChance = 0.1; // Minerals are rarer and terrain-independent
+
+  if (seededRandom() < animalChance) resources.push("Animal");
+  if (seededRandom() < vegetableChance) resources.push("Vegetable");
+  if (seededRandom() < mineralChance) resources.push("Mineral");
 
   let feature: string | null = null;
   let details: string | null = null;
@@ -1187,13 +1205,15 @@ function generateHex(fromType: WildernessTerrainType, q?: number, r?: number): W
 
   // Towns: Should be DM-placed near water sources. For procedural gen, 15% chance in suitable terrain
   if (type === "city" || (type === "clear" && seededRandom() < 0.15)) { // NOT RAW: procedural town placement
-    feature = "Town";
     const settlement = generateSettlement(seededRandom);
-    details = `${settlement.size} (Pop: ${settlement.population}). Ruler: ${settlement.ruler}. Services: ${settlement.services}.`;
+    feature = `${settlement.name} (${settlement.size})`;
+    details = `Population: ${settlement.population}. Ruler: ${settlement.ruler}. Services: ${settlement.services}.`;
   }
   // Castles: Should be DM-placed in strategic locations. For procedural gen, rare in hills/mountains
   else if ((type === "hills" || type === "mountain") && seededRandom() < 0.03) { // NOT RAW: procedural castle placement
-    feature = "Castle";
+    const castleNameIndex = Math.floor(seededRandom() * PLACES.length);
+    const castleName = PLACES[castleNameIndex];
+    feature = `${castleName} Castle`;
     const ownerLvl = Math.floor(seededRandom() * 6) + 9; // 9-14
     const ownerClass = CLASSES[Math.floor(seededRandom() * CLASSES.length)];
     const align = ALIGNMENTS[Math.floor(seededRandom() * ALIGNMENTS.length)];
@@ -1202,12 +1222,22 @@ function generateHex(fromType: WildernessTerrainType, q?: number, r?: number): W
   }
   // Ruins: Should be DM-placed for adventure hooks. For procedural gen, rare everywhere
   else if (seededRandom() < 0.02) { // NOT RAW: procedural ruin placement
-    feature = "Ruins";
+    const ruinNameIndex = Math.floor(seededRandom() * PLACES.length);
+    const ruinName = PLACES[ruinNameIndex];
+    feature = `${ruinName} Ruins`;
     details = "Ancient crumbling walls. Possible dungeon entrance.";
+  }
+  // Water sources: Springs, ponds, streams - make water more available in wilderness
+  else if (seededRandom() < 0.05) { // 5% chance for water features in suitable terrain
+    const waterFeatures = ["Spring", "Pond", "Stream"];
+    feature = waterFeatures[Math.floor(seededRandom() * waterFeatures.length)];
+    details = `Fresh water source - can refill waterskins here.`;
   }
   // Lairs: Should result from encounters. For procedural gen, occasional lairs
   else if (seededRandom() < 0.08) { // NOT RAW: procedural lair placement
-    feature = "Lair";
+    const lairNameIndex = Math.floor(seededRandom() * PLACES.length);
+    const lairName = PLACES[lairNameIndex];
+    feature = `${lairName} Lair`;
     details = "Monster lair - roll for encounter when investigated.";
   }
 
@@ -1539,6 +1569,10 @@ function calculateEncounterDistance(isSurprised: boolean = false): number {
 }
 
 function generateSettlement(seededRandom = Math.random) {
+  // Select a random name from the PLACES array
+  const nameIndex = Math.floor(seededRandom() * PLACES.length);
+  const name = PLACES[nameIndex];
+
   // Convert dice rolls to seeded random
   const popRoll = Math.floor(seededRandom() * 6) + Math.floor(seededRandom() * 6) + 2; // 2d6
   let size = "Village";
@@ -1564,6 +1598,7 @@ function generateSettlement(seededRandom = Math.random) {
   }
 
   return {
+    name,
     size,
     population,
     ruler: `Lvl ${rulerLevel} ${rulerClass}`,

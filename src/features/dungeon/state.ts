@@ -30,6 +30,29 @@ export function syncDungeonWithParty() {
   });
 }
 
+export function resetDungeonState() {
+  updateState((state) => {
+    // Reset all dungeon state to defaults, keeping party resources synced
+    const summary = calculatePartySnapshot(state.party.roster);
+
+    state.dungeon = {
+      turn: 0,
+      depth: 1,
+      torches: summary.summary.torches,
+      torchTurnsUsed: 0,
+      rations: summary.summary.rations,
+      loot: 0,
+      lairMode: false,
+      lighting: "dim",
+      status: "idle",
+      roomSearched: false,
+      log: [],
+    };
+
+    addLogEntry(state.dungeon, "event", "Dungeon Reset", "Party has entered a new dungeon complex.");
+  });
+}
+
 export function setDungeonDepth(depth: number) {
   updateState((state) => {
     state.dungeon.depth = depth;

@@ -16,6 +16,7 @@ import {
   setLighting,
   toggleLairMode,
   syncDungeonWithParty,
+  resetDungeonState,
   consumeTorch,
   consumeRation,
   applyEncounterDamage,
@@ -189,6 +190,15 @@ function renderControls(container: HTMLElement, dungeon = getDungeonState(), par
     createField("Mode", lairWrapper)
   );
   container.appendChild(formRow);
+
+  // Reset dungeon button - separate section for clarity
+  const resetSection = document.createElement("div");
+  resetSection.className = "flex gap-sm";
+  resetSection.style.marginTop = "var(--space-sm)";
+  resetSection.style.paddingTop = "var(--space-sm)";
+  resetSection.style.borderTop = "1px solid var(--border-color)";
+  resetSection.appendChild(makeButton("🔄 New Dungeon", "button", () => resetDungeonState()));
+  container.appendChild(resetSection);
 
   const actionButtons = document.createElement("div");
   actionButtons.className = "flex flex-col gap-sm";
