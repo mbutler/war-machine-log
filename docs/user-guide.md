@@ -153,12 +153,12 @@ When your party leaves civilization, they enter the **wilderness hexcrawl**—on
 
 ### Understanding Hex Travel
 
-The BECMI wilderness is mapped in **hexes**, each representing **24 miles** Travel time depends on terrain:
+The BECMI wilderness in War Machine uses **6-mile hexes**. Travel time depends on terrain and encumbrance; for an unencumbered party (120' MV) the RC-equivalent daily distances are:
 
-- **Clear/Grassland**: 6 miles per day (3/4 of a hex)
-- **Woods/Hills**: 9 miles per day (slightly more than 1 hex)
-- **Mountains/Swamp/Desert**: 12 miles per day (1.5 hexes)
-- **Settlement**: 4 miles per day (1/2 hex)
+- **Clear/Grassland**: 24 miles per day (**4 hexes**)
+- **Woods/Hills/Desert**: 16 miles per day (**about 2½ hexes**)
+- **Mountains/Swamp/Jungle**: 12 miles per day (**2 hexes**)
+- **Settlement/Good Road**: 36 miles per day (**6 hexes**)
 
 These speeds assume **careful travel**—the party is mapping, watching for danger, and moving tactically. Forced marches can double distance but cause exhaustion.
 

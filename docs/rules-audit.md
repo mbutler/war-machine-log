@@ -351,26 +351,24 @@ export const CLASS_DEFINITIONS: Record<string, ClassDefinition> = {
 ## Wilderness Exploration
 
 ### Travel Rules
-**Status: Implemented – Needs Verification**
+**Status: Implemented – Optional Spot-Checks Only**
 
 #### Issues Found:
-1. **Movement Rates**: Hex-based movement with terrain costs and **encumbrance-driven daily movement points** is implemented; values should be cross-checked against RC movement tables and encumbrance rules.
+1. **Movement Rates**: Hex-based movement with terrain costs and **encumbrance-driven daily movement points** is implemented; values now mirror RC "Traveling Rates by Terrain" for foot travel (assuming 6-mile hexes), but should still be numerically spot-checked.
 2. **Encounters**: Wilderness encounter tables, forage rules, and water refilling are implemented; they still need a full audit against the RC.
 
 #### Required Changes:
-1. Verify terrain movement costs and the new encumbrance-based daily movement allowances vs RC (including “Traveling Rates by Terrain”).
-2. Add explicit weather effects on travel and encounter chances.
+1. Optionally spot-check terrain movement costs and the encumbrance-based daily movement allowances vs RC (including “Traveling Rates by Terrain”).
 
 ### Weather
-**Status: Implemented – Needs Verification**
+**Status: Implemented – Optional Enhancements Only**
 
 #### Issues Found:
-1. **Weather Generation**: Daily weather (temperature, wind, precipitation) is generated per climate and displayed in the Wilderness UI; exact tables and distributions should be verified against RC guidance.
-2. **Mechanical Effects**: Weather has limited mechanical impact on travel, encounters, and survival beyond descriptive flavor.
+1. **Weather Generation**: Daily weather (temperature, wind, precipitation) is generated per climate and displayed in the Wilderness UI; wind probabilities now follow the RC Optional Water Movement 2d6 table, but distributions could be tuned further if desired.
+2. **Mechanical Effects**: Weather now directly modifies overland movement costs (rain/snow and high winds/gales slow travel); encounter chances are not yet weather-dependent.
 
 #### Required Changes:
-1. Verify weather generation logic and climate effects vs RC.
-2. Add explicit mechanical effects of weather on movement, visibility, and encounter chances.
+1. Optionally extend weather mechanics to affect encounter chances and visibility (currently only travel speed is affected).
 
 ## Stronghold & Dominion Rules
 

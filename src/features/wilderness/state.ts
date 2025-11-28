@@ -33,6 +33,30 @@ const VALID_TERRAINS: WildernessTerrainType[] = [
   "ocean",
 ];
 
+// Weather movement modifiers – loosely inspired by RC's Optional Water Movement
+// table. These are applied to overland hex costs to reflect difficult weather.
+function getWeatherMovementMultiplier(weather: WildernessState["weather"]): number {
+  if (!weather) return 1;
+
+  let multiplier = 1;
+
+  // Precipitation slows overland travel
+  if (weather.precipitation === "Rain" || weather.precipitation === "Snow") {
+    multiplier *= 1.5;
+  } else if (weather.precipitation === "Heavy Storm") {
+    multiplier *= 2;
+  }
+
+  // Very high winds and gales make progress difficult
+  if (weather.wind === "High Winds" || weather.wind === "Extreme High Winds") {
+    multiplier *= 1.25;
+  } else if (weather.wind === "Gale") {
+    multiplier *= 2;
+  }
+
+  return multiplier;
+}
+
 // Derive daily overland movement points from the slowest party member's
 // normal movement rate, using RC's 24 miles/day at 120' baseline.
 function getDailyMovementPointsFromParty(): number {
@@ -144,7 +168,7 @@ const TERRAIN_DATA: Record<
   desert: {
     name: "Desert",
     color: "#fdba74",
-    mpCost: 12,
+    mpCost: 9,
     forage: 0,
     lost: 3,
     encounter: 2,
@@ -947,7 +971,8 @@ export function moveParty(directionIndex: number) {
     const finalData = TERRAIN_DATA[finalHex.type] ?? TERRAIN_DATA.clear;
     wilderness.currentPos = nextPos;
 
-    const hoursAdvanced = spendMovementPoints(wilderness, finalData.mpCost);
+    const weatherMultiplier = getWeatherMovementMultiplier(wilderness.weather);
+    const hoursAdvanced = spendMovementPoints(wilderness, finalData.mpCost * weatherMultiplier);
     if (hoursAdvanced > 0) {
       // Advance calendar directly in the same updateState transaction
       const calendar = state.calendar;
@@ -2136,9 +2161,10 @@ function generateLargeCity(seededRandom = Math.random) {
 }
 
 function generateWeather(climate: WildernessClimate) {
+  // Temperature: simple 2d6-based band with climate modifiers
   let tempRoll = rollDice("2d6");
   if (climate === "cold") tempRoll -= 3;
-  if (climate === "tropic") tempRoll += 3;
+  if (climate === "tropic" || climate === "desert") tempRoll += 3;
 
   let temperature = "Moderate";
   if (tempRoll <= 4) temperature = "Cold/Freezing";
@@ -2146,16 +2172,28 @@ function generateWeather(climate: WildernessClimate) {
   else if (tempRoll >= 10 && tempRoll < 12) temperature = "Hot";
   else if (tempRoll >= 12) temperature = "Scorching";
 
-  let wind = "Breeze";
+  // Wind: use RC Optional Water Movement 2d6 table categories
   const windRoll = rollDice("2d6");
-  if (windRoll <= 3) wind = "Dead Calm";
-  else if (windRoll >= 10 && windRoll < 12) wind = "Strong Winds";
-  else if (windRoll >= 12) wind = "Gale/Storm";
+  let wind = "Normal Winds";
+  if (windRoll === 2) wind = "No Wind";
+  else if (windRoll === 3) wind = "Extreme Light Breeze";
+  else if (windRoll === 4) wind = "Light Breeze";
+  else if (windRoll === 5) wind = "Moderate Breeze";
+  else if (windRoll >= 6 && windRoll <= 8) wind = "Normal Winds";
+  else if (windRoll === 9) wind = "Strong Breeze";
+  else if (windRoll === 10) wind = "High Winds";
+  else if (windRoll === 11) wind = "Extreme High Winds";
+  else if (windRoll === 12) wind = "Gale";
 
-  let precipitation = "None";
+  // Precipitation: basic 2d6 chance, heavier in colder climates
   const rainRoll = rollDice("2d6");
-  if (rainRoll >= 10) precipitation = temperature.includes("Cold") ? "Snow" : "Rain";
-  if (rainRoll === 12) precipitation = "Heavy Storm";
+  let precipitation = "None";
+  if (rainRoll >= 10) {
+    precipitation = temperature.includes("Cold") ? "Snow" : "Rain";
+  }
+  if (rainRoll === 12) {
+    precipitation = "Heavy Storm";
+  }
 
   return { temperature, wind, precipitation };
 }
