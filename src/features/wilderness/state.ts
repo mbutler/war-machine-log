@@ -1414,8 +1414,9 @@ function getEncounterChance(terrainType: WildernessTerrainType): number {
   const normalized = normalizeTerrainType(terrainType);
   switch (normalized) {
     case "clear":
-    case "city":
       return 1; // 1 on 1d6
+    case "city":
+      return 1; // 1 on 1d6 - BECMI: inhabited/settled areas
     case "woods":
     case "river":
     case "hills":
@@ -1437,6 +1438,391 @@ function maybeGenerateEncounter(hex: WildernessHex): string | undefined {
     return undefined;
   }
   return generateEncounter(hex.type);
+}
+
+// Generate flavorful descriptions for city encounters
+function generateCityEncounterDescription(encounterName: string): string {
+  const flavorTexts: Record<string, string[]> = {
+    // Adventurers and fighters
+    "Fighter Adventurer": [
+      "A grizzled mercenary in battered chain mail, eyeing passersby suspiciously from a tavern doorway.",
+      "A well-armed warrior with a scarred face, polishing a bloodstained sword outside an inn.",
+      "A veteran soldier turned adventurer, boasting loudly about past battles to anyone who will listen."
+    ],
+    "Cleric Adventurer": [
+      "A devout priest in clerical vestments, blessing merchants and offering prayers for safe journeys.",
+      "A battle-hardened cleric with a warhammer at their belt, distributing alms to the poor.",
+      "A holy warrior bearing the symbol of their faith, seeking donations for temple repairs."
+    ],
+    "Magic-User Adventurer": [
+      "A mysterious wizard in flowing robes, examining strange components in the marketplace.",
+      "An elderly mage with a long white beard, muttering incantations while studying ancient scrolls.",
+      "A young apprentice wizard, nervously clutching a spellbook while haggling with a bookseller."
+    ],
+    "Thief Adventurer": [
+      "A shadowy figure in dark clothing, lurking in alleys and watching for unguarded purses.",
+      "A nimble-fingered rogue with darting eyes, slipping through the crowded market unnoticed.",
+      "A reformed thief now working as a 'finder of lost items,' with a knowing wink and sly grin."
+    ],
+    "Dwarf Adventurer": [
+      "A stout dwarf warrior with braided beard and axe, grumbling about the lack of decent ale.",
+      "A dwarven prospector covered in mining dust, examining the local stonework critically.",
+      "A dwarf merchant-adventurer, bargaining fiercely over mining tools and gem prices."
+    ],
+    "Elf Adventurer": [
+      "An elegant elf ranger with longbow, moving gracefully through the human crowds.",
+      "A scholarly elf mage, browsing arcane texts in the finest bookstore.",
+      "A wild elf scout, uncomfortable in the city, longing for the freedom of the forests."
+    ],
+    "Halfling Adventurer": [
+      "A cheerful halfling thief with quick fingers, 'finding' loose coins in the marketplace.",
+      "A halfling ranger, perched on a barrel, sharing stories of woodland adventures.",
+      "A stout-hearted halfling fighter, challenging larger folk to wrestling matches for coin."
+    ],
+
+    // Craftsmen and merchants
+    "Blacksmith": [
+      "A muscular smith with soot-stained apron, hammering red-hot iron at his forge.",
+      "A master armorer displaying finely crafted swords and armor in his shop window.",
+      "An elderly blacksmith teaching his apprentice the secrets of tempering steel."
+    ],
+    "Alchemist": [
+      "A scholarly alchemist in stained robes, mixing potions behind clouded glass windows.",
+      "A mysterious potion-maker with shelves of bubbling vials and strange ingredients.",
+      "An alchemist hawking cure-alls and love potions from a colorful market stall."
+    ],
+    "Jeweler": [
+      "An expert gemcutter examining precious stones through a jeweler's loupe.",
+      "A wealthy jeweler displaying necklaces and rings in a well-guarded shop.",
+      "A traveling gem merchant showing off exotic stones from distant lands."
+    ],
+    "Innkeeper": [
+      "A jovial innkeeper wiping down tables and greeting regulars by name.",
+      "A shrewd tavern owner sampling his own ale while keeping an eye on rowdy patrons.",
+      "An overworked innkeeper shouting orders to serving wenches during the dinner rush."
+    ],
+
+    // Officials and guards
+    "Guardsman": [
+      "A stern city guard patrolling the streets, checking papers and watching for trouble.",
+      "A bored watchman leaning on his spear, gossiping with fellow guards at their post.",
+      "A veteran guardsman with many commendations, keeping order in the busy marketplace."
+    ],
+    "Mayor": [
+      "The pompous mayor in fine robes, inspecting city improvements with his entourage.",
+      "A harried city official dealing with petitioners and signing endless paperwork.",
+      "A charismatic mayor giving a speech about civic pride from the town hall steps."
+    ],
+    "Judge": [
+      "A stern magistrate in black robes, presiding over court with unwavering impartiality.",
+      "A wise old judge known for fair rulings, respected by all in the community.",
+      "A corrupt judge accepting 'gifts' from wealthy litigants in shadowy dealings."
+    ],
+
+    // Religious figures
+    "Church/Temple Employee": [
+      "A humble acolyte sweeping the temple floors and tending to sacred candles.",
+      "A temple priest blessing the faithful and collecting offerings for the poor.",
+      "A religious functionary organizing charity drives and community festivals."
+    ],
+
+    // Criminals and shady types
+    "Assassin": [
+      "A deadly shadow slipping through crowds, eyes scanning for potential marks.",
+      "A professional killer disguised as a merchant, waiting for the right contract.",
+      "A notorious assassin with a reputation, drinking alone in a dark corner of the tavern."
+    ],
+    "Spy": [
+      "A nondescript figure in plain clothes, eavesdropping on conversations in the market.",
+      "A foreign agent disguised as a traveler, gathering intelligence for distant masters.",
+      "A double agent playing both sides, selling secrets to the highest bidder."
+    ],
+    "Thieves' Guild Officer": [
+      "A well-dressed guild master overseeing operations from a legitimate business front.",
+      "A thieves' guild lieutenant coordinating burglaries and protection rackets.",
+      "A guild recruiter approaching likely candidates with offers of 'easy money'."
+    ],
+    "Beggar": [
+      "A ragged beggar with outstretched hand, telling tales of misfortune for spare coppers.",
+      "A crippled veteran of old wars, begging near the temple with a sign about his service.",
+      "A professional beggar with a well-practiced sob story, working the busy marketplace."
+    ],
+    "Smuggler": [
+      "A shady merchant with nervous eyes, unloading 'special cargo' from a hidden wagon.",
+      "A harbor rogue coordinating illicit shipments under the cover of legitimate trade.",
+      "A smuggler captain boasting quietly about the best routes past customs officials."
+    ],
+    "Harlot": [
+      "A painted lady in revealing garments, calling softly from a shadowed doorway.",
+      "A courtesan of some means, entertaining wealthy clients in an upscale establishment.",
+      "A streetwalker plying her trade in the rougher districts of the city."
+    ],
+
+    // Merchants and traders
+    "Banker": [
+      "A stern moneylender in fine robes, examining loan documents with a critical eye.",
+      "A wealthy banker counting gold in a secure vault, guarded by armed retainers.",
+      "A loan officer haggling over interest rates with a desperate merchant."
+    ],
+    "Bazaar Merchant": [
+      "A colorful merchant hawking exotic spices and strange curiosities from distant lands.",
+      "A shrewd trader bargaining fiercely over carpets and jewelry in the bustling market.",
+      "A merchant caravan leader, overseeing the unloading of precious cargo from desert routes."
+    ],
+    "Caravan Master": [
+      "A weathered caravan leader with a whip, organizing guards and drivers for the next journey.",
+      "A caravan master negotiating protection fees with local bandits turned 'guards'.",
+      "An experienced trader planning routes and schedules over maps in a tavern corner."
+    ],
+
+    // Laborers and workers
+    "Laborer": [
+      "A strong laborer with calloused hands, taking a break from hauling goods at the docks.",
+      "A day worker seeking employment, standing in the town square with other unemployed.",
+      "A construction laborer covered in dust, helping build the city's newest expansion."
+    ],
+    "Farmer": [
+      "A dirt-stained farmer in simple clothes, selling produce from a wagon in the market.",
+      "A local grower complaining about the weather and crop prices to anyone who will listen.",
+      "A prosperous farmer with a fine cart, delivering goods to the city's best restaurants."
+    ],
+    "Fisherman": [
+      "A salty fisherman with weathered face, selling fresh catch from his boat at the docks.",
+      "A fisherman mending nets while telling exaggerated tales of sea monsters.",
+      "A harbor fisherman drinking with shipmates, comparing catches and complaining about taxes."
+    ],
+
+    // Entertainers and performers
+    "Entertainer": [
+      "A traveling bard with lute and colorful clothing, performing for coins in the town square.",
+      "A juggler and acrobat entertaining children and adults alike in the marketplace.",
+      "A storyteller spinning yarns of heroes and monsters to a rapt audience."
+    ],
+    "Dancer": [
+      "A graceful dancer performing for coins, moving with fluid elegance in the tavern.",
+      "A troupe performer practicing routines in an empty lot, preparing for evening shows.",
+      "A exotic dancer from distant lands, drawing crowds with unfamiliar, sensual movements."
+    ],
+    "Singer": [
+      "A talented vocalist with beautiful voice, serenading patrons in the finest tavern.",
+      "A street singer with guitar, performing folk songs for spare change.",
+      "A choir member practicing hymns outside the temple, voice carrying through the streets."
+    ],
+
+    // Scholars and professionals
+    "Doctor/Dentist": [
+      "A learned physician with medical bag, making house calls to the city's wealthy.",
+      "A dentist with frightening tools, advertising painless extractions from a market stall.",
+      "A surgeon in bloody apron, tending to accident victims in a makeshift clinic."
+    ],
+    "Lawyer": [
+      "A slick attorney in fancy robes, arguing a case passionately in the town square.",
+      "A legal counselor advising clients on contracts and property disputes.",
+      "A court advocate preparing documents for an upcoming trial."
+    ],
+    "Scribe": [
+      "A scholarly scribe with ink-stained fingers, copying documents in a quiet scriptorium.",
+      "A public scribe offering writing services for the illiterate in the marketplace.",
+      "An official clerk recording city business in beautifully illuminated ledgers."
+    ],
+
+    // Religious and mystical
+    "Herbalist": [
+      "A wise herbalist with baskets of plants, mixing remedies in a fragrant shop.",
+      "A druidic herbalist gathering rare plants, speaking of nature's healing powers.",
+      "A potion-maker selling love charms and healing salves from a mysterious stall."
+    ],
+    "Apothecary": [
+      "A precise apothecary measuring powders, compounding medicines behind glass counters.",
+      "A master of alchemy creating elixirs and tinctures for various ailments.",
+      "An apothecary consulting with patients about their symptoms and prescribing treatments."
+    ],
+
+    // Officials and administrators
+    "Government Official": [
+      "A pompous bureaucrat in official robes, inspecting permits and collecting fees.",
+      "A city administrator buried in paperwork, managing the endless details of governance.",
+      "A tax collector going door-to-door, accompanied by bored guards."
+    ],
+    "Tax Assessor": [
+      "A stern tax collector evaluating property values, notepad in hand.",
+      "An assessor measuring buildings and land, determining fair taxation.",
+      "A revenue officer haggling with property owners over assessed values."
+    ],
+    "Town Hall Employee": [
+      "A clerk filing paperwork in the musty records room of city hall.",
+      "A municipal worker posting notices and announcements around town.",
+      "A city employee processing applications and issuing permits to citizens."
+    ],
+    "Town Drunk": [
+      "A disheveled man stumbling through the streets, singing bawdy songs and looking for his next drink.",
+      "A perpetually intoxicated local, leaning against walls and sharing slurred 'wisdom' with passersby.",
+      "A hopeless drunkard begging for coin to buy more ale, with bleary eyes and unsteady gait."
+    ],
+    "Madman": [
+      "A wild-eyed lunatic ranting about conspiracies from the town square, drawing uneasy stares.",
+      "A deranged individual muttering nonsense while pacing erratically through the streets.",
+      "A mad prophet shouting apocalyptic warnings, his torn clothes and wild hair marking him as unhinged."
+    ],
+    "Madame": [
+      "A sophisticated brothel owner in elegant attire, overseeing her establishment with a knowing smile.",
+      "A wealthy madam entertaining clients in a lavish parlor, discussing business over fine wine.",
+      "A shrewd businesswoman running the city's most exclusive pleasure house with an iron fist."
+    ],
+    "Majordomo": [
+      "A dignified butler in formal attire, managing a noble household with quiet efficiency.",
+      "A stern majordomo overseeing servants and announcing visitors at a wealthy estate.",
+      "An elderly retainer with decades of service, knowing all the household secrets and scandals."
+    ],
+    "Vagrant": [
+      "A homeless wanderer with ragged clothes, sleeping in alleys and surviving on charity.",
+      "A drifter with haunted eyes, telling stories of lost fortunes and fallen nobility.",
+      "A destitute beggar moving from town to town, carrying all possessions in a battered sack."
+    ],
+    "Slave": [
+      "A chained worker performing menial labor, eyes downcast but watchful for opportunity.",
+      "A captive in iron collars, toiling under the watchful eye of armed overseers.",
+      "A recently captured slave, still defiant despite the heavy chains and brutal treatment."
+    ],
+    "Serf": [
+      "A bound peasant working the fields, loyal to the local lord but dreaming of freedom.",
+      "A feudal serf carrying produce to market, wearing simple homespun and wooden clogs.",
+      "A land-bound farmer tilling soil that belongs to others, with calloused hands and tired eyes."
+    ],
+    "Servant, Hired": [
+      "A professional housemaid in neat uniform, carrying laundry or market baskets.",
+      "A liveried footman standing attentively at a noble's door, ready to announce visitors.",
+      "A personal attendant carrying messages and packages through the busy city streets."
+    ],
+    "Servant, Indentured": [
+      "An indentured servant working off debts, wearing a collar marking their status.",
+      "A contracted worker serving a wealthy family, with years left on their obligation.",
+      "A debt-bound servant performing household duties, counting days until freedom."
+    ],
+    "Schoolteacher": [
+      "A patient educator conducting lessons in a small schoolhouse, voice raised in instruction.",
+      "A scholarly teacher with ink-stained fingers, educating the town's children in basic literacy.",
+      "A stern schoolmaster rapping a ruler on a desk, demanding attention from unruly students."
+    ],
+    "Trading Post Employee": [
+      "A clerk in a frontier trading post, weighing goods and haggling with customers.",
+      "A post employee sorting packages and letters, organizing deliveries to remote settlements.",
+      "A trader's assistant inventorying supplies, readying goods for the next caravan."
+    ],
+    "Watchman": [
+      "A night watchman with lantern and cudgel, patrolling the streets during evening hours.",
+      "A vigilant guard keeping order in the wee hours, eyes scanning for trouble in the darkness.",
+      "A tired watchman on the midnight shift, stamping feet to stay warm in the cool night air."
+    ],
+    "Vigilante": [
+      "A self-appointed guardian of the night, wearing a hood and carrying concealed weapons.",
+      "A masked vigilante taking justice into their own hands, feared by criminals and respected by citizens.",
+      "A neighborhood protector organizing watches against thieves and troublemakers."
+    ],
+    "Gambler": [
+      "A cardsharp with quick hands and sharper wits, dealing games in a smoky tavern corner.",
+      "A dice-rolling gambler with a pile of coins, challenging newcomers to prove their luck.",
+      "A professional gamester moving between establishments, always looking for the next big score."
+    ],
+    "Gentleman/Lady": [
+      "A wealthy noble in fine attire, strolling the streets with an air of entitlement and superiority.",
+      "An aristocratic lady with parasol and attendants, shopping the finest boutiques.",
+      "A refined gentleman tipping his hat to acquaintances, discussing politics and society."
+    ],
+
+    // Scholars and mystics
+    "Astrologer": [
+      "A stargazer studying celestial charts, offering predictions for coin.",
+      "A mystical astrologer with crystal ball, telling fortunes in a dimly lit tent.",
+      "A scholarly astronomer mapping constellations from the city observatory."
+    ],
+    "Astronomer": [
+      "A dedicated stargazer maintaining the city's astronomical instruments.",
+      "A professor of astronomy lecturing students about planetary movements.",
+      "An astronomer seeking patrons for a grand telescope project."
+    ],
+    "Healer": [
+      "A compassionate healer tending to the sick in a clinic filled with herbs and potions.",
+      "A skilled physician charging exorbitant fees for treating the wealthy.",
+      "A wandering healer offering folk remedies from a basket of medicinal plants."
+    ],
+
+    // Generic descriptions for occupations without specific flavor
+    "default": [
+      "A busy local going about their daily work in the bustling city.",
+      "A citizen of the town, engaged in the ordinary routines of urban life.",
+      "Someone who makes their living in this city, contributing to its daily commerce."
+    ]
+  };
+
+  const descriptions = flavorTexts[encounterName] || flavorTexts["default"];
+  return descriptions[Math.floor(Math.random() * descriptions.length)];
+}
+
+// Generate flavorful descriptions for castle encounters
+function generateCastleEncounterDescription(encounter: any): string {
+  if (!encounter.castle) {
+    return "A patrol of castle guards watching the approaches to their stronghold.";
+  }
+
+  const { class: charClass, level, alignment } = encounter.castle;
+
+  const classDescriptions: Record<string, string[]> = {
+    "Fighter": [
+      "battle-hardened warriors",
+      "disciplined soldiers",
+      "veteran fighters",
+      "skilled combatants",
+      "martial experts"
+    ],
+    "Cleric": [
+      "devout holy warriors",
+      "faithful temple guards",
+      "blessed protectors",
+      "divine champions",
+      "sacred defenders"
+    ],
+    "Magic-User": [
+      "mysterious spellcasters",
+      "arcane guardians",
+      "enigmatic wizards",
+      "magical sentinels",
+      "sorcerous protectors"
+    ],
+    "Dwarf": [
+      "stout dwarven warriors",
+      "mountain-born defenders",
+      "bearded axe-wielders",
+      "underground veterans",
+      "dwarven guardians"
+    ],
+    "Elf": [
+      "graceful elven rangers",
+      "woodland-born warriors",
+      "agile elf scouts",
+      "ancient forest defenders",
+      "elven protectors"
+    ],
+    "Halfling": [
+      "clever halfling skirmishers",
+      "small but fierce warriors",
+      "nimble halfling fighters",
+      "burrow-born defenders",
+      "halfling guardians"
+    ]
+  };
+
+  const alignmentDescriptions: Record<string, string> = {
+    "Lawful": "disciplined and honorable",
+    "Neutral": "practical and measured",
+    "Chaotic": "unpredictable and wild",
+    "default": "watchful and alert"
+  };
+
+  const classDesc = classDescriptions[charClass]?.[Math.floor(Math.random() * classDescriptions[charClass].length)] || `${charClass.toLowerCase()} warriors`;
+  const alignmentDesc = alignmentDescriptions[alignment] || alignmentDescriptions["default"];
+
+  return `A patrol of ${classDesc} (${alignment} ${charClass} ${level}), ${alignmentDesc} in their duty.`;
 }
 
 function generateEncounter(type: WildernessTerrainType): string {
@@ -1461,7 +1847,15 @@ function generateEncounter(type: WildernessTerrainType): string {
   const treasureText = encounter.treasure && encounter.treasure !== "Nil" ?
     ` [Treasure: ${encounter.treasure}]` : "";
 
-  return `ENCOUNTER: ${qty} ${encounter.name} (${categoryName}) - ${distance} yards away${surpriseText}${treasureText}`;
+  // Generate enhanced descriptions for city and castle encounters
+  let encounterDescription = encounter.name;
+  if (categoryName === "City Encounter") {
+    encounterDescription = generateCityEncounterDescription(encounter.name);
+  } else if (categoryName.includes("Castle") || encounter.castle) {
+    encounterDescription = generateCastleEncounterDescription(encounter);
+  }
+
+  return `ENCOUNTER: ${qty} ${encounterDescription} - ${distance} yards away${surpriseText}${treasureText}`;
 }
 
 function rollOnSubtable(subtableName: string, terrainGroup: string): { categoryName: string; encounter: { name: string; qty: string; treasure?: string; castle?: any } } {
