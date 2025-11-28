@@ -713,10 +713,14 @@ function renderRosterPanel(container: HTMLElement, party: PartyState, dungeon = 
     stat.append(lbl, val);
     return stat;
   };
+  const enc = summary.encumbrance;
+  const mvLabel = `${enc.slowestNormalSpeed}' (${enc.slowestEncounterSpeed}')`;
+
   resources.append(
     statBox("Torches", String(dungeon.torches ?? summary.summary.torches)),
     statBox("Rations", String(dungeon.rations ?? summary.summary.rations)),
-    statBox("Encumbrance", `${summary.encumbrance.current} / ${summary.encumbrance.max} cn`),
+    statBox("Encumbrance", `${enc.current} / ${enc.max} cn`),
+    statBox("Slowest MV", mvLabel),
   );
   container.appendChild(resources);
 

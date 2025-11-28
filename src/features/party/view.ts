@@ -386,11 +386,15 @@ function renderSummary(container: HTMLElement, state: PartyState) {
     return stat;
   };
 
+  const enc = snapshot.encumbrance;
+  const mvLabel = `${enc.slowestNormalSpeed}' (${enc.slowestEncounterSpeed}')`;
+
   grid.append(
     makeStat("Treasury", `${getLedgerBalance()} gp`),
     makeStat("Torches", `${snapshot.summary.torches}`),
     makeStat("Rations", `${snapshot.summary.rations}`),
-    makeStat("Encumbrance", `${snapshot.encumbrance.current} / ${snapshot.encumbrance.max} cn`),
+    makeStat("Encumbrance", `${enc.current} / ${enc.max} cn`),
+    makeStat("Slowest MV", mvLabel),
   );
 
   container.appendChild(grid);

@@ -5,38 +5,40 @@ This document audits the current JavaScript implementation against the official 
 ## Key Findings Summary
 
 ### Major Missing Components:
-- **Experience Point System** - Completely missing; characters have levels but no XP tracking or progression tables
-- **Demihuman Mechanics** - Saving throws, THAC0 tables, and attack ranks system for dwarves, elves, and halflings
-- **Spell Casting System** - Spell lists exist but no casting mechanics, effects, or descriptions
-- **Optional Classes** - Druid and Mystic classes not implemented
+- **Spell Casting Effects & Resolution** - Spell lists and slot progressions exist, but most individual spell effects, ranges, durations, and saving throw interactions are not yet encoded
+- **Advanced / Optional Subsystems** - Weapon mastery, general skills, expanded combat modes (two-weapon fighting, detailed unarmed, naval/aerial/underwater combat), and planar/Immortal rules are not modeled
 
 ### Partially Implemented but Needing Work:
 - **Thief Special Abilities** - Backstab, scroll reading/casting abilities missing
-- **Class Restrictions** - Weapon restrictions (e.g., clerics can't use edged weapons) not enforced
-- **Prime Requisite Bonuses** - XP bonuses for high ability scores not implemented
+- **Class Restrictions** - Weapon restrictions (e.g., clerics can't use edged weapons) not fully enforced
+- **Morale & Loyalty Outside Dungeons** - Dungeon monster morale is implemented with BECMI triggers; retainer/hireling morale and broader campaign-scale morale still need coverage
+- **Weather Effects** - Wilderness weather is generated and displayed, but its mechanical impact on travel and encounters is limited
 
 ### Well Implemented:
-- **Ability Modifiers** - Correctly implemented
-- **Basic Spell Lists** - Magic-User and Cleric spell names are present
-- **Spell Slot Tables** - Progression appears correct
-- **Thief Skill Tables** - Basic skill percentages implemented
+- **Experience Point System** - XP tables for all classes (including demihumans and optional classes), character `xp` field, prime requisite XP bonuses, monster XP awards, and automatic level-up are implemented
+- **Demihuman Mechanics** - Demihuman saving throws are implemented with correct progressions; demihuman THAC0 uses fighter progression (attack-rank equivalent) but needs numeric verification
+- **Ability Modifiers** - Ability score modifier table is implemented and used throughout character generation and derived stats
+- **Spell Lists & Slots** - Magic-User, Cleric, and Druid spell lists and slot progressions exist and are wired into character spellbooks
+- **Thief Skill Tables** - Basic thief skill percentages through level 14 are implemented and adjusted by Dexterity
+- **Dungeon & Wilderness Encounters** - BECMI-style dungeon and wilderness encounter tables, surprise, reaction, and encounter distance are implemented and integrated with the Calendar and Ledger systems
 
 ### Implementation Priority
 
 **High Priority** (core functionality):
-- Experience system with XP tracking and level progression
-- Demihuman saving throws, THAC0, and attack ranks
 - Spell casting mechanics and effects
-- Character schema updates
+- Thief special abilities and class-based restrictions
+- Magic item identification and curse handling
+- Cross-module XP / treasure award tooling (outside the dungeon delver)
 
 **Medium Priority** (gameplay features):
-- Thief special abilities (backstab, scroll use)
-- Class-based restrictions
-- Equipment verification
+- Equipment & encumbrance verification (weights, loads, and movement bands)
+- Morale and loyalty rules for retainers, hirelings, and armies
+- Weather effects on wilderness travel and encounters
+- Urban encounter procedures and NPC management
 
 **Low Priority** (advanced features):
-- Optional classes (Druid, Mystic)
-- Optional rules (weapon mastery, two-weapon fighting)
+- Optional rules (weapon mastery, general skills, two-weapon fighting, detailed unarmed combat)
+- Naval/aerial/underwater combat, planar rules, and Immortal paths
 
 ## Character Classes
 
@@ -45,9 +47,9 @@ This document audits the current JavaScript implementation against the official 
 
 #### Issues Found:
 1. **Missing Classes**: Half-Elf class is mentioned in the table of contents but not implemented. The code has "halfling" but the rules use "halfing" (appears to be a typo in the rules for "halfling").
-2. **Optional Classes**: Druid and Mystic classes are not implemented, though they are marked as optional in the rules.
+2. **Optional Classes**: Druid and Mystic classes are implemented as optional classes; their requirements and progression should be re-verified against the RC.
 3. **Class Requirements**: Current requirements in `classes.ts` appear correct but need verification against full class descriptions.
-4. **Prime Requisites**: The prime requisite handling needs verification - some classes have dual primes (e.g., Elf has STR/INT).
+4. **Prime Requisites**: The prime requisite handling (including dual primes like Elf STR/INT and Mystic STR/DEX/WIS) needs verification.
 
 #### Current Implementation:
 ```typescript
@@ -64,39 +66,29 @@ export const CLASS_DEFINITIONS: Record<string, ClassDefinition> = {
 ```
 
 #### Required Changes:
-1. Implement Half-Elf class (if it's a valid class) or remove from table of contents references
-2. Add optional Druid and Mystic classes
+1. Implement Half-Elf class (if it's a valid class) or clearly document that it is not supported
+2. Verify Druid and Mystic implementations (requirements, hit dice, progression) against the RC
 3. Verify and correct prime requisite handling for multi-stat classes
-4. Add experience bonus calculations (5% for 13-15, 10% for 16-18 in prime stats)
+4. Re-confirm prime requisite XP bonus thresholds (5% for 13–15, 10% for 16–18) for all classes
 
 ### Experience Tables
-**Status: Not Implemented**
+**Status: Implemented – Needs Verification & Tooling**
 
 #### Issues Found:
-1. **Missing Experience Tables**: No experience point tables implemented for any class
-2. **Level Progression**: Characters have level but no XP tracking
-3. **Schema Issue**: Character schema lacks XP field entirely
-4. **Prime Requisite Bonuses**: XP bonuses for high prime stats (5% for 13-15, 10% for 16-18) not implemented
+1. **Table Verification**: Experience point tables for all classes (human, demihuman, and optional) are implemented but should be cross-checked against the RC values.
+2. **Demihuman High-Level Progression**: Demihuman XP tables extend beyond classic level caps; this should be reviewed against the RC’s attack-rank guidance to confirm intended behavior.
+3. **Non-Dungeon XP Awards**: Dungeon monster XP and prime requisite bonuses are applied automatically, but there is no dedicated UI/flow for XP from role-playing, objectives, or treasure outside the dungeon delver.
 
-#### Current Implementation Gaps:
-- No XP field in Character interface
-- No experience tables for any class
-- No level-up mechanics
-- No XP bonus calculations
+#### Current Implementation:
+- `Character` includes an `xp: number` field.
+- XP tables for all classes are defined in `experience.ts`.
+- XP awards for dungeon monsters are computed from HD and special abilities and divided among surviving party members.
+- Prime requisite XP bonuses (5%/10%) are applied when XP is added.
 
 #### Required Changes:
-1. Add `xp: number` field to Character interface
-2. Implement complete experience tables:
-   - Cleric: 1,500 → 2,900,000 XP (36 levels)
-   - Fighter: 2,000 → 3,480,000 XP (36 levels)
-   - Magic-User: 2,500 → 2,750,000 XP (36 levels)
-   - Thief: 1,250 → 1,800,000 XP (36 levels)
-   - Dwarf: 2,200 → 220,000 XP (12 levels max)
-   - Elf: 4,000 → 375,000 XP (10 levels max)
-   - Halfling: 2,000 → 100,000 XP (8 levels max)
-3. Add XP tracking and level-up logic
-4. Implement prime requisite XP bonuses
-5. Add experience bonus calculations for high ability scores
+1. Audit all XP table values against the RC.
+2. Decide and document how demihuman progression beyond classic caps should behave (levels vs attack ranks).
+3. Add tooling/flows to grant XP from treasure, goals, and role-play outside the dungeon module.
 
 ### Hit Dice
 **Status: Basic Implementation**
@@ -110,15 +102,15 @@ export const CLASS_DEFINITIONS: Record<string, ClassDefinition> = {
 2. Ensure CON bonuses only apply to rolled HP, not fixed post-9th bonuses
 
 ### Saving Throws
-**Status: Partially Implemented - Human Classes Only**
+**Status: Implemented – Needs Verification**
 
 #### Issues Found:
-1. **Missing Demihuman Tables**: No saving throw tables implemented for demihuman classes
-2. **Table Verification Needed**: Human class tables need verification against official values
+1. **Table Verification Needed**: Human and demihuman class tables should be verified against official values.
+2. **High-Level Demihuman Benefits**: Special demihuman saving-throw benefits at high XP totals (e.g., reduced damage from spells or breath) are not modeled.
 
 #### Current Implementation:
-- Human classes (Fighter, Cleric, Magic-User, Thief) have saving throw tables
-- Demihuman classes completely missing saving throw implementations
+- Saving throw tables exist for Fighter, Cleric, Magic-User, Thief, Dwarf, Elf, and Halfling.
+- `generateCharacter` computes saving throws per class and level using these tables.
 
 #### Official Rules Discrepancies:
 **Dwarf Saving Throws** (levels 1-3/4-6/7-9/10-12):
@@ -140,22 +132,20 @@ export const CLASS_DEFINITIONS: Record<string, ClassDefinition> = {
 **Halfling Saving Throws**: Need to locate in rules
 
 #### Required Changes:
-1. Implement demihuman saving throw tables with correct progressions
-2. Add special saving throw bonuses for high-level demihumans
-3. Verify human class saving throw values against official tables
-4. Add level-based saving throw lookups for demihumans
+1. Verify all saving throw tracks against the RC tables for each class.
+2. Add special saving throw bonuses for high-level demihumans (optional).
+3. Document how saving throws are intended to be used across modules (Dungeon, Lab, etc.).
 
 ### THAC0 (To Hit Armor Class 0)
-**Status: Basic Implementation - Human Classes Only**
+**Status: Implemented – Needs Verification**
 
 #### Issues Found:
-1. **Missing Demihuman THAC0**: No THAC0 tables for demihuman classes
-2. **Attack Ranks System**: Demihumans use "attack ranks" instead of levels beyond their maximum experience level
-3. **Table Verification**: Human THAC0 values need verification against official tables
+1. **Attack Ranks System**: Demihumans in the code use fighter THAC0 progression directly; this approximates RC attack ranks but should be reviewed for XP thresholds and caps.
+2. **Table Verification**: Existing THAC0 values need verification against official tables.
 
 #### Current Implementation:
-- Human classes have THAC0 progressions (appears mostly correct)
-- Demihuman THAC0 completely missing
+- THAC0 progression tables exist for Fighter, Cleric, Magic-User, and Thief.
+- Demihuman THAC0 is derived using the fighter table via the generator’s `computeThac0` function.
 
 #### Official Rules - Demihuman Attack Ranks:
 **Dwarf Attack Ranks**: After 12th level, dwarves gain attack ranks every 100,000 XP
@@ -167,24 +157,25 @@ export const CLASS_DEFINITIONS: Record<string, ClassDefinition> = {
 **Halfling Attack Ranks**: After 8th level, halflings gain attack ranks every 150,000 XP
 
 #### Required Changes:
-1. Implement demihuman THAC0 tables with attack rank system
-2. Add attack rank tracking for demihumans beyond level caps
-3. Verify human class THAC0 values against official tables
-4. Implement attack rank progression XP requirements
+1. Verify THAC0 progressions against the RC for all classes.
+2. Decide whether to expose demihuman “attack ranks” explicitly or continue mapping them to fighter-equivalent levels.
+3. If explicit attack ranks are desired, add attack-rank tracking and XP thresholds.
 
 ## Ability Scores
 
 ### Ability Modifiers
-**Status: Needs Verification**
+**Status: Implemented – Needs Verification**
 
 #### Issues Found:
-1. **Missing Implementation**: No ability modifier tables found in current code
-2. **Prime Requisite Bonuses**: XP bonuses for high prime stats not implemented
+1. **Effect Coverage**: Ability modifiers are implemented, but their use across all derived stats (attack rolls, damage, reaction, etc.) should be rechecked for completeness.
+
+#### Current Implementation:
+- Ability modifier ranges (1–18) and modifiers (−3 to +3) are implemented in `abilityMods.ts`.
+- These modifiers are used in character generation for hit points, AC, thief skills, retainer limits/morale, and other derived fields.
 
 #### Required Changes:
-1. Implement ability score modifiers table
-2. Add prime requisite XP bonus calculations
-3. Verify all ability score effects (hit probability, damage, etc.)
+1. Verify all ability score effects (hit probability, damage, reaction rolls, etc.) against the RC.
+2. Ensure ability modifiers are applied consistently in all subsystems that reference abilities.
 
 ## Spells
 
@@ -192,17 +183,18 @@ export const CLASS_DEFINITIONS: Record<string, ClassDefinition> = {
 **Status: Partially Implemented - Basic Lists Exist**
 
 #### Current Implementation:
-- Magic-User spell lists implemented (9 levels, appears complete)
-- Cleric spell lists implemented (7 levels, higher levels empty)
-- Spell slot tables implemented for both classes
-- Basic spell memorization framework exists
+-- Magic-User spell lists implemented (9 levels, appears complete)
+-- Cleric spell lists implemented (7 levels)
+-- Druid spell lists implemented for optional Druid class
+-- Spell slot tables implemented for cleric and magic-user classes
+-- Spellbook and slot structures exist on the character schema
 
 #### Issues Found:
 1. **Spell Descriptions**: No spell descriptions, effects, ranges, durations implemented
 2. **Casting Mechanics**: No actual spell casting system (range, duration, effects)
-3. **Druid/Mystic Spells**: Optional class spells not implemented
+3. **Mystic Abilities**: Mystic special abilities are not modeled as a distinct subsystem.
 4. **Spell Verification**: Need to verify spell lists against official rules
-5. **Cleric Spell Slots**: Higher level slots appear empty in implementation
+5. **Demihuman Limits**: Elven spell level limits (max 5th level) not enforced
 
 #### Official Rules Requirements:
 - Magic-Users: 9 spell levels, specific spells per level
@@ -212,12 +204,11 @@ export const CLASS_DEFINITIONS: Record<string, ClassDefinition> = {
 - Elves: Limited to 5th level magic-user spells
 
 #### Required Changes:
-1. Add complete spell descriptions (effects, ranges, durations, components)
-2. Implement spell casting mechanics and resolution
-3. Add druid and mystic spell lists
-4. Verify all spell names and placements against official rules
-5. Implement elf spell level restrictions (5th level max)
-6. Complete cleric spell slots for all levels
+1. Add complete spell descriptions (effects, ranges, durations, components) for a prioritized subset of common spells, expanding over time.
+2. Implement spell casting mechanics and resolution (including saving throws and resistances).
+3. Model Mystic class abilities (if desired) as a distinct subsystem.
+4. Verify all spell names and placements against official rules.
+5. Implement elf spell level restrictions (5th level max).
 
 ### Spell Progression
 **Status: Partial Implementation**
@@ -311,38 +302,39 @@ export const CLASS_DEFINITIONS: Record<string, ClassDefinition> = {
 3. Implement unarmed combat mechanics
 
 ### Initiative
-**Status: Not Implemented**
+**Status: Implemented in Dungeon Delver – Not Global**
 
 #### Issues Found:
-1. **Missing Initiative System**: No initiative mechanics found
+1. **Scope**: Side-based 1d6 initiative is implemented for dungeon encounters, but other modules (wilderness, siege, naval, etc.) do not currently use this system.
+2. **Modifiers**: Optional DEX and situational modifiers to initiative are not modeled.
 
 #### Required Changes:
-1. Implement initiative system (roll 1d6, optional DEX modifiers)
+1. Decide whether to centralize initiative rules and expose them to other combat modes.
+2. Add optional DEX/situational modifiers if closer RC fidelity is desired.
 
 ### Morale
-**Status: Not Implemented**
+**Status: Implemented for Dungeon Monsters – Retainer & Campaign Morale Pending**
 
 #### Issues Found:
-1. **Monster Morale**: Optional rule not implemented
-2. **Retainer Morale**: Basic tracking exists but rules may be incomplete
+1. **Monster Morale**: Dungeon monsters use a BECMI-style morale check (2d6 vs morale score) keyed to standard triggers (first hit, first death, 1/4 HP, 1/2 incapacitated), but values and modifiers should be rechecked.
+2. **Retainer Morale**: Characters and retainers track morale values, but a full RC-compliant loyalty/morale subsystem (including modifiers over time) is not implemented.
 
 #### Required Changes:
-1. Implement monster morale checks (optional)
-2. Verify retainer morale mechanics
+1. Verify monster morale triggers and adjustments against the RC.
+2. Implement a clearer retainer/hireling morale & loyalty system, integrated with Calendar, Ledger (wages), and Dominion where appropriate.
 
 ## Dungeon Exploration
 
 ### Wandering Monsters
-**Status: Not Implemented**
+**Status: Implemented – Needs Verification**
 
 #### Issues Found:
-1. **Missing Encounter Tables**: No wandering monster mechanics
-2. **Turn Structure**: Basic turn tracking exists but full exploration rules missing
+1. **Encounter Frequencies**: Wandering monster checks are made on a schedule in the dungeon delver; exact frequencies and chances should be audited against the RC.
+2. **Turn Structure**: Turn tracking and calendar integration exist, but finer-grained exploration procedures (mapping, listening at doors, etc.) are still simplified.
 
 #### Required Changes:
-1. Implement wandering monster encounter tables
-2. Add encounter frequencies and triggers
-3. Complete dungeon exploration turn mechanics
+1. Verify wandering monster tables and check frequencies against the RC.
+2. Expand or document dungeon exploration procedures where needed.
 
 ### Treasure Generation
 **Status: Partial Implementation**
@@ -359,26 +351,26 @@ export const CLASS_DEFINITIONS: Record<string, ClassDefinition> = {
 ## Wilderness Exploration
 
 ### Travel Rules
-**Status: Basic Implementation**
+**Status: Implemented – Needs Verification**
 
 #### Issues Found:
-1. **Movement Rates**: Basic hex movement exists but detailed terrain modifiers may be missing
-2. **Encounters**: Wilderness encounter tables not fully implemented
+1. **Movement Rates**: Hex-based movement with terrain costs and **encumbrance-driven daily movement points** is implemented; values should be cross-checked against RC movement tables and encumbrance rules.
+2. **Encounters**: Wilderness encounter tables, forage rules, and water refilling are implemented; they still need a full audit against the RC.
 
 #### Required Changes:
-1. Verify terrain movement costs
-2. Implement complete wilderness encounter tables
-3. Add weather effects on travel
+1. Verify terrain movement costs and the new encumbrance-based daily movement allowances vs RC (including “Traveling Rates by Terrain”).
+2. Add explicit weather effects on travel and encounter chances.
 
 ### Weather
-**Status: Not Implemented**
+**Status: Implemented – Needs Verification**
 
 #### Issues Found:
-1. **Missing Weather System**: No weather generation or effects
+1. **Weather Generation**: Daily weather (temperature, wind, precipitation) is generated per climate and displayed in the Wilderness UI; exact tables and distributions should be verified against RC guidance.
+2. **Mechanical Effects**: Weather has limited mechanical impact on travel, encounters, and survival beyond descriptive flavor.
 
 #### Required Changes:
-1. Implement weather generation system
-2. Add weather effects on movement and encounters
+1. Verify weather generation logic and climate effects vs RC.
+2. Add explicit mechanical effects of weather on movement, visibility, and encounter chances.
 
 ## Stronghold & Dominion Rules
 
@@ -442,16 +434,36 @@ export const CLASS_DEFINITIONS: Record<string, ClassDefinition> = {
 1. Implement complete holiday and festival calendar
 2. Add seasonal effects on activities
 
+## Advanced RC Systems Not Yet Modeled
+
+The following systems are present in the Rules Cyclopedia but are not currently modeled (or are only lightly represented) in the simulator. They are good candidates for future expansion and are largely optional in actual play:
+
+- **Weapon Mastery**  
+  - Mastery ranks per weapon (Basic → Grand Master), with attack/damage/AC/special effect changes.  
+  - Would integrate most naturally with the Party and Dungeon modules and optional combat detail level.
+
+- **General Skills**  
+  - Non-combat skills tied to abilities (Riding, Navigation, Survival, etc.).  
+  - A generic skill check engine could be used by Dungeon, Wilderness, Merchant, and Dominion for more rules-driven outcomes.
+
+- **Expanded Combat Modes**  
+  - **Two-weapon fighting** and more detailed **unarmed combat**.  
+  - **Naval, aerial, and underwater combat** beyond the existing wilderness/ocean travel abstraction.
+
+- **Urban Encounters & NPC Management**  
+  - City encounter tables, social complications, and more detailed rules for hirelings, mercenaries, and specialists.  
+  - Would tie into Merchant, Dominion, Stronghold, and Ledger systems.
+
+- **Planes & Immortality**  
+  - Planar traits that affect magic and movement.  
+  - Paths to Immortality and post-Immortal play, likely integrated with Calendar and Dominion as high-level campaign options.
+
 ## Critical Issues Requiring Immediate Attention
 
-1. **Experience Point System**: Completely missing - characters have levels but no XP tracking or experience tables
-2. **Demihuman Classes**: Saving throws, THAC0 tables, and attack ranks system completely missing
-3. **Spell Casting Mechanics**: Spell lists exist but no casting system, spell effects, or descriptions implemented
-4. **Optional Classes**: Druid and Mystic classes not implemented (marked as optional in rules)
-5. **Thief Special Abilities**: Backstab, scroll reading/casting abilities not implemented
-6. **Class Restrictions**: Weapon restrictions (clerics can't use edged weapons) not enforced
-7. **Prime Requisite Bonuses**: XP bonuses for high ability scores not implemented
-8. **Character Schema**: Missing XP field and other core character attributes
+1. **Spell Casting Mechanics**: Spell lists and slots exist, but a rules-aware spell effect and resolution engine is still missing.
+2. **Thief Special Abilities**: Backstab, scroll reading/casting abilities, and tool requirements remain unimplemented.
+3. **Class Restrictions**: Weapon and armor restrictions (e.g., clerics and edged weapons) are only partially enforced.
+4. **Morale & Loyalty Outside Dungeons**: Monster morale is implemented for dungeon encounters; retainer/hireling morale and broader campaign morale/loyalty systems are still open.
 
 ## Rules Questions Requiring Decisions
 
@@ -463,19 +475,18 @@ export const CLASS_DEFINITIONS: Record<string, ClassDefinition> = {
 ## Implementation Priority
 
 ### High Priority (Core BECMI Functionality)
-1. **Experience System**: Implement XP tracking, experience tables, and level progression for all classes
-2. **Demihuman Mechanics**: Add saving throws, THAC0 tables, and attack ranks for dwarves, elves, halflings
-3. **Spell Casting**: Implement spell effects, casting mechanics, and spell descriptions
-4. **Character Schema Updates**: Add missing fields (XP, proper ability handling)
+1. **Spell Casting**: Implement spell effects, casting mechanics, and spell descriptions.
+2. **Thief Abilities & Class Restrictions**: Implement backstab, scroll use, and enforce class-based weapon/armor rules.
+3. **XP & Treasure Tooling**: Provide robust XP award tools (monsters, treasure, goals) that feed into the existing XP/leveling system.
 
 ### Medium Priority (Gameplay Features)
-1. **Thief Abilities**: Implement backstab, scroll reading/casting, and skill tool requirements
-2. **Class Restrictions**: Enforce weapon restrictions and class-specific rules
-3. **Prime Requisite System**: Add XP bonuses and multi-stat prime req handling
-4. **Equipment Verification**: Verify all costs, weights, and complete equipment lists
+1. **Morale & Loyalty**: Implement full retainer/hireling loyalty rules and refine monster morale where needed.
+2. **Equipment & Encumbrance**: Verify equipment tables and wire encumbrance more tightly into movement and survival.
+3. **Weather & Wilderness**: Add mechanical weather effects and verify wilderness encounters/travel vs RC.
+4. **Urban & NPC Systems**: Add city encounter procedures and richer hireling/mercenary/specialist management.
 
 ### Low Priority (Advanced/Optional Features)
-1. **Optional Classes**: Druid and Mystic class implementation
-2. **Optional Rules**: Weapon mastery, two-weapon fighting, detailed morale
-3. **Advanced Magic**: Complete magic item creation and identification
-4. **Calendar Details**: Holiday events and seasonal effects
+1. **Optional Rules**: Weapon mastery, general skills, two-weapon fighting, detailed unarmed combat.
+2. **Advanced Magic**: Complete magic item creation, identification, artifacts, and demihuman clan relics.
+3. **Planes & Immortality**: Planar rules and Immortal paths for very high-level play.
+4. **Calendar Details**: Holiday events, seasonal effects, and campaign-scale event tables.

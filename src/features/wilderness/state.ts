@@ -9,6 +9,7 @@ import { getState, subscribe, updateState } from "../../state/store";
 import { createId } from "../../utils/id";
 import { advanceCalendar, advanceClock, addCalendarLog, describeClock, getCalendarMoonPhase } from "../calendar/state";
 import { PLACES } from "../../data/places";
+import { calculatePartySnapshot } from "../party/resources";
 
 export type WildernessListener = (state: WildernessState) => void;
 
@@ -31,6 +32,18 @@ const VALID_TERRAINS: WildernessTerrainType[] = [
   "river",
   "ocean",
 ];
+
+// Derive daily overland movement points from the slowest party member's
+// normal movement rate, using RC's 24 miles/day at 120' baseline.
+function getDailyMovementPointsFromParty(): number {
+  const roster = getState().party.roster;
+  const snapshot = calculatePartySnapshot(roster);
+  const normal = snapshot.encumbrance.slowestNormalSpeed || 120;
+  const ratio = normal / 120;
+  const raw = MOVEMENT_POINTS_PER_DAY * ratio;
+  const mp = Math.round(raw);
+  return mp > 0 ? mp : 0;
+}
 
 // Terrain type mapping from Python BECMI generator to Wilderness system
 const PYTHON_TO_WILDERNESS_TERRAIN: Record<string, WildernessTerrainType> = {
@@ -854,6 +867,8 @@ export function resetWilderness(options: { startTerrain?: WildernessTerrainType;
       startDetails = `Population: ${settlement.population}. Ruler: ${settlement.ruler}. Services: ${settlement.services}. Your party's starting location.`;
     }
 
+    const dailyMp = getDailyMovementPointsFromParty();
+
     state.wilderness = {
       map: {
         [`${startingPos.q},${startingPos.r}`]: {
@@ -868,8 +883,8 @@ export function resetWilderness(options: { startTerrain?: WildernessTerrainType;
       currentPos: startingPos,
       camera: { x: 0, y: 0 },
       days: 0,
-      movementPoints: MOVEMENT_POINTS_PER_DAY,
-      maxMovementPoints: MOVEMENT_POINTS_PER_DAY,
+      movementPoints: dailyMp,
+      maxMovementPoints: dailyMp,
       partySize,
       rations: partySize * WATER_REFILL_DAYS,
       water: partySize * WATER_REFILL_DAYS,
@@ -1134,8 +1149,8 @@ export function importWildernessData(raw: string) {
     });
     state.wilderness.currentPos = payload.currentPos;
     state.wilderness.days = payload.days ?? 0;
-    state.wilderness.movementPoints = payload.movementPoints ?? MOVEMENT_POINTS_PER_DAY;
-    state.wilderness.maxMovementPoints = payload.maxMovementPoints ?? MOVEMENT_POINTS_PER_DAY;
+    state.wilderness.movementPoints = payload.movementPoints ?? getDailyMovementPointsFromParty();
+    state.wilderness.maxMovementPoints = payload.maxMovementPoints ?? getDailyMovementPointsFromParty();
     state.wilderness.partySize = payload.partySize ?? state.wilderness.partySize;
     state.wilderness.rations = payload.rations ?? state.wilderness.rations;
     state.wilderness.water = payload.water ?? state.wilderness.water;
