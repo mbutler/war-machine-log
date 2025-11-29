@@ -291,7 +291,6 @@ export function renderLedgerPanel(target: HTMLElement) {
       const empty = document.createElement("div");
       empty.className = "ledger-empty";
       empty.innerHTML = `
-        <div class="ledger-empty-icon">📜</div>
         <p>No transactions yet</p>
       `;
       list.appendChild(empty);
