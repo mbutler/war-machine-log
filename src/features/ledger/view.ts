@@ -14,6 +14,7 @@ import {
   exportLedgerData,
   importLedgerData,
 } from "./state";
+import { getModuleExportFilename, triggerDownload } from "../../utils/moduleExport";
 import {
   ALL_EQUIPMENT,
   CATEGORY_LABELS,
@@ -45,8 +46,8 @@ const CATEGORY_ORDER: EquipmentCategory[] = [
 
 export function renderLedgerPanel(target: HTMLElement) {
   const { element, body } = createPanel(
-    "Treasury Ledger",
-    "Track all gold income and expenses, buy and sell equipment.",
+    "Ledger",
+    "Track gold, buy equipment, and manage expenses",
   );
   element.classList.add("ledger-shell");
 
@@ -144,8 +145,7 @@ export function renderLedgerPanel(target: HTMLElement) {
   exportBtn.textContent = "Export";
   exportBtn.addEventListener("click", () => {
     const data = exportLedgerData();
-    const json = JSON.stringify(data, null, 2);
-    triggerDownload(`ledger-${new Date().toISOString().slice(0, 10)}.json`, json);
+    triggerDownload(getModuleExportFilename("ledger"), data);
   });
 
   const importBtn = document.createElement("button");
@@ -611,20 +611,4 @@ function formatGold(amount: number): string {
   }
   return amount.toFixed(2);
 }
-
-function triggerDownload(filename: string, contents: string) {
-  const blob = new Blob([contents], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
-}
-
-
-
-
 

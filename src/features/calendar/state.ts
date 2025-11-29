@@ -7,6 +7,7 @@ import type {
 } from "../../state/schema";
 import { getState, subscribe, updateState } from "../../state/store";
 import { createId } from "../../utils/id";
+import { serializeModuleExport } from "../../utils/moduleExport";
 
 export type CalendarListener = (state: CalendarState) => void;
 export type CalendarEventPayload = { type: "timers-expired"; trackers: CalendarTracker[] };
@@ -177,16 +178,20 @@ export function clearCalendarLog() {
   });
 }
 
-export function exportCalendarData() {
+/**
+ * Exports the calendar state in the standardized module format.
+ * This format is compatible with both individual module import and full campaign import.
+ */
+export function exportCalendarData(): string {
   const calendar = getCalendarState();
-  return {
-    exportedAt: new Date().toISOString(),
-    clock: calendar.clock,
-    trackers: calendar.trackers,
-    log: calendar.log,
-  };
+  return serializeModuleExport("calendar", calendar);
 }
 
+/**
+ * Imports calendar data from JSON. Supports multiple formats:
+ * - Standardized module format (module: "calendar", data: CalendarState)
+ * - Legacy format (clock, trackers, log, events)
+ */
 export function importCalendarData(raw: string) {
   let payload: unknown;
   try {
@@ -199,11 +204,24 @@ export function importCalendarData(raw: string) {
     throw new Error("Calendar import payload must be an object.");
   }
 
+  const obj = payload as Record<string, unknown>;
+
+  // Handle standardized module format
+  if (obj.module === "calendar" && obj.data) {
+    const calendarData = obj.data as CalendarState;
+    updateState((state) => {
+      state.calendar = normalizeCalendarState(calendarData);
+    });
+    return;
+  }
+
+  // Handle legacy format
   updateState((state) => {
     const data = payload as {
       clock?: Partial<CalendarClock>;
       trackers?: CalendarTracker[];
       log?: CalendarLogEntry[];
+      events?: CalendarState["events"];
     };
 
     if (data.clock) {
@@ -217,12 +235,7 @@ export function importCalendarData(raw: string) {
     }
 
     if (Array.isArray(data.trackers)) {
-      state.calendar.trackers = data.trackers.map((tracker) => ({
-        id: tracker.id ?? createId(),
-        name: tracker.name ?? "Tracker",
-        initialMinutes: Number.isFinite(tracker.initialMinutes) ? tracker.initialMinutes : 0,
-        remainingMinutes: Number.isFinite(tracker.remainingMinutes) ? tracker.remainingMinutes : 0,
-      }));
+      state.calendar.trackers = data.trackers.map((tracker) => normalizeTracker(tracker));
     }
 
     if (Array.isArray(data.log)) {
@@ -235,7 +248,47 @@ export function importCalendarData(raw: string) {
         }))
         .slice(0, MAX_LOG_ENTRIES);
     }
+
+    if (Array.isArray(data.events)) {
+      state.calendar.events = data.events;
+    }
   });
+}
+
+function normalizeCalendarState(data: Partial<CalendarState>): CalendarState {
+  return {
+    clock: {
+      year: Math.max(0, Math.floor(data.clock?.year ?? 1000)),
+      month: normalizeMonth(data.clock?.month ?? 0),
+      day: normalizeDay(data.clock?.day ?? 1),
+      hour: clampHour(data.clock?.hour ?? 8),
+      minute: clampMinute(data.clock?.minute ?? 0),
+    },
+    trackers: Array.isArray(data.trackers)
+      ? data.trackers.map((tracker) => normalizeTracker(tracker))
+      : [],
+    log: Array.isArray(data.log)
+      ? data.log.slice(0, MAX_LOG_ENTRIES).map((entry) => ({
+          id: entry.id ?? createId(),
+          timestamp: entry.timestamp ?? Date.now(),
+          action: entry.action ?? "Entry",
+          detail: entry.detail,
+        }))
+      : [],
+    events: Array.isArray(data.events) ? data.events : [],
+  };
+}
+
+function normalizeTracker(tracker: Partial<CalendarTracker>): CalendarTracker {
+  return {
+    id: tracker.id ?? createId(),
+    name: tracker.name ?? "Tracker",
+    initialMinutes: Number.isFinite(tracker.initialMinutes) ? tracker.initialMinutes! : 0,
+    remainingMinutes: Number.isFinite(tracker.remainingMinutes) ? tracker.remainingMinutes! : 0,
+    kind: tracker.kind ?? "other",
+    blocking: tracker.blocking ?? false,
+    startedAt: tracker.startedAt ?? Date.now(),
+  };
 }
 
 export function getCalendarSeason(clock: CalendarClock): string {

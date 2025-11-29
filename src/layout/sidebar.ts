@@ -105,16 +105,7 @@ export function createSidebar(controls: SidebarControls): SidebarApi {
         button.className = "nav-button";
         button.dataset.routeId = route.id;
         button.dataset.active = "false";
-
-        const label = document.createElement("span");
-        label.className = "nav-label";
-        label.textContent = route.label;
-
-        const meta = document.createElement("span");
-        meta.className = "nav-meta";
-        meta.textContent = route.description ?? "";
-
-        button.append(label, meta);
+        button.textContent = route.label;
         button.addEventListener("click", () => controls.onSelectRoute(route.id));
 
         list.appendChild(button);

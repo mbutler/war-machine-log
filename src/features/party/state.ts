@@ -1,11 +1,12 @@
 import type { Character, PartyState, Retainer, WarMachineState } from "../../state/schema";
 import { DEFAULT_STATE, STATE_VERSION } from "../../state/schema";
-import { exportState, getState, setState, subscribe, updateState } from "../../state/store";
+import { getState, setState, subscribe, updateState } from "../../state/store";
 import { GenerateCharacterOptions, GenerationMethod, generateCharacter } from "./generator";
 import { RETAINER_TYPES, generateRetainer } from "./retainers";
 import { calculatePartySnapshot } from "./resources";
 import { createId } from "../../utils/id";
 import { recordIncome, setLedgerBalance, addRecurringExpense, removeRecurringExpense } from "../ledger/state";
+import { serializeModuleExport } from "../../utils/moduleExport";
 
 export interface PartyGenerationRequest {
   size: number;
@@ -160,34 +161,21 @@ export function replaceCharacter(characterId: string, options: GenerateCharacter
   }
 }
 
-export interface PartyExportPayload {
-  version: string;
-  party: Character[];
-  partyResources: PartyState["partyResources"];
-  encumbrance: ReturnType<typeof calculatePartySnapshot>["encumbrance"];
-  campaignInfo: {
-    dungeonLevel: number;
-    experienceBonus: number;
-    magicItemBonus: boolean;
-  };
-}
-
-export function exportPartyData(): PartyExportPayload {
+/**
+ * Exports the party state in the standardized module format.
+ * This format is compatible with both individual module import and full campaign import.
+ */
+export function exportPartyData(): string {
   const state = getState();
-  const snapshot = calculatePartySnapshot(state.party.roster);
-  return {
-    version: STATE_VERSION,
-    party: state.party.roster,
-    partyResources: snapshot.summary,
-    encumbrance: snapshot.encumbrance,
-    campaignInfo: {
-      dungeonLevel: 1,
-      experienceBonus: 0,
-      magicItemBonus: false,
-    },
-  };
+  return serializeModuleExport("party", state.party);
 }
 
+/**
+ * Imports party data from JSON. Supports multiple formats:
+ * - Standardized module format (module: "party", data: PartyState)
+ * - Full campaign export (state.party)
+ * - Legacy party format (party: Character[])
+ */
 export function importPartyFromJson(raw: string) {
   let payload: any;
   try {
@@ -196,6 +184,21 @@ export function importPartyFromJson(raw: string) {
     throw new Error(`Invalid JSON: ${(error as Error).message}`);
   }
 
+  // Handle standardized module format
+  if (payload?.module === "party" && payload?.data) {
+    const partyData = payload.data as PartyState;
+    updateState((state) => {
+      state.party = {
+        roster: (partyData.roster ?? []).map(normalizeCharacter),
+        preferences: partyData.preferences ?? DEFAULT_STATE.party.preferences,
+        partyResources: partyData.partyResources ?? DEFAULT_STATE.party.partyResources,
+      };
+      refreshPartyResources(state.party);
+    });
+    return { format: "module" as const };
+  }
+
+  // Handle full campaign export format
   if (payload?.state) {
     const nextState = payload.state as WarMachineState;
     if (!nextState.party) {
@@ -205,17 +208,17 @@ export function importPartyFromJson(raw: string) {
     return { format: "suite" as const };
   }
 
-  if (!Array.isArray(payload?.party)) {
-    throw new Error("Party file missing party data.");
+  // Handle legacy party format (array of characters)
+  if (Array.isArray(payload?.party)) {
+    updateState((state) => {
+      state.party.roster = payload.party.map(normalizeCharacter);
+      state.party.partyResources = payload.partyResources ?? DEFAULT_STATE.party.partyResources;
+      refreshPartyResources(state.party);
+    });
+    return { format: "party" as const };
   }
 
-  updateState((state) => {
-    state.party.roster = payload.party.map(normalizeCharacter);
-    state.party.partyResources = payload.partyResources ?? DEFAULT_STATE.party.partyResources;
-    refreshPartyResources(state.party);
-  });
-
-  return { format: "party" as const };
+  throw new Error("Unrecognized party file format.");
 }
 
 function normalizeCharacter(raw: any): Character {

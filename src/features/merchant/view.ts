@@ -9,12 +9,15 @@ import {
   subscribeToMerchant,
   undoLedgerEntry,
   updateMerchantField,
+  exportMerchantData,
+  importMerchantData,
 } from "./state";
 import { TRADE_GOODS } from "./constants";
+import { getModuleExportFilename, triggerDownload } from "../../utils/moduleExport";
 import "./merchant.css";
 
 export function renderMerchantPanel(target: HTMLElement) {
-  const { element, body } = createPanel("Merchant of Darokin", "Darokin trade simulator");
+  const { element, body } = createPanel("Merchant", "Simulate trade routes, tariffs, and caravan journeys");
 
   const grid = document.createElement("div");
   grid.className = "merchant-grid";
@@ -59,7 +62,55 @@ export function renderMerchantPanel(target: HTMLElement) {
       showNotification({ title: "Treasury reset", message: "Merchant treasury restored to 10,000 gp.", variant: "success" });
     }
   });
-  manifestCard.appendChild(resetButton);
+
+  const actionRow = document.createElement("div");
+  actionRow.className = "flex gap-sm";
+  actionRow.style.marginTop = "var(--space-sm)";
+
+  const exportBtn = document.createElement("button");
+  exportBtn.type = "button";
+  exportBtn.className = "button";
+  exportBtn.textContent = "Export";
+  exportBtn.addEventListener("click", () => {
+    const payload = exportMerchantData();
+    triggerDownload(getModuleExportFilename("merchant"), payload);
+  });
+
+  const importBtn = document.createElement("button");
+  importBtn.type = "button";
+  importBtn.className = "button";
+  importBtn.textContent = "Import";
+
+  const importInput = document.createElement("input");
+  importInput.type = "file";
+  importInput.accept = "application/json";
+  importInput.className = "visually-hidden";
+  importInput.addEventListener("change", () => {
+    const file = importInput.files?.[0];
+    if (!file) return;
+    file.text().then((text) => {
+      try {
+        importMerchantData(text);
+        showNotification({
+          title: "Merchant imported",
+          message: "Data loaded successfully.",
+          variant: "success",
+        });
+      } catch (err) {
+        showNotification({
+          title: "Import failed",
+          message: (err as Error).message,
+          variant: "danger",
+        });
+      }
+    }).finally(() => {
+      importInput.value = "";
+    });
+  });
+  importBtn.addEventListener("click", () => importInput.click());
+
+  actionRow.append(exportBtn, importBtn, importInput, resetButton);
+  manifestCard.appendChild(actionRow);
 
   const originSelect = createSelect("Origin Terrain", terrainOptions(), (value) => updateMerchantField("originTerrain", value as any));
   const destinationSelect = createSelect("Destination Terrain", terrainOptions(), (value) => updateMerchantField("destinationTerrain", value as any));

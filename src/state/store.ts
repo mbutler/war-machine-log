@@ -115,7 +115,11 @@ export function exportState(snapshot: WarMachineState = currentState): string {
   return JSON.stringify(payload, null, 2);
 }
 
-export function importState(raw: string) {
+export type ImportResult =
+  | { type: "campaign" }
+  | { type: "module"; module: string };
+
+export function importState(raw: string): ImportResult {
   let payload: unknown;
   try {
     payload = JSON.parse(raw);
@@ -127,7 +131,15 @@ export function importState(raw: string) {
     throw new Error("Import payload is not an object");
   }
 
-  const candidate = (payload as { state?: unknown }).state;
+  const obj = payload as Record<string, unknown>;
+
+  // Check if this is a module export (has 'module' and 'data' properties)
+  if (typeof obj.module === "string" && obj.data !== undefined) {
+    return importModuleState(obj.module, obj.data);
+  }
+
+  // Otherwise, treat as full campaign import
+  const candidate = obj.state;
   if (!candidate) {
     throw new Error("Import payload missing state property");
   }
@@ -142,6 +154,44 @@ export function importState(raw: string) {
   }
 
   commit(cloneState(nextState));
+  return { type: "campaign" };
+}
+
+type ModuleKey = keyof Omit<WarMachineState, "meta">;
+
+const VALID_MODULES: ModuleKey[] = [
+  "party",
+  "dominion",
+  "wilderness",
+  "calendar",
+  "siege",
+  "merchant",
+  "stronghold",
+  "treasure",
+  "lab",
+  "dungeon",
+  "ledger",
+];
+
+function importModuleState(moduleName: string, data: unknown): ImportResult {
+  if (!VALID_MODULES.includes(moduleName as ModuleKey)) {
+    throw new Error(`Unknown module type: ${moduleName}`);
+  }
+
+  if (hasWindow) {
+    window.localStorage.setItem(BACKUP_KEY, JSON.stringify(currentState));
+  }
+
+  const moduleKey = moduleName as ModuleKey;
+  const draft = cloneState(currentState);
+
+  // Assign the imported data to the appropriate module slot
+  (draft as Record<string, unknown>)[moduleKey] = data;
+
+  // Run migrations to ensure data integrity
+  commit(draft);
+
+  return { type: "module", module: moduleName };
 }
 
 export function resetState() {

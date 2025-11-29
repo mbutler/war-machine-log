@@ -10,7 +10,10 @@ import {
   rollTreasureHoard,
   setTreasureType,
   subscribeToTreasure,
+  exportTreasureData,
+  importTreasureData,
 } from "./state";
+import { getModuleExportFilename, triggerDownload } from "../../utils/moduleExport";
 
 const typeDefinitions = TREASURE_TYPE_LIST;
 
@@ -19,7 +22,7 @@ function formatGp(value: number): string {
 }
 
 export function renderTreasurePanel(target: HTMLElement) {
-  const panel = createPanel("Treasure Hoard Generator", "Authentic BECMI treasure tables with gems, jewelry, and magic.");
+  const panel = createPanel("Treasure", "Generate hoards using authentic BECMI treasure tables");
   panel.body.classList.add("treasure-grid");
 
   const controlColumn = document.createElement("div");
@@ -121,9 +124,51 @@ export function renderTreasurePanel(target: HTMLElement) {
     }
   });
 
+  const exportBtn = document.createElement("button");
+  exportBtn.type = "button";
+  exportBtn.className = "button";
+  exportBtn.textContent = "Export";
+  exportBtn.addEventListener("click", () => {
+    const payload = exportTreasureData();
+    triggerDownload(getModuleExportFilename("treasure"), payload);
+  });
+
+  const importBtn = document.createElement("button");
+  importBtn.type = "button";
+  importBtn.className = "button";
+  importBtn.textContent = "Import";
+
+  const importInput = document.createElement("input");
+  importInput.type = "file";
+  importInput.accept = "application/json";
+  importInput.className = "visually-hidden";
+  importInput.addEventListener("change", () => {
+    const file = importInput.files?.[0];
+    if (!file) return;
+    file.text().then((text) => {
+      try {
+        importTreasureData(text);
+        showNotification({
+          title: "Treasure imported",
+          message: "Data loaded successfully.",
+          variant: "success",
+        });
+      } catch (err) {
+        showNotification({
+          title: "Import failed",
+          message: (err as Error).message,
+          variant: "danger",
+        });
+      }
+    }).finally(() => {
+      importInput.value = "";
+    });
+  });
+  importBtn.addEventListener("click", () => importInput.click());
+
   const controlButtons = document.createElement("div");
   controlButtons.className = "treasure-actions";
-  controlButtons.append(generateButton, copyLatestButton, clearHistoryButton);
+  controlButtons.append(generateButton, copyLatestButton, exportBtn, importBtn, importInput, clearHistoryButton);
 
   controlCard.append(typeField, typeDescription, controlButtons);
   controlColumn.appendChild(controlCard);

@@ -1,6 +1,7 @@
 import type { Character, PartyPreferences, PartyState } from "../../state/schema";
 import { createPanel } from "../../layout/panels";
 import { showNotification } from "../../layout/notifications";
+import { showModal } from "../../layout/modal";
 import {
   generateParty,
   getPartyState,
@@ -12,10 +13,11 @@ import {
   replaceCharacter as replaceCharacterState,
 } from "./state";
 import { getAbilityMod } from "../../rules/tables/abilityMods";
-import { RETAINER_TYPES } from "./retainers";
 import type { Retainer } from "../../state/schema";
 import { calculatePartySnapshot } from "./resources";
 import { getLedgerBalance } from "../ledger/state";
+import { createRetainerPicker } from "./retainerPicker";
+import { getModuleExportFilename, triggerDownload } from "../../utils/moduleExport";
 
 const METHODS = [
   { value: "strict", label: "Strict (3d6 in order)" },
@@ -242,21 +244,25 @@ function renderCharacterRow(character: Character, preferences: PartyPreferences)
       });
       return;
     }
-    const choice = prompt(
-      "Choose retainer type (normal, torchbearer, porter, mercenary):",
-      "normal",
-    );
-    if (!choice) return;
-    const type = RETAINER_TYPES.find((entry) => entry.id === choice);
-    if (!type) {
-      showNotification({
-        title: "Unknown retainer type",
-        message: "Please choose a valid retainer profile.",
-        variant: "danger",
-      });
-      return;
-    }
-    addRetainerToCharacter(character.id, type.id);
+
+    let closeModal: (() => void) | undefined;
+
+    const picker = createRetainerPicker({
+      onSelect: (type) => {
+        addRetainerToCharacter(character.id, type.id);
+        closeModal?.();
+        showNotification({
+          title: "Retainer recruited",
+          message: `${type.label} joined the party.`,
+          variant: "success",
+        });
+      },
+    });
+
+    closeModal = showModal({
+      title: `Recruit for ${character.name}`,
+      content: picker,
+    });
   });
 
   retainerActions.appendChild(addButton);
@@ -400,20 +406,8 @@ function renderSummary(container: HTMLElement, state: PartyState) {
   container.appendChild(grid);
 }
 
-function triggerDownload(filename: string, contents: string) {
-  const blob = new Blob([contents], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
-}
-
 export function renderPartyPanel(target: HTMLElement) {
-  const { element, body } = createPanel("Party Generator", "Strict BECMI roster generation");
+  const { element, body } = createPanel("Party", "Generate BECMI characters and manage your adventuring roster");
 
   const controls = document.createElement("div");
   controls.className = "panel compact";
@@ -461,17 +455,16 @@ export function renderPartyPanel(target: HTMLElement) {
   const exportJsonBtn = document.createElement("button");
   exportJsonBtn.type = "button";
   exportJsonBtn.className = "button";
-  exportJsonBtn.textContent = "Export Party JSON";
+  exportJsonBtn.textContent = "Export";
   exportJsonBtn.addEventListener("click", () => {
     const payload = exportPartyData();
-    const dataStr = JSON.stringify(payload, null, 2);
-    triggerDownload("party-export.json", dataStr);
+    triggerDownload(getModuleExportFilename("party"), payload);
   });
 
   const importJsonBtn = document.createElement("button");
   importJsonBtn.type = "button";
   importJsonBtn.className = "button";
-  importJsonBtn.textContent = "Import Party JSON";
+  importJsonBtn.textContent = "Import";
 
   const importInput = document.createElement("input");
   importInput.type = "file";

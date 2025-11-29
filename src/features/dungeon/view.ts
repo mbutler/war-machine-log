@@ -1,4 +1,5 @@
 import { createPanel } from "../../layout/panels";
+import { showNotification } from "../../layout/notifications";
 import {
   subscribeToDungeon,
   getDungeonState,
@@ -23,14 +24,17 @@ import {
   setEncounterReaction,
   castSpellDuringDelve,
   evadeEncounter,
+  exportDungeonData,
+  importDungeonData,
 } from "./state";
 import type { DungeonLogEntry, PartyState, LightingCondition, EncounterReaction, DungeonObstacle } from "../../state/schema";
 import { getPartyState, subscribeToParty } from "../party/state";
 import { calculatePartySnapshot } from "../party/resources";
 import { getLedgerBalance } from "../ledger/state";
+import { getModuleExportFilename, triggerDownload } from "../../utils/moduleExport";
 
 export function renderDungeonPanel(target: HTMLElement) {
-  const { element, body } = createPanel("Dungeon Delver", "BECMI delve simulator");
+  const { element, body } = createPanel("Dungeon", "Procedural delving with encounters, traps, and treasure");
   element.classList.add("dungeon-shell");
 
   const layout = document.createElement("div");
@@ -213,6 +217,51 @@ function renderControls(container: HTMLElement, dungeon = getDungeonState(), par
   resetSection.style.paddingTop = "var(--space-sm)";
   resetSection.style.borderTop = "1px solid var(--border-color)";
   resetSection.appendChild(makeButton("🔄 New Dungeon", "button", () => resetDungeonState()));
+
+  const exportBtn = document.createElement("button");
+  exportBtn.type = "button";
+  exportBtn.className = "button";
+  exportBtn.textContent = "Export";
+  exportBtn.addEventListener("click", () => {
+    const payload = exportDungeonData();
+    triggerDownload(getModuleExportFilename("dungeon"), payload);
+  });
+  resetSection.appendChild(exportBtn);
+
+  const importBtn = document.createElement("button");
+  importBtn.type = "button";
+  importBtn.className = "button";
+  importBtn.textContent = "Import";
+
+  const importInput = document.createElement("input");
+  importInput.type = "file";
+  importInput.accept = "application/json";
+  importInput.className = "visually-hidden";
+  importInput.addEventListener("change", () => {
+    const file = importInput.files?.[0];
+    if (!file) return;
+    file.text().then((text) => {
+      try {
+        importDungeonData(text);
+        showNotification({
+          title: "Dungeon imported",
+          message: "Data loaded successfully.",
+          variant: "success",
+        });
+      } catch (err) {
+        showNotification({
+          title: "Import failed",
+          message: (err as Error).message,
+          variant: "danger",
+        });
+      }
+    }).finally(() => {
+      importInput.value = "";
+    });
+  });
+  importBtn.addEventListener("click", () => importInput.click());
+  resetSection.append(importBtn, importInput);
+
   container.appendChild(resetSection);
 
   const actionButtons = document.createElement("div");

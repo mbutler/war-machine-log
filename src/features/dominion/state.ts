@@ -4,12 +4,14 @@ import type {
   DominionState,
   DominionTurnSettings,
 } from "../../state/schema";
+import { DEFAULT_STATE } from "../../state/schema";
 import { getState, subscribe, updateState } from "../../state/store";
 import { processDominionTurn, projectDominionTurn, type DominionProjection } from "../../rules/dominion";
 import { createId } from "../../utils/id";
-import { startTimedAction } from "../calendar/actions";
+import { startTimedAction, cancelTimedAction } from "../calendar/actions";
 import { onCalendarEvent } from "../calendar/state";
 import { recordTaxIncome, recordTithe, recordExpense } from "../ledger/state";
+import { serializeModuleExport } from "../../utils/moduleExport";
 
 export type DominionListener = (state: DominionState) => void;
 
@@ -165,4 +167,67 @@ onCalendarEvent((event) => {
     }
   });
 });
+
+// ============================================================================
+// Data Export/Import
+// ============================================================================
+
+/**
+ * Exports the dominion state in the standardized module format.
+ */
+export function exportDominionData(): string {
+  const state = getDominionState();
+  return serializeModuleExport("dominion", state);
+}
+
+/**
+ * Imports dominion data from JSON. Supports the standardized module format.
+ */
+export function importDominionData(raw: string) {
+  let payload: any;
+  try {
+    payload = JSON.parse(raw);
+  } catch (error) {
+    throw new Error(`Invalid JSON: ${(error as Error).message}`);
+  }
+
+  if (!payload || typeof payload !== "object") {
+    throw new Error("Invalid dominion import file.");
+  }
+
+  if (payload.module === "dominion" && payload.data) {
+    const dominionData = payload.data as DominionState;
+    // Cancel any active timer before importing
+    const current = getDominionState();
+    if (current.activeTrackerId) {
+      cancelTimedAction(current.activeTrackerId);
+    }
+    updateState((state) => {
+      state.dominion = normalizeDominionState(dominionData);
+    });
+    return;
+  }
+
+  throw new Error("Unrecognized dominion file format. Use the module export format.");
+}
+
+function normalizeDominionState(data: Partial<DominionState>): DominionState {
+  const defaults = DEFAULT_STATE.dominion;
+  return {
+    name: typeof data.name === "string" ? data.name : defaults.name,
+    ruler: typeof data.ruler === "string" ? data.ruler : defaults.ruler,
+    rulerAlignment: data.rulerAlignment ?? defaults.rulerAlignment,
+    dominionAlignment: data.dominionAlignment ?? defaults.dominionAlignment,
+    liege: typeof data.liege === "string" ? data.liege : defaults.liege,
+    vassalCount: typeof data.vassalCount === "number" ? data.vassalCount : defaults.vassalCount,
+    families: typeof data.families === "number" ? data.families : defaults.families,
+    hexes: typeof data.hexes === "number" ? data.hexes : defaults.hexes,
+    confidence: typeof data.confidence === "number" ? data.confidence : defaults.confidence,
+    treasury: typeof data.treasury === "number" ? data.treasury : defaults.treasury,
+    resources: Array.isArray(data.resources) ? data.resources : defaults.resources,
+    turn: data.turn ?? defaults.turn,
+    log: Array.isArray(data.log) ? data.log.slice(0, 100) : [],
+    activeTrackerId: null, // Always reset tracker on import
+  };
+}
 

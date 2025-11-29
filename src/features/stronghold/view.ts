@@ -4,7 +4,8 @@ import type { StrongholdState } from "../../state/schema";
 import {
   addComponent,
   cancelStrongholdConstruction,
-  exportStrongholdPlan,
+  exportStrongholdData,
+  importStrongholdData,
   getStrongholdState,
   removeComponent,
   resetStrongholdState,
@@ -16,6 +17,7 @@ import {
 } from "./state";
 import { STRONGHOLD_COMPONENTS, getComponentById } from "./components";
 import { calculateStrongholdSummary } from "./logic";
+import { getModuleExportFilename, triggerDownload } from "../../utils/moduleExport";
 
 const TERRAIN_OPTIONS = [
   { value: 1, label: "Clear / Normal (×1.0)" },
@@ -51,22 +53,12 @@ function bindSelect<T extends string>(select: HTMLSelectElement, setter: (value:
   };
 }
 
-function triggerDownload(filename: string, contents: string) {
-  const blob = new Blob([contents], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement("a");
-  anchor.href = url;
-  anchor.download = filename;
-  anchor.click();
-  URL.revokeObjectURL(url);
-}
-
 function formatGp(value: number): string {
   return `${value.toLocaleString()} gp`;
 }
 
 export function renderStrongholdPanel(target: HTMLElement) {
-  const panel = createPanel("Stronghold Architect", "Design fortifications and calculate Expert-set construction costs.");
+  const panel = createPanel("Stronghold", "Design fortifications and calculate construction costs");
   panel.body.classList.add("stronghold-grid");
 
   const overviewColumn = document.createElement("div");
@@ -143,17 +135,44 @@ export function renderStrongholdPanel(target: HTMLElement) {
   const exportBtn = document.createElement("button");
   exportBtn.type = "button";
   exportBtn.className = "button";
-  exportBtn.textContent = "Export Design";
+  exportBtn.textContent = "Export";
   exportBtn.addEventListener("click", () => {
-    const payload = exportStrongholdPlan();
-    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    triggerDownload(`stronghold-plan-${timestamp}.json`, payload);
-    showNotification({
-      title: "Design exported",
-      message: "Stronghold JSON downloaded.",
-      variant: "success",
+    const payload = exportStrongholdData();
+    triggerDownload(getModuleExportFilename("stronghold"), payload);
+  });
+
+  const importBtn = document.createElement("button");
+  importBtn.type = "button";
+  importBtn.className = "button";
+  importBtn.textContent = "Import";
+
+  const importInput = document.createElement("input");
+  importInput.type = "file";
+  importInput.accept = "application/json";
+  importInput.className = "visually-hidden";
+  importInput.addEventListener("change", () => {
+    const file = importInput.files?.[0];
+    if (!file) return;
+    file.text().then((text) => {
+      try {
+        importStrongholdData(text);
+        showNotification({
+          title: "Stronghold imported",
+          message: "Data loaded successfully.",
+          variant: "success",
+        });
+      } catch (err) {
+        showNotification({
+          title: "Import failed",
+          message: (err as Error).message,
+          variant: "danger",
+        });
+      }
+    }).finally(() => {
+      importInput.value = "";
     });
   });
+  importBtn.addEventListener("click", () => importInput.click());
 
   const resetBtn = document.createElement("button");
   resetBtn.type = "button";
@@ -182,7 +201,7 @@ export function renderStrongholdPanel(target: HTMLElement) {
     });
   });
 
-  actionGroup.append(buildBtn, exportBtn, resetBtn, cancelBuildBtn);
+  actionGroup.append(buildBtn, exportBtn, importBtn, importInput, resetBtn, cancelBuildBtn);
   overviewColumn.append(nameField, terrainField, summaryCard, actionGroup);
 
   // --- Builder column ---

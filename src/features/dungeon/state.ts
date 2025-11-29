@@ -21,6 +21,7 @@ import { markSpellExpended } from "../party/state";
 import { describeClock, advanceClock, addCalendarLog } from "../calendar/state";
 import { recordLoot } from "../ledger/state";
 import { addXpToCharacter } from "../party/generator";
+import { serializeModuleExport } from "../../utils/moduleExport";
 
 type DungeonListener = (state: ReturnType<typeof getDungeonState>) => void;
 
@@ -2175,4 +2176,42 @@ function normalizeDungeonState(raw: DungeonState | undefined): DungeonState {
     roomSearched: raw?.roomSearched ?? false,
     log: raw?.log ?? [],
   };
+}
+
+// ============================================================================
+// Data Export/Import
+// ============================================================================
+
+/**
+ * Exports the dungeon state in the standardized module format.
+ */
+export function exportDungeonData(): string {
+  const state = getDungeonState();
+  return serializeModuleExport("dungeon", state);
+}
+
+/**
+ * Imports dungeon data from JSON. Supports the standardized module format.
+ */
+export function importDungeonData(raw: string) {
+  let payload: any;
+  try {
+    payload = JSON.parse(raw);
+  } catch (error) {
+    throw new Error(`Invalid JSON: ${(error as Error).message}`);
+  }
+
+  if (!payload || typeof payload !== "object") {
+    throw new Error("Invalid dungeon import file.");
+  }
+
+  if (payload.module === "dungeon" && payload.data) {
+    const dungeonData = payload.data as DungeonState;
+    updateState((state) => {
+      state.dungeon = normalizeDungeonState(dungeonData);
+    });
+    return;
+  }
+
+  throw new Error("Unrecognized dungeon file format. Use the module export format.");
 }

@@ -1,8 +1,10 @@
 import type { SiegeForce, SiegeState, SiegeTactic } from "../../state/schema";
+import { createDefaultSiegeState } from "../../state/schema";
 import { getState, subscribe, updateState } from "../../state/store";
 import { resolveBattle } from "./logic";
 import { startTimedAction, cancelTimedAction } from "../calendar/actions";
 import { onCalendarEvent } from "../calendar/state";
+import { serializeModuleExport } from "../../utils/moduleExport";
 
 const LOG_LIMIT = 15;
 
@@ -131,4 +133,65 @@ onCalendarEvent((event) => {
     });
   });
 });
+
+// ============================================================================
+// Data Export/Import
+// ============================================================================
+
+/**
+ * Exports the siege state in the standardized module format.
+ */
+export function exportSiegeData(): string {
+  const state = getSiegeState();
+  return serializeModuleExport("siege", state);
+}
+
+/**
+ * Imports siege data from JSON. Supports the standardized module format.
+ */
+export function importSiegeData(raw: string) {
+  let payload: any;
+  try {
+    payload = JSON.parse(raw);
+  } catch (error) {
+    throw new Error(`Invalid JSON: ${(error as Error).message}`);
+  }
+
+  if (!payload || typeof payload !== "object") {
+    throw new Error("Invalid siege import file.");
+  }
+
+  if (payload.module === "siege" && payload.data) {
+    const siegeData = payload.data as SiegeState;
+    // Cancel any active recovery timers before importing
+    const current = getSiegeState();
+    current.log.forEach((entry) => {
+      if (entry.recoveryTrackerId) {
+        cancelTimedAction(entry.recoveryTrackerId);
+      }
+    });
+    updateState((state) => {
+      state.siege = normalizeSiegeState(siegeData);
+    });
+    return;
+  }
+
+  throw new Error("Unrecognized siege file format. Use the module export format.");
+}
+
+function normalizeSiegeState(data: Partial<SiegeState>): SiegeState {
+  const defaults = createDefaultSiegeState();
+  return {
+    attacker: data.attacker ?? defaults.attacker,
+    defender: data.defender ?? defaults.defender,
+    tactics: data.tactics ?? defaults.tactics,
+    modifiers: data.modifiers ?? defaults.modifiers,
+    log: Array.isArray(data.log)
+      ? data.log.slice(0, LOG_LIMIT).map((entry) => ({
+          ...entry,
+          recoveryTrackerId: null, // Reset tracker on import
+        }))
+      : [],
+  };
+}
 

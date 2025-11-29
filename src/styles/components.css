@@ -142,4 +142,176 @@
   cursor: pointer;
 }
 
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+  padding: 1rem;
+  backdrop-filter: blur(2px);
+}
+
+.modal-overlay.modal-visible {
+  opacity: 1;
+}
+
+.modal-overlay.modal-closing {
+  opacity: 0;
+}
+
+.modal-dialog {
+  background: var(--bg-panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  max-width: 520px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(8px);
+  transition: transform 150ms ease-out;
+}
+
+.modal-visible .modal-dialog {
+  transform: translateY(0);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.modal-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--accent-a);
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.25rem;
+  margin: -0.25rem;
+  border-radius: 0.25rem;
+  transition: color 150ms, background 150ms;
+}
+
+.modal-close:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.modal-body {
+  padding: 1rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Retainer Picker Grid */
+.retainer-picker {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.retainer-option {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--panel-border);
+  border-radius: 0.4rem;
+  background: var(--bg-primary);
+  cursor: pointer;
+  transition: border-color 150ms, background 150ms, transform 100ms;
+  text-align: left;
+}
+
+.retainer-option:hover {
+  border-color: var(--accent-a);
+  background: rgba(137, 220, 235, 0.06);
+}
+
+.retainer-option:active {
+  transform: scale(0.98);
+}
+
+.retainer-option-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.retainer-option-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+.retainer-option-wage {
+  font-size: 0.7rem;
+  color: var(--accent-e);
+  background: rgba(249, 226, 175, 0.12);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+}
+
+.retainer-option-desc {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.retainer-option-stats {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.15rem;
+}
+
+.retainer-stat {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+.retainer-stat strong {
+  color: var(--accent-d);
+  margin-right: 0.15rem;
+}
+
+/* Section divider in picker */
+.retainer-section {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.retainer-section:first-child {
+  margin-top: 0;
+}
+
 

@@ -2,6 +2,7 @@ import type { CalendarState, CalendarTracker, CalendarTrackerKind } from "../../
 import { createPanel } from "../../layout/panels";
 import { showNotification } from "../../layout/notifications";
 import { updateState } from "../../state/store";
+import { getModuleExportFilename, triggerDownload } from "../../utils/moduleExport";
 import {
   addCalendarTracker,
   advanceCalendar,
@@ -72,8 +73,8 @@ const TRACKER_KIND_LABELS: Record<CalendarTrackerKind, string> = {
 
 export function renderCalendarPanel(target: HTMLElement) {
   const { element, body } = createPanel(
-    "Master Chronometer",
-    "Coordinate dungeon turns, wilderness days, and dominion seasons from a single console.",
+    "Calendar",
+    "Track time, schedule events, and manage activity timers",
   );
   element.classList.add("calendar-shell");
 
@@ -207,18 +208,16 @@ export function renderCalendarPanel(target: HTMLElement) {
   const exportBtn = document.createElement("button");
   exportBtn.type = "button";
   exportBtn.className = "button";
-  exportBtn.textContent = "Export JSON";
+  exportBtn.textContent = "Export";
   exportBtn.addEventListener("click", () => {
     const payload = exportCalendarData();
-    const json = JSON.stringify(payload, null, 2);
-    const monthIndex = Math.max(0, Math.min(CALENDAR_MONTHS.length - 1, payload.clock.month));
-    triggerDownload(`calendar-log-${payload.clock.year}-${CALENDAR_MONTHS[monthIndex]}.json`, json);
+    triggerDownload(getModuleExportFilename("calendar"), payload);
   });
 
   const importBtn = document.createElement("button");
   importBtn.type = "button";
   importBtn.className = "button";
-  importBtn.textContent = "Import JSON";
+  importBtn.textContent = "Import";
 
   const importInput = document.createElement("input");
   importInput.type = "file";
@@ -488,17 +487,5 @@ function renderLog(container: HTMLElement, state: CalendarState) {
 
 function handleAdvance(unit: CalendarAdvanceUnit, amount: number) {
   advanceCalendar(unit, amount);
-}
-
-function triggerDownload(filename: string, contents: string) {
-  const blob = new Blob([contents], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
 }
 

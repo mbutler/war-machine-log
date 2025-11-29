@@ -1,6 +1,7 @@
 import { createPanel } from "../../layout/panels";
 import { showNotification } from "../../layout/notifications";
 import type { WildernessHex, WildernessState } from "../../state/schema";
+import { getModuleExportFilename, triggerDownload } from "../../utils/moduleExport";
 import {
   canRefillWater,
   exportWildernessData,
@@ -47,8 +48,8 @@ const LIGHT_CONDITION_LABELS: Record<LightCondition, string> = {
 
 export function renderWildernessPanel(target: HTMLElement) {
   const { element, body } = createPanel(
-    "The Royal Cartographer",
-    "BECMI wilderness surveying with travel clocks, weather, and hex encounters.",
+    "Wilderness",
+    "Hex exploration with weather, foraging, and encounters",
   );
 
   // Add mode indicator to panel title
@@ -237,10 +238,10 @@ export function renderWildernessPanel(target: HTMLElement) {
   const exportButton = document.createElement("button");
   exportButton.type = "button";
   exportButton.className = "button";
-  exportButton.textContent = "Export Map";
+  exportButton.textContent = "Export";
   exportButton.addEventListener("click", () => {
     const payload = exportWildernessData();
-    triggerDownload(`wilderness-map-day${Math.floor(getWildernessState().days)}.json`, payload);
+    triggerDownload(getModuleExportFilename("wilderness"), payload);
   });
 
   generatorButtons.append(newMapButton, exportButton);
@@ -251,7 +252,7 @@ export function renderWildernessPanel(target: HTMLElement) {
   importLabel.style.marginTop = "0.5rem";
   importLabel.style.display = "inline-block";
   importLabel.style.textAlign = "center";
-  importLabel.textContent = "Import Map (JSON)";
+  importLabel.textContent = "Import";
 
   const importInput = document.createElement("input");
   importInput.type = "file";
@@ -861,17 +862,5 @@ function getTerrainName(type: WildernessHex["type"]) {
 function getTerrainCost(type: WildernessHex["type"]) {
   const normalized = normalizeTerrainType(type);
   return normalized ? terrainCosts[normalized] : 6;
-}
-
-function triggerDownload(filename: string, contents: string) {
-  const blob = new Blob([contents], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
 }
 

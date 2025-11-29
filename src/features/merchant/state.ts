@@ -15,6 +15,7 @@ import { TRADE_GOODS, TRANSPORT_CAPACITY, GUARD_COSTS, GUILD_REDUCTION } from ".
 import { startTimedAction, cancelTimedAction } from "../calendar/actions";
 import { onCalendarEvent } from "../calendar/state";
 import { recordTradeProfit } from "../ledger/state";
+import { serializeModuleExport } from "../../utils/moduleExport";
 
 export type MerchantListener = (state: MerchantState) => void;
 
@@ -428,4 +429,50 @@ onCalendarEvent((event) => {
     recordTradeProfit(journey.profit, journey.goodName, journey.id);
   });
 });
+
+// ============================================================================
+// Data Export/Import
+// ============================================================================
+
+/**
+ * Exports the merchant state in the standardized module format.
+ */
+export function exportMerchantData(): string {
+  const state = getMerchantState();
+  return serializeModuleExport("merchant", state);
+}
+
+/**
+ * Imports merchant data from JSON. Supports the standardized module format.
+ */
+export function importMerchantData(raw: string) {
+  let payload: any;
+  try {
+    payload = JSON.parse(raw);
+  } catch (error) {
+    throw new Error(`Invalid JSON: ${(error as Error).message}`);
+  }
+
+  if (!payload || typeof payload !== "object") {
+    throw new Error("Invalid merchant import file.");
+  }
+
+  if (payload.module === "merchant" && payload.data) {
+    const merchantData = payload.data as MerchantState;
+    // Cancel any active journey timers before importing
+    const current = getMerchantState();
+    current.ledger.forEach((entry) => {
+      if (entry.trackerId) {
+        cancelTimedAction(entry.trackerId);
+      }
+    });
+    updateState((state) => {
+      state.merchant = sanitizeMerchantState(merchantData);
+    });
+    recomputePreview();
+    return;
+  }
+
+  throw new Error("Unrecognized merchant file format. Use the module export format.");
+}
 

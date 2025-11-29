@@ -13,7 +13,10 @@ import {
   updateLabCaster,
   updateLabResources,
   updateLabWorkbench,
+  exportLabData,
+  importLabData,
 } from "./state";
+import { getModuleExportFilename, triggerDownload } from "../../utils/moduleExport";
 
 const CLASS_OPTIONS = [
   { value: "mu", label: "Magic-User / Elf" },
@@ -25,7 +28,7 @@ function formatGp(value: number): string {
 }
 
 export function renderLabPanel(target: HTMLElement) {
-  const panel = createPanel("Artificer's Lab", "Manage casters, libraries, and enchantment projects.");
+  const panel = createPanel("Lab", "Research spells and craft magic items");
   panel.body.classList.add("lab-grid");
 
   const casterColumn = document.createElement("div");
@@ -105,7 +108,49 @@ export function renderLabPanel(target: HTMLElement) {
     }
   });
 
-  resourceActions.append(resetBtn);
+  const exportBtn = document.createElement("button");
+  exportBtn.type = "button";
+  exportBtn.className = "button";
+  exportBtn.textContent = "Export";
+  exportBtn.addEventListener("click", () => {
+    const payload = exportLabData();
+    triggerDownload(getModuleExportFilename("lab"), payload);
+  });
+
+  const importBtn = document.createElement("button");
+  importBtn.type = "button";
+  importBtn.className = "button";
+  importBtn.textContent = "Import";
+
+  const importInput = document.createElement("input");
+  importInput.type = "file";
+  importInput.accept = "application/json";
+  importInput.className = "visually-hidden";
+  importInput.addEventListener("change", () => {
+    const file = importInput.files?.[0];
+    if (!file) return;
+    file.text().then((text) => {
+      try {
+        importLabData(text);
+        showNotification({
+          title: "Lab imported",
+          message: "Data loaded successfully.",
+          variant: "success",
+        });
+      } catch (err) {
+        showNotification({
+          title: "Import failed",
+          message: (err as Error).message,
+          variant: "danger",
+        });
+      }
+    }).finally(() => {
+      importInput.value = "";
+    });
+  });
+  importBtn.addEventListener("click", () => importInput.click());
+
+  resourceActions.append(exportBtn, importBtn, importInput, resetBtn);
   casterCard.appendChild(resourceActions);
 
   casterColumn.appendChild(casterCard);

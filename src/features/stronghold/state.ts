@@ -6,6 +6,7 @@ import { buildStrongholdExportPayload, calculateStrongholdSummary, normalizeSele
 import { startTimedAction, cancelTimedAction } from "../calendar/actions";
 import { onCalendarEvent } from "../calendar/state";
 import { createId } from "../../utils/id";
+import { serializeModuleExport } from "../../utils/moduleExport";
 
 export type StrongholdListener = (state: StrongholdState) => void;
 
@@ -88,9 +89,68 @@ export function resetStrongholdState() {
   });
 }
 
+/**
+ * Exports the stronghold state in the standardized module format.
+ * This format is compatible with both individual module import and full campaign import.
+ */
+export function exportStrongholdData(): string {
+  const state = getStrongholdState();
+  return serializeModuleExport("stronghold", state);
+}
+
+/**
+ * Legacy export for backward compatibility - exports display-friendly summary.
+ */
 export function exportStrongholdPlan(): string {
   const payload = buildStrongholdExportPayload(getStrongholdState());
   return JSON.stringify(payload, null, 2);
+}
+
+/**
+ * Imports stronghold data from JSON. Supports multiple formats:
+ * - Standardized module format (module: "stronghold", data: StrongholdState)
+ */
+export function importStrongholdData(raw: string) {
+  let payload: any;
+  try {
+    payload = JSON.parse(raw);
+  } catch (error) {
+    throw new Error(`Invalid JSON: ${(error as Error).message}`);
+  }
+
+  if (!payload || typeof payload !== "object") {
+    throw new Error("Invalid stronghold import file.");
+  }
+
+  // Handle standardized module format
+  if (payload.module === "stronghold" && payload.data) {
+    const strongholdData = payload.data as StrongholdState;
+    // Cancel any active construction before importing
+    const current = getStrongholdState();
+    if (current.activeTrackerId) {
+      cancelTimedAction(current.activeTrackerId);
+    }
+    updateState((state) => {
+      state.stronghold = normalizeStrongholdState(strongholdData);
+    });
+    return;
+  }
+
+  throw new Error("Unrecognized stronghold file format. Use the module export format.");
+}
+
+function normalizeStrongholdState(data: Partial<StrongholdState>): StrongholdState {
+  const defaults = createDefaultStrongholdState();
+  return {
+    projectName: typeof data.projectName === "string" ? data.projectName : defaults.projectName,
+    terrainMod: typeof data.terrainMod === "number" ? data.terrainMod : defaults.terrainMod,
+    components: Array.isArray(data.components)
+      ? data.components.map((c) => normalizeSelection(c))
+      : defaults.components,
+    projects: Array.isArray(data.projects) ? data.projects : defaults.projects,
+    activeProjectId: typeof data.activeProjectId === "string" ? data.activeProjectId : null,
+    activeTrackerId: null, // Always reset tracker on import - the timer won't exist
+  };
 }
 
 export function startStrongholdConstruction(): { success: boolean; error?: string } {

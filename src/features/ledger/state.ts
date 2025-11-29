@@ -8,6 +8,7 @@ import type {
 import { getState, subscribe, updateState } from "../../state/store";
 import { createId } from "../../utils/id";
 import { subscribeToCalendar } from "../calendar/state";
+import { serializeModuleExport } from "../../utils/moduleExport";
 
 export type LedgerListener = (state: LedgerState) => void;
 
@@ -488,16 +489,20 @@ export function getExpensesForPeriod(startYear: number, startMonth: number, endY
 // Data Export/Import
 // ============================================================================
 
-export function exportLedgerData() {
+/**
+ * Exports the ledger state in the standardized module format.
+ * This format is compatible with both individual module import and full campaign import.
+ */
+export function exportLedgerData(): string {
   const state = getLedgerState();
-  return {
-    exportedAt: new Date().toISOString(),
-    balance: state.balance,
-    transactions: state.transactions,
-    recurringExpenses: state.recurringExpenses,
-  };
+  return serializeModuleExport("ledger", state);
 }
 
+/**
+ * Imports ledger data from JSON. Supports multiple formats:
+ * - Standardized module format (module: "ledger", data: LedgerState)
+ * - Legacy format (balance, transactions, recurringExpenses)
+ */
 export function importLedgerData(raw: string) {
   let payload: unknown;
   try {
@@ -510,6 +515,26 @@ export function importLedgerData(raw: string) {
     throw new Error("Ledger import payload must be an object.");
   }
 
+  const obj = payload as Record<string, unknown>;
+
+  // Handle standardized module format
+  if (obj.module === "ledger" && obj.data) {
+    const ledgerData = obj.data as LedgerState;
+    updateState((state) => {
+      state.ledger = {
+        balance: typeof ledgerData.balance === "number" ? ledgerData.balance : 0,
+        transactions: Array.isArray(ledgerData.transactions)
+          ? ledgerData.transactions.slice(0, MAX_TRANSACTIONS)
+          : [],
+        recurringExpenses: Array.isArray(ledgerData.recurringExpenses)
+          ? ledgerData.recurringExpenses
+          : [],
+      };
+    });
+    return;
+  }
+
+  // Handle legacy format
   const data = payload as {
     balance?: number;
     transactions?: LedgerTransaction[];

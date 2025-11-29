@@ -13,7 +13,10 @@ import {
   updateModifier,
   updateSiegeEngine,
   updateTactic,
+  exportSiegeData,
+  importSiegeData,
 } from "./state";
+import { getModuleExportFilename, triggerDownload } from "../../utils/moduleExport";
 
 type ForceKey = "attacker" | "defender";
 
@@ -44,7 +47,7 @@ interface ForceControls {
 }
 
 export function renderSiegePanel(target: HTMLElement) {
-  const panel = createPanel("War Machine Combat", "Large-scale force resolution with BFR math and siege logic.");
+  const panel = createPanel("Siege", "Resolve large-scale battles using War Machine rules");
   panel.body.classList.add("siege-grid");
 
   const forceColumn = document.createElement("div");
@@ -120,6 +123,48 @@ export function renderSiegePanel(target: HTMLElement) {
     });
   });
 
+  const exportBtn = document.createElement("button");
+  exportBtn.type = "button";
+  exportBtn.className = "button";
+  exportBtn.textContent = "Export";
+  exportBtn.addEventListener("click", () => {
+    const payload = exportSiegeData();
+    triggerDownload(getModuleExportFilename("siege"), payload);
+  });
+
+  const importBtn = document.createElement("button");
+  importBtn.type = "button";
+  importBtn.className = "button";
+  importBtn.textContent = "Import";
+
+  const importInput = document.createElement("input");
+  importInput.type = "file";
+  importInput.accept = "application/json";
+  importInput.className = "visually-hidden";
+  importInput.addEventListener("change", () => {
+    const file = importInput.files?.[0];
+    if (!file) return;
+    file.text().then((text) => {
+      try {
+        importSiegeData(text);
+        showNotification({
+          title: "Siege imported",
+          message: "Data loaded successfully.",
+          variant: "success",
+        });
+      } catch (err) {
+        showNotification({
+          title: "Import failed",
+          message: (err as Error).message,
+          variant: "danger",
+        });
+      }
+    }).finally(() => {
+      importInput.value = "";
+    });
+  });
+  importBtn.addEventListener("click", () => importInput.click());
+
   const clearBtn = document.createElement("button");
   clearBtn.type = "button";
   clearBtn.className = "button danger";
@@ -130,7 +175,7 @@ export function renderSiegePanel(target: HTMLElement) {
     }
   });
 
-  actionRow.append(resolveBtn, clearBtn);
+  actionRow.append(resolveBtn, exportBtn, importBtn, importInput, clearBtn);
   battleCard.appendChild(actionRow);
 
   const logCard = document.createElement("div");

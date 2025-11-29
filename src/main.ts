@@ -48,12 +48,20 @@ const shell = renderAppShell(root, {
   },
   onImport(payload) {
     try {
-      importState(payload);
-      showNotification({
-        title: "Import complete",
-        message: "Suite data imported successfully.",
-        variant: "success",
-      });
+      const result = importState(payload);
+      if (result.type === "campaign") {
+        showNotification({
+          title: "Campaign imported",
+          message: "Full campaign data imported successfully.",
+          variant: "success",
+        });
+      } else {
+        showNotification({
+          title: "Module imported",
+          message: `${result.module} data imported successfully.`,
+          variant: "success",
+        });
+      }
     } catch (error) {
       showNotification({
         title: "Import failed",

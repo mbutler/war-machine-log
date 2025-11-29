@@ -10,6 +10,7 @@ import { createId } from "../../utils/id";
 import { advanceCalendar, advanceClock, addCalendarLog, describeClock, getCalendarMoonPhase } from "../calendar/state";
 import { PLACES } from "../../data/places";
 import { calculatePartySnapshot } from "../party/resources";
+import { serializeModuleExport } from "../../utils/moduleExport";
 
 export type WildernessListener = (state: WildernessState) => void;
 
@@ -1134,27 +1135,20 @@ export function canRefillWater(state: WildernessState = getWildernessState()): b
   return false;
 }
 
+/**
+ * Exports the wilderness state in the standardized module format.
+ * This format is compatible with both individual module import and full campaign import.
+ */
 export function exportWildernessData(): string {
   const state = getWildernessState();
-  const payload = {
-    map: state.map,
-    currentPos: state.currentPos,
-    days: state.days,
-    movementPoints: state.movementPoints,
-    maxMovementPoints: state.maxMovementPoints,
-    partySize: state.partySize,
-    rations: state.rations,
-    water: state.water,
-    startTerrain: state.startTerrain,
-    climate: state.climate,
-    weather: state.weather,
-    log: state.log,
-    staticMapMode: state.staticMapMode,
-    staticMapData: state.staticMapData,
-  };
-  return JSON.stringify(payload, null, 2);
+  return serializeModuleExport("wilderness", state);
 }
 
+/**
+ * Imports wilderness data from JSON. Supports multiple formats:
+ * - Standardized module format (module: "wilderness", data: WildernessState)
+ * - Legacy format (map, currentPos, etc.)
+ */
 export function importWildernessData(raw: string) {
   let payload: any;
   try {
@@ -1163,29 +1157,53 @@ export function importWildernessData(raw: string) {
     throw new Error(`Invalid JSON: ${(error as Error).message}`);
   }
 
-  if (!payload || typeof payload !== "object" || !payload.map || !payload.currentPos) {
-    throw new Error("Invalid wilderness map file.");
+  if (!payload || typeof payload !== "object") {
+    throw new Error("Invalid wilderness import file.");
+  }
+
+  // Handle standardized module format
+  if (payload.module === "wilderness" && payload.data) {
+    const wildernessData = payload.data as WildernessState;
+    updateState((state) => {
+      state.wilderness = normalizeWildernessState(wildernessData, state.wilderness);
+    });
+    return;
+  }
+
+  // Handle legacy format
+  if (!payload.map || !payload.currentPos) {
+    throw new Error("Invalid wilderness map file - missing map or currentPos.");
   }
 
   updateState((state) => {
-    state.wilderness.map = payload.map as Record<string, WildernessHex>;
-    Object.keys(state.wilderness.map).forEach((key) => {
-      state.wilderness.map[key] = sanitizeHex(state.wilderness.map[key]);
-    });
-    state.wilderness.currentPos = payload.currentPos;
-    state.wilderness.days = payload.days ?? 0;
-    state.wilderness.movementPoints = payload.movementPoints ?? getDailyMovementPointsFromParty();
-    state.wilderness.maxMovementPoints = payload.maxMovementPoints ?? getDailyMovementPointsFromParty();
-    state.wilderness.partySize = payload.partySize ?? state.wilderness.partySize;
-    state.wilderness.rations = payload.rations ?? state.wilderness.rations;
-    state.wilderness.water = payload.water ?? state.wilderness.water;
-    state.wilderness.startTerrain = normalizeTerrainType(payload.startTerrain ?? state.wilderness.startTerrain);
-    state.wilderness.climate = payload.climate ?? state.wilderness.climate;
-    state.wilderness.weather = payload.weather ?? state.wilderness.weather ?? generateWeather(state.wilderness.climate);
-    state.wilderness.log = Array.isArray(payload.log) ? payload.log : [];
-    state.wilderness.staticMapMode = payload.staticMapMode ?? false;
-    state.wilderness.staticMapData = payload.staticMapData;
+    state.wilderness = normalizeWildernessState(payload, state.wilderness);
   });
+}
+
+function normalizeWildernessState(data: Partial<WildernessState>, current: WildernessState): WildernessState {
+  const map = data.map ?? current.map;
+  // Sanitize all hex entries
+  Object.keys(map).forEach((key) => {
+    map[key] = sanitizeHex(map[key]);
+  });
+
+  return {
+    map,
+    currentPos: data.currentPos ?? current.currentPos,
+    camera: data.camera ?? current.camera,
+    days: data.days ?? 0,
+    movementPoints: data.movementPoints ?? getDailyMovementPointsFromParty(),
+    maxMovementPoints: data.maxMovementPoints ?? getDailyMovementPointsFromParty(),
+    partySize: data.partySize ?? current.partySize,
+    rations: data.rations ?? current.rations,
+    water: data.water ?? current.water,
+    startTerrain: normalizeTerrainType(data.startTerrain ?? current.startTerrain),
+    climate: data.climate ?? current.climate,
+    weather: data.weather ?? generateWeather(data.climate ?? current.climate),
+    log: Array.isArray(data.log) ? data.log : [],
+    staticMapMode: data.staticMapMode ?? false,
+    staticMapData: data.staticMapData,
+  };
 }
 
 function ensureHex(state: WildernessState, q: number, r: number, fromType: WildernessTerrainType): WildernessHex {

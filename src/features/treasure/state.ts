@@ -3,6 +3,7 @@ import { getState, subscribe, updateState } from "../../state/store";
 import type { TreasureTypeKey } from "./data";
 import { TREASURE_TYPES } from "./data";
 import { formatHoardPlainText, generateTreasureHoard } from "./logic";
+import { serializeModuleExport } from "../../utils/moduleExport";
 
 export type TreasureListener = (state: TreasureState) => void;
 
@@ -52,5 +53,50 @@ export function copyHoardToClipboard(hoard: TreasureHoard) {
     return Promise.reject(new Error("Clipboard API unavailable"));
   }
   return navigator.clipboard.writeText(formatHoardPlainText(hoard));
+}
+
+// ============================================================================
+// Data Export/Import
+// ============================================================================
+
+/**
+ * Exports the treasure state in the standardized module format.
+ */
+export function exportTreasureData(): string {
+  const state = getTreasureState();
+  return serializeModuleExport("treasure", state);
+}
+
+/**
+ * Imports treasure data from JSON. Supports the standardized module format.
+ */
+export function importTreasureData(raw: string) {
+  let payload: any;
+  try {
+    payload = JSON.parse(raw);
+  } catch (error) {
+    throw new Error(`Invalid JSON: ${(error as Error).message}`);
+  }
+
+  if (!payload || typeof payload !== "object") {
+    throw new Error("Invalid treasure import file.");
+  }
+
+  if (payload.module === "treasure" && payload.data) {
+    const treasureData = payload.data as TreasureState;
+    updateState((state) => {
+      state.treasure = normalizeTreasureState(treasureData);
+    });
+    return;
+  }
+
+  throw new Error("Unrecognized treasure file format. Use the module export format.");
+}
+
+function normalizeTreasureState(data: Partial<TreasureState>): TreasureState {
+  return {
+    selectedType: typeof data.selectedType === "string" ? data.selectedType : "A",
+    hoards: Array.isArray(data.hoards) ? data.hoards.slice(0, HISTORY_LIMIT) : [],
+  };
 }
 

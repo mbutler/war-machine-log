@@ -3,8 +3,9 @@ import type { LabState } from "../../state/schema";
 import { createDefaultLabState } from "../../state/schema";
 import { getState, subscribe, updateState } from "../../state/store";
 import { calculateLabExperiment, getLabItemLabel } from "./logic";
-import { startTimedAction } from "../calendar/actions";
+import { startTimedAction, cancelTimedAction } from "../calendar/actions";
 import { onCalendarEvent } from "../calendar/state";
+import { serializeModuleExport } from "../../utils/moduleExport";
 
 const LAB_LOG_LIMIT = 30;
 
@@ -204,4 +205,66 @@ onCalendarEvent((event) => {
     }
   });
 });
+
+// ============================================================================
+// Data Export/Import
+// ============================================================================
+
+/**
+ * Exports the lab state in the standardized module format.
+ */
+export function exportLabData(): string {
+  const state = getLabState();
+  return serializeModuleExport("lab", state);
+}
+
+/**
+ * Imports lab data from JSON. Supports the standardized module format.
+ */
+export function importLabData(raw: string) {
+  let payload: any;
+  try {
+    payload = JSON.parse(raw);
+  } catch (error) {
+    throw new Error(`Invalid JSON: ${(error as Error).message}`);
+  }
+
+  if (!payload || typeof payload !== "object") {
+    throw new Error("Invalid lab import file.");
+  }
+
+  if (payload.module === "lab" && payload.data) {
+    const labData = payload.data as LabState;
+    // Cancel any active timer before importing
+    const current = getLabState();
+    if (current.activeTrackerId) {
+      cancelTimedAction(current.activeTrackerId);
+    }
+    updateState((state) => {
+      state.lab = normalizeLabState(labData);
+    });
+    return;
+  }
+
+  throw new Error("Unrecognized lab file format. Use the module export format.");
+}
+
+function normalizeLabState(data: Partial<LabState>): LabState {
+  const defaults = createDefaultLabState();
+  return {
+    caster: {
+      name: data.caster?.name ?? defaults.caster.name,
+      level: typeof data.caster?.level === "number" ? data.caster.level : defaults.caster.level,
+      class: data.caster?.class === "cleric" ? "cleric" : "mu",
+      mentalStat: typeof data.caster?.mentalStat === "number" ? data.caster.mentalStat : defaults.caster.mentalStat,
+    },
+    resources: {
+      gold: typeof data.resources?.gold === "number" ? data.resources.gold : defaults.resources.gold,
+      libraryValue: typeof data.resources?.libraryValue === "number" ? data.resources.libraryValue : defaults.resources.libraryValue,
+    },
+    workbench: data.workbench ?? defaults.workbench,
+    log: Array.isArray(data.log) ? data.log.slice(0, LAB_LOG_LIMIT) : [],
+    activeTrackerId: null, // Always reset tracker on import
+  };
+}
 

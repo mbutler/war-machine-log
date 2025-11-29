@@ -12,7 +12,10 @@ import {
   updateDominionField,
   updateDominionResource,
   updateDominionTurn,
+  exportDominionData,
+  importDominionData,
 } from "./state";
+import { getModuleExportFilename, triggerDownload } from "../../utils/moduleExport";
 
 type InputSync<T> = (value: T) => void;
 
@@ -269,7 +272,7 @@ function syncTurnInputs(turn: DominionTurnSettings, bindings: Record<string, Inp
 }
 
 export function renderDominionPanel(target: HTMLElement) {
-  const overview = createPanel("Dominion Status", "Manage domain fundamentals and economic baselines.");
+  const overview = createPanel("Dominion", "Manage domain income, population, and seasonal events");
   overview.body.classList.add("flex", "flex-col", "gap-md");
 
   const formGrid = document.createElement("div");
@@ -346,7 +349,7 @@ export function renderDominionPanel(target: HTMLElement) {
   addField("Dominion Name", nameInput);
   addField("Ruler", rulerInput);
   addField("Ruler Alignment", rulerAlignSelect);
-  addField("Dominion Alignment", domAlignSelect);
+  addField("Alignment", domAlignSelect);
   addField("Families", familiesInput);
   addField("Hexes", hexInput);
   addField("Treasury (gp)", treasuryInput);
@@ -536,7 +539,49 @@ export function renderDominionPanel(target: HTMLElement) {
     }
   });
 
-  turnActions.append(processButton, clearLogButton);
+  const exportBtn = document.createElement("button");
+  exportBtn.type = "button";
+  exportBtn.className = "button";
+  exportBtn.textContent = "Export";
+  exportBtn.addEventListener("click", () => {
+    const payload = exportDominionData();
+    triggerDownload(getModuleExportFilename("dominion"), payload);
+  });
+
+  const importBtn = document.createElement("button");
+  importBtn.type = "button";
+  importBtn.className = "button";
+  importBtn.textContent = "Import";
+
+  const importInput = document.createElement("input");
+  importInput.type = "file";
+  importInput.accept = "application/json";
+  importInput.className = "visually-hidden";
+  importInput.addEventListener("change", () => {
+    const file = importInput.files?.[0];
+    if (!file) return;
+    file.text().then((text) => {
+      try {
+        importDominionData(text);
+        showNotification({
+          title: "Dominion imported",
+          message: "Data loaded successfully.",
+          variant: "success",
+        });
+      } catch (err) {
+        showNotification({
+          title: "Import failed",
+          message: (err as Error).message,
+          variant: "danger",
+        });
+      }
+    }).finally(() => {
+      importInput.value = "";
+    });
+  });
+  importBtn.addEventListener("click", () => importInput.click());
+
+  turnActions.append(processButton, exportBtn, importBtn, importInput, clearLogButton);
   turnPanel.body.appendChild(turnActions);
 
   const cooldownNotice = document.createElement("div");
