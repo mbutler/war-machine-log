@@ -4,9 +4,9 @@ import "./stronghold.css";
 
 registerRoute({
   id: "stronghold",
-  label: "Stronghold Architect",
+  label: "Stronghold",
   description: "Construction estimates",
-  section: "Logistics",
+  section: "3. Domain & War",
   order: 2,
   mount(target) {
     return renderStrongholdPanel(target);

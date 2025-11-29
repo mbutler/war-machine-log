@@ -4,10 +4,10 @@ import "./lab.css";
 
 registerRoute({
   id: "lab",
-  label: "Artificer's Lab",
+  label: "Lab",
   description: "Research & crafting",
-  section: "Arcana",
-  order: 1,
+  section: "3. Domain & War",
+  order: 4,
   mount(target) {
     return renderLabPanel(target);
   },

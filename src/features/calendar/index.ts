@@ -4,10 +4,10 @@ import "./calendar.css";
 
 registerRoute({
   id: "calendar",
-  label: "Master Chronometer",
+  label: "Calendar",
   description: "Campaign calendar & events",
-  section: "Timekeeping",
-  order: 1,
+  section: "2. Campaign",
+  order: 2,
   mount(target) {
     return renderCalendarPanel(target);
   },

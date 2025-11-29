@@ -121,21 +121,15 @@ export function renderLabPanel(target: HTMLElement) {
 
   const modeToggle = document.createElement("div");
   modeToggle.className = "lab-mode-toggle";
-  const spellOption = createRadioOption("Research Spell", "spell");
-  const itemOption = createRadioOption("Create Item", "item");
+  const spellOption = createRadioOption("Research Spell", "spell", "lab-mode");
+  const itemOption = createRadioOption("Create Item", "item", "lab-mode");
   modeToggle.append(spellOption.wrapper, itemOption.wrapper);
   workbenchCard.appendChild(modeToggle);
 
-  spellOption.input.addEventListener("change", () => {
-    if (spellOption.input.checked) {
-      updateLabWorkbench("mode", "spell");
-    }
-  });
-  itemOption.input.addEventListener("change", () => {
-    if (itemOption.input.checked) {
-      updateLabWorkbench("mode", "item");
-    }
-  });
+  // Mode toggle: directly update state on change - no conditional check needed
+  // The change event only fires when the radio becomes checked, not unchecked
+  spellOption.input.addEventListener("change", () => updateLabWorkbench("mode", "spell"));
+  itemOption.input.addEventListener("change", () => updateLabWorkbench("mode", "item"));
 
   const workbenchForm = document.createElement("div");
   workbenchForm.className = "lab-form-grid";
@@ -173,21 +167,14 @@ export function renderLabPanel(target: HTMLElement) {
   const spellTypeLabel = document.createElement("label");
   spellTypeLabel.className = "label";
   spellTypeLabel.textContent = "Spell Type";
-  const commonOption = createRadioOption("Common Spell", "common");
-  const newOption = createRadioOption("New Spell", "new");
+  const commonOption = createRadioOption("Common Spell", "common", "lab-spell-type");
+  const newOption = createRadioOption("New Spell", "new", "lab-spell-type");
   spellTypeField.append(spellTypeLabel, commonOption.wrapper, newOption.wrapper);
   workbenchForm.appendChild(spellTypeField);
 
-  commonOption.input.addEventListener("change", () => {
-    if (commonOption.input.checked) {
-      updateLabWorkbench("isNewSpell", false);
-    }
-  });
-  newOption.input.addEventListener("change", () => {
-    if (newOption.input.checked) {
-      updateLabWorkbench("isNewSpell", true);
-    }
-  });
+  // Spell type toggle: directly update state on change
+  commonOption.input.addEventListener("change", () => updateLabWorkbench("isNewSpell", false));
+  newOption.input.addEventListener("change", () => updateLabWorkbench("isNewSpell", true));
 
   // Initialize components field
   componentsField = document.createElement("div");
@@ -440,12 +427,12 @@ function createField(labelText: string, control: HTMLElement): HTMLDivElement {
   return field;
 }
 
-function createRadioOption(labelText: string, value: string) {
+function createRadioOption(labelText: string, value: string, name: string) {
   const wrapper = document.createElement("label");
   wrapper.className = "lab-radio";
   const input = document.createElement("input");
   input.type = "radio";
-  input.name = "lab-mode";
+  input.name = name;
   input.value = value;
   wrapper.append(input, document.createTextNode(labelText));
   return { wrapper, input };

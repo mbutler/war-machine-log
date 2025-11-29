@@ -4,9 +4,9 @@ import "./ledger.css";
 
 registerRoute({
   id: "ledger",
-  label: "Treasury Ledger",
+  label: "Ledger",
   description: "Gold tracking & equipment shop",
-  section: "Logistics",
+  section: "2. Campaign",
   order: 1,
   mount(target) {
     return renderLedgerPanel(target);

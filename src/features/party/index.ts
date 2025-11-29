@@ -4,9 +4,9 @@ import "./party.css";
 
 registerRoute({
   id: "party",
-  label: "Mustard Hall Registry",
+  label: "Party",
   description: "Character generator & roster",
-  section: "Characters",
+  section: "1. Adventure",
   order: 1,
   mount(target) {
     return renderPartyPanel(target);

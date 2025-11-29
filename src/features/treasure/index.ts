@@ -4,9 +4,9 @@ import "./treasure.css";
 
 registerRoute({
   id: "treasure",
-  label: "Treasure Generator",
+  label: "Treasure",
   description: "Hoard tables & valuables",
-  section: "Logistics",
+  section: "2. Campaign",
   order: 3,
   mount(target) {
     return renderTreasurePanel(target);

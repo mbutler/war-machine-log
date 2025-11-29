@@ -4,10 +4,10 @@ import "./dungeon.css";
 
 registerRoute({
   id: "dungeon",
-  label: "Dungeon Delver",
+  label: "Dungeon",
   description: "Tactical combat + loot tracking",
-  section: "Exploration",
-  order: 2,
+  section: "1. Adventure",
+  order: 3,
   mount(target) {
     return renderDungeonPanel(target);
   },

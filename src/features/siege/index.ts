@@ -4,10 +4,10 @@ import "./siege.css";
 
 registerRoute({
   id: "siege",
-  label: "War Machine Combat",
+  label: "Siege",
   description: "Battle ratings & siege ops",
-  section: "Siege",
-  order: 1,
+  section: "3. Domain & War",
+  order: 3,
   mount(target) {
     return renderSiegePanel(target);
   },

@@ -4,10 +4,10 @@ import "./wilderness.css";
 
 registerRoute({
   id: "wilderness",
-  label: "Royal Cartographer",
+  label: "Wilderness",
   description: "BECMI hex exploration with foraging & water management",
-  section: "Exploration",
-  order: 1,
+  section: "1. Adventure",
+  order: 2,
   mount(target) {
     return renderWildernessPanel(target);
   },

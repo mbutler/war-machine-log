@@ -3,10 +3,10 @@ import { renderMerchantPanel } from "./view";
 
 registerRoute({
   id: "merchant",
-  label: "Merchant of Darokin",
+  label: "Merchant",
   description: "Trade, tariffs, caravans",
-  section: "Logistics",
-  order: 1,
+  section: "2. Campaign",
+  order: 4,
   mount(target) {
     return renderMerchantPanel(target);
   },

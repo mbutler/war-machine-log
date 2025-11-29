@@ -31,13 +31,13 @@ export function createSidebar(controls: SidebarControls): SidebarApi {
   const exportButton = document.createElement("button");
   exportButton.type = "button";
   exportButton.className = "button";
-  exportButton.textContent = "Export Suite";
+  exportButton.textContent = "Export Campaign";
   exportButton.addEventListener("click", controls.onExport);
 
   const importButton = document.createElement("button");
   importButton.type = "button";
   importButton.className = "button";
-  importButton.textContent = "Import Suite";
+  importButton.textContent = "Import Campaign";
 
   const importInput = document.createElement("input");
   importInput.type = "file";

@@ -207,6 +207,7 @@ function ensureLabState(state?: LabState): LabState {
   if (!state) {
     return defaults;
   }
+
   return {
     caster: {
       name: typeof state.caster?.name === "string" ? state.caster.name : defaults.caster.name,
@@ -223,18 +224,25 @@ function ensureLabState(state?: LabState): LabState {
           : defaults.resources.libraryValue,
     },
     workbench: {
-      mode: state.workbench?.mode === "formula" ? "formula" : "item",
-      itemType: (state.workbench?.itemType ?? defaults.workbench.itemType),
+      mode: state.workbench?.mode === "spell" ? "spell" : "item",
+      itemType: state.workbench?.itemType ?? defaults.workbench.itemType,
       spellLevel:
         typeof state.workbench?.spellLevel === "number" ? state.workbench.spellLevel : defaults.workbench.spellLevel,
       materialCost:
         typeof state.workbench?.materialCost === "number"
           ? state.workbench.materialCost
           : defaults.workbench.materialCost,
-      hasFormula: Boolean(state.workbench?.hasFormula),
+      isNewSpell:
+        typeof state.workbench?.isNewSpell === "boolean"
+          ? state.workbench.isNewSpell
+          : defaults.workbench.isNewSpell,
+      hasComponents:
+        typeof state.workbench?.hasComponents === "boolean"
+          ? state.workbench.hasComponents
+          : defaults.workbench.hasComponents,
     },
     log: Array.isArray(state.log) ? state.log : [],
-    activeTrackerId: state.activeTrackerId ?? null,
+    activeTrackerId: typeof state.activeTrackerId === "string" ? state.activeTrackerId : null,
   };
 }
 

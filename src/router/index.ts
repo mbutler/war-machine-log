@@ -1,11 +1,8 @@
+// Sidebar groups – ordered lexicographically, so numeric prefixes control display order
 export type RouteSection =
-  | "Characters"
-  | "Domain"
-  | "Exploration"
-  | "Logistics"
-  | "Siege"
-  | "Arcana"
-  | "Timekeeping";
+  | "1. Adventure"
+  | "2. Campaign"
+  | "3. Domain & War";
 
 export type MountResult = void | (() => void);
 
