@@ -1505,9 +1505,14 @@ function advanceTurn(dungeon: typeof DEFAULT_STATE.dungeon, turns = 1, party?: a
     // Check for wandering monsters every 2 turns (BECMI rule)
     if (dungeon.turn % 2 === 0) {
       checkWanderingMonsters(dungeon, party);
-      // If we encountered monsters during rest, stop the rest early
+      // If we encountered monsters during any activity, stop that activity early
       if (dungeon.status === "encounter" || dungeon.status === "surprise") {
-        addLogEntry(dungeon, "event", "Rest interrupted!", "Monsters appeared during rest period!");
+        addLogEntry(
+          dungeon,
+          "event",
+          "Activity interrupted!",
+          "Wandering monsters appear and cut your plans short.",
+        );
         // Return the number of turns actually completed
         return dungeon.turn - startingTurn;
       }
