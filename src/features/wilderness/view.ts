@@ -13,6 +13,7 @@ import {
   moveParty,
   refillWater,
   resetWilderness,
+  resolveWildernessEncounter,
   setCameraOffset,
   setClimate,
   setPartySize,
@@ -183,6 +184,56 @@ export function renderWildernessPanel(target: HTMLElement) {
 
   actionRow.append(forageButton, forageFullButton, refillButton);
   travelBlock.appendChild(actionRow);
+
+  // Combat controls
+  const combatCard = document.createElement("section");
+  combatCard.className = "wilderness-card";
+  combatCard.style.borderTop = "1px solid var(--panel-border)";
+  combatCard.style.paddingTop = "0.75rem";
+  combatCard.style.marginTop = "0.75rem";
+  combatCard.style.display = "none"; // Hidden by default
+
+  const combatTitle = document.createElement("div");
+  combatTitle.className = "panel-heading";
+  combatTitle.textContent = "Encounter";
+  combatCard.appendChild(combatTitle);
+
+  const combatInfo = document.createElement("div");
+  combatInfo.style.marginBottom = "0.5rem";
+  combatInfo.style.fontSize = "0.9rem";
+  combatCard.appendChild(combatInfo);
+
+  const combatButtons = document.createElement("div");
+  combatButtons.className = "flex gap-sm flex-wrap";
+  combatCard.appendChild(combatButtons);
+
+  const fightButton = document.createElement("button");
+  fightButton.type = "button";
+  fightButton.className = "button button-danger";
+  fightButton.textContent = "Fight";
+  fightButton.addEventListener("click", () => resolveWildernessEncounter("fight"));
+
+  const negotiateButton = document.createElement("button");
+  negotiateButton.type = "button";
+  negotiateButton.className = "button";
+  negotiateButton.textContent = "Negotiate";
+  negotiateButton.addEventListener("click", () => resolveWildernessEncounter("negotiate"));
+
+  const evadeButton = document.createElement("button");
+  evadeButton.type = "button";
+  evadeButton.className = "button";
+  evadeButton.textContent = "Evade";
+  evadeButton.addEventListener("click", () => resolveWildernessEncounter("evade"));
+
+  const pursueButton = document.createElement("button");
+  pursueButton.type = "button";
+  pursueButton.className = "button";
+  pursueButton.textContent = "Pursue";
+  pursueButton.style.display = "none"; // Hidden unless fleeing
+  pursueButton.addEventListener("click", () => resolveWildernessEncounter("pursue"));
+
+  combatButtons.append(fightButton, negotiateButton, evadeButton, pursueButton);
+  controlsCard.appendChild(combatCard);
 
   const generatorBlock = document.createElement("div");
   generatorBlock.style.marginTop = "auto";
@@ -547,6 +598,20 @@ export function renderWildernessPanel(target: HTMLElement) {
     startSelect.value = state.startTerrain;
     climateSelect.value = state.climate;
     refillButton.disabled = !canRefillWater(state);
+
+    // Update combat UI
+    if (state.encounter && state.status !== "idle") {
+      combatCard.style.display = "block";
+      combatInfo.textContent = `${state.encounter.quantity} ${state.encounter.name} (${state.encounter.hitDice} HD) at ${state.encounter.distance} yards - ${state.encounter.reaction}`;
+
+      // Show appropriate buttons based on status
+      fightButton.style.display = state.status === "encounter" ? "inline-block" : "none";
+      negotiateButton.style.display = state.status === "encounter" ? "inline-block" : "none";
+      evadeButton.style.display = state.status === "encounter" ? "inline-block" : "none";
+      pursueButton.style.display = state.status === "fleeing" ? "inline-block" : "none";
+    } else {
+      combatCard.style.display = "none";
+    }
 
     // Update mode indicators
     updateModeIndicators(state);

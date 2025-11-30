@@ -213,6 +213,38 @@ export interface WildernessLogEntry {
   notes?: string;
 }
 
+export type WildernessStatus = "idle" | "encounter" | "pursuing" | "fleeing";
+
+export interface WildernessEncounter {
+  id: string;
+  name: string;
+  quantity: string;
+  hitDice: number;
+  armorClass: number;
+  damage: string;
+  morale: number;
+  treasureType: string;
+  hp: number;
+  hpMax: number;
+  reaction: EncounterReaction;
+  distance: number; // yards
+  special?: string;
+
+  // Surprise tracking
+  surprise?: SurpriseState;
+
+  // Reaction roll tracking
+  reactionRolls?: ReactionRollRecord[];
+
+  // Morale tracking
+  moraleChecked: {
+    firstHit: boolean;
+    quarterHp: boolean;
+    firstDeath: boolean;
+    halfIncapacitated: boolean;
+  };
+}
+
 export interface WildernessState {
   map: Record<string, WildernessHex>;
   currentPos: { q: number; r: number };
@@ -233,6 +265,10 @@ export interface WildernessState {
   log: WildernessLogEntry[];
   staticMapMode: boolean;
   staticMapData?: Record<string, WildernessHex>;
+
+  // Combat state
+  status: WildernessStatus;
+  encounter?: WildernessEncounter;
 }
 
 export interface CalendarEvent {

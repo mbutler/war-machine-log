@@ -919,6 +919,9 @@ export function resetWilderness(options: { startTerrain?: WildernessTerrainType;
       log: [],
       staticMapMode: state.wilderness.staticMapMode || false,
       staticMapData: state.wilderness.staticMapData,
+      // Combat state
+      status: "idle",
+      encounter: undefined,
     };
   });
 }
@@ -984,7 +987,14 @@ export function moveParty(directionIndex: number) {
     }
     wilderness.weather = generateWeather(wilderness.climate);
 
-    const encounterMsg = maybeGenerateEncounter(finalHex);
+    const encounter = maybeGenerateEncounter(finalHex);
+    let encounterMsg = "";
+    if (encounter) {
+      wilderness.encounter = encounter;
+      wilderness.status = "encounter";
+      encounterMsg = `Encounter: ${encounter.quantity} ${encounter.name} at ${encounter.distance} yards (${encounter.reaction})`;
+    }
+
     addLogEntry(wilderness, {
       terrain: finalHex.type,
       summary: buildSummary(finalHex),
@@ -1203,6 +1213,8 @@ function normalizeWildernessState(data: Partial<WildernessState>, current: Wilde
     log: Array.isArray(data.log) ? data.log : [],
     staticMapMode: data.staticMapMode ?? false,
     staticMapData: data.staticMapData,
+    status: data.status ?? "idle",
+    encounter: data.encounter,
   };
 }
 
@@ -1489,13 +1501,13 @@ function getEncounterChance(terrainType: WildernessTerrainType): number {
   }
 }
 
-function maybeGenerateEncounter(hex: WildernessHex): string | undefined {
+function maybeGenerateEncounter(hex: WildernessHex): WildernessEncounter | undefined {
   if (!hex) return undefined;
   const encounterChance = getEncounterChance(hex.type);
   if (randomRange(1, 6) > encounterChance) {
     return undefined;
   }
-  return generateEncounter(hex.type);
+  return generateWildernessEncounter(hex.type);
 }
 
 // Generate flavorful descriptions for city encounters
@@ -1914,6 +1926,55 @@ function generateEncounter(type: WildernessTerrainType): string {
   }
 
   return `ENCOUNTER: ${qty} ${encounterDescription} - ${distance} yards away${surpriseText}${treasureText}`;
+}
+
+function generateWildernessEncounter(type: WildernessTerrainType): WildernessEncounter | undefined {
+  const normalized = normalizeTerrainType(type);
+  const terrainGroup = TERRAIN_GROUPINGS[normalized] || "Clear";
+
+  // Roll 1d8 on terrain-specific main table to determine subtable
+  const mainRoll = randomRange(1, 8);
+  const subtableName = MAIN_ENCOUNTER_TABLE[normalized][mainRoll];
+
+  // Get the appropriate subtable based on main roll and terrain
+  const { categoryName, encounter } = rollOnSubtable(subtableName, terrainGroup);
+  const qty = rollDice(encounter.qty);
+
+  // Calculate encounter distance
+  const distance = calculateEncounterDistance();
+
+  // Roll surprise
+  const surprise = rollSurprise();
+
+  // Roll reaction
+  const { finalResult, rolls } = resolveReaction(0);
+
+  // Build encounter
+  const hpMax = Math.max(1, Math.round((encounter.hitDice ?? 1) * 4.5 * qty));
+
+  return {
+    id: createId(),
+    name: encounter.name,
+    quantity: encounter.qty,
+    hitDice: encounter.hitDice ?? 1,
+    armorClass: encounter.ac ?? 9,
+    damage: encounter.dmg ?? "1d6",
+    morale: encounter.morale ?? 7,
+    treasureType: encounter.treasure ?? "A",
+    hp: hpMax,
+    hpMax,
+    reaction: finalResult,
+    distance,
+    special: encounter.special,
+    surprise,
+    reactionRolls: rolls,
+    moraleChecked: {
+      firstHit: false,
+      quarterHp: false,
+      firstDeath: false,
+      halfIncapacitated: false,
+    },
+  };
 }
 
 function rollOnSubtable(subtableName: string, terrainGroup: string): { categoryName: string; encounter: { name: string; qty: string; treasure?: string; castle?: any } } {
@@ -2381,5 +2442,266 @@ export function unloadStaticMap(): void {
 }
 
 export { getLightCondition, type LightCondition };
+
+// ============================================================================
+// Wilderness Combat System
+// ============================================================================
+
+import { rollDie, rollFormula } from "../../rules/dice";
+import { pickEncounter, rollSurprise, resolveReaction, rollWanderingMonsterDistance } from "../../rules/dungeon/encounters";
+
+// Simplified wilderness combat - focused on time progression and morale
+export function resolveWildernessEncounter(outcome: "fight" | "negotiate" | "evade" | "pursue") {
+  updateState((state) => {
+    const wilderness = state.wilderness;
+    const encounter = wilderness.encounter;
+    if (!encounter) return;
+
+    if (outcome === "fight") {
+      resolveWildernessCombat(wilderness, state.party.roster, state.calendar);
+    } else if (outcome === "negotiate") {
+      resolveWildernessNegotiation(wilderness, state.calendar);
+    } else if (outcome === "evade") {
+      resolveWildernessEvasion(wilderness, state.calendar);
+    } else if (outcome === "pursue") {
+      resolveWildernessPursuit(wilderness, state.calendar);
+    }
+  });
+}
+
+function resolveWildernessCombat(wilderness: WildernessState, party: any[], calendar: any) {
+  const encounter = wilderness.encounter;
+  if (!encounter) return;
+
+  // Base combat duration scales with encounter distance (larger areas take longer to resolve)
+  // 30 yards = ~1 round, 240 yards = ~8 rounds (max 4d6×10)
+  const distanceRounds = Math.max(1, Math.floor(encounter.distance / 30));
+
+  addLogEntry(wilderness, {
+    terrain: getCurrentTerrain(wilderness),
+    summary: `Combat engaged at ${encounter.distance} yards`,
+    notes: `Large encounter area requires ~${distanceRounds} rounds to fully resolve`,
+  });
+
+  // Base rounds affected by distance, but capped by reaction/surprise
+  const baseRounds = Math.min(distanceRounds, 8); // Cap at 8 rounds max
+  const maxRounds = encounter.surprise?.partySurprised ? Math.min(baseRounds, 2) :
+                   encounter.reaction === "hostile" ? Math.min(baseRounds, 4) :
+                   encounter.reaction === "aggressive" ? Math.min(baseRounds, 3) :
+                   Math.min(baseRounds, 2);
+
+  for (let round = 0; round < maxRounds; round++) {
+    if (encounter.hp <= 0) break;
+
+    // Abstract damage - party deals damage, monsters deal damage
+    const partyDamage = rollFormula("1d6") * Math.max(1, Math.floor(party.length / 2));
+    const monsterDamage = rollFormula(encounter.damage) * resolveQuantity(encounter.quantity);
+
+    encounter.hp = Math.max(0, encounter.hp - partyDamage);
+
+    // Apply monster damage to party (simplified - could be more detailed)
+    // For now, just track casualties abstractly
+
+    addLogEntry(wilderness, {
+      terrain: getCurrentTerrain(wilderness),
+      summary: `Round ${round + 1}: Party deals ${partyDamage} damage, monsters deal ${monsterDamage}`,
+      notes: `${encounter.name} has ${encounter.hp} HP remaining`,
+    });
+
+    // Check morale after each round
+    if (checkWildernessMorale(wilderness)) {
+      break; // Monsters fled
+    }
+
+    advanceTime(1, calendar); // 1 round = 10 seconds
+  }
+
+  // Combat resolution
+  if (encounter.hp <= 0) {
+    addLogEntry(wilderness, {
+      terrain: getCurrentTerrain(wilderness),
+      summary: "Victory! Monsters defeated",
+      notes: "Party continues travel",
+    });
+    wilderness.status = "idle";
+    wilderness.encounter = undefined;
+  } else {
+    // Monsters survived - they may flee or continue fighting
+    // For simplicity, assume they flee after max rounds
+    addLogEntry(wilderness, {
+      terrain: getCurrentTerrain(wilderness),
+      summary: "Combat ends - monsters withdraw",
+      notes: "Party may continue or pursue",
+    });
+    wilderness.status = "fleeing";
+  }
+}
+
+function resolveWildernessNegotiation(wilderness: WildernessState, calendar: any) {
+  const encounter = wilderness.encounter;
+  if (!encounter) return;
+
+  // Time cost for negotiation - longer in larger encounter areas
+  const baseTime = rollDie(4); // 1-4 rounds
+  const distanceModifier = Math.floor(encounter.distance / 60); // +1 round per 60 yards
+  const negotiationTime = Math.max(1, baseTime + distanceModifier);
+  advanceTime(negotiationTime, calendar);
+
+  if (encounter.reaction === "hostile") {
+    addLogEntry(wilderness, {
+      terrain: getCurrentTerrain(wilderness),
+      summary: "Negotiation failed - monsters attack!",
+      notes: `${negotiationTime} rounds wasted`,
+    });
+    // Could trigger combat here, but for now just log
+  } else if (encounter.reaction === "aggressive") {
+    // Chance to calm them
+    if (rollDie(6) >= 4) {
+      addLogEntry(wilderness, {
+        terrain: getCurrentTerrain(wilderness),
+        summary: "Negotiation successful - monsters depart peacefully",
+        notes: `${negotiationTime} rounds spent talking`,
+      });
+      wilderness.status = "idle";
+      wilderness.encounter = undefined;
+    } else {
+      addLogEntry(wilderness, {
+        terrain: getCurrentTerrain(wilderness),
+        summary: "Negotiation failed - monsters remain hostile",
+        notes: `${negotiationTime} rounds wasted`,
+      });
+    }
+  } else {
+    addLogEntry(wilderness, {
+      terrain: getCurrentTerrain(wilderness),
+      summary: "Negotiation successful - peaceful resolution",
+      notes: `${negotiationTime} rounds spent talking`,
+    });
+    wilderness.status = "idle";
+    wilderness.encounter = undefined;
+  }
+}
+
+function resolveWildernessEvasion(wilderness: WildernessState, calendar: any) {
+  const encounter = wilderness.encounter;
+  if (!encounter) return;
+
+  // Evasion chance based on distance and party size
+  const evasionChance = Math.min(95, Math.max(5, 50 + (encounter.distance / 10) - encounter.quantity.length * 5));
+  const roll = rollDie(100);
+
+  // Time spent evading - longer in larger areas
+  const baseTime = rollDie(6); // 1-6 rounds
+  const distanceModifier = Math.floor(encounter.distance / 60); // +1 round per 60 yards
+  const evasionTime = Math.max(1, baseTime + distanceModifier);
+  advanceTime(evasionTime, calendar);
+
+  if (roll <= evasionChance) {
+    addLogEntry(wilderness, {
+      terrain: getCurrentTerrain(wilderness),
+      summary: "Evasion successful!",
+      notes: `Rolled ${roll} vs ${evasionChance}% (${evasionTime} rounds spent)`,
+    });
+    wilderness.status = "idle";
+    wilderness.encounter = undefined;
+  } else {
+    addLogEntry(wilderness, {
+      terrain: getCurrentTerrain(wilderness),
+      summary: "Evasion failed - monsters pursue",
+      notes: `Rolled ${roll} vs ${evasionChance}% (${evasionTime} rounds spent)`,
+    });
+    wilderness.status = "pursuing";
+  }
+}
+
+function resolveWildernessPursuit(wilderness: WildernessState, calendar: any) {
+  const encounter = wilderness.encounter;
+  if (!encounter) return;
+
+  // Pursuit time cost - fleeing monsters take time to chase
+  const baseTime = rollDie(4) + 2; // 3-6 rounds
+  const distanceModifier = Math.floor(encounter.distance / 40); // +1 round per 40 yards (easier to pursue at closer range)
+  const pursuitTime = Math.max(2, baseTime + distanceModifier); // Minimum 2 rounds
+  advanceTime(pursuitTime, calendar);
+
+  // Chance to catch up based on distance and terrain
+  const catchChance = Math.min(80, Math.max(20, 40 + (encounter.distance / 20)));
+  const roll = rollDie(100);
+
+  if (roll <= catchChance) {
+    addLogEntry(wilderness, {
+      terrain: getCurrentTerrain(wilderness),
+      summary: "Pursuit successful - caught the fleeing monsters!",
+      notes: `Rolled ${roll} vs ${catchChance}% (${pursuitTime} rounds spent)`,
+    });
+    // Could trigger combat here
+    wilderness.status = "encounter";
+  } else {
+    addLogEntry(wilderness, {
+      terrain: getCurrentTerrain(wilderness),
+      summary: "Pursuit failed - monsters escaped",
+      notes: `Rolled ${roll} vs ${catchChance}% (${pursuitTime} rounds spent)`,
+    });
+    wilderness.status = "idle";
+    wilderness.encounter = undefined;
+  }
+}
+
+function checkWildernessMorale(wilderness: WildernessState): boolean {
+  const encounter = wilderness.encounter;
+  if (!encounter) return false;
+
+  // Simplified morale check - flee if badly damaged or outnumbered
+  const hpPercent = (encounter.hp / encounter.hpMax) * 100;
+  const adjustedMorale = hpPercent < 25 ? encounter.morale - 2 :
+                        hpPercent < 50 ? encounter.morale - 1 :
+                        encounter.morale;
+
+  const moraleRoll = rollDie(6) + rollDie(6);
+  if (moraleRoll > adjustedMorale) {
+    addLogEntry(wilderness, {
+      terrain: getCurrentTerrain(wilderness),
+      summary: "Monsters flee!",
+      notes: `Morale roll ${moraleRoll} vs ${adjustedMorale}`,
+    });
+    wilderness.status = "fleeing";
+    return true;
+  }
+
+  return false;
+}
+
+function advanceTime(rounds: number, calendar: any) {
+  if (rounds <= 0 || !calendar) return;
+
+  const before = describeClock(calendar.clock);
+  advanceClock(calendar.clock, "round", rounds);
+  const after = describeClock(calendar.clock);
+
+  // Calculate time advanced for logging (1 round = 10 seconds = 1/6 minute)
+  const minutesAdvanced = rounds / 6;
+  const timeDesc = minutesAdvanced >= 1 ?
+    `${minutesAdvanced.toFixed(1)} minutes` :
+    `${(minutesAdvanced * 60).toFixed(0)} seconds`;
+
+  addCalendarLog(calendar, `Wilderness encounter: +${timeDesc}`, `${before} → ${after}`);
+}
+
+function getCurrentTerrain(wilderness: WildernessState): WildernessTerrainType {
+  const currentHex = wilderness.map[keyFromPos(wilderness.currentPos)];
+  return currentHex?.type ?? "clear";
+}
+
+function resolveQuantity(input: string): number {
+  if (/^\d+d\d+$/i.test(input.trim())) {
+    return rollFormula(input);
+  }
+  // Handle "1d6+4" type formulas
+  if (/^\d+d\d+[+-]\d+$/i.test(input.trim())) {
+    return rollFormula(input);
+  }
+  const parsed = parseInt(input, 10);
+  return Number.isNaN(parsed) ? 1 : parsed;
+}
 
 
