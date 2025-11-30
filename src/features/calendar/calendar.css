@@ -96,11 +96,6 @@
   white-space: nowrap;
 }
 
-.calendar-tracker.blocking {
-  border-left-color: rgba(248, 113, 113, 0.9);
-  background: rgba(248, 113, 113, 0.08);
-}
-
 .calendar-tracker[data-kind="lab"] {
   border-left-color: rgba(192, 132, 252, 0.9);
 }
@@ -150,11 +145,6 @@
   font-size: 0.6rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-.calendar-kind-badge.blocking {
-  border-color: rgba(248, 113, 113, 0.8);
-  color: #fecaca;
 }
 
 .calendar-log {

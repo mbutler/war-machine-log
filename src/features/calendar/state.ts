@@ -109,7 +109,6 @@ export function advanceCalendar(unit: CalendarAdvanceUnit, amount = 1): Calendar
     }
     addCalendarLog(calendar, `Time passed: +${amount} ${unit}${amount === 1 ? "" : "s"}`, `${before} → ${after}`);
   });
-  return expired;
 
   if (expired.length) {
     emitCalendarEvent({ type: "timers-expired", trackers: expired });
@@ -131,7 +130,7 @@ export function addCalendarTracker(
   name: string,
   duration: number,
   unit: CalendarTrackerUnit,
-  options: { kind?: CalendarTrackerKind; blocking?: boolean } = {},
+  options: { kind?: CalendarTrackerKind } = {},
 ): CalendarTracker | null {
   const trimmed = name.trim();
   if (!trimmed || duration <= 0) {
@@ -151,14 +150,13 @@ export function addCalendarTracker(
       initialMinutes: minutes,
       remainingMinutes: minutes,
       kind: options.kind ?? "other",
-      blocking: options.blocking ?? false,
       startedAt: Date.now(),
     };
     state.calendar.trackers.push(tracker);
     addCalendarLog(
       state.calendar,
       "Tracker added",
-      `${tracker.name} (${formatDuration(minutes)})${tracker.blocking ? " · Blocking" : ""}`,
+      `${tracker.name} (${formatDuration(minutes)})`,
     );
     newTracker = tracker;
   });
@@ -286,7 +284,6 @@ function normalizeTracker(tracker: Partial<CalendarTracker>): CalendarTracker {
     initialMinutes: Number.isFinite(tracker.initialMinutes) ? tracker.initialMinutes! : 0,
     remainingMinutes: Number.isFinite(tracker.remainingMinutes) ? tracker.remainingMinutes! : 0,
     kind: tracker.kind ?? "other",
-    blocking: tracker.blocking ?? false,
     startedAt: tracker.startedAt ?? Date.now(),
   };
 }
@@ -483,7 +480,7 @@ function clampHour(value: number): number {
 
 function clampMinute(value: number): number {
   if (!Number.isFinite(value)) return 0;
-  let minute = Math.floor(value);
+  let minute = value;
   while (minute < 0) minute += 60;
   while (minute >= 60) minute -= 60;
   return minute;

@@ -126,7 +126,6 @@ export function processDominionSeason(): DominionLogEntry {
     duration: 4,
     unit: "week",
     kind: "dominion",
-    blocking: true,
   });
   if (tracker) {
     updateState((state) => {

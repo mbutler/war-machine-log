@@ -26,6 +26,9 @@ import {
   evadeEncounter,
   exportDungeonData,
   importDungeonData,
+  getTotalCoinCount,
+  getEncumbranceLevel,
+  getEncumbranceMultiplier,
 } from "./state";
 import type { DungeonLogEntry, PartyState, LightingCondition, EncounterReaction, DungeonObstacle } from "../../state/schema";
 import { getPartyState, subscribeToParty } from "../party/state";
@@ -307,23 +310,52 @@ function renderControls(container: HTMLElement, dungeon = getDungeonState(), par
     returnHeader.textContent = "🏠 Return to Surface";
     returnSection.appendChild(returnHeader);
     
-    const turnsToExit = dungeon.depth * 3;
+    // Calculate encumbrance from coins
+    const coins = dungeon.coins ?? { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
+    const totalCoins = getTotalCoinCount(coins);
+    const encumbranceMultiplier = getEncumbranceMultiplier(totalCoins);
+    const encumbranceLevel = getEncumbranceLevel(totalCoins);
+    const coinWeight = Math.floor(totalCoins / 10);
+    
+    const baseTurns = dungeon.depth * 3;
+    const turnsToExit = encumbranceMultiplier > 0 
+      ? Math.ceil(baseTurns / encumbranceMultiplier) 
+      : Infinity;
     const numChecks = Math.ceil(turnsToExit / 2);
     
     const returnInfo = document.createElement("p");
     returnInfo.className = "muted";
     returnInfo.style.fontSize = "0.85em";
-    returnInfo.innerHTML = `
-      <strong>Current loot:</strong> ${dungeon.loot} gp<br>
-      <strong>Time to exit:</strong> ~${turnsToExit} turns (${turnsToExit * 10} minutes)<br>
-      <strong>Wandering monster checks:</strong> ${numChecks} (1-in-6 each)<br>
-      <strong>Danger level:</strong> ${Math.round((1 - Math.pow(5/6, numChecks)) * 100)}% chance of encounter
-    `;
+    
+    const encumbranceColor = encumbranceMultiplier === 1 ? "inherit" 
+      : encumbranceMultiplier >= 0.5 ? "#fbbf24" 
+      : encumbranceMultiplier > 0 ? "#f87171" 
+      : "#ef4444";
+    
+    if (encumbranceMultiplier === 0) {
+      returnInfo.innerHTML = `
+        <strong>Current loot:</strong> ${dungeon.loot} gp<br>
+        <strong>Coins carried:</strong> ${totalCoins} (${coinWeight} cn)<br>
+        <strong style="color: ${encumbranceColor}">⚠️ OVERLOADED!</strong> Party cannot move. Drop treasure to continue.
+      `;
+    } else {
+      returnInfo.innerHTML = `
+        <strong>Current loot:</strong> ${dungeon.loot} gp<br>
+        <strong>Coins carried:</strong> ${totalCoins} (${coinWeight} cn) - <span style="color: ${encumbranceColor}">${encumbranceLevel}</span><br>
+        <strong>Time to exit:</strong> ~${turnsToExit} turns (${turnsToExit * 10} minutes)${encumbranceMultiplier < 1 ? ` <em>(slowed)</em>` : ""}<br>
+        <strong>Wandering monster checks:</strong> ${numChecks} (1-in-6 each)<br>
+        <strong>Danger level:</strong> ${Math.round((1 - Math.pow(5/6, numChecks)) * 100)}% chance of encounter
+      `;
+    }
     returnSection.appendChild(returnInfo);
     
     const returnBtn = makeButton("⬆️ Attempt Return Journey", "button", () => attemptReturn());
     returnBtn.style.width = "100%";
     returnBtn.style.marginTop = "var(--space-sm)";
+    if (encumbranceMultiplier === 0) {
+      returnBtn.disabled = true;
+      returnBtn.style.opacity = "0.5";
+    }
     returnSection.appendChild(returnBtn);
     
     container.appendChild(returnSection);

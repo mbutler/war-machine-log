@@ -6,7 +6,6 @@ export interface TimedActionOptions {
   duration: number;
   unit: CalendarTrackerUnit;
   kind?: CalendarTrackerKind;
-  blocking?: boolean;
 }
 
 export interface TimedAction {
@@ -14,11 +13,11 @@ export interface TimedAction {
 }
 
 export function startTimedAction(options: TimedActionOptions): TimedAction | null {
-  const { name, duration, unit, kind = "other", blocking = false } = options;
+  const { name, duration, unit, kind = "other" } = options;
   if (!name.trim() || duration <= 0) {
     return null;
   }
-  const tracker = addCalendarTracker(name, duration, unit, { kind, blocking });
+  const tracker = addCalendarTracker(name, duration, unit, { kind });
   return tracker ? { trackerId: tracker.id } : null;
 }
 

@@ -121,7 +121,6 @@ export function attemptExperiment(): ExperimentResult {
     duration: Math.max(1, calc.timeWeeks),
     unit: "week",
     kind: "lab",
-    blocking: true,
   });
   if (tracker) {
     mutateLab((draft) => {

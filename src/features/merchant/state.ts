@@ -316,7 +316,6 @@ function assignJourneyTimer(id: string, travelDays: number, houseName: string, d
     duration,
     unit,
     kind: "merchant",
-    blocking: false,
   });
   updateState((state) => {
     const entry = state.merchant.ledger.find((journey) => journey.id === id);

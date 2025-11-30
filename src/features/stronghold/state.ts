@@ -172,7 +172,6 @@ export function startStrongholdConstruction(): { success: boolean; error?: strin
     duration,
     unit,
     kind: "stronghold",
-    blocking: true,
   });
   if (!tracker) {
     return { success: false, error: "Unable to attach construction timer to the calendar." };

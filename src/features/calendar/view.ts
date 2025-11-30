@@ -394,7 +394,7 @@ function renderTrackers(container: HTMLElement, trackers: CalendarTracker[]) {
 
   trackers.forEach((tracker) => {
     const row = document.createElement("div");
-    row.className = `calendar-tracker${tracker.blocking ? " blocking" : ""}`;
+    row.className = "calendar-tracker";
     row.dataset.kind = tracker.kind;
 
     const info = document.createElement("div");
@@ -410,12 +410,6 @@ function renderTrackers(container: HTMLElement, trackers: CalendarTracker[]) {
     kindBadge.className = `calendar-kind-badge calendar-kind-${tracker.kind}`;
     kindBadge.textContent = TRACKER_KIND_LABELS[tracker.kind] ?? "Other";
     badgeRow.appendChild(kindBadge);
-    if (tracker.blocking) {
-      const blockingBadge = document.createElement("span");
-      blockingBadge.className = "calendar-kind-badge blocking";
-      blockingBadge.textContent = "Blocking";
-      badgeRow.appendChild(blockingBadge);
-    }
     info.appendChild(badgeRow);
 
     const remaining = document.createElement("span");
@@ -435,12 +429,9 @@ function renderTrackers(container: HTMLElement, trackers: CalendarTracker[]) {
 
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
-    removeBtn.className = tracker.blocking ? "button danger" : "button";
-    removeBtn.textContent = tracker.blocking ? "Abort" : "Cancel";
+    removeBtn.className = "button";
+    removeBtn.textContent = "Cancel";
     removeBtn.addEventListener("click", () => {
-      if (tracker.blocking && !window.confirm("Abort this blocking timer?")) {
-        return;
-      }
       removeCalendarTracker(tracker.id);
     });
 

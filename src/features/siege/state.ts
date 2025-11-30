@@ -66,7 +66,6 @@ export function rollBattle() {
       duration,
       unit: trackerUnit,
       kind: "siege",
-      blocking: false,
     });
     if (tracker) {
       logEntry.recoveryTrackerId = tracker.trackerId;

@@ -266,7 +266,6 @@ export interface CalendarTracker {
   remainingMinutes: number;
   initialMinutes: number;
   kind: CalendarTrackerKind;
-  blocking: boolean;
   startedAt: number;
 }
 
@@ -609,13 +608,22 @@ export interface DungeonLogEntry {
   detail?: string;
 }
 
+export interface DungeonCoins {
+  cp: number;
+  sp: number;
+  ep: number;
+  gp: number;
+  pp: number;
+}
+
 export interface DungeonState {
   turn: number;
   depth: number;
   torches: number;
   torchTurnsUsed: number; // Tracks turns used on current torch (0-5)
   rations: number;
-  loot: number;
+  loot: number; // Gold value for XP/display
+  coins: DungeonCoins; // Actual coins for encumbrance
   lairMode: boolean;
   lighting: LightingCondition; // Affects encounter distance
   status: DungeonStatus;
@@ -945,6 +953,7 @@ export const DEFAULT_STATE: WarMachineState = {
     torchTurnsUsed: 0,
     rations: 7,
     loot: 0,
+    coins: { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 },
     lairMode: false,
     lighting: "dim",
     status: "idle",

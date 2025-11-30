@@ -343,7 +343,6 @@ function ensureCalendarState(calendar: WarMachineState["calendar"]) {
   calendar.trackers = (calendar.trackers ?? []).map((tracker) => ({
     ...tracker,
     kind: tracker.kind ?? "other",
-    blocking: tracker.blocking ?? false,
     startedAt: tracker.startedAt ?? Date.now(),
   }));
   return calendar;

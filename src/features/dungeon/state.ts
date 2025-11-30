@@ -91,7 +91,7 @@ export function toggleLairMode(enabled: boolean) {
 export function exploreRoom() {
   updateState((state) => {
     const dungeon = state.dungeon;
-    const turnsSpent = advanceTurn(dungeon, 1, state.party.roster);
+    const turnsSpent = advanceTurn(dungeon, 1, state.party.roster, state.calendar);
 
     // If a wandering monster encounter or surprise occurred during the turn advance,
     // do not proceed with further exploration or room stocking for this action.
@@ -114,7 +114,7 @@ export function exploreRoom() {
     // Resolve contents based on RC categories
     if (stocking.contents === "monster") {
       // Room contains monsters (placed encounter); treasure handled via lair tables
-      startEncounter(dungeon, false, state.party.roster);
+      startEncounter(dungeon, false, state.party.roster, state.calendar);
     } else if (stocking.contents === "trap") {
       // Trap room – pick an appropriate trap obstacle
       const obstacleDef = randomTrap();
@@ -169,7 +169,7 @@ function buildObstacle(def: ObstacleDefinition): DungeonObstacle {
 }
 
 // Start an encounter with proper BECMI mechanics
-function startEncounter(dungeon: typeof DEFAULT_STATE.dungeon, isWandering: boolean, party?: any[]) {
+function startEncounter(dungeon: typeof DEFAULT_STATE.dungeon, isWandering: boolean, party?: any[], calendar?: { clock: any }) {
   const encounterRoll = rollDie(20);
   const definition = pickEncounter(dungeon.depth, encounterRoll);
   
@@ -236,6 +236,10 @@ function startEncounter(dungeon: typeof DEFAULT_STATE.dungeon, isWandering: bool
     // Monsters have advantage - BECMI: free attack round before party can respond
     dungeon.status = "encounter";
     if ((finalResult === "hostile" || finalResult === "aggressive") && party && party.length > 0) {
+      // Advance calendar by 1 round (10 seconds) for monster's free attack
+      if (calendar) {
+        advanceClock(calendar.clock, "round", 1);
+      }
       addLogEntry(dungeon, "combat", "⚔️ Ambush!", "The monsters attack before you can react!");
       // Execute the monster's free attack round
       const livingParty = party.filter((c: any) => c.derivedStats?.hp?.current > 0);
@@ -350,7 +354,7 @@ export function resolveObstacle(strategy: "force" | "careful" | "avoid") {
     // Apply turn cost if resolved or significant time spent
     if (obstacle.resolved || obstacle.turnCost > 0) {
       const turnsSpent = Math.max(1, obstacle.turnCost);
-      advanceTurn(dungeon, turnsSpent, state.party.roster);
+      advanceTurn(dungeon, turnsSpent, state.party.roster, state.calendar);
       
       const calendar = state.calendar;
       const before = describeClock(calendar.clock);
@@ -365,7 +369,7 @@ export function resolveObstacle(strategy: "force" | "careful" | "avoid") {
       const alertRoll = rollDie(6);
       if (alertRoll <= 2) { // Higher chance due to noise
         addLogEntry(dungeon, "event", "Noise attracts attention!", "Something heard the commotion...");
-        checkWanderingMonsters(dungeon);
+        checkWanderingMonsters(dungeon, state.party.roster, state.calendar);
       }
     }
     
@@ -746,6 +750,9 @@ export function resolveEncounter(outcome: "fight" | "parley" | "flee") {
       
       if (hasSurpriseAdvantage && dungeon.status === "surprise") {
         // FREE ATTACK ROUND - monsters cannot respond!
+        // Advance calendar by 1 round (10 seconds)
+        advanceClock(state.calendar.clock, "round", 1);
+        
         addLogEntry(dungeon, "combat", "⚡ Surprise Attack!", "The party strikes before the monsters can react!");
         
         const livingParty = state.party.roster.filter(char => char.derivedStats.hp.current > 0);
@@ -801,6 +808,11 @@ export function resolveEncounter(outcome: "fight" | "parley" | "flee") {
 
 function performCombatRound(dungeon: typeof DEFAULT_STATE.dungeon, party: any[], fleeing: boolean = false) {
   if (!dungeon.encounter) return;
+
+  // Advance calendar by 1 round (10 seconds)
+  const state = getState();
+  const calendar = state.calendar;
+  advanceClock(calendar.clock, "round", 1);
 
   const encounter = dungeon.encounter;
 
@@ -1152,7 +1164,7 @@ export function searchRoom() {
       return;
     }
 
-    turnsSpent = advanceTurn(dungeon, 1, state.party.roster);
+    turnsSpent = advanceTurn(dungeon, 1, state.party.roster, state.calendar);
 
     // Mark room as searched
     dungeon.roomSearched = true;
@@ -1232,7 +1244,7 @@ export function restParty() {
     const dungeon = state.dungeon;
     // BECMI: Resting takes 6 hours (36 turns) to be "well-rested" for spell recovery
     const REST_DURATION_TURNS = 36; // 6 hours × 6 turns per hour
-    turnsSpent = advanceTurn(dungeon, REST_DURATION_TURNS, state.party.roster);
+    turnsSpent = advanceTurn(dungeon, REST_DURATION_TURNS, state.party.roster, state.calendar);
 
     if (dungeon.rations > 0) {
       dungeon.rations -= 1;
@@ -1281,7 +1293,17 @@ export function lootRoom() {
     const type = encounter?.treasureType ?? "A";
     const loot = generateTreasure(type);
     dungeon.loot += loot.totalGold;
-    addLogEntry(dungeon, "loot", "Loot recovered", loot.summary);
+    // Add coins for encumbrance tracking
+    dungeon.coins = dungeon.coins ?? { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
+    dungeon.coins.cp += loot.coins.cp;
+    dungeon.coins.sp += loot.coins.sp;
+    dungeon.coins.ep += loot.coins.ep;
+    dungeon.coins.gp += loot.coins.gp;
+    dungeon.coins.pp += loot.coins.pp;
+    
+    const totalCoins = getTotalCoinCount(dungeon.coins);
+    const encumbrance = getEncumbranceLevel(totalCoins);
+    addLogEntry(dungeon, "loot", "Loot recovered", `${loot.summary} (${totalCoins} coins, ${encumbrance})`);
 
     dungeon.status = "idle";
     dungeon.encounter = undefined;
@@ -1294,15 +1316,30 @@ export function attemptReturn() {
     const dungeon = state.dungeon;
     const depth = dungeon.depth;
     
-    // Calculate turns needed to return based on depth
-    // Estimate: 3 turns per dungeon level to traverse back
-    const turnsToExit = depth * 3;
+    // Calculate encumbrance from coins carried
+    dungeon.coins = dungeon.coins ?? { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
+    const totalCoins = getTotalCoinCount(dungeon.coins);
+    const encumbranceMultiplier = getEncumbranceMultiplier(totalCoins);
+    const encumbranceLevel = getEncumbranceLevel(totalCoins);
+    
+    if (encumbranceMultiplier === 0) {
+      addLogEntry(dungeon, "event", "⚠️ Overloaded!", 
+        `Carrying ${totalCoins} coins (${Math.floor(totalCoins/10)} cn) - party cannot move! Drop some treasure.`);
+      return;
+    }
+    
+    // Calculate turns needed to return based on depth and encumbrance
+    const baseTurns = depth * 3;
+    const turnsToExit = Math.ceil(baseTurns / encumbranceMultiplier);
     
     // Number of wandering monster checks (every 2 turns per BECMI)
     const numChecks = Math.ceil(turnsToExit / 2);
     
+    const encumbranceNote = encumbranceMultiplier < 1 
+      ? ` (${encumbranceLevel} - slowed by ${totalCoins} coins)`
+      : "";
     addLogEntry(dungeon, "event", "Beginning return journey", 
-      `Depth ${depth} requires approximately ${turnsToExit} turns to exit. Making ${numChecks} wandering monster checks...`);
+      `Depth ${depth} requires approximately ${turnsToExit} turns to exit${encumbranceNote}. Making ${numChecks} wandering monster checks...`);
     
     // Roll all wandering monster checks at once
     let encountersTriggered = 0;
@@ -1326,7 +1363,7 @@ export function attemptReturn() {
         `${encountersTriggered} encounter${encountersTriggered > 1 ? 's' : ''} triggered! You must fight or flee before reaching safety.`);
       
       // Start the encounter - can't bank until resolved
-      startEncounter(dungeon, true, state.party.roster); // true = wandering monster
+      startEncounter(dungeon, true, state.party.roster, state.calendar); // true = wandering monster
       dungeon.status = "encounter";
       
       // Mark that we're trying to exit (so after combat resolves, we continue)
@@ -1342,10 +1379,26 @@ export function attemptReturn() {
 function completeReturn(dungeon: typeof DEFAULT_STATE.dungeon, state: any) {
   const lootAmount = dungeon.loot;
   const depth = dungeon.depth;
-  const turnsToExit = depth * 3;
+  
+  // Calculate encumbrance from coins carried
+  dungeon.coins = dungeon.coins ?? { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
+  const totalCoins = getTotalCoinCount(dungeon.coins);
+  const encumbranceMultiplier = getEncumbranceMultiplier(totalCoins);
+  const encumbranceLevel = getEncumbranceLevel(totalCoins);
+  
+  // Base turns × encumbrance penalty (slower movement = more turns)
+  // If overloaded (multiplier = 0), party cannot move
+  if (encumbranceMultiplier === 0) {
+    addLogEntry(dungeon, "event", "⚠️ Overloaded!", 
+      `Carrying ${totalCoins} coins (${Math.floor(totalCoins/10)} cn) - party cannot move! Drop some treasure.`);
+    return;
+  }
+  
+  const baseTurns = depth * 3;
+  const turnsToExit = Math.ceil(baseTurns / encumbranceMultiplier);
   
   // Advance time for the journey back
-  advanceTurn(dungeon, turnsToExit, state.party.roster);
+  advanceTurn(dungeon, turnsToExit, state.party.roster, state.calendar);
   
   // Update calendar
   const calendar = state.calendar;
@@ -1354,11 +1407,15 @@ function completeReturn(dungeon: typeof DEFAULT_STATE.dungeon, state: any) {
   const after = describeClock(calendar.clock);
   addCalendarLog(calendar, `Return journey: +${turnsToExit} turns`, `${before} → ${after}`);
   
+  const encumbranceNote = encumbranceMultiplier < 1 
+    ? ` (${encumbranceLevel} with ${totalCoins} coins)`
+    : "";
   addLogEntry(dungeon, "loot", "🏠 Returned to safety!", 
-    `After ${turnsToExit} turns of travel, the party reaches the surface with ${lootAmount} gp.`);
+    `After ${turnsToExit} turns of travel${encumbranceNote}, the party reaches the surface with ${lootAmount} gp.`);
   
-  // Reset dungeon state
+  // Reset dungeon state including coins
   dungeon.loot = 0;
+  dungeon.coins = { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
   dungeon.turn = 0;
   dungeon.status = "idle";
   
@@ -1426,11 +1483,24 @@ export function continueReturn() {
     lootAmount = dungeon.loot;
     depth = dungeon.depth;
     
-    // Complete the return journey
-    const turnsToExit = depth * 3;
+    // Calculate encumbrance from coins carried
+    dungeon.coins = dungeon.coins ?? { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
+    const totalCoins = getTotalCoinCount(dungeon.coins);
+    const encumbranceMultiplier = getEncumbranceMultiplier(totalCoins);
+    const encumbranceLevel = getEncumbranceLevel(totalCoins);
+    
+    if (encumbranceMultiplier === 0) {
+      addLogEntry(dungeon, "event", "⚠️ Overloaded!", 
+        `Carrying ${totalCoins} coins (${Math.floor(totalCoins/10)} cn) - party cannot move! Drop some treasure.`);
+      return;
+    }
+    
+    // Complete the return journey with encumbrance
+    const baseTurns = depth * 3;
+    const turnsToExit = Math.ceil(baseTurns / encumbranceMultiplier);
     
     // Advance time for remainder of journey
-    advanceTurn(dungeon, turnsToExit, state.party.roster);
+    advanceTurn(dungeon, turnsToExit, state.party.roster, state.calendar);
     
     // Update calendar
     const calendar = state.calendar;
@@ -1439,11 +1509,15 @@ export function continueReturn() {
     const after = describeClock(calendar.clock);
     addCalendarLog(calendar, `Completed return: +${turnsToExit} turns`, `${before} → ${after}`);
     
+    const encumbranceNote = encumbranceMultiplier < 1 
+      ? ` (${encumbranceLevel} with ${totalCoins} coins)`
+      : "";
     addLogEntry(dungeon, "loot", "🏠 Finally reached safety!", 
-      `The party emerges from the dungeon with ${lootAmount} gp.`);
+      `The party emerges from the dungeon with ${lootAmount} gp${encumbranceNote}.`);
     
-    // Reset dungeon state
+    // Reset dungeon state including coins
     dungeon.loot = 0;
+    dungeon.coins = { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
     dungeon.turn = 0;
     dungeon.status = "idle";
   });
@@ -1517,7 +1591,7 @@ export function castSpellDuringDelve(characterId: string, spellName: string) {
   });
 }
 
-function advanceTurn(dungeon: typeof DEFAULT_STATE.dungeon, turns = 1, party?: any[]): number {
+function advanceTurn(dungeon: typeof DEFAULT_STATE.dungeon, turns = 1, party?: any[], calendar?: { clock: any }): number {
   if (turns <= 0) return 0;
 
   const startingTurn = dungeon.turn;
@@ -1545,7 +1619,7 @@ function advanceTurn(dungeon: typeof DEFAULT_STATE.dungeon, turns = 1, party?: a
 
     // Check for wandering monsters every 2 turns (BECMI rule)
     if (dungeon.turn % 2 === 0) {
-      checkWanderingMonsters(dungeon, party);
+      checkWanderingMonsters(dungeon, party, calendar);
       // If we encountered monsters during any activity, stop that activity early
       if (dungeon.status === "encounter" || dungeon.status === "surprise") {
         addLogEntry(
@@ -1660,12 +1734,12 @@ function describeEmptyArea(areaType: DungeonAreaType, intersectionKind: "side_pa
   }
 }
 
-function checkWanderingMonsters(dungeon: typeof DEFAULT_STATE.dungeon, party?: any[]) {
+function checkWanderingMonsters(dungeon: typeof DEFAULT_STATE.dungeon, party?: any[], calendar?: { clock: any }) {
   // BECMI wandering monster check: 1d6, encounter on roll of 1
   const roll = rollDie(6);
   if (roll === 1) {
     // Wandering monster encountered during travel
-    startEncounter(dungeon, true, party);
+    startEncounter(dungeon, true, party, calendar);
   }
 }
 
@@ -1719,17 +1793,63 @@ function resolveQuantity(input: string): number {
   return Number.isNaN(parsed) ? 1 : parsed;
 }
 
-function generateTreasure(type: string): { summary: string; totalGold: number } {
+// Convert coin types to gold piece equivalent (BECMI rates)
+function convertToGold(coinType: string, amount: number): number {
+  switch (coinType.toLowerCase()) {
+    case "pp": return amount * 5;      // 1 pp = 5 gp
+    case "gp": return amount;          // 1 gp = 1 gp
+    case "ep": return amount * 0.5;    // 1 ep = 0.5 gp
+    case "sp": return amount * 0.1;    // 1 sp = 0.1 gp
+    case "cp": return amount * 0.01;   // 1 cp = 0.01 gp
+    default: return amount;
+  }
+}
+
+// Get total coin count for encumbrance (BECMI: 10 coins = 1 cn)
+export function getTotalCoinCount(coins: { cp: number; sp: number; ep: number; gp: number; pp: number }): number {
+  return coins.cp + coins.sp + coins.ep + coins.gp + coins.pp;
+}
+
+// Calculate encumbrance level based on coin weight (BECMI rules)
+// Standard encumbrance assumes ~400 cn capacity for normal movement
+export function getEncumbranceLevel(totalCoins: number): string {
+  const cn = totalCoins / 10; // 10 coins = 1 cn
+  if (cn <= 400) return "unencumbered";
+  if (cn <= 800) return "lightly encumbered";
+  if (cn <= 1200) return "heavily encumbered";
+  if (cn <= 1600) return "severely encumbered";
+  return "overloaded";
+}
+
+// Get movement multiplier based on encumbrance (BECMI)
+export function getEncumbranceMultiplier(totalCoins: number): number {
+  const cn = totalCoins / 10;
+  if (cn <= 400) return 1;      // Full speed (120'/turn)
+  if (cn <= 800) return 0.75;   // 3/4 speed (90'/turn)
+  if (cn <= 1200) return 0.5;   // 1/2 speed (60'/turn)
+  if (cn <= 1600) return 0.25;  // 1/4 speed (30'/turn)
+  return 0;                      // Cannot move
+}
+
+interface TreasureResult {
+  summary: string;
+  totalGold: number;
+  coins: { cp: number; sp: number; ep: number; gp: number; pp: number };
+}
+
+function generateTreasure(type: string): TreasureResult {
   const table = TREASURE_TYPES[type] || TREASURE_TYPES.A;
   let summary: string[] = [];
   let total = 0;
+  const coins = { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
 
-  const coin = (roll?: { pct: number; roll: string; mult?: number }, kind?: string) => {
-    if (!roll) return;
+  const coin = (roll?: { pct: number; roll: string; mult?: number }, kind?: "cp" | "sp" | "ep" | "gp" | "pp") => {
+    if (!roll || !kind) return;
     if (Math.random() * 100 > roll.pct) return;
     const amount = rollFormula(roll.roll) * (roll.mult ?? 1);
+    coins[kind] += amount;
     summary.push(`${amount} ${kind}`);
-    total += convertToGold(kind ?? "gp", amount);
+    total += convertToGold(kind, amount);
   };
 
   coin(table.cp, "cp");
@@ -1766,7 +1886,7 @@ function generateTreasure(type: string): { summary: string; totalGold: number } 
     summary.push("No treasure found");
   }
 
-  return { summary: summary.join("; "), totalGold: total };
+  return { summary: summary.join("; "), totalGold: total, coins };
 }
 
 // RC Unguarded Treasure Table (Chapter 17, Random Stocking)
