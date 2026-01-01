@@ -15,11 +15,12 @@
  */
 
 import { Random } from './rng.ts';
-import { WorldState, LogEntry, Party, NPC, Settlement } from './types.ts';
+import { WorldState, LogEntry, Party, NPC, Settlement, WorldEvent } from './types.ts';
 import { Antagonist } from './antagonists.ts';
 import { StoryThread } from './stories.ts';
 import { queueConsequence } from './consequences.ts';
 import { randomName } from './naming.ts';
+import { processWorldEvent } from './causality.ts';
 
 // ============================================================================
 // LEGENDARY WEAPONS
@@ -488,10 +489,11 @@ export function maybeLegendarySpike(
     });
     
     // Queue story spawn
+    // Real-time: ~2-3 days for rumors to settle (288-432 turns)
     queueConsequence({
       type: 'spawn-rumor',
       triggerEvent: `Legendary weapon: ${weapon.name}`,
-      turnsUntilResolution: 24 + rng.int(48),
+      turnsUntilResolution: 288 + rng.int(144),
       data: {
         origin: settlement.name,
         target: settlement.name,
@@ -641,7 +643,12 @@ export function checkLegendaryEncounter(
   legendaryState: LegendaryState,
   worldTime: Date,
   seed: string,
-): LogEntry | null {
+  world: WorldState,
+  antagonists: Antagonist[],
+  storyThreads: StoryThread[],
+): LogEntry[] {
+  const logs: LogEntry[] = [];
+  
   // Check for unique monster encounter
   const monstersHere = legendaryState.monsters.filter(m => m.alive && m.territory === location);
   
@@ -652,7 +659,21 @@ export function checkLegendaryEncounter(
       
       if (victory) {
         monster.alive = false;
-        return {
+        
+        const deathEvent: WorldEvent = {
+          id: `slayer-${Date.now()}`,
+          type: 'death',
+          timestamp: worldTime,
+          location,
+          actors: [party.name],
+          victims: [monster.name],
+          magnitude: 10,
+          witnessed: true,
+          data: { cause: 'legendary battle', legendary: true },
+        };
+        logs.push(...processWorldEvent(deathEvent, world, rng, antagonists, storyThreads));
+
+        logs.push({
           category: 'road',
           summary: `${party.name} SLAYS ${monster.name} ${monster.epithet}!`,
           details: `Against all odds, they defeat the legendary ${monster.species}! ${monster.treasure ? `In its lair, they find ${monster.treasure}.` : ''} Songs will be sung for generations!`,
@@ -661,11 +682,12 @@ export function checkLegendaryEncounter(
           worldTime,
           realTime: new Date(),
           seed,
-        };
+        });
+        return logs;
       } else {
         party.wounded = true;
         party.restHoursRemaining = 48;
-        return {
+        logs.push({
           category: 'road',
           summary: `${party.name} flees ${monster.name} ${monster.epithet}`,
           details: `The legendary ${monster.species} proves too powerful. They escape with their lives—barely.`,
@@ -674,7 +696,8 @@ export function checkLegendaryEncounter(
           worldTime,
           realTime: new Date(),
           seed,
-        };
+        });
+        return logs;
       }
     }
   }
@@ -688,7 +711,19 @@ export function checkLegendaryEncounter(
       weapon.owner = party.name;
       weapon.location = location;
       
-      return {
+      const discoveryEvent: WorldEvent = {
+        id: `discovery-${Date.now()}`,
+        type: 'discovery',
+        timestamp: worldTime,
+        location,
+        actors: [party.name],
+        magnitude: 8,
+        witnessed: true,
+        data: { item: weapon.name, type: 'legendary weapon' },
+      };
+      logs.push(...processWorldEvent(discoveryEvent, world, rng, antagonists, storyThreads));
+
+      logs.push({
         category: 'road',
         summary: `${party.name} discovers ${weapon.name} ${weapon.epithet}!`,
         details: `In a forgotten place, they find the legendary ${weapon.type} of ${weapon.material}. ${weapon.history} ${weapon.curse ? `But a dark truth emerges: ${weapon.curse}` : 'A new chapter begins.'}`,
@@ -697,10 +732,11 @@ export function checkLegendaryEncounter(
         worldTime,
         realTime: new Date(),
         seed,
-      };
+      });
+      return logs;
     }
   }
   
-  return null;
+  return logs;
 }
 

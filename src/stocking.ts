@@ -1,14 +1,7 @@
 import { Random } from './rng.ts';
-import { Dungeon, RareFind } from './types.ts';
+import { Dungeon, RareFind, StockedRoom } from './types.ts';
 
 const ROOM_TYPES = ['lair', 'trap', 'treasure', 'empty', 'shrine', 'laboratory'] as const;
-
-export interface StockedRoom {
-  type: (typeof ROOM_TYPES)[number];
-  threat: number;
-  loot: boolean;
-  rare?: RareFind;
-}
 
 export function stockDungeon(rng: Random, dungeon: Dungeon, rooms = 12): StockedRoom[] {
   const stocked: StockedRoom[] = [];

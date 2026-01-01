@@ -1,5 +1,5 @@
 import { Random } from './rng.ts';
-import { LogEntry, WorldState } from './types.ts';
+import { LogEntry, WorldState, WorldEvent } from './types.ts';
 import { pathTerrain, distanceMiles, settlementById } from './world.ts';
 import { applyFatigueSpeed } from './travel.ts';
 import { applyCaravanTrade } from './town.ts';
@@ -9,6 +9,7 @@ import { updateFactionWealth, updateFactionAttitude } from './world.ts';
 import { createRumor, logRumor } from './rumors.ts';
 import { factionRumorOnEvent } from './factions.ts';
 import { randomName } from './naming.ts';
+import { processWorldEvent } from './causality.ts';
 
 // Helper to get faction name from ID
 function getFactionName(world: WorldState, factionId: string): string {
@@ -83,6 +84,43 @@ export function advanceCaravans(world: WorldState, rng: Random, worldTime: Date)
         )}.`;
         logs.push(factionRumorOnEvent(world, rng, to.name, caravan.factionId, text, worldTime));
       }
+    } else if (rng.chance(0.02)) {
+      // Bandit attack!
+      const raider = rng.pick(world.factions.filter(f => f.focus === 'martial') || [{ name: 'Bandits', id: 'bandits' }]);
+      const robberyEvent: WorldEvent = {
+        id: `robbery-${Date.now()}`,
+        type: 'robbery',
+        timestamp: worldTime,
+        location: caravan.location,
+        actors: [raider.name],
+        perpetrators: [raider.name],
+        magnitude: 4,
+        witnessed: true,
+        data: {
+          value: 50 + rng.int(100),
+          targetType: 'caravan',
+          factionId: caravan.factionId,
+          goods: caravan.goods,
+        },
+      };
+      
+      logs.push({
+        category: 'road',
+        summary: `${caravan.name} is raided!`,
+        details: `${raider.name} forces have intercepted the caravan en route to ${to.name}.`,
+        location: caravan.location,
+        actors: [caravan.name, raider.name],
+        worldTime,
+        realTime: new Date(),
+        seed: world.seed,
+      });
+
+      // Process the robbery (will add Casus Belli to caravan owner)
+      const causalityLogs = processWorldEvent(robberyEvent, world, rng, (world as any).antagonists || [], (world as any).storyThreads || []);
+      logs.push(...causalityLogs);
+
+      // Caravan is delayed
+      caravan.progressHours = Math.max(0, caravan.progressHours - 12);
     } else if (rng.chance(0.05)) {
       const escort = caravan.escorts?.length ? ` under escort` : '';
       logs.push({

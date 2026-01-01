@@ -1,6 +1,6 @@
 import { randomName, randomPlace, generateFactionName, generatePartyName, generateCaravanName, generateDungeonName, FactionFocus } from './naming.ts';
 import { Random } from './rng.ts';
-import { HexTile, Party, Settlement, Terrain, WorldState, HexCoord, Dungeon, Good, Rumor, NPC, NPCRole, Caravan, Faction } from './types.ts';
+import { HexTile, Party, Settlement, Terrain, WorldState, HexCoord, Dungeon, Good, Rumor, NPC, NPCRole, Caravan, Faction, WorldArchetype, Nexus, MercenaryCompany, Army } from './types.ts';
 import { stockDungeon } from './stocking.ts';
 
 function uniqueId(prefix: string, counter: number): string {
@@ -8,6 +8,8 @@ function uniqueId(prefix: string, counter: number): string {
 }
 
 const TERRAIN_POOL: Terrain[] = ['road', 'clear', 'forest', 'hills', 'mountains', 'swamp', 'desert'];
+
+const ARCHETYPES: WorldArchetype[] = ['Standard', 'Age of War', 'The Great Plague', 'Arcane Bloom', 'Wilderness Unbound', 'Golden Age'];
 
 const TERRAIN_WEIGHTS: Array<{ terrain: Terrain; weight: number }> = [
   { terrain: 'clear', weight: 4 },
@@ -18,23 +20,23 @@ const TERRAIN_WEIGHTS: Array<{ terrain: Terrain; weight: number }> = [
   { terrain: 'desert', weight: 1 },
 ];
 
-function weightedTerrain(rng: Random): Terrain {
-  const total = TERRAIN_WEIGHTS.reduce((acc, t) => acc + t.weight, 0);
+function weightedTerrain(rng: Random, weights: Array<{ terrain: Terrain; weight: number }>): Terrain {
+  const total = weights.reduce((acc, t) => acc + t.weight, 0);
   let roll = rng.int(total);
-  for (const entry of TERRAIN_WEIGHTS) {
+  for (const entry of weights) {
     roll -= entry.weight;
     if (roll < 0) return entry.terrain;
   }
   return 'clear';
 }
 
-function generateHexMap(rng: Random, width = 6, height = 6): HexTile[] {
+function generateHexMap(rng: Random, width = 6, height = 6, weights: Array<{ terrain: Terrain; weight: number }>): HexTile[] {
   const hexes: HexTile[] = [];
   for (let q = 0; q < width; q += 1) {
     for (let r = 0; r < height; r += 1) {
       hexes.push({
         coord: { q, r },
-        terrain: weightedTerrain(rng),
+        terrain: weightedTerrain(rng, weights),
       });
     }
   }
@@ -75,26 +77,41 @@ function worstTerrain(t1: Terrain, t2: Terrain): Terrain {
 }
 
 export function createInitialWorld(rng: Random, seed: string, start: Date): WorldState {
+  const archetype = rng.pick(ARCHETYPES);
   const width = 6;
   const height = 6;
-  const hexes = generateHexMap(rng, width, height);
+  
+  // Tweak terrain weights based on archetype
+  const terrainWeights = [...TERRAIN_WEIGHTS];
+  if (archetype === 'Wilderness Unbound') {
+    terrainWeights.find(t => t.terrain === 'clear')!.weight = 1;
+    terrainWeights.find(t => t.terrain === 'forest')!.weight = 6;
+    terrainWeights.find(t => t.terrain === 'mountains')!.weight = 4;
+  }
 
-  const settlementCount = 3 + rng.int(2); // 3-4 settlements
+  const hexes = generateHexMap(rng, width, height, terrainWeights);
+
+  const settlementCount = (archetype === 'Golden Age' ? 5 : archetype === 'Wilderness Unbound' ? 2 : 3) + rng.int(2); 
   const settlementHexes = sampleDistinctHexes(rng, hexes, settlementCount);
   const goods: Good[] = ['grain', 'timber', 'ore', 'textiles', 'salt', 'fish', 'livestock'];
   const settlements: Settlement[] = settlementHexes.map((hex, i) => {
     const supply: Record<Good, number> = Object.fromEntries(
       goods.map((g) => [g, rng.int(5) - 2]), // -2..2
     ) as Record<Good, number>;
+    
+    // Archetype tweaks
+    if (archetype === 'Golden Age') supply.grain += 2;
+    if (archetype === 'The Great Plague') supply.livestock -= 2;
+
     const priceTrends = Object.fromEntries(goods.map((g) => [g, 'normal'])) as Record<Good, 'low' | 'normal' | 'high'>;
     return {
       id: uniqueId('settlement', i),
       name: randomPlace(rng),
-      population: 200 + rng.int(1800),
+      population: (archetype === 'Golden Age' ? 1000 : 200) + rng.int(1800),
       type: i === 0 ? 'town' : rng.chance(0.3) ? 'town' : 'village',
       coord: hex.coord,
       supply,
-      mood: rng.int(5) - 2,
+      mood: archetype === 'Golden Age' ? 2 : archetype === 'Age of War' ? -2 : rng.int(5) - 2,
       priceTrends,
     };
   });
@@ -120,36 +137,80 @@ export function createInitialWorld(rng: Random, seed: string, start: Date): Worl
     {
       id: 'party-0',
       name: generatePartyName(rng),
-      members: [randomName(rng), randomName(rng), randomName(rng)],
+      members: [
+        { name: randomName(rng), class: 'Fighter', level: 1 + rng.int(3), hp: 20, maxHp: 20 },
+        { name: randomName(rng), class: 'Cleric', level: 1 + rng.int(3), hp: 15, maxHp: 15 },
+        { name: randomName(rng), class: 'Magic-User', level: 1 + rng.int(3), hp: 10, maxHp: 10 },
+      ],
       location: settlements[0]?.name ?? settlements[settlements.length - 1]?.name ?? randomPlace(rng),
       status: 'idle',
+      xp: 0,
     },
     {
       id: 'band-0',
       name: generatePartyName(rng),
-      members: [randomName(rng), randomName(rng)],
+      members: [
+        { name: randomName(rng), class: 'Thief', level: 1 + rng.int(2), hp: 12, maxHp: 12 },
+        { name: randomName(rng), class: 'Elf', level: 1 + rng.int(2), hp: 14, maxHp: 14 },
+      ],
       location: settlements[settlements.length - 1]?.name ?? settlements[0]?.name ?? randomPlace(rng),
       status: 'idle',
+      xp: 0,
     },
   ];
 
-  const factions = seedFactions(rng);
+  const factions = seedFactions(rng, archetype);
   
   return {
     seed,
+    archetype,
     hexes,
     width,
     height,
     settlements,
     parties,
     roads,
-    dungeons: seedDungeons(rng, settlements),
+    dungeons: seedDungeons(rng, settlements, archetype),
     activeRumors: [],
     npcs: seedNPCs(rng, settlements),
     factions,
     caravans: seedCaravans(rng, settlements, factions),
+    strongholds: [],
+    armies: [],
+    landmarks: [],
+    ruins: [],
+    nexuses: seedNexuses(rng, (archetype === 'Arcane Bloom' ? 6 : 3) + rng.int(3)),
+    mercenaries: seedMercenaries(rng, settlements),
     startedAt: start,
   };
+}
+
+function seedMercenaries(rng: Random, settlements: Settlement[]): MercenaryCompany[] {
+  const companyNames = ['The Iron Brotherhood', 'Silver Shields', 'The Golden Lions', 'Black Boars', 'Red Ravagers', 'The Free Company'];
+  return companyNames.map((name, i) => {
+    const settlement = rng.pick(settlements);
+    return {
+      id: `merc-${i}`,
+      name,
+      captainId: `npc-merc-captain-${i}`, // Ideally would link to a real NPC
+      location: settlement.name,
+      size: 50 + rng.int(150),
+      quality: 2 + rng.int(5),
+      monthlyRate: 100 + rng.int(400),
+      loyalty: 7 + rng.int(3),
+    };
+  });
+}
+
+function seedNexuses(rng: Random, count: number): Nexus[] {
+  const powerTypes: Array<'Arcane' | 'Divine' | 'Primal' | 'Shadow'> = ['Arcane', 'Divine', 'Primal', 'Shadow'];
+  return Array.from({ length: count }, (_, i) => ({
+    id: `nexus-${i}`,
+    name: `${rng.pick(['Whispering', 'Eternal', 'Shattered', 'Golden', 'Deep'])} Nexus of ${rng.pick(['Stars', 'Bones', 'Life', 'Void', 'Time'])}`,
+    location: { q: rng.int(6), r: rng.int(6) },
+    powerType: rng.pick(powerTypes),
+    intensity: 5 + rng.int(5),
+  }));
 }
 
 export function randomTerrain(rng: Random): Terrain {
@@ -202,7 +263,7 @@ export function updateFactionAttitude(world: WorldState, factionId: string, targ
   f.attitude[targetSettlement] = Math.max(-3, Math.min(3, f.attitude[targetSettlement] + delta));
 }
 
-function seedDungeons(rng: Random, settlements: Settlement[]): Dungeon[] {
+function seedDungeons(rng: Random, settlements: Settlement[], archetype: WorldArchetype): Dungeon[] {
   if (!settlements.length) return [];
   const anchor = rng.pick(settlements);
   const offset: HexCoord = { q: Math.max(0, anchor.coord.q + (rng.int(3) - 1)), r: Math.max(0, anchor.coord.r + (rng.int(3) - 1)) };
@@ -210,8 +271,8 @@ function seedDungeons(rng: Random, settlements: Settlement[]): Dungeon[] {
     id: 'dungeon-0',
     name: generateDungeonName(rng),
     coord: offset,
-    depth: 3 + rng.int(3),
-    danger: 2 + rng.int(3),
+    depth: (archetype === 'Standard' ? 3 : 5) + rng.int(3),
+    danger: (archetype === 'Wilderness Unbound' ? 4 : 2) + rng.int(3),
   };
   dungeon.rooms = stockDungeon(rng, dungeon);
   dungeon.explored = 0;
@@ -266,19 +327,23 @@ function seedCaravans(rng: Random, settlements: Settlement[], factions: Faction[
   return caravans;
 }
 
-function seedFactions(rng: Random): Faction[] {
+function seedFactions(rng: Random, archetype: WorldArchetype): Faction[] {
   const focuses: FactionFocus[] = ['trade', 'martial', 'pious', 'trade'];
   const count = 3 + rng.int(2); // 3-4 factions
   
   return Array.from({ length: count }, (_, i) => {
-    const focus = focuses[i % focuses.length];
+    let focus = focuses[i % focuses.length];
+    
+    // Archetype tweaks
+    if (archetype === 'Age of War' && rng.chance(0.5)) focus = 'martial';
+    if (archetype === 'Arcane Bloom' && i === 0) focus = 'arcane';
+
     return {
       id: `faction-${i}`,
       name: generateFactionName(rng, focus),
       attitude: {},
-      wealth: 50 + rng.int(50),
+      wealth: (archetype === 'Golden Age' ? 200 : 50) + rng.int(100),
       focus,
     };
   });
 }
-

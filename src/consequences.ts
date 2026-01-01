@@ -25,7 +25,8 @@ export type ConsequenceType =
   | 'settlement-change'
   | 'spawn-antagonist'
   | 'economic-shift'
-  | 'spawn-event';
+  | 'spawn-event'
+  | 'supply-disruption';
 
 export interface PendingConsequence {
   id: string;
@@ -187,10 +188,11 @@ function resolveConsequence(
       });
 
       // Spawn related rumors
+      // Real-time: ~12-24 hours for rumors to reach the town (72-144 turns)
       queueConsequence({
         type: 'spawn-rumor',
         triggerEvent: `New threat: ${threat}`,
-        turnsUntilResolution: 1 + rng.int(3),
+        turnsUntilResolution: 72 + rng.int(72),
         data: {
           origin: location,
           target: location,
@@ -220,6 +222,24 @@ function resolveConsequence(
         realTime: new Date(),
         seed: world.seed,
       });
+      break;
+    }
+
+    case 'supply-disruption': {
+      const { armyId, duration } = consequence.data as { armyId: string; duration: number };
+      const army = world.armies.find(a => a.id === armyId);
+      if (army) {
+        army.supplies = Math.max(0, army.supplies - 30);
+        logs.push({
+          category: 'faction',
+          summary: `Sudden supply shortage for ${army.ownerId}'s forces`,
+          details: `A critical supply caravan was lost or delayed. The army at ${army.location} is feeling the pinch.`,
+          location: army.location,
+          worldTime,
+          realTime: new Date(),
+          seed: world.seed,
+        });
+      }
       break;
     }
   }
@@ -273,10 +293,11 @@ function resolveFactionAction(
       });
 
       // Spawn a follow-up conflict event
+      // Real-time: ~2-3 days to retaliate (288-432 turns)
       queueConsequence({
         type: 'spawn-event',
         triggerEvent: `${faction.name} retaliation`,
-        turnsUntilResolution: 6 + rng.int(12), // Hours
+        turnsUntilResolution: 288 + rng.int(144), 
         data: {
           category: 'faction',
           summary: `${faction.name} strikes back`,
@@ -511,7 +532,8 @@ export function analyzeEventForConsequences(
         queueConsequence({
           type: 'npc-reaction',
           triggerEvent: event.summary,
-          turnsUntilResolution: 1 + rng.int(6),
+          // Real-time: 1-6 hours (6-36 turns)
+          turnsUntilResolution: 6 + rng.int(30),
           data: {
             npcId: npc.id,
             reaction: rng.pick(reactions),
@@ -528,7 +550,8 @@ export function analyzeEventForConsequences(
         queueConsequence({
           type: 'faction-action',
           triggerEvent: event.summary,
-          turnsUntilResolution: 3 + rng.int(12),
+          // Real-time: 12-24 hours (72-144 turns)
+          turnsUntilResolution: 72 + rng.int(72),
           data: {
             factionId: faction.id,
             action: rng.chance(0.5) ? 'patrol' : 'retaliate',
@@ -559,10 +582,12 @@ export function analyzeEventForConsequences(
   if (summary.includes('caravan') && (summary.includes('loss') || summary.includes('raid'))) {
     const relevantFaction = world.factions.find((f) => summary.includes(f.name.toLowerCase()));
     if (relevantFaction) {
+      // 1. Retaliation
       queueConsequence({
         type: 'faction-action',
         triggerEvent: event.summary,
-        turnsUntilResolution: 6 + rng.int(12),
+        // Real-time: 2-3 days (288-432 turns)
+        turnsUntilResolution: 288 + rng.int(144),
         data: {
           factionId: relevantFaction.id,
           action: 'retaliate',
@@ -570,6 +595,18 @@ export function analyzeEventForConsequences(
         },
         priority: 4,
       });
+
+      // 2. Supply disruption if an army was relying on this route
+      const armyNear = world.armies.find(a => a.ownerId === relevantFaction.id && a.supplyLineFrom === location);
+      if (armyNear) {
+        queueConsequence({
+          type: 'supply-disruption',
+          triggerEvent: event.summary,
+          turnsUntilResolution: 6 + rng.int(12),
+          data: { armyId: armyNear.id },
+          priority: 5,
+        });
+      }
     }
   }
 
@@ -579,7 +616,8 @@ export function analyzeEventForConsequences(
     queueConsequence({
       type: 'spawn-rumor',
       triggerEvent: event.summary,
-      turnsUntilResolution: 1 + rng.int(3),
+      // Real-time: 6-12 hours (36-72 turns)
+      turnsUntilResolution: 36 + rng.int(36),
       data: {
         origin: location,
         target: location,

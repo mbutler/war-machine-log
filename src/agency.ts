@@ -23,6 +23,222 @@ import { queueConsequence } from './consequences.ts';
 import { randomName } from './naming.ts';
 
 // ============================================================================
+// NEXUS & RESOURCE UPDATES - Power sources generate wealth and conflict
+// ============================================================================
+
+export function tickNexuses(world: WorldState, rng: Random, worldTime: Date): LogEntry[] {
+  const logs: LogEntry[] = [];
+  
+  for (const nexus of world.nexuses) {
+    if (nexus.currentOwnerId) {
+      // Owner gets wealth and power
+      const faction = world.factions.find(f => f.id === nexus.currentOwnerId);
+      const npc = world.npcs.find(n => n.id === nexus.currentOwnerId);
+      
+      if (faction) {
+        faction.wealth += nexus.intensity;
+        const state = getFactionState(world, faction.id);
+        state.power = Math.min(100, state.power + 1);
+      } else if (npc) {
+        const stronghold = world.strongholds.find(s => s.ownerId === npc.id);
+        if (stronghold) stronghold.treasury += nexus.intensity * 2;
+      }
+    } else {
+      // Unclaimed nexuses attract greed
+      if (rng.chance(0.01)) {
+        for (const faction of world.factions) {
+          const state = getFactionState(world, faction.id);
+          if (state.power >= 60 && !state.activeOperations.some(op => op.target === nexus.name)) {
+            // Faction wants the nexus!
+            state.activeOperations.push({
+              id: `op-nexus-${Date.now()}`,
+              type: 'expansion',
+              target: nexus.name,
+              startedAt: worldTime,
+              completesAt: new Date(worldTime.getTime() + 48 * 60 * 60 * 1000),
+              participants: [],
+              successChance: 0.5,
+            });
+            
+            logs.push({
+              category: 'faction',
+              summary: `${faction.name} moves to claim ${nexus.name}`,
+              details: `The ${nexus.powerType} energy of the nexus has drawn their attention. An expedition is sent.`,
+              location: `hex:${nexus.location.q},${nexus.location.r}`,
+              actors: [faction.name],
+              worldTime,
+              realTime: new Date(),
+              seed: world.seed,
+            });
+          }
+        }
+      }
+    }
+  }
+
+  // Monthly resource needs update
+  if (worldTime.getUTCDate() === 1) {
+    const allGoods: Good[] = ['grain', 'timber', 'ore', 'textiles', 'salt', 'fish', 'livestock'];
+    for (const faction of world.factions) {
+      const state = getFactionState(world, faction.id);
+      if (rng.chance(0.3)) {
+        const needed = rng.pick(allGoods);
+        if (!state.resourceNeeds.includes(needed)) {
+          state.resourceNeeds.push(needed);
+          logs.push({
+            category: 'faction',
+            summary: `${faction.name} declares a shortage of ${needed}`,
+            details: `Their stockpiles are low. They will seek ${needed} by any means necessary.`,
+            worldTime,
+            realTime: new Date(),
+            seed: world.seed,
+          });
+        }
+      }
+    }
+  }
+  
+  return logs;
+}
+
+// ============================================================================
+// ARMY RAISING - Factions and Lords gather troops
+// ============================================================================
+
+export function tickArmyRaising(world: WorldState, rng: Random, worldTime: Date): LogEntry[] {
+  const logs: LogEntry[] = [];
+  
+  // Factions raise armies if they have wealth and low army count
+  for (const faction of world.factions) {
+    const fState = getFactionState(world, faction.id);
+    const armyCount = world.armies.filter(a => a.ownerId === faction.id).length;
+    
+    if (faction.wealth >= 200 && armyCount < 2 && rng.chance(0.1)) {
+      const location = fState.territory.length > 0 ? rng.pick(fState.territory) : world.settlements[0].name;
+      
+      const newArmy: Army = {
+        id: `army-${faction.id}-${Date.now()}`,
+        ownerId: faction.id,
+        location: location,
+        strength: 50 + rng.int(100),
+        quality: 1 + rng.int(3),
+        morale: 7 + rng.int(3),
+        status: 'idle',
+        supplies: 100,
+        supplyLineFrom: location,
+        lastSupplied: worldTime,
+      };
+      
+      world.armies.push(newArmy);
+      faction.wealth -= 200;
+      
+      logs.push({
+        category: 'faction',
+        summary: `${faction.name} raises an army in ${location}`,
+        details: `Standard-bearers and mercenaries flock to their banners. A force of ${newArmy.strength} troops is ready for war.`,
+        location: location,
+        actors: [faction.name],
+        worldTime,
+        realTime: new Date(),
+        seed: world.seed,
+      });
+    }
+  }
+
+  // High level lords with strongholds raise personal guards
+  for (const stronghold of world.strongholds) {
+    if (!stronghold.constructionFinished) continue;
+    
+    const ownerArmy = world.armies.find(a => a.ownerId === stronghold.ownerId);
+    if (!ownerArmy && stronghold.treasury >= 500 && rng.chance(0.05)) {
+      const owner = world.npcs.find(n => n.id === stronghold.ownerId) || world.parties.find(p => p.id === stronghold.ownerId);
+      if (!owner) continue;
+
+      const location = world.settlements.find(s => s.coord.q === stronghold.location.q && s.coord.r === stronghold.location.r)?.name || `hex:${stronghold.location.q},${stronghold.location.r}`;
+      const newArmy: Army = {
+        id: `army-${stronghold.ownerId}-${Date.now()}`,
+        ownerId: stronghold.ownerId,
+        location,
+        strength: 20 + rng.int(40),
+        quality: 3 + rng.int(4),
+        morale: 9 + rng.int(2),
+        status: 'idle',
+        supplies: 100,
+        supplyLineFrom: location,
+        lastSupplied: worldTime,
+      };
+      
+      world.armies.push(newArmy);
+      stronghold.treasury -= 500;
+      
+      logs.push({
+        category: 'faction',
+        summary: `${owner.name} musters a personal guard`,
+        details: `Elite warriors are hired to defend ${stronghold.name}.`,
+        location: newArmy.location,
+        actors: [owner.name],
+        worldTime,
+        realTime: new Date(),
+        seed: world.seed,
+      });
+    }
+  }
+  
+  return logs;
+}
+
+// ============================================================================
+// LEVEL UPS - Characters grow in power over time
+// ============================================================================
+
+export function tickLevelUps(world: WorldState, rng: Random, worldTime: Date): LogEntry[] {
+  const logs: LogEntry[] = [];
+  
+  for (const party of world.parties) {
+    // Simplified BECMI XP logic: approx 2000 XP per level
+    const xpPerLevel = 2000;
+    const currentAvgLevel = Math.floor(party.members.reduce((sum, m) => sum + m.level, 0) / party.members.length);
+    const targetXp = currentAvgLevel * xpPerLevel;
+    
+    if (party.xp >= targetXp && currentAvgLevel < 36) {
+      // Level up everyone!
+      for (const member of party.members) {
+        member.level += 1;
+        member.maxHp += 1 + rng.int(8);
+        member.hp = member.maxHp;
+      }
+      
+      logs.push({
+        category: 'road',
+        summary: `${party.name} grows in power!`,
+        details: `Through hardship and battle, the members of ${party.name} have reached level ${party.members[0].level}.`,
+        location: party.location,
+        actors: [party.name],
+        worldTime,
+        realTime: new Date(),
+        seed: world.seed,
+      });
+      
+      // Check if they should build a stronghold
+      if (party.members[0].level === 9) {
+        const state = getPartyState(world, party.id);
+        if (!state.questLog.some(q => q.type === 'stronghold')) {
+          state.questLog.push({
+            id: `quest-stronghold-${Date.now()}`,
+            type: 'stronghold',
+            target: party.location,
+            reason: 'Establish a permanent seat of power at name level',
+            progress: 0,
+          });
+        }
+      }
+    }
+  }
+  
+  return logs;
+}
+
+// ============================================================================
 // NPC AGENCY - NPCs act on memories and agendas
 // ============================================================================
 
@@ -271,6 +487,213 @@ function executeNPCAgenda(
       }
       break;
     }
+
+    case 'research': {
+      // NPC researches new spells or seeks a nexus
+      if (npc.spells && rng.chance(0.2)) {
+        // High level casters want to control a Nexus
+        if (npc.level && npc.level >= 7 && !npc.agendas!.some(a => a.type === 'nexus')) {
+          const nearestNexus = world.nexuses?.find(n => !n.currentOwnerId);
+          if (nearestNexus) {
+            npc.agendas!.push({
+              type: 'nexus',
+              target: nearestNexus.id,
+              priority: 9,
+              progress: 0,
+              description: `Claim control of the ${nearestNexus.name}`,
+            });
+          }
+        }
+
+        const arcaneSpells = ['Detect Magic', 'Shield', 'Floating Disc', 'Hold Portal', 'Web', 'Invisibility', 'Fireball', 'Lightning Bolt', 'Fly'];
+        const divineSpells = ['Detect Evil', 'Hold Person', 'Bless', 'Speak with Animals', 'Continual Light', 'Striking', 'Dispel Magic'];
+        const pool = (npc.class === 'Magic-User' || npc.class === 'Elf') ? arcaneSpells : divineSpells;
+        const available = pool.filter(s => !npc.spells!.includes(s));
+        
+        if (available.length > 0) {
+          const newSpell = rng.pick(available);
+          npc.spells.push(newSpell);
+          agenda.progress = 100;
+          
+          logs.push({
+            category: 'town',
+            summary: `${npc.name} masters a new spell: ${newSpell}`,
+            details: `After weeks of intense study and meditation, the ${npc.role} has unlocked new power.`,
+            location: npc.location,
+            actors: [npc.name],
+            worldTime,
+            realTime: new Date(),
+            seed: world.seed,
+          });
+        }
+      }
+      break;
+    }
+    
+    case 'nexus': {
+      // NPC seeks to control a magical nexus
+      if (agenda.target) {
+        const nexus = world.nexuses?.find(n => n.id === agenda.target);
+        if (nexus) {
+          // Real-time: ~5-7 days (120-168 hours) to claim a nexus ritual
+          agenda.progress += 0.5 + rng.next() * 0.5;
+          if (agenda.progress >= 100) {
+            nexus.currentOwnerId = npc.id;
+            agenda.progress = 100;
+            
+            logs.push({
+              category: 'faction',
+              summary: `${npc.name} claims the ${nexus.name}`,
+              details: `Through long ritual and arcane mastery, the ${npc.role} has bound the ${nexus.powerType} power of the nexus to their own will.`,
+              location: `hex:${nexus.location.q},${nexus.location.r}`,
+              actors: [npc.name],
+              worldTime,
+              realTime: new Date(),
+              seed: world.seed,
+            });
+            
+            // Controlling a nexus makes you very famous
+            npc.fame = (npc.fame ?? 0) + 5;
+          }
+        }
+      }
+      break;
+    }
+
+    case 'stronghold': {
+      // Level 9+ NPC building a stronghold
+      if (npc.level && npc.level >= 9) {
+        // Real-time: Castles take months. 
+        // ~90 days = 2160 hours. 100 / 2160 = ~0.046 per hour.
+        agenda.progress += 0.02 + rng.next() * 0.03;
+        
+        if (agenda.progress >= 100) {
+          const settlement = world.settlements.find(s => s.name === npc.location);
+          const location = settlement ? settlement.coord : { q: rng.int(world.width), r: rng.int(world.height) };
+          const type = npc.class === 'Magic-User' ? 'Tower' : npc.class === 'Cleric' ? 'Temple' : npc.class === 'Thief' ? 'Hideout' : 'Keep';
+          
+          const stronghold = {
+            id: `stronghold-${npc.id}-${Date.now()}`,
+            ownerId: npc.id,
+            name: `${npc.name}'s ${type}`,
+            location: location,
+            type: type as any,
+            level: 1,
+            staff: 10 + rng.int(20),
+            constructionFinished: true,
+            treasury: 1000 + rng.int(2000),
+            unrest: 0,
+            population: 50 + rng.int(100),
+            taxRate: 10,
+          };
+          
+          world.strongholds.push(stronghold);
+          
+          logs.push({
+            category: 'faction',
+            summary: `${npc.name} completes their ${type}`,
+            details: `A grand monument to their power. The ${type} rises over the landscape, attracting followers and rivals alike.`,
+            location: npc.location,
+            actors: [npc.name],
+            worldTime,
+            realTime: new Date(),
+            seed: world.seed,
+          });
+          
+          // NPC becomes a ruler/lord
+          npc.title = npc.class === 'Fighter' ? 'Lord' : npc.class === 'Magic-User' ? 'Wizard' : npc.class === 'Cleric' ? 'Patriarch' : 'Guildmaster';
+          agenda.progress = 100;
+        } else {
+           if (rng.chance(0.1)) {
+             logs.push({
+               category: 'town',
+               summary: `Construction continues on ${npc.name}'s stronghold`,
+               details: `Masons and laborers work tirelessly. The foundations are deep and the walls rise.`,
+               location: npc.location,
+               actors: [npc.name],
+               worldTime,
+               realTime: new Date(),
+               seed: world.seed,
+             });
+           }
+        }
+      }
+      break;
+    }
+
+    case 'romance': {
+      if (!agenda.target) break;
+      const targetNpc = world.npcs.find(n => n.name === agenda.target) as ReactiveNPC;
+      if (targetNpc && targetNpc.location === npc.location && targetNpc.alive !== false) {
+        if (rng.chance(0.2)) {
+          // Real-time: ~2-4 weeks for a wedding
+          agenda.progress += 2 + rng.next() * 3;
+          logs.push({
+            category: 'town',
+            summary: `${npc.name} seeks the company of ${targetNpc.name}`,
+            details: `A quiet walk in the market, a shared meal... the bond between them grows stronger.`,
+            location: npc.location,
+            actors: [npc.name, targetNpc.name],
+            worldTime,
+            realTime: new Date(),
+            seed: world.seed,
+          });
+
+          if (agenda.progress >= 100) {
+            logs.push({
+              category: 'town',
+              summary: `${npc.name} and ${targetNpc.name} are wed`,
+              details: `Against the backdrop of these uncertain times, love prevails. A celebration is held.`,
+              location: npc.location,
+              actors: [npc.name, targetNpc.name],
+              worldTime,
+              realTime: new Date(),
+              seed: world.seed,
+            });
+          }
+        }
+      }
+      break;
+    }
+
+    case 'betrayal': {
+      if (!agenda.target) break;
+      const targetNpc = world.npcs.find(n => n.name === agenda.target) as ReactiveNPC;
+      if (targetNpc && targetNpc.location === npc.location && targetNpc.alive !== false) {
+        if (rng.chance(0.1)) {
+          // Real-time: ~1-2 weeks (168-336 hours) to plot a betrayal
+          agenda.progress += 0.3 + rng.next() * 0.4;
+          if (agenda.progress >= 100) {
+            // THE BETRAYAL
+            const betrayalEvent: WorldEvent = {
+              id: `betrayal-${Date.now()}`,
+              type: 'betrayal',
+              timestamp: worldTime,
+              location: npc.location,
+              actors: [npc.name],
+              victims: [targetNpc.name],
+              magnitude: 7,
+              witnessed: rng.chance(0.4),
+              data: { betrayer: npc.name, betrayed: targetNpc.name, nature: 'political' },
+            };
+            logs.push(...processWorldEvent(betrayalEvent, world, rng, antagonists, storyThreads));
+            npc.agendas = npc.agendas?.filter(a => a !== agenda);
+          } else {
+            logs.push({
+              category: 'town',
+              summary: `${npc.name} plots in shadows`,
+              details: `The ${npc.role} was seen conferring with rivals of ${targetNpc.name}.`,
+              location: npc.location,
+              actors: [npc.name],
+              worldTime,
+              realTime: new Date(),
+              seed: world.seed,
+            });
+          }
+        }
+      }
+      break;
+    }
   }
 
   return logs;
@@ -342,6 +765,57 @@ export function tickPartyAgency(
     if (state.questLog?.length > 0) {
       const quest = state.questLog[0]; // Focus on first quest
       
+      if (quest.type === 'stronghold') {
+        const avgLevel = party.members.reduce((sum, m) => sum + m.level, 0) / party.members.length;
+        if (avgLevel >= 9) {
+          // Real-time: ~90 days to build
+          quest.progress += 0.02 + rng.next() * 0.03;
+          if (quest.progress >= 100) {
+            const stronghold = {
+              id: `stronghold-${party.id}-${Date.now()}`,
+              ownerId: party.id,
+              name: `${party.name}'s Bastion`,
+              location: world.settlements.find(s => s.name === party.location)?.coord ?? { q: 0, r: 0 },
+              type: 'Keep' as const,
+              level: 1,
+              staff: 20 + rng.int(30),
+              constructionFinished: true,
+              treasury: 5000,
+              unrest: 0,
+              population: 100 + rng.int(200),
+              taxRate: 10,
+            };
+            world.strongholds.push(stronghold);
+            state.questLog = state.questLog.filter(q => q.id !== quest.id);
+            party.fame = (party.fame ?? 0) + 10;
+            
+            logs.push({
+              category: 'faction',
+              summary: `${party.name} completes their stronghold!`,
+              details: `The construction is finished. ${party.name} now rules from their own fortress.`,
+              location: party.location,
+              actors: [party.name],
+              worldTime,
+              realTime: new Date(),
+              seed: world.seed,
+            });
+          } else {
+            if (rng.chance(0.1)) {
+              logs.push({
+                category: 'town',
+                summary: `${party.name} oversees stronghold construction`,
+                details: `Stone by stone, the bastion rises. Local workers are busy with the scaffolding.`,
+                location: party.location,
+                actors: [party.name],
+                worldTime,
+                realTime: new Date(),
+                seed: world.seed,
+              });
+            }
+          }
+        }
+      }
+
       if (quest.type === 'hunt') {
         const target = findTarget(quest.target, world, antagonists);
         if (target) {
@@ -653,10 +1127,13 @@ export function tickFactionOperations(
         if (enemy && enemyState.territory.length > 0) {
           const targetSettlement = rng.pick(enemyState.territory);
           
-          // Launch raid
-          const op = {
+          // Launch conquest instead of just raid if we have a Casus Belli
+          const hasCB = state.casusBelli[enemyId];
+          const opType = hasCB ? 'conquest' : 'raid';
+
+          const op: FactionOperation = {
             id: `op-${Date.now()}`,
-            type: 'raid' as const,
+            type: opType,
             target: targetSettlement,
             startedAt: worldTime,
             completesAt: new Date(worldTime.getTime() + (12 + rng.int(24)) * 60 * 60 * 1000),
@@ -668,9 +1145,67 @@ export function tickFactionOperations(
           logs.push({
             category: 'faction',
             summary: `${faction.name} marshals forces against ${enemy.name}`,
-            details: `War continues. ${targetSettlement} is in their sights.`,
+            details: hasCB 
+              ? `Driven by ${hasCB.reason}, they seek to conquer ${targetSettlement}.`
+              : `War continues. ${targetSettlement} is in their sights.`,
             location: targetSettlement,
             actors: [faction.name, enemy.name],
+            worldTime,
+            realTime: new Date(),
+            seed: world.seed,
+          });
+
+          // Raise an army for this operation if we don't have one nearby
+          if (!world.armies.some(a => a.ownerId === faction.id && a.location === targetSettlement)) {
+            const homeBase = state.territory[0] || faction.name;
+            const army: Army = {
+              id: `army-op-${Date.now()}`,
+              ownerId: faction.id,
+              location: homeBase,
+              strength: 40 + rng.int(60),
+              quality: 2,
+              morale: 8,
+              status: 'marching' as const,
+              target: targetSettlement,
+              supplies: 100,
+              supplyLineFrom: homeBase,
+              lastSupplied: worldTime,
+            };
+            world.armies.push(army);
+          }
+        }
+      }
+    }
+
+    // RESOURCE-DRIVEN CONFLICT
+    // If a faction needs a resource, and an enemy or neutral controls it, they might attack
+    if (state.resourceNeeds.length > 0 && state.activeOperations.length < 2 && rng.chance(0.1)) {
+      const need = rng.pick(state.resourceNeeds);
+      const targetSettlement = world.settlements.find(s => s.supply[need] > 2);
+      
+      if (targetSettlement) {
+        const sState = getSettlementState(world, targetSettlement.name);
+        const currentOwnerId = sState.controlledBy;
+        
+        if (currentOwnerId !== faction.id) {
+          // Found a settlement with the resource we need!
+          const op: FactionOperation = {
+            id: `op-res-${Date.now()}`,
+            type: 'conquest',
+            target: targetSettlement.name,
+            startedAt: worldTime,
+            completesAt: new Date(worldTime.getTime() + (24 + rng.int(48)) * 60 * 60 * 1000),
+            participants: [],
+            successChance: 0.3 + state.power / 200,
+          };
+          state.activeOperations.push(op);
+          
+          logs.push({
+            category: 'faction',
+            summary: `${faction.name} eyes ${targetSettlement.name} for its ${need}`,
+            details: `Desperate for ${need}, the faction has decided to take the settlement by force.`,
+            location: targetSettlement.name,
+            actors: [faction.name],
             worldTime,
             realTime: new Date(),
             seed: world.seed,
@@ -731,6 +1266,118 @@ export function tickFactionOperations(
     }
   }
 
+  return logs;
+}
+
+// ============================================================================
+// SPELLCASTING - High-level casters alter the world
+// ============================================================================
+
+export function tickSpellcasting(
+  world: WorldState,
+  rng: Random,
+  worldTime: Date,
+): LogEntry[] {
+  const logs: LogEntry[] = [];
+  
+  // High level casters might cast world-shaping spells
+  const casters = world.npcs.filter(n => 
+    n.alive !== false && 
+    n.level && n.level >= 5 && 
+    (n.class === 'Magic-User' || n.class === 'Cleric' || n.class === 'Elf')
+  ) as ReactiveNPC[];
+  
+  for (const caster of casters) {
+    if (!rng.chance(0.02)) continue; // Rare check
+    
+    // Choose a spell to cast
+    const spells = (caster.class === 'Magic-User' || caster.class === 'Elf') 
+      ? ['Control Weather', 'Cloudkill', 'Wall of Iron']
+      : ['Bless', 'Cure Disease', 'Raise Dead', 'Insect Plague'];
+      
+    const spell = rng.pick(spells);
+    
+    switch (spell) {
+      case 'Control Weather': {
+        const newWeather = rng.pick(['clear', 'cloudy', 'rain', 'storm', 'snow', 'fog'] as const);
+        if ((world as any).calendar) (world as any).calendar.weather = newWeather;
+        
+        logs.push({
+          category: 'weather',
+          summary: `${caster.name} alters the weather`,
+          details: `Through ancient incantations, the ${caster.class} calls forth ${newWeather} over the region.`,
+          location: caster.location,
+          actors: [caster.name],
+          worldTime,
+          realTime: new Date(),
+          seed: world.seed,
+        });
+        break;
+      }
+      case 'Cloudkill': {
+        const settlement = world.settlements.find(s => s.name === caster.location);
+        if (settlement) {
+          const state = getSettlementState(world, settlement.name);
+          state.prosperity = Math.max(-10, state.prosperity - 3);
+          state.populationDelta -= 50;
+          
+          logs.push({
+            category: 'town',
+            summary: `Magical mist chokes ${settlement.name}`,
+            details: `A toxic green cloud, conjured by ${caster.name}, rolls through the streets. Panic ensues.`,
+            location: settlement.name,
+            actors: [caster.name],
+            worldTime,
+            realTime: new Date(),
+            seed: world.seed,
+          });
+        }
+        break;
+      }
+      case 'Bless': {
+        const settlement = world.settlements.find(s => s.name === caster.location);
+        if (settlement) {
+          const state = getSettlementState(world, settlement.name);
+          state.safety = Math.min(10, state.safety + 2);
+          settlement.mood = Math.min(5, settlement.mood + 1);
+          
+          logs.push({
+            category: 'town',
+            summary: `Divine blessing upon ${settlement.name}`,
+            details: `${caster.name} performs a grand ritual of sanctification. A sense of peace fills the air.`,
+            location: settlement.name,
+            actors: [caster.name],
+            worldTime,
+            realTime: new Date(),
+            seed: world.seed,
+          });
+        }
+        break;
+      }
+      case 'Raise Dead': {
+        const deadNpcs = world.npcs.filter(n => n.alive === false && n.location === caster.location);
+        if (deadNpcs.length > 0) {
+          const target = rng.pick(deadNpcs);
+          target.alive = true;
+          target.wounded = true;
+          // Note: restHoursRemaining would be in the Party structure, but for NPCs we can just set a flag if we had one
+          
+          logs.push({
+            category: 'town',
+            summary: `${caster.name} returns ${target.name} from the grave!`,
+            details: `A miracle! The gates of death are pulled back. ${target.name} breathes once more, though they are weak.`,
+            location: caster.location,
+            actors: [caster.name, target.name],
+            worldTime,
+            realTime: new Date(),
+            seed: world.seed,
+          });
+        }
+        break;
+      }
+    }
+  }
+  
   return logs;
 }
 

@@ -261,8 +261,9 @@ export function updateTravel(world: WorldState, rng: Random, worldTime: Date): L
       });
       const dungeon = world.dungeons.find((d) => d.name === arrivedAt);
       if (dungeon) {
-        const delveLogs = exploreDungeonTick(rng, dungeon, [party.name], worldTime, world.seed, world);
-        logs.push(...delveLogs);
+        // Now handled by onTurnTick for real-time turn granularity
+        // const delveLogs = exploreDungeonTick(rng, dungeon, [party.name], worldTime, world.seed, world);
+        // logs.push(...delveLogs);
       }
       // Fame spotlight
       if ((party.fame ?? 0) >= 5 && rng.chance(0.3)) {

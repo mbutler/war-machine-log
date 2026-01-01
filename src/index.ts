@@ -27,8 +27,13 @@ import { DeepNPC, deepenNPC, seedRelationships, relationshipEvent } from './char
 import { settlementScene, marketBeat, arrivalScene, departureScene } from './prose.ts';
 
 // Deep causality systems
-import { tickNPCAgency, tickPartyAgency, tickFactionOperations } from './agency.ts';
+import { tickNPCAgency, tickPartyAgency, tickFactionOperations, tickSpellcasting, tickLevelUps, tickArmyRaising, tickNexuses } from './agency.ts';
 import { processWorldEvent, WorldEvent, getSettlementState, getFactionState, getPartyState } from './causality.ts';
+import { tickDomains } from './domain.ts';
+import { tickArmies } from './war-machine.ts';
+import { tickRuins } from './ruins.ts';
+import { tickDisease, tickMercenaries } from './logistics.ts';
+import { tickDiplomacy } from './diplomacy.ts';
 
 // Legendary spikes
 import { LegendaryState, createLegendaryState, maybeLegendarySpike, checkLegendaryEncounter } from './legendary.ts';
@@ -121,8 +126,8 @@ async function initWorld(): Promise<void> {
     // Log world creation
     await log({
       category: 'system',
-      summary: `The chronicle begins`,
-      details: `${formatDate(calendar)}. The simulation awakens.`,
+      summary: `The chronicle begins: ${world.archetype}`,
+      details: `${formatDate(calendar)}. The simulation awakens in an era known as the ${world.archetype}.`,
       worldTime: config.startWorldTime,
       seed: config.seed,
     });
@@ -182,9 +187,9 @@ function onHourTick(event: TickEvent): void {
         }
         
         // Check for legendary encounters (unique monsters, weapon discoveries)
-        const legendaryEnc = checkLegendaryEncounter(rng, party, party.location, legendaryState, event.worldTime, world.seed);
-        if (legendaryEnc) {
-          await log(legendaryEnc);
+        const legendaryEncs = checkLegendaryEncounter(rng, party, party.location, legendaryState, event.worldTime, world.seed, world, antagonists, storyThreads);
+        for (const lEnc of legendaryEncs) {
+          await log(lEnc);
           party.fame = (party.fame ?? 0) + 5; // Major fame boost for legendary encounters
         }
       }
@@ -241,6 +246,40 @@ function onHourTick(event: TickEvent): void {
     const factionOpLogs = tickFactionOperations(world, rng, event.worldTime, antagonists, storyThreads);
     for (const l of factionOpLogs) await log(l);
 
+    // Spellcasting - High level magic effects
+    const spellLogs = tickSpellcasting(world, rng, event.worldTime);
+    for (const l of spellLogs) await log(l);
+
+    // Nexus updates - Power sources and resource needs
+    const nexusLogs = tickNexuses(world, rng, event.worldTime);
+    for (const l of nexusLogs) await log(l);
+
+    // Level ups - Progress characters
+    const levelLogs = tickLevelUps(world, rng, event.worldTime);
+    for (const l of levelLogs) await log(l);
+
+    // Army Raising - Factions and Lords recruit troops
+    const raisingLogs = tickArmyRaising(world, rng, event.worldTime);
+    for (const l of raisingLogs) await log(l);
+
+    // Ruins tick - Factions re-occupy cleared areas
+    const ruinLogs = tickRuins(world, rng, event.worldTime);
+    for (const entry of ruinLogs) await log(entry);
+
+    // Mass Combat - Move armies and resolve battles
+    const armyLogs = tickArmies(world, rng, event.worldTime);
+    for (const l of armyLogs) await log(l);
+
+    // Logistics - Mercenaries and Disease
+    const diseaseLogs = tickDisease(world, rng, event.worldTime);
+    for (const l of diseaseLogs) await log(l);
+
+    const mercLogs = tickMercenaries(world, rng, event.worldTime);
+    for (const l of mercLogs) await log(l);
+
+    const diplomacyLogs = tickDiplomacy(world, rng, event.worldTime);
+    for (const l of diplomacyLogs) await log(l);
+
     // Save enhanced state
     world.calendar = calendar;
     world.antagonists = antagonists as EnhancedWorldState['antagonists'];
@@ -292,6 +331,10 @@ function onDayTick(event: TickEvent): void {
     const townLogs = dailyTownTick(world, rng, event.worldTime);
     for (const entry of townLogs) await log(entry);
 
+    // Domain management - Taxation, growth, unrest (monthly)
+    const domainLogs = tickDomains(world, rng, event.worldTime);
+    for (const entry of domainLogs) await log(entry);
+
     // === LEGENDARY SPIKES: Inject rare, unique elements ===
     const legendaryLogs = maybeLegendarySpike(rng, world, event.worldTime, legendaryState);
     for (const entry of legendaryLogs) await log(entry);
@@ -306,10 +349,21 @@ function onDayTick(event: TickEvent): void {
   })();
 }
 
-// Turn tick - minimal, mostly for maintaining rhythm
+// Turn tick - dungeon exploration level granularity
 function onTurnTick(event: TickEvent): void {
-  // Turn-level granularity mostly unused in overworld mode
-  // Could be used for dungeon exploration timing later
+  void (async () => {
+    // Dungeon exploration happens on the 10-minute turn
+    for (const party of world.parties) {
+      if (party.status === 'idle') {
+        const dungeon = world.dungeons.find((d) => d.name === party.location);
+        if (dungeon && dungeon.rooms && dungeon.rooms.length > 0) {
+          // If in a dungeon, explore 1 room per turn
+          const delveLogs = exploreDungeonTick(rng, dungeon, [party.name], event.worldTime, world.seed, world);
+          for (const entry of delveLogs) await log(entry);
+        }
+      }
+    }
+  })();
 }
 
 async function main() {

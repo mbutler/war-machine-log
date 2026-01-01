@@ -12,7 +12,7 @@
  */
 
 import { Random } from './rng.ts';
-import { WorldState, LogEntry, Party, Settlement, NPC, Faction, Rumor } from './types.ts';
+import { WorldState, LogEntry, Party, Settlement, NPC, Faction, Rumor, FactionState, FactionOperation, SettlementState, PartyState, PartyQuest, Good } from './types.ts';
 import { Antagonist } from './antagonists.ts';
 import { StoryThread } from './stories.ts';
 import { queueConsequence } from './consequences.ts';
@@ -72,7 +72,7 @@ export interface NPCMemory {
 }
 
 export interface NPCAgenda {
-  type: 'revenge' | 'protection' | 'ambition' | 'loyalty' | 'greed' | 'fear' | 'love' | 'duty';
+  type: 'revenge' | 'protection' | 'ambition' | 'loyalty' | 'greed' | 'fear' | 'love' | 'duty' | 'stronghold' | 'research' | 'nexus' | 'betrayal' | 'romance';
   target?: string;       // Person/faction/place involved
   priority: number;      // 1-10
   progress: number;      // 0-100%
@@ -86,73 +86,6 @@ export interface ReactiveNPC extends NPC {
   loyalty?: string;      // Faction they're loyal to
   morale: number;        // -10 to +10
   lastActed?: Date;
-}
-
-// ============================================================================
-// SETTLEMENT STATE - Deeper settlement simulation
-// ============================================================================
-
-export interface SettlementState {
-  prosperity: number;    // -10 to +10 (affects trade, population)
-  safety: number;        // -10 to +10 (affects travel, morale)
-  unrest: number;        // 0 to 10 (can trigger uprising)
-  populationDelta: number; // People arriving/leaving
-  recentEvents: string[]; // Event IDs affecting this place
-  controlledBy?: string;  // Faction ID if under faction control
-  contested: boolean;     // Multiple factions fighting over it
-  rulerNpcId?: string;    // Who rules here
-  defenseLevel: number;   // 0-10 (affects raid success)
-}
-
-// ============================================================================
-// FACTION STATE - Deeper faction simulation
-// ============================================================================
-
-export interface FactionState {
-  power: number;         // 0-100, overall strength
-  territory: string[];   // Settlement IDs they control
-  enemies: string[];     // Faction IDs they're at war with
-  allies: string[];      // Faction IDs they're allied with
-  resources: number;     // Economic power
-  morale: number;        // -10 to +10
-  activeOperations: FactionOperation[];
-  recentLosses: number;  // Accumulated losses (triggers responses)
-  recentWins: number;    // Accumulated wins (triggers expansion)
-}
-
-export interface FactionOperation {
-  id: string;
-  type: 'raid' | 'patrol' | 'expansion' | 'recruitment' | 'assassination' | 'sabotage' | 'diplomacy';
-  target: string;        // Settlement, faction, or NPC
-  startedAt: Date;
-  completesAt: Date;
-  participants: string[]; // NPC IDs involved
-  successChance: number;
-}
-
-// ============================================================================
-// PARTY STATE - Deeper party simulation
-// ============================================================================
-
-export interface PartyState {
-  morale: number;        // -10 to +10
-  resources: number;     // Gold/supplies
-  enemies: string[];     // Antagonists/factions hunting them
-  allies: string[];      // Factions/NPCs supporting them
-  questLog: PartyQuest[];
-  killList: string[];    // Antagonists they've defeated
-  reputation: Record<string, number>; // Reputation per settlement
-  vendetta?: string;     // Who they're hunting
-  protectee?: string;    // Who they're protecting
-}
-
-export interface PartyQuest {
-  id: string;
-  type: 'hunt' | 'escort' | 'retrieve' | 'explore' | 'defend' | 'avenge';
-  target: string;
-  reason: string;
-  progress: number;
-  deadline?: Date;
 }
 
 // ============================================================================
@@ -207,10 +140,16 @@ export function processWorldEvent(
     case 'betrayal':
       logs.push(...processBetrayal(event, world, rng, storyThreads));
       break;
+    case 'discovery':
+      logs.push(...processDiscovery(event, world, rng));
+      break;
   }
 
   // Universal consequences: NPCs form memories
   logs.push(...createNPCMemories(event, world, rng));
+  
+  // Universal consequences: Social shifts (love, betrayal, respect)
+  logs.push(...processSocialShifts(event, world, rng));
   
   // Universal consequences: Stories might spawn or advance
   logs.push(...updateStoryThreads(event, world, rng, storyThreads));
@@ -669,7 +608,7 @@ function processDeath(
 
 function processRobbery(event: WorldEvent, world: WorldState, rng: Random): LogEntry[] {
   const logs: LogEntry[] = [];
-  const { value, targetType } = event.data as { value: number; targetType: string };
+  const { value, targetType, factionId, goods } = event.data as { value: number; targetType: string; factionId?: string; goods?: Good[] };
   
   // If a caravan was robbed, affect trade
   if (targetType === 'caravan') {
@@ -688,6 +627,23 @@ function processRobbery(event: WorldEvent, world: WorldState, rng: Random): LogE
         realTime: new Date(),
         seed: world.seed,
       });
+    }
+
+    // If the caravan belonged to a faction, they get a Casus Belli
+    if (factionId && event.perpetrators?.length) {
+      const fState = getFactionState(world, factionId);
+      const perp = event.perpetrators[0];
+      const perpFaction = world.factions.find(f => f.name === perp || f.id === perp);
+      
+      if (perpFaction) {
+        fState.casusBelli[perpFaction.id] = {
+          reason: `the robbery of their caravan near ${event.location}`,
+          magnitude: 5,
+        };
+        if (!fState.enemies.includes(perpFaction.id)) {
+          fState.enemies.push(perpFaction.id);
+        }
+      }
     }
   }
   
@@ -1145,11 +1101,119 @@ function generateRumorText(event: WorldEvent, rng: Random): string {
   return rng.pick(options);
 }
 
+function processSocialShifts(event: WorldEvent, world: WorldState, rng: Random): LogEntry[] {
+  const logs: LogEntry[] = [];
+  const nearbyNpcs = world.npcs.filter(n => n.location === event.location && n.alive !== false) as ReactiveNPC[];
+  
+  if (nearbyNpcs.length < 2) return logs;
+
+  for (let i = 0; i < nearbyNpcs.length; i++) {
+    for (let j = 0; j < nearbyNpcs.length; j++) {
+      if (i === j) continue;
+      const npc1 = nearbyNpcs[i];
+      const npc2 = nearbyNpcs[j];
+
+      // Traits influence social outcomes
+      const traits1 = (npc1 as any).depth?.traits || [];
+      const traits2 = (npc2 as any).depth?.traits || [];
+
+      // SHARED HARDSHIP (Raid/Battle)
+      if (event.type === 'raid' || event.type === 'battle') {
+        if (rng.chance(0.1)) {
+          // Courageous NPCs gain respect
+          if (traits1.includes('brave') || traits1.includes('honorable')) {
+            logs.push({
+              category: 'town',
+              summary: `${npc2.name} is inspired by ${npc1.name}`,
+              details: `Witnessing ${npc1.name}'s courage during the ${event.type}, ${npc2.name} feels a new bond of loyalty.`,
+              location: event.location,
+              actors: [npc1.name, npc2.name],
+              worldTime: event.timestamp,
+              realTime: new Date(),
+              seed: world.seed,
+            });
+            // Possible romance agenda if traits align
+            if (rng.chance(0.2) && (traits2.includes('romantic') || traits2.includes('naive'))) {
+              addNPCAgenda(npc2, {
+                type: 'romance',
+                target: npc1.name,
+                priority: 5,
+                progress: 20,
+                description: `Pursue a romantic bond with ${npc1.name} after the ${event.type}`,
+              });
+            }
+          }
+
+          // Treacherous/Cowardly NPCs might plot betrayal
+          if (traits1.includes('treacherous') || traits1.includes('cowardly')) {
+            if (rng.chance(0.1)) {
+              addNPCAgenda(npc1, {
+                type: 'betrayal',
+                target: npc2.name,
+                priority: 6,
+                progress: 10,
+                description: `Exploit ${npc2.name}'s trust during the chaos`,
+              });
+            }
+          }
+        }
+      }
+
+      // SHARED JOY (Festival/Miracle)
+      if (event.type === 'festival' || event.type === 'miracle') {
+        if (rng.chance(0.15)) {
+          if (traits1.includes('romantic') || traits2.includes('romantic')) {
+            addNPCAgenda(npc1, {
+              type: 'romance',
+              target: npc2.name,
+              priority: 4,
+              progress: 10,
+              description: `A connection formed during the ${event.type}`,
+            });
+          }
+        }
+      }
+    }
+  }
+
+  return logs;
+}
+
+function processDiscovery(event: WorldEvent, world: WorldState, rng: Random): LogEntry[] {
+  const logs: LogEntry[] = [];
+  const { item, type } = event.data as { item: string; type: string };
+  
+  // Discoveries attract attention
+  const nearestSettlement = world.settlements.find(s => s.name === event.location);
+  if (nearestSettlement) {
+    const state = getSettlementState(world, nearestSettlement.name);
+    state.prosperity += 1;
+    
+    // Factions might seek the discovery
+    for (const faction of world.factions) {
+      if (rng.chance(0.2)) {
+        logs.push({
+          category: 'faction',
+          summary: `${faction.name} seeks the ${item}`,
+          details: `News of the ${type} reaches the halls of ${faction.name}. They begin plotting to acquire it.`,
+          location: event.location,
+          actors: [faction.name],
+          worldTime: event.timestamp,
+          realTime: new Date(),
+          seed: world.seed,
+        });
+      }
+    }
+  }
+  
+  return logs;
+}
+
 // ============================================================================
 // STATE GETTERS/SETTERS - Lazy initialization of deep state
 // ============================================================================
 
-function getSettlementState(world: WorldState, settlementName: string): SettlementState {
+export function getSettlementState(world: WorldState, settlementName: string): SettlementState {
   if (!world.settlementStates) world.settlementStates = {};
   if (!world.settlementStates[settlementName]) {
     world.settlementStates[settlementName] = {
@@ -1160,12 +1224,13 @@ function getSettlementState(world: WorldState, settlementName: string): Settleme
       recentEvents: [],
       contested: false,
       defenseLevel: 3,
+      quarantined: false,
     };
   }
   return world.settlementStates[settlementName];
 }
 
-function getFactionState(world: WorldState, factionId: string): FactionState {
+export function getFactionState(world: WorldState, factionId: string): FactionState {
   if (!world.factionStates) world.factionStates = {};
   if (!world.factionStates[factionId]) {
     world.factionStates[factionId] = {
@@ -1175,6 +1240,8 @@ function getFactionState(world: WorldState, factionId: string): FactionState {
       allies: [],
       resources: 100,
       morale: 0,
+      resourceNeeds: [],
+      casusBelli: {},
       activeOperations: [],
       recentLosses: 0,
       recentWins: 0,
@@ -1183,7 +1250,7 @@ function getFactionState(world: WorldState, factionId: string): FactionState {
   return world.factionStates[factionId];
 }
 
-function getPartyState(world: WorldState, partyId: string): PartyState {
+export function getPartyState(world: WorldState, partyId: string): PartyState {
   if (!world.partyStates) world.partyStates = {};
   if (!world.partyStates[partyId]) {
     world.partyStates[partyId] = {
@@ -1198,7 +1265,4 @@ function getPartyState(world: WorldState, partyId: string): PartyState {
   }
   return world.partyStates[partyId];
 }
-
-// Export state getters for use elsewhere
-export { getSettlementState, getFactionState, getPartyState };
 

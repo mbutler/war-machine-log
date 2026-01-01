@@ -131,6 +131,12 @@ export function exploreDungeonTick(
   if (party && outcome.fameDelta) {
     party.fame = Math.max(0, (party.fame ?? 0) + outcome.fameDelta);
   }
+  
+  // XP rewards for dungeon exploration
+  if (party) {
+    party.xp += 200 + rng.int(800);
+  }
+
   // Rare find ripple: affect economy/factions via rumors.
   if (outcome.rare && world) {
     const rumor = createRumor(

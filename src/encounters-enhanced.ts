@@ -10,7 +10,7 @@
  */
 
 import { Random } from './rng.ts';
-import { LogEntry, Terrain, WorldState, Party } from './types.ts';
+import { LogEntry, Terrain, WorldState, Party, Landmark } from './types.ts';
 import { encounterFlavorText, atmosphericOpening, getTimeOfDayPhase } from './prose.ts';
 import { queueConsequence, analyzeEventForConsequences } from './consequences.ts';
 import { WeatherCondition, getWeatherEffects, terrainWeatherDescription, CalendarState } from './calendar.ts';
@@ -195,6 +195,79 @@ function generateCreature(rng: Random, terrain: Terrain, isNight: boolean): Enco
   };
 }
 
+import { generateProceduralRuin } from './ruins.ts';
+
+// Component pools for procedural exploration beats
+const BEAT_STRUCTURES = [
+  { name: 'Monolith', types: ['forest', 'hills', 'mountains', 'desert'] },
+  { name: 'Obelisk', types: ['swamp', 'desert', 'clear'] },
+  { name: 'Statue', types: ['clear', 'hills', 'road'] },
+  { name: 'Grove', types: ['forest', 'swamp'] },
+  { name: 'Cave', types: ['hills', 'mountains', 'forest'] },
+  { name: 'Spring', types: ['forest', 'mountains', 'clear'] },
+  { name: 'Altar', types: ['mountains', 'swamp', 'desert'] },
+  { name: 'Cairn', types: ['hills', 'mountains', 'road'] },
+  { name: 'Ruin', types: ['clear', 'forest', 'swamp', 'desert'] },
+  { name: 'Pillar', types: ['desert', 'mountains'] },
+  { name: 'Tree', types: ['forest', 'swamp', 'clear'] },
+  { name: 'Pool', types: ['swamp', 'forest', 'clear'] },
+];
+
+const BEAT_DESCRIPTORS = [
+  'obsidian', 'glowing', 'ancient', 'weeping', 'moss-covered', 'cracked', 
+  'sun-bleached', 'overgrown', 'floating', 'shadowy', 'silver', 'eerie',
+  'blood-stained', 'weather-worn', 'perfectly smooth', 'crystalline', 'petrified'
+];
+
+const BEAT_ACTIVITIES = [
+  'pulsing with a faint, rhythmic light',
+  'whispering in an unknown, melodic tongue',
+  'dripping with a thick, dark sap',
+  'swarming with spectral, blue butterflies',
+  'humming a low, vibrating note',
+  'surrounded by a thin, unnerving mist',
+  'etched with shifting, golden runes',
+  'home to a silent, white-haired hermit',
+  'bearing the marks of a thousand years',
+  'smelling of summer rain and ozone',
+  'vibrating when approached',
+  'swallowing all sound around it'
+];
+
+const BEAT_EFFECTS = [
+  { name: 'arcane-insight', text: 'The party feels a surge of mental clarity.', fatigue: -1 },
+  { name: 'historical-knowledge', text: 'They uncover a fragment of lost history.', rumorKind: 'mystery' },
+  { name: 'prophetic-hint', text: 'A sudden vision of what is to come flashes before them.', rumorKind: 'omen' },
+  { name: 'fey-blessing', text: 'A light heart and swift feet follow them.', fatigue: -2 },
+  { name: 'treasure-clue', text: 'They find a marking pointing toward a hidden cache.', rumorKind: 'dungeon' },
+];
+
+function generateProceduralBeat(rng: Random, terrain: Terrain, party: Party, worldTime: Date, world: WorldState): Landmark {
+  const structurePool = BEAT_STRUCTURES.filter(s => s.types.includes(terrain));
+  const structure = (structurePool.length > 0 ? rng.pick(structurePool) : BEAT_STRUCTURES[0]).name;
+  const descriptor = rng.pick(BEAT_DESCRIPTORS);
+  const activity = rng.pick(BEAT_ACTIVITIES);
+  const effect = rng.pick(BEAT_EFFECTS);
+
+  const beatName = `The ${capitalize(descriptor)} ${structure}`;
+  
+  // Find current hex location
+  const settlement = world.settlements.find(s => s.name === party.location);
+  const location = settlement ? settlement.coord : { q: rng.int(world.width), r: rng.int(world.height) };
+
+  return {
+    id: `landmark-${Date.now()}-${rng.int(1000)}`,
+    name: beatName,
+    description: `A ${descriptor} ${structure.toLowerCase()}, ${activity}.`,
+    location: location,
+    terrain: terrain,
+    discoveryDate: worldTime,
+    discoveredBy: party.name,
+    effect: effect.name,
+    knownBy: [party.name],
+  };
+}
+
 // Main encounter check and resolution
 export function enhancedEncounter(
   rng: Random,
@@ -239,6 +312,70 @@ export function enhancedEncounter(
   }
 
   if (!rng.chance(odds)) {
+    // Small chance for a unique non-combat discovery if no combat encounter
+    if (rng.chance(0.05)) {
+      // 1. Check for Ruins discovery (more significant)
+      if (rng.chance(0.2)) {
+        const settlement = world.settlements.find(s => s.name === party.location);
+        const coord = settlement ? settlement.coord : { q: rng.int(world.width), r: rng.int(world.height) };
+        
+        // Is there an existing unknown ruin?
+        let ruin = world.ruins?.find(r => r.location.q === coord.q && r.location.r === coord.r);
+        
+        if (!ruin) {
+          ruin = generateProceduralRuin(rng, coord, terrain, world);
+          if (!world.ruins) world.ruins = [];
+          world.ruins.push(ruin);
+        }
+
+        return {
+          category: 'dungeon',
+          summary: `${party.name} discovers ${ruin.name}`,
+          details: `${atmosphericOpening(rng, worldTime, terrain)} They have found ${ruin.description} ${ruin.history}`,
+          location,
+          actors: [party.name],
+          worldTime,
+          realTime: new Date(),
+          seed: world.seed,
+        };
+      }
+
+      // 2. Check for existing landmarks...
+
+      // Generate a brand new persistent landmark
+      const landmark = generateProceduralBeat(rng, terrain, party, worldTime, world);
+      world.landmarks.push(landmark);
+      
+      const effect = BEAT_EFFECTS.find(e => e.name === landmark.effect);
+      
+      // If the beat provides a rumor, queue it
+      if (effect?.rumorKind && world) {
+        queueConsequence({
+          type: 'spawn-rumor',
+          triggerEvent: `Discovery of ${landmark.name}`,
+          turnsUntilResolution: 12 + rng.int(24),
+          data: {
+            origin: location,
+            target: location,
+            kind: effect.rumorKind,
+            text: `Explorers speak of a strange discovery near ${location}.`,
+          },
+          priority: 3,
+        });
+      }
+
+      return {
+        category: 'road',
+        summary: `${party.name} discovers ${landmark.name}`,
+        details: `${atmosphericOpening(rng, worldTime, terrain)} ${landmark.description} ${effect?.text ?? ''}`,
+        location,
+        actors: [party.name],
+        worldTime,
+        realTime: new Date(),
+        seed: world.seed,
+        fatigueDelta: effect?.fatigue ?? 0,
+      };
+    }
     return undefined;
   }
 
@@ -272,6 +409,11 @@ export function enhancedEncounter(
   let treasure = 0;
   let storyEscalation = false;
 
+  // Class-based capabilities
+  const hasArcane = party.members.some(m => m.class === 'Magic-User' || m.class === 'Elf');
+  const hasDivine = party.members.some(m => m.class === 'Cleric');
+  const hasThief = party.members.some(m => m.class === 'Thief' || m.class === 'Halfling');
+
   if (reaction === 'friendly') {
     outcome = 'negotiation';
     // Friendly encounters might share information
@@ -290,13 +432,27 @@ export function enhancedEncounter(
   } else {
     // Hostile - combat
     const combatRoll = rng.next();
-    const partyStrength = 0.6 + (party.fame ?? 0) * 0.02; // Fame helps
+    
+    // Party strength factors
+    let partyStrength = 0.6;
+    partyStrength += (party.fame ?? 0) * 0.02; // Fame/experience bonus
+    
+    if (hasArcane) partyStrength += 0.1; // Magic-Users/Elves provide powerful support
+    if (hasDivine) partyStrength += 0.05; // Clerics provide healing/buffs
+    if (hasThief) partyStrength += 0.05; // Thieves/Halflings provide tactical advantages
+    
+    // Level-based bonuses
+    const averageLevel = party.members.reduce((sum, m) => sum + m.level, 0) / party.members.length;
+    partyStrength += (averageLevel - 1) * 0.05;
 
     if (combatRoll < partyStrength) {
       outcome = 'victory';
       injured = rng.chance(0.2);
       treasure = rng.chance(0.4) ? 10 + rng.int(50) : 0;
       fatigueDelta = rng.chance(0.3) ? 1 : 0;
+      
+      // Award XP for victory
+      party.xp += 100 + rng.int(500);
 
       // Named or large encounters become story hooks
       if (creature.isNamed || creature.numbers === 'horde') {
@@ -331,6 +487,15 @@ export function enhancedEncounter(
   }
   fullDetails += `${capitalize(numberDesc)} ${creature.descriptor} ${creature.type}, ${creature.behavior}. `;
   fullDetails += flavorText.details;
+
+  // Add spellcasting flavor to victory
+  if (outcome === 'victory') {
+    if (hasArcane && rng.chance(0.4)) {
+      fullDetails += ` A well-timed spell from their caster turned the tide.`;
+    } else if (hasDivine && rng.chance(0.4)) {
+      fullDetails += ` Divine favor shielded them from the worst of the blows.`;
+    }
+  }
 
   // Treasure mention
   if (treasure > 0) {

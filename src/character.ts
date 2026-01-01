@@ -6,7 +6,8 @@
  */
 
 import { Random } from './rng.ts';
-import { NPC, NPCRole, Party, WorldState, LogEntry } from './types.ts';
+import { NPC, NPCRole, Party, WorldState, LogEntry, CharacterClass } from './types.ts';
+import { ReactiveNPC, NPCAgenda, NPCMemory } from './causality.ts';
 import { randomName } from './naming.ts';
 
 // Helper to get settlement name from ID
@@ -98,7 +99,7 @@ export interface CharacterDepth {
 }
 
 // Extended NPC type with depth
-export interface DeepNPC extends NPC {
+export interface DeepNPC extends NPC, Partial<ReactiveNPC> {
   depth?: CharacterDepth;
   age?: number;
   title?: string;
@@ -580,10 +581,21 @@ export function relationshipEvent(
   const drama = DRAMA[relationship.type];
   if (!drama) return null;
 
+  // Contextual weighting: if there is a war or raid nearby, drama intensifies
+  const settlement = world.settlements.find(s => s.name === npc.location);
+  const isDangerous = settlement && (world.settlementStates?.[settlement.name]?.safety ?? 5) < 0;
+
+  let summary = rng.pick(drama.summaries);
+  let details = rng.pick(drama.details);
+
+  if (isDangerous && rng.chance(0.5)) {
+    details += ` Amidst the growing danger in ${npc.location}, their ${relationship.type} feels all the more pressing.`;
+  }
+
   return {
     category: 'town',
-    summary: rng.pick(drama.summaries),
-    details: rng.pick(drama.details),
+    summary,
+    details,
     location: npc.location,
     actors: [npc.name, relationship.targetName],
     worldTime,
@@ -594,14 +606,63 @@ export function relationshipEvent(
 
 // Upgrade basic NPC to DeepNPC with full character depth
 export function deepenNPC(rng: Random, npc: NPC): DeepNPC {
+  const roleToClass: Record<NPCRole, CharacterClass[]> = {
+    guard: ['Fighter', 'Dwarf', 'Halfling'],
+    priest: ['Cleric', 'Elf'],
+    scout: ['Thief', 'Elf', 'Halfling'],
+    bard: ['Thief', 'Magic-User'],
+    merchant: ['Thief', 'Fighter'],
+    laborer: ['Fighter', 'Dwarf'],
+  };
+
+  const charClass = rng.pick(roleToClass[npc.role] || ['Fighter']);
+  const level = 1 + rng.int(12); // Some high level NPCs for name-level play
+
   const deepNpc: DeepNPC = {
     ...npc,
+    class: charClass,
+    level: level,
+    xp: 0,
+    spells: charClass === 'Magic-User' || charClass === 'Elf' || charClass === 'Cleric' ? [] : undefined,
     depth: generateCharacterDepth(rng, npc.role),
     age: 18 + rng.int(50),
     title: generateTitle(rng, npc.role),
     appearance: generateAppearance(rng),
     secretsKnown: [],
+    memories: [],
+    agendas: [],
+    morale: 0,
+    loyalty: rng.chance(0.7) ? `faction-${rng.int(3)}` : undefined, // Assign to a random initial faction
   };
+
+  // Add starting spells for casters
+  if (deepNpc.spells) {
+    if (charClass === 'Magic-User' || charClass === 'Elf') {
+      deepNpc.spells = ['Read Magic', 'Sleep', 'Magic Missile'].slice(0, 1 + rng.int(2));
+    } else if (charClass === 'Cleric') {
+      deepNpc.spells = ['Cure Light Wounds', 'Protection from Evil'].slice(0, 1 + rng.int(2));
+    }
+  }
+
+  // Seed agendas based on level/class
+  if (deepNpc.level && deepNpc.level >= 9) {
+    deepNpc.agendas!.push({
+      type: 'stronghold',
+      priority: 8,
+      progress: rng.int(50),
+      description: `Establish a seat of power`,
+    });
+  }
+
+  if (deepNpc.spells) {
+    deepNpc.agendas!.push({
+      type: 'research',
+      priority: 5,
+      progress: rng.int(30),
+      description: `Unlock deeper magical secrets`,
+    });
+  }
+
   return deepNpc;
 }
 

@@ -62,10 +62,36 @@ export interface Goal {
   sourceRumorId?: string;
 }
 
+export type CharacterClass =
+  | 'Cleric'
+  | 'Fighter'
+  | 'Magic-User'
+  | 'Thief'
+  | 'Dwarf'
+  | 'Elf'
+  | 'Halfling'
+  | 'Druid'
+  | 'Mystic';
+
+export interface Spell {
+  name: string;
+  level: number;
+  type: 'arcane' | 'divine';
+  effect: string; // Narrative description of what it does to the world
+}
+
+export interface PartyMember {
+  name: string;
+  class: CharacterClass;
+  level: number;
+  hp: number;
+  maxHp: number;
+}
+
 export interface Party {
   id: string;
   name: string;
-  members: string[];
+  members: PartyMember[];
   location: string;
   status: 'idle' | 'travel';
   travel?: TravelPlan;
@@ -74,6 +100,7 @@ export interface Party {
   restHoursRemaining?: number; // if set, party will not start travel
   goal?: Goal;
   fame?: number;
+  xp: number;
 }
 
 export interface Settlement {
@@ -88,8 +115,89 @@ export interface Settlement {
   priceTrends?: Record<Good, PriceTrend>;
 }
 
+export interface Stronghold {
+  id: string;
+  ownerId: string; // NPC or Party ID
+  name: string;
+  location: HexCoord;
+  type: 'Tower' | 'Keep' | 'Temple' | 'Hideout';
+  level: number; // 1-3
+  staff: number;
+  constructionFinished: boolean;
+  treasury: number;
+  unrest: number; // 0-10
+  population: number; // Number of families in the domain
+  taxRate: number; // Percentage
+  lastTaxCollection?: Date;
+}
+
+export interface Army {
+  id: string;
+  ownerId: string; // Faction, NPC, or Party
+  location: string; // Settlement name or "hex:q,r"
+  strength: number; // Number of troops
+  quality: number; // 1-10 (training/equipment)
+  morale: number; // 2-12
+  status: 'idle' | 'marching' | 'besieging' | 'battling' | 'starving' | 'diseased' | 'surrendered';
+  target?: string;
+  supplies: number;       // 0-100%
+  supplyLineFrom?: string; // Settlement ID or Stronghold ID providing food
+  lastSupplied: Date;
+  isMercenary?: boolean;
+  costPerMonth?: number;
+  capturedLeaders: string[]; // NPC IDs held as prisoners
+}
+
+export interface MercenaryCompany {
+  id: string;
+  name: string;
+  captainId: string; // NPC ID
+  location: string;
+  size: number;
+  quality: number;
+  hiredById?: string; // Faction or NPC ID
+  monthlyRate: number;
+  loyalty: number; // 2-12
+}
+
+export interface Landmark {
+  id: string;
+  name: string;
+  description: string;
+  location: HexCoord;
+  terrain: Terrain;
+  discoveryDate: Date;
+  discoveredBy: string; // Party or NPC name
+  effect?: string;
+  knownBy: string[]; // Names of people/factions who know about it
+}
+
+export interface Ruin {
+  id: string;
+  name: string;
+  description: string;
+  location: HexCoord;
+  rooms: StockedRoom[];
+  cleared: boolean;
+  occupiedBy?: string; // Faction or Monster name
+  danger: number; // 1-10
+  history: string;
+}
+
+export interface Nexus {
+  id: string;
+  name: string;
+  location: HexCoord;
+  powerType: 'Arcane' | 'Divine' | 'Primal' | 'Shadow';
+  intensity: number; // 1-10
+  currentOwnerId?: string; // Faction or NPC ID
+}
+
+export type WorldArchetype = 'Standard' | 'Age of War' | 'The Great Plague' | 'Arcane Bloom' | 'Wilderness Unbound' | 'Golden Age';
+
 export interface WorldState {
   seed: string;
+  archetype: WorldArchetype;
   hexes: HexTile[];
   width: number;
   height: number;
@@ -101,7 +209,20 @@ export interface WorldState {
   npcs: NPC[];
   caravans: Caravan[];
   factions: Faction[];
+  strongholds: Stronghold[];
+  armies: Army[];
+  landmarks: Landmark[];
+  ruins: Ruin[];
+  nexuses: Nexus[];
+  mercenaries: MercenaryCompany[];
   startedAt: Date;
+}
+
+export interface StockedRoom {
+  type: 'lair' | 'trap' | 'treasure' | 'empty' | 'shrine' | 'laboratory';
+  threat: number;
+  loot: boolean;
+  rare?: RareFind;
 }
 
 export interface Dungeon {
@@ -129,6 +250,10 @@ export interface NPC {
   id: string;
   name: string;
   role: NPCRole;
+  class?: CharacterClass;
+  level?: number;
+  xp?: number;
+  spells?: string[]; // Spell names
   home: string; // settlement id
   location: string; // settlement name for now
   reputation: number; // -3..3
@@ -160,55 +285,28 @@ export interface Faction {
 }
 
 // Deep state types for causality engine
-export interface SettlementDeepState {
-  prosperity: number;    // -10 to +10 (affects trade, population)
-  safety: number;        // -10 to +10 (affects travel, morale)
-  unrest: number;        // 0 to 10 (can trigger uprising)
-  populationDelta: number; // People arriving/leaving
-  recentEvents: string[]; // Event IDs affecting this place
-  controlledBy?: string;  // Faction ID if under faction control
-  contested: boolean;     // Multiple factions fighting over it
-  rulerNpcId?: string;    // Who rules here
-  defenseLevel: number;   // 0-10 (affects raid success)
-}
-
-export interface FactionDeepState {
+export interface FactionState {
   power: number;         // 0-100, overall strength
-  territory: string[];   // Settlement names they control
+  territory: string[];   // Settlement IDs they control
   enemies: string[];     // Faction IDs they're at war with
   allies: string[];      // Faction IDs they're allied with
   resources: number;     // Economic power
   morale: number;        // -10 to +10
-  activeOperations: Array<{
-    id: string;
-    type: string;
-    target: string;
-    startedAt: Date;
-    completesAt: Date;
-    participants: string[];
-    successChance: number;
-  }>;
+  resourceNeeds: Good[]; // Specific goods they are aggressively seeking
+  casusBelli: Record<string, { reason: string; magnitude: number }>; // Target ID -> Why they want war
+  activeOperations: FactionOperation[];
   recentLosses: number;  // Accumulated losses (triggers responses)
   recentWins: number;    // Accumulated wins (triggers expansion)
 }
 
-export interface PartyDeepState {
-  morale: number;        // -10 to +10
-  resources: number;     // Gold/supplies
-  enemies: string[];     // Antagonists/factions hunting them
-  allies: string[];      // Factions/NPCs supporting them
-  questLog: Array<{
-    id: string;
-    type: 'hunt' | 'escort' | 'retrieve' | 'explore' | 'defend' | 'avenge';
-    target: string;
-    reason: string;
-    progress: number;
-    deadline?: Date;
-  }>;
-  killList: string[];    // Antagonists they've defeated
-  reputation: Record<string, number>; // Reputation per settlement
-  vendetta?: string;     // Who they're hunting
-  protectee?: string;    // Who they're protecting
+export interface FactionOperation {
+  id: string;
+  type: 'raid' | 'patrol' | 'expansion' | 'recruitment' | 'assassination' | 'sabotage' | 'diplomacy' | 'conquest';
+  target: string;        // Settlement, faction, or NPC
+  startedAt: Date;
+  completesAt: Date;
+  participants: string[]; // NPC IDs involved
+  successChance: number;
 }
 
 export interface WorldEvent {
@@ -222,6 +320,46 @@ export interface WorldEvent {
   magnitude: number;
   witnessed: boolean;
   data: Record<string, unknown>;
+}
+
+export interface SettlementState {
+  prosperity: number;    // -10 to +10 (affects trade, population)
+  safety: number;        // -10 to +10 (affects travel, morale)
+  unrest: number;        // 0 to 10 (can trigger uprising)
+  populationDelta: number; // People arriving/leaving
+  recentEvents: string[]; // Event IDs affecting this place
+  controlledBy?: string;  // Faction ID if under faction control
+  contested: boolean;     // Multiple factions fighting over it
+  rulerNpcId?: string;    // Who rules here
+  defenseLevel: number;   // 0-10 (affects raid success)
+  disease?: {
+    type: string;
+    intensity: number; // 1-10
+    spreadRate: number;
+    discovered: boolean;
+  };
+  quarantined: boolean;
+}
+
+export interface PartyState {
+  morale: number;        // -10 to +10
+  resources: number;     // Gold/supplies
+  enemies: string[];     // Antagonists/factions hunting them
+  allies: string[];      // Factions/NPCs supporting them
+  questLog: PartyQuest[];
+  killList: string[];    // Antagonists they've defeated
+  reputation: Record<string, number>; // Reputation per settlement
+  vendetta?: string;     // Who they're hunting
+  protectee?: string;    // Who they're protecting
+}
+
+export interface PartyQuest {
+  id: string;
+  type: 'hunt' | 'escort' | 'retrieve' | 'explore' | 'defend' | 'avenge' | 'stronghold';
+  target: string;
+  reason: string;
+  progress: number;
+  deadline?: Date;
 }
 
 // Extended world state for the enhanced simulation
@@ -273,9 +411,9 @@ export interface EnhancedWorldState extends WorldState {
     }>;
   };
   // Deep causality state
-  settlementStates?: Record<string, SettlementDeepState>;
-  factionStates?: Record<string, FactionDeepState>;
-  partyStates?: Record<string, PartyDeepState>;
+  settlementStates?: Record<string, SettlementState>;
+  factionStates?: Record<string, FactionState>;
+  partyStates?: Record<string, PartyState>;
   eventHistory?: WorldEvent[];
 }
 
