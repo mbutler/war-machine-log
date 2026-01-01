@@ -14101,7 +14101,7 @@ function updateTravel(world, rng, worldTime) {
       }
     }
   }
-  if (rng.chance(0.01)) {
+  if (rng.chance(0.002)) {
     const id = `band-${world.parties.length}`;
     const name = `${randomName(rng)}'s Band`;
     world.parties.push({
@@ -26366,10 +26366,44 @@ function onHourTick(event) {
     await saveWorld(world);
   })();
 }
+function pruneOldData(worldTime) {
+  const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+  const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
+  const now = worldTime.getTime();
+  storyThreads = storyThreads.filter((s) => {
+    if (!s.resolved)
+      return true;
+    const resolvedTime = s.lastUpdated?.getTime() ?? s.startedAt.getTime();
+    return now - resolvedTime < THIRTY_DAYS_MS;
+  });
+  antagonists = antagonists.filter((a) => {
+    if (a.alive)
+      return true;
+    const lastSeen = a.lastSeen?.getTime() ?? 0;
+    return now - lastSeen < NINETY_DAYS_MS;
+  });
+  world.npcs = world.npcs.filter((n) => {
+    if (n.alive !== false)
+      return true;
+    const npcAny = n;
+    const hasMeaningfulHistory = npcAny.memories?.length > 5 || (n.fame ?? 0) > 10;
+    if (hasMeaningfulHistory)
+      return true;
+    const deathTime = npcAny.diedAt?.getTime() ?? 0;
+    return now - deathTime < NINETY_DAYS_MS;
+  });
+  if (navalState.distantLands.length > 50) {
+    navalState.distantLands = navalState.distantLands.sort((a, b) => (b.mentionCount ?? 0) - (a.mentionCount ?? 0)).slice(0, 50);
+  }
+  if (navalState.distantFigures.length > 100) {
+    navalState.distantFigures = navalState.distantFigures.filter((f) => f.alive).sort((a, b) => (b.mentionCount ?? 0) - (a.mentionCount ?? 0)).slice(0, 100);
+  }
+}
 function onDayTick(event) {
   if (!initialized)
     return;
   (async () => {
+    pruneOldData(event.worldTime);
     const { logs: calendarLogs, newCalendar } = dailyCalendarTick(world, rng, event.worldTime, calendar);
     calendar = newCalendar;
     for (const entry of calendarLogs)

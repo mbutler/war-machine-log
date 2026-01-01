@@ -361,11 +361,59 @@ function onHourTick(event: TickEvent): void {
   })();
 }
 
+// Cleanup old data to prevent memory growth
+function pruneOldData(worldTime: Date): void {
+  const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+  const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
+  const now = worldTime.getTime();
+  
+  // Prune resolved stories older than 30 days
+  storyThreads = storyThreads.filter(s => {
+    if (!s.resolved) return true; // Keep active stories
+    const resolvedTime = s.lastUpdated?.getTime() ?? s.startedAt.getTime();
+    return now - resolvedTime < THIRTY_DAYS_MS;
+  });
+  
+  // Prune dead antagonists older than 90 days
+  antagonists = antagonists.filter(a => {
+    if (a.alive) return true; // Keep living antagonists
+    const lastSeen = a.lastSeen?.getTime() ?? 0;
+    return now - lastSeen < NINETY_DAYS_MS;
+  });
+  
+  // Prune dead NPCs with no significant history (older than 90 days, no memories, low fame)
+  world.npcs = world.npcs.filter(n => {
+    if (n.alive !== false) return true; // Keep living NPCs
+    const npcAny = n as any;
+    const hasMeaningfulHistory = (npcAny.memories?.length > 5) || (n.fame ?? 0) > 10;
+    if (hasMeaningfulHistory) return true; // Keep historically significant NPCs
+    // For dead NPCs without history, check if they died recently
+    const deathTime = npcAny.diedAt?.getTime() ?? 0;
+    return now - deathTime < NINETY_DAYS_MS;
+  });
+  
+  // Cap distant lands/figures to prevent unbounded growth
+  if (navalState.distantLands.length > 50) {
+    navalState.distantLands = navalState.distantLands
+      .sort((a, b) => (b.mentionCount ?? 0) - (a.mentionCount ?? 0))
+      .slice(0, 50);
+  }
+  if (navalState.distantFigures.length > 100) {
+    navalState.distantFigures = navalState.distantFigures
+      .filter(f => f.alive)
+      .sort((a, b) => (b.mentionCount ?? 0) - (a.mentionCount ?? 0))
+      .slice(0, 100);
+  }
+}
+
 // Daily tick - weather, town events, calendar progression
 function onDayTick(event: TickEvent): void {
   if (!initialized) return;
 
   void (async () => {
+    // Periodic cleanup to prevent memory growth (runs daily)
+    pruneOldData(event.worldTime);
+    
     // Daily calendar update (weather, festivals, moon phases)
     const { logs: calendarLogs, newCalendar } = dailyCalendarTick(world, rng, event.worldTime, calendar);
     calendar = newCalendar;

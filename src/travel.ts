@@ -153,7 +153,8 @@ export function updateTravel(world: WorldState, rng: Random, worldTime: Date): L
   }
 
   // Occasionally spawn a new roaming band to keep the world lively.
-  if (rng.chance(0.01)) {
+  // ~0.2% per hour = ~15 new bands per year (about 1-2 per month)
+  if (rng.chance(0.002)) {
     const id = `band-${world.parties.length}`;
     const name = `${randomName(rng)}'s Band`;
     world.parties.push({
