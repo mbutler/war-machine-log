@@ -14,10 +14,33 @@ function isDay(worldTime: Date): boolean {
 
 function pickDestination(world: WorldState, rng: Random, origin: string, partyGoal?: string): string {
   if (partyGoal) return partyGoal;
-  if (world.settlements.length <= 1) return randomPlace(rng);
-  const options = world.settlements.map((s) => s.name).filter((name) => name !== origin);
-  if (!options.length) return origin;
-  return rng.pick(options);
+  
+  // Build list of possible destinations: settlements + dungeons
+  const settlementNames = world.settlements.map((s) => s.name);
+  const dungeonNames = world.dungeons.map((d) => d.name);
+  
+  // Weight destinations: settlements are safer, dungeons are for adventurers
+  const allDestinations = [
+    ...settlementNames,
+    ...settlementNames, // Double-weight settlements (more likely)
+    ...dungeonNames,    // Dungeons are options too!
+  ].filter((name) => name !== origin);
+  
+  if (!allDestinations.length) return origin;
+  
+  // Adventuring parties (with goal or high fame) prefer dungeons
+  const party = world.parties.find(p => p.location === origin);
+  if (party && (party.fame ?? 0) >= 3 && rng.chance(0.4)) {
+    // Famous parties seek glory in dungeons
+    const unexploredDungeons = world.dungeons.filter(d => 
+      d.name !== origin && d.rooms && d.rooms.length > 0
+    );
+    if (unexploredDungeons.length > 0) {
+      return rng.pick(unexploredDungeons).name;
+    }
+  }
+  
+  return rng.pick(allDestinations);
 }
 
 const TERRAIN_MILES_PER_DAY: Record<Terrain, number> = {
@@ -28,6 +51,10 @@ const TERRAIN_MILES_PER_DAY: Record<Terrain, number> = {
   mountains: 12,
   swamp: 12,
   desert: 16,
+  coastal: 20, // Easy coastal travel
+  river: 8,    // Must ford or find crossing
+  ocean: 0,    // Can't walk on ocean
+  reef: 0,     // Can't walk on reef
 };
 
 function milesPerHour(terrain: Terrain): number {

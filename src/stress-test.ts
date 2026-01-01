@@ -6,7 +6,7 @@
  */
 
 import { makeRandom } from './rng.ts';
-import { createInitialWorld } from './world.ts';
+import { createInitialWorld, isCoastalHex } from './world.ts';
 import { EventBus } from './events.ts';
 import { TickEvent, EnhancedWorldState } from './types.ts';
 import { updateTravel, maybeStartTravel } from './travel.ts';
@@ -62,14 +62,18 @@ async function runStressTest() {
   let dynastyState = seedDynasty(rng, world, startWorldTime);
   let treasureState = createTreasureState();
   
-  // Mark some settlements as ports and seed naval state
-  // Ensure at least one port exists for testing
+  // Mark only coastal settlements as ports (geographic coherence)
+  // Fallback: if no coastal hexes, mark last settlement for testing purposes
   let hasPort = false;
   for (const settlement of world.settlements) {
-    if (rng.chance(0.35) || (!hasPort && settlement === world.settlements[world.settlements.length - 1])) {
+    if (isCoastalHex(world, settlement.coord)) {
       markSettlementAsPort(settlement, rng);
       hasPort = true;
     }
+  }
+  // Stress test fallback: ensure at least one port exists for naval testing
+  if (!hasPort && world.settlements.length > 0) {
+    markSettlementAsPort(world.settlements[world.settlements.length - 1], rng);
   }
   let navalState = seedNavalState(world, rng);
 

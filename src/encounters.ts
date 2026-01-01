@@ -18,6 +18,10 @@ const ENCOUNTER_ODDS_DAY: Record<Terrain, number> = {
   mountains: 3 / 6,
   swamp: 3 / 6,
   desert: 2 / 6,
+  coastal: 1 / 6,
+  ocean: 0, // Can't walk on ocean
+  reef: 0,
+  river: 1 / 8,
 };
 
 const ENCOUNTER_ODDS_NIGHT: Record<Terrain, number> = {
@@ -28,6 +32,10 @@ const ENCOUNTER_ODDS_NIGHT: Record<Terrain, number> = {
   mountains: 3 / 12,
   swamp: 3 / 12,
   desert: 2 / 12,
+  coastal: 1 / 8,
+  ocean: 0,
+  reef: 0,
+  river: 1 / 10,
 };
 
 const FOES_BY_TERRAIN: Record<Terrain, readonly string[]> = {
@@ -38,6 +46,10 @@ const FOES_BY_TERRAIN: Record<Terrain, readonly string[]> = {
   mountains: ['orc raiders', 'giant bats', 'goblins', 'ogre'],
   swamp: ['lizardfolk', 'giant leeches', 'goblins', 'brigands'],
   desert: ['bandits', 'giant scorpions', 'orc raiders', 'gnolls'],
+  coastal: ['smugglers', 'pirates', 'giant crabs', 'fishermen', 'sahuagin'],
+  ocean: ['sea serpent', 'pirates', 'merfolk'],  // Only for ship encounters
+  reef: ['sharks', 'merfolk', 'giant octopus'],
+  river: ['bandits', 'fishermen', 'nixies', 'giant pike'],
 };
 
 function reaction(rng: Random): 'friendly' | 'cautious' | 'hostile' {

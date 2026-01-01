@@ -12167,17 +12167,150 @@ function weightedTerrain(rng, weights) {
   }
   return "clear";
 }
+function getNeighbors(q, r, width, height) {
+  const directions = [
+    { q: 1, r: 0 },
+    { q: -1, r: 0 },
+    { q: 0, r: 1 },
+    { q: 0, r: -1 },
+    { q: 1, r: -1 },
+    { q: -1, r: 1 }
+  ];
+  return directions.map((d) => ({ q: q + d.q, r: r + d.r })).filter((c) => c.q >= 0 && c.q < width && c.r >= 0 && c.r < height);
+}
+function terrainsCompatible(t1, t2) {
+  const incompatible = {
+    desert: ["swamp", "ocean", "river"],
+    swamp: ["desert", "mountains"],
+    mountains: ["swamp", "ocean"],
+    ocean: ["mountains", "desert", "forest"]
+  };
+  return !(incompatible[t1]?.includes(t2) || incompatible[t2]?.includes(t1));
+}
 function generateHexMap(rng, width = 6, height = 6, weights) {
   const hexes = [];
+  const hexMap = new Map;
+  const oceanEdge = rng.int(4);
+  const hasMountainSpine = rng.chance(0.6);
+  const mountainSpinePos = hasMountainSpine ? 1 + rng.int(width - 2) : -1;
+  const mountainSpineHorizontal = rng.chance(0.5);
   for (let q = 0;q < width; q += 1) {
     for (let r = 0;r < height; r += 1) {
-      hexes.push({
-        coord: { q, r },
-        terrain: weightedTerrain(rng, weights)
-      });
+      const key = `${q},${r}`;
+      let terrain;
+      const isOceanEdge = oceanEdge === 0 && q === 0 || oceanEdge === 1 && r === height - 1 || oceanEdge === 2 && q === width - 1 || oceanEdge === 3 && r === 0;
+      const isCoastalEdge = oceanEdge === 0 && q === 1 || oceanEdge === 1 && r === height - 2 || oceanEdge === 2 && q === width - 2 || oceanEdge === 3 && r === 1;
+      const onMountainSpine = hasMountainSpine && (mountainSpineHorizontal && r === mountainSpinePos || !mountainSpineHorizontal && q === mountainSpinePos);
+      const distFromSpine = hasMountainSpine ? mountainSpineHorizontal ? Math.abs(r - mountainSpinePos) : Math.abs(q - mountainSpinePos) : 999;
+      if (isOceanEdge) {
+        terrain = "ocean";
+      } else if (isCoastalEdge) {
+        terrain = rng.chance(0.8) ? "coastal" : "clear";
+      } else if (onMountainSpine) {
+        terrain = rng.chance(0.7) ? "mountains" : "hills";
+      } else if (distFromSpine === 1) {
+        terrain = rng.chance(0.5) ? "hills" : weightedTerrain(rng, weights);
+      } else {
+        terrain = weightedTerrain(rng, weights);
+      }
+      const hex = { coord: { q, r }, terrain };
+      hexes.push(hex);
+      hexMap.set(key, hex);
+    }
+  }
+  const clusteringPasses = 2;
+  for (let pass = 0;pass < clusteringPasses; pass++) {
+    for (const hex of hexes) {
+      if (hex.terrain === "ocean" || hex.terrain === "coastal")
+        continue;
+      const neighbors = getNeighbors(hex.coord.q, hex.coord.r, width, height);
+      const neighborTerrains = neighbors.map((c) => hexMap.get(`${c.q},${c.r}`)?.terrain).filter((t) => !!t && t !== "ocean");
+      if (neighborTerrains.length === 0)
+        continue;
+      const counts = {};
+      for (const t of neighborTerrains) {
+        counts[t] = (counts[t] ?? 0) + 1;
+      }
+      let dominant = null;
+      let maxCount = 0;
+      for (const [t, count] of Object.entries(counts)) {
+        if (count > maxCount && count >= 2) {
+          maxCount = count;
+          dominant = t;
+        }
+      }
+      if (dominant && rng.chance(0.35) && terrainsCompatible(hex.terrain, dominant)) {
+        if (dominant === "coastal") {
+          const hasOceanNeighbor = neighborTerrains.includes("ocean");
+          if (!hasOceanNeighbor)
+            continue;
+        }
+        hex.terrain = dominant;
+      }
+    }
+  }
+  for (const hex of hexes) {
+    if (hex.terrain === "ocean" || hex.terrain === "coastal")
+      continue;
+    const neighbors = getNeighbors(hex.coord.q, hex.coord.r, width, height);
+    const neighborTerrains = neighbors.map((c) => hexMap.get(`${c.q},${c.r}`)?.terrain).filter((t) => !!t);
+    for (const nt of neighborTerrains) {
+      if (!terrainsCompatible(hex.terrain, nt)) {
+        if (hex.terrain === "swamp" && nt === "mountains") {
+          hex.terrain = "hills";
+        } else if (hex.terrain === "desert" && nt === "swamp") {
+          hex.terrain = "clear";
+        } else if (hex.terrain === "swamp" && nt === "desert") {
+          hex.terrain = "clear";
+        } else if (hex.terrain === "mountains" && nt === "ocean") {
+          hex.terrain = "hills";
+        } else if (hex.terrain === "desert" && nt === "ocean") {
+          hex.terrain = "coastal";
+        } else if (hex.terrain === "forest" && nt === "ocean") {
+          hex.terrain = "coastal";
+        }
+        break;
+      }
+    }
+  }
+  if (hasMountainSpine && rng.chance(0.5)) {
+    const mountainHexes = hexes.filter((h) => h.terrain === "mountains");
+    if (mountainHexes.length > 0) {
+      const start = rng.pick(mountainHexes);
+      let current = start.coord;
+      const riverLength = 3 + rng.int(5);
+      for (let i = 0;i < riverLength; i++) {
+        const neighbors = getNeighbors(current.q, current.r, width, height);
+        const toward = neighbors.find((c) => {
+          if (oceanEdge === 0)
+            return c.q < current.q;
+          if (oceanEdge === 1)
+            return c.r > current.r;
+          if (oceanEdge === 2)
+            return c.q > current.q;
+          return c.r < current.r;
+        });
+        if (toward) {
+          const targetHex = hexMap.get(`${toward.q},${toward.r}`);
+          if (targetHex && targetHex.terrain !== "ocean" && targetHex.terrain !== "mountains") {
+            if (rng.chance(0.5)) {
+              targetHex.terrain = "river";
+            }
+            current = toward;
+          } else {
+            break;
+          }
+        } else {
+          break;
+        }
+      }
     }
   }
   return hexes;
+}
+function isCoastalHex(world, coord) {
+  const hex = world.hexes.find((h) => h.coord.q === coord.q && h.coord.r === coord.r);
+  return hex?.terrain === "coastal";
 }
 function sampleDistinctHexes(rng, hexes, count) {
   const pool = [...hexes];
@@ -12196,18 +12329,22 @@ function worstTerrain(t1, t2) {
   const rank = {
     road: 0,
     clear: 1,
+    coastal: 1,
+    river: 2,
     desert: 2,
     hills: 3,
     forest: 3,
     swamp: 4,
-    mountains: 5
+    mountains: 5,
+    ocean: 6,
+    reef: 6
   };
-  return rank[t1] >= rank[t2] ? t1 : t2;
+  return (rank[t1] ?? 3) >= (rank[t2] ?? 3) ? t1 : t2;
 }
 function createInitialWorld(rng, seed, start) {
   const archetype = rng.pick(ARCHETYPES);
-  const width = 6;
-  const height = 6;
+  const width = 10;
+  const height = 10;
   const terrainWeights = [...TERRAIN_WEIGHTS];
   if (archetype === "Wilderness Unbound") {
     terrainWeights.find((t) => t.terrain === "clear").weight = 1;
@@ -12215,8 +12352,9 @@ function createInitialWorld(rng, seed, start) {
     terrainWeights.find((t) => t.terrain === "mountains").weight = 4;
   }
   const hexes = generateHexMap(rng, width, height, terrainWeights);
-  const settlementCount = (archetype === "Golden Age" ? 5 : archetype === "Wilderness Unbound" ? 2 : 3) + rng.int(2);
-  const settlementHexes = sampleDistinctHexes(rng, hexes, settlementCount);
+  const landHexes = hexes.filter((h) => h.terrain !== "ocean" && h.terrain !== "reef");
+  const settlementCount = (archetype === "Golden Age" ? 7 : archetype === "Wilderness Unbound" ? 3 : 5) + rng.int(3);
+  const settlementHexes = sampleDistinctHexes(rng, landHexes, settlementCount);
   const goods = ["grain", "timber", "ore", "textiles", "salt", "fish", "livestock"];
   const settlements = settlementHexes.map((hex, i) => {
     const supply = Object.fromEntries(goods.map((g) => [g, rng.int(5) - 2]));
@@ -12285,16 +12423,16 @@ function createInitialWorld(rng, seed, start) {
     settlements,
     parties,
     roads,
-    dungeons: seedDungeons(rng, settlements, archetype),
+    dungeons: seedDungeons(rng, settlements, archetype, width, hexes),
     activeRumors: [],
     npcs: seedNPCs(rng, settlements),
     factions,
-    caravans: seedCaravans(rng, settlements, factions),
+    caravans: seedCaravans(rng, settlements, factions, roads),
     strongholds: [],
     armies: [],
     landmarks: [],
     ruins: [],
-    nexuses: seedNexuses(rng, (archetype === "Arcane Bloom" ? 6 : 3) + rng.int(3)),
+    nexuses: seedNexuses(rng, (archetype === "Arcane Bloom" ? 8 : 4) + rng.int(4), width),
     mercenaries: seedMercenaries(rng, settlements),
     startedAt: start
   };
@@ -12315,12 +12453,12 @@ function seedMercenaries(rng, settlements) {
     };
   });
 }
-function seedNexuses(rng, count) {
+function seedNexuses(rng, count, mapSize = 10) {
   const powerTypes = ["Arcane", "Divine", "Primal", "Shadow"];
   return Array.from({ length: count }, (_, i) => ({
     id: `nexus-${i}`,
     name: `${rng.pick(["Whispering", "Eternal", "Shattered", "Golden", "Deep"])} Nexus of ${rng.pick(["Stars", "Bones", "Life", "Void", "Time"])}`,
-    location: { q: rng.int(6), r: rng.int(6) },
+    location: { q: rng.int(mapSize), r: rng.int(mapSize) },
     powerType: rng.pick(powerTypes),
     intensity: 5 + rng.int(5)
   }));
@@ -12328,23 +12466,39 @@ function seedNexuses(rng, count) {
 function getSettlement(world, name) {
   return world.settlements.find((s) => s.name === name);
 }
+function getDungeon(world, name) {
+  return world.dungeons.find((d) => d.name === name);
+}
+function getLocationCoord(world, name) {
+  const settlement = getSettlement(world, name);
+  if (settlement)
+    return settlement.coord;
+  const dungeon = getDungeon(world, name);
+  if (dungeon)
+    return dungeon.coord;
+  return null;
+}
 function distanceMiles(world, fromName, toName) {
-  const a = getSettlement(world, fromName);
-  const b = getSettlement(world, toName);
-  if (!a || !b)
+  const aCoord = getLocationCoord(world, fromName);
+  const bCoord = getLocationCoord(world, toName);
+  if (!aCoord || !bCoord)
     return null;
-  const hexesApart = hexDistance(a.coord, b.coord);
-  return hexesApart * 6;
+  const hexesApart = hexDistance(aCoord, bCoord);
+  return Math.max(6, hexesApart * 6);
 }
 function pathTerrain(world, fromName, toName) {
+  const aCoord = getLocationCoord(world, fromName);
+  const bCoord = getLocationCoord(world, toName);
+  if (!aCoord || !bCoord)
+    return "clear";
   const a = getSettlement(world, fromName);
   const b = getSettlement(world, toName);
-  if (!a || !b)
-    return "clear";
-  const hasRoad = world.roads.some(([fromId, toId]) => fromId === a.id && toId === b.id || fromId === b.id && toId === a.id);
-  if (hasRoad)
-    return "road";
-  return worstTerrain(hexesAt(world, a.coord)?.terrain ?? "clear", hexesAt(world, b.coord)?.terrain ?? "clear");
+  if (a && b) {
+    const hasRoad = world.roads.some(([fromId, toId]) => fromId === a.id && toId === b.id || fromId === b.id && toId === a.id);
+    if (hasRoad)
+      return "road";
+  }
+  return worstTerrain(hexesAt(world, aCoord)?.terrain ?? "clear", hexesAt(world, bCoord)?.terrain ?? "clear");
 }
 function hexesAt(world, coord) {
   return world.hexes.find((h) => h.coord.q === coord.q && h.coord.r === coord.r);
@@ -12366,26 +12520,42 @@ function updateFactionAttitude(world, factionId, targetSettlement, delta) {
     f.attitude[targetSettlement] = 0;
   f.attitude[targetSettlement] = Math.max(-3, Math.min(3, f.attitude[targetSettlement] + delta));
 }
-function seedDungeons(rng, settlements, archetype) {
+function seedDungeons(rng, settlements, archetype, mapSize = 10, hexes = []) {
   if (!settlements.length)
     return [];
-  const anchor = rng.pick(settlements);
-  const offset = { q: Math.max(0, anchor.coord.q + (rng.int(3) - 1)), r: Math.max(0, anchor.coord.r + (rng.int(3) - 1)) };
-  const dungeon = {
-    id: "dungeon-0",
-    name: generateDungeonName(rng),
-    coord: offset,
-    depth: (archetype === "Standard" ? 3 : 5) + rng.int(3),
-    danger: (archetype === "Wilderness Unbound" ? 4 : 2) + rng.int(3)
-  };
-  dungeon.rooms = stockDungeon(rng, dungeon);
-  dungeon.explored = 0;
-  return [dungeon];
+  const invalidHexes = new Set(hexes.filter((h) => h.terrain === "ocean" || h.terrain === "reef").map((h) => `${h.coord.q},${h.coord.r}`));
+  const dungeonCount = 2 + rng.int(2);
+  const dungeons = [];
+  const usedCoords = new Set;
+  for (let i = 0;i < dungeonCount; i++) {
+    const anchor = rng.pick(settlements);
+    let coord;
+    let attempts = 0;
+    do {
+      coord = {
+        q: Math.max(0, Math.min(mapSize - 1, anchor.coord.q + (rng.int(5) - 2))),
+        r: Math.max(0, Math.min(mapSize - 1, anchor.coord.r + (rng.int(5) - 2)))
+      };
+      attempts++;
+    } while ((usedCoords.has(`${coord.q},${coord.r}`) || invalidHexes.has(`${coord.q},${coord.r}`)) && attempts < 20);
+    usedCoords.add(`${coord.q},${coord.r}`);
+    const dungeon = {
+      id: `dungeon-${i}`,
+      name: generateDungeonName(rng),
+      coord,
+      depth: (archetype === "Standard" ? 3 : 5) + rng.int(3),
+      danger: (archetype === "Wilderness Unbound" ? 4 : 2) + rng.int(3)
+    };
+    dungeon.rooms = stockDungeon(rng, dungeon);
+    dungeon.explored = 0;
+    dungeons.push(dungeon);
+  }
+  return dungeons;
 }
 function seedNPCs(rng, settlements) {
   const roles = ["merchant", "guard", "scout", "priest", "bard", "laborer"];
   const npcs = [];
-  const count = 8 + rng.int(6);
+  const count = Math.max(12, settlements.length * 2) + rng.int(6);
   for (let i = 0;i < count; i += 1) {
     const home = rng.pick(settlements);
     npcs.push({
@@ -12401,24 +12571,29 @@ function seedNPCs(rng, settlements) {
   }
   return npcs;
 }
-function seedCaravans(rng, settlements, factions) {
-  if (settlements.length < 2)
+function seedCaravans(rng, settlements, factions, roads) {
+  if (settlements.length < 2 || roads.length === 0)
     return [];
   const caravans = [];
-  const count = 2 + rng.int(2);
+  const usedRoutes = new Set;
+  const count = Math.min(roads.length, 3 + rng.int(3));
   for (let i = 0;i < count; i += 1) {
-    const a = rng.pick(settlements);
-    let b = rng.pick(settlements);
-    if (b.id === a.id) {
-      b = settlements[(settlements.indexOf(a) + 1) % settlements.length];
-    }
+    const availableRoads = roads.filter(([a, b]) => !usedRoutes.has(`${a}-${b}`) && !usedRoutes.has(`${b}-${a}`));
+    if (availableRoads.length === 0)
+      break;
+    const [fromId, toId] = rng.pick(availableRoads);
+    usedRoutes.add(`${fromId}-${toId}`);
+    const from = settlements.find((s) => s.id === fromId);
+    const to = settlements.find((s) => s.id === toId);
+    if (!from || !to)
+      continue;
     const sponsorFaction = rng.chance(0.6) && factions.length > 0 ? rng.pick(factions) : undefined;
     caravans.push({
       id: `caravan-${i}`,
       name: generateCaravanName(rng),
-      route: [a.id, b.id],
+      route: [fromId, toId],
       goods: rng.pick([["grain", "textiles"], ["ore", "timber"], ["salt", "fish"], ["livestock"]]),
-      location: a.name,
+      location: from.name,
       progressHours: 0,
       direction: "outbound",
       escorts: [],
@@ -12429,8 +12604,8 @@ function seedCaravans(rng, settlements, factions) {
   return caravans;
 }
 function seedFactions(rng, archetype) {
-  const focuses = ["trade", "martial", "pious", "trade"];
-  const count = 3 + rng.int(2);
+  const focuses = ["trade", "martial", "pious", "arcane", "trade", "martial"];
+  const count = 4 + rng.int(3);
   return Array.from({ length: count }, (_, i) => {
     let focus = focuses[i % focuses.length];
     if (archetype === "Age of War" && rng.chance(0.5))
@@ -12455,7 +12630,11 @@ var ENCOUNTER_ODDS_DAY = {
   hills: 2 / 6,
   mountains: 3 / 6,
   swamp: 3 / 6,
-  desert: 2 / 6
+  desert: 2 / 6,
+  coastal: 1 / 6,
+  ocean: 0,
+  reef: 0,
+  river: 1 / 8
 };
 var ENCOUNTER_ODDS_NIGHT = {
   road: 1 / 10,
@@ -12464,7 +12643,11 @@ var ENCOUNTER_ODDS_NIGHT = {
   hills: 2 / 12,
   mountains: 3 / 12,
   swamp: 3 / 12,
-  desert: 2 / 12
+  desert: 2 / 12,
+  coastal: 1 / 8,
+  ocean: 0,
+  reef: 0,
+  river: 1 / 10
 };
 var FOES_BY_TERRAIN = {
   road: ["bandits", "brigands", "patrolling guards", "merchants"],
@@ -12473,7 +12656,11 @@ var FOES_BY_TERRAIN = {
   hills: ["orc raiders", "goblins", "brigands", "ogre"],
   mountains: ["orc raiders", "giant bats", "goblins", "ogre"],
   swamp: ["lizardfolk", "giant leeches", "goblins", "brigands"],
-  desert: ["bandits", "giant scorpions", "orc raiders", "gnolls"]
+  desert: ["bandits", "giant scorpions", "orc raiders", "gnolls"],
+  coastal: ["smugglers", "pirates", "giant crabs", "fishermen", "sahuagin"],
+  ocean: ["sea serpent", "pirates", "merfolk"],
+  reef: ["sharks", "merfolk", "giant octopus"],
+  river: ["bandits", "fishermen", "nixies", "giant pike"]
 };
 function reaction(rng) {
   const roll = 2 + rng.int(6) + rng.int(6);
@@ -13972,12 +14159,23 @@ function isDay(worldTime) {
 function pickDestination(world, rng, origin, partyGoal) {
   if (partyGoal)
     return partyGoal;
-  if (world.settlements.length <= 1)
-    return randomPlace(rng);
-  const options = world.settlements.map((s) => s.name).filter((name) => name !== origin);
-  if (!options.length)
+  const settlementNames = world.settlements.map((s) => s.name);
+  const dungeonNames = world.dungeons.map((d) => d.name);
+  const allDestinations = [
+    ...settlementNames,
+    ...settlementNames,
+    ...dungeonNames
+  ].filter((name) => name !== origin);
+  if (!allDestinations.length)
     return origin;
-  return rng.pick(options);
+  const party = world.parties.find((p) => p.location === origin);
+  if (party && (party.fame ?? 0) >= 3 && rng.chance(0.4)) {
+    const unexploredDungeons = world.dungeons.filter((d) => d.name !== origin && d.rooms && d.rooms.length > 0);
+    if (unexploredDungeons.length > 0) {
+      return rng.pick(unexploredDungeons).name;
+    }
+  }
+  return rng.pick(allDestinations);
 }
 var TERRAIN_MILES_PER_DAY = {
   road: 36,
@@ -13986,7 +14184,11 @@ var TERRAIN_MILES_PER_DAY = {
   hills: 16,
   mountains: 12,
   swamp: 12,
-  desert: 16
+  desert: 16,
+  coastal: 20,
+  river: 8,
+  ocean: 0,
+  reef: 0
 };
 function milesPerHour(terrain) {
   const perDay = TERRAIN_MILES_PER_DAY[terrain] ?? 12;
@@ -26201,8 +26403,7 @@ async function initWorld() {
     ecologyState = seedEcology(rng, world, config.startWorldTime);
     dynastyState = seedDynasty(rng, world, config.startWorldTime);
     for (const settlement of world.settlements) {
-      const hex = world.hexes.find((h) => h.coord.q === settlement.coord.q && h.coord.r === settlement.coord.r);
-      if (hex && (hex.terrain === "coastal" || rng.chance(0.25))) {
+      if (isCoastalHex(world, settlement.coord)) {
         markSettlementAsPort(settlement, rng);
       }
     }

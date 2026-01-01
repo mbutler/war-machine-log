@@ -11,7 +11,7 @@ import { Logger } from './logging.ts';
 import { makeRandom } from './rng.ts';
 import { Scheduler } from './scheduler.ts';
 import { LogEntry, TickEvent, EnhancedWorldState } from './types.ts';
-import { createInitialWorld } from './world.ts';
+import { createInitialWorld, isCoastalHex } from './world.ts';
 import { updateTravel, maybeStartTravel } from './travel.ts';
 import { loadWorld, saveWorld } from './persistence.ts';
 import { dailyTownTick } from './town.ts';
@@ -153,10 +153,9 @@ async function initWorld(): Promise<void> {
     ecologyState = seedEcology(rng, world, config.startWorldTime);
     dynastyState = seedDynasty(rng, world, config.startWorldTime);
     
-    // Mark coastal settlements as ports and seed naval state
+    // Mark only coastal settlements as ports (geographic coherence)
     for (const settlement of world.settlements) {
-      const hex = world.hexes.find(h => h.coord.q === settlement.coord.q && h.coord.r === settlement.coord.r);
-      if (hex && (hex.terrain === 'coastal' || rng.chance(0.25))) {
+      if (isCoastalHex(world, settlement.coord)) {
         markSettlementAsPort(settlement, rng);
       }
     }
