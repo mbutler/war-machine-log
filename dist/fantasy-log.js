@@ -11903,7 +11903,23 @@ var FACTION_SYMBOLS = [
   "Hammer",
   "Anvil",
   "Quill",
-  "Scroll"
+  "Scroll",
+  "Ash",
+  "Storm",
+  "Bone",
+  "Blood",
+  "Shadow",
+  "Frost",
+  "Dawn",
+  "Dusk",
+  "Wyrm",
+  "Phoenix",
+  "Griffin",
+  "Stag",
+  "Bear",
+  "Hawk",
+  "Spider",
+  "Viper"
 ];
 var FACTION_PLURALS = [
   "Shadows",
