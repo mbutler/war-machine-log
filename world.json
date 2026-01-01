@@ -1,0 +1,349 @@
+{
+  "seed": "default-seed",
+  "hexes": [
+    {
+      "coord": {
+        "q": 0,
+        "r": 0
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 1
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 2
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 3
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 4
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 5
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 0
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 2
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 4
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 0
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 1
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 2
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 3
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 4
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 5
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 0
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 1
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 2
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 3
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 4
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 0
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 1
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 2
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 3
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 4
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 5
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 0
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 1
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 2
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 3
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 4
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 5
+      },
+      "terrain": "hills"
+    }
+  ],
+  "width": 6,
+  "height": 6,
+  "settlements": [
+    {
+      "id": "settlement-0",
+      "name": "Minasbran",
+      "population": 1364,
+      "type": "town",
+      "coord": {
+        "q": 0,
+        "r": 5
+      }
+    },
+    {
+      "id": "settlement-1",
+      "name": "Dragonmill",
+      "population": 1748,
+      "type": "town",
+      "coord": {
+        "q": 4,
+        "r": 1
+      }
+    },
+    {
+      "id": "settlement-2",
+      "name": "Highsnow",
+      "population": 1269,
+      "type": "village",
+      "coord": {
+        "q": 5,
+        "r": 2
+      }
+    },
+    {
+      "id": "settlement-3",
+      "name": "Wormsgrip",
+      "population": 787,
+      "type": "town",
+      "coord": {
+        "q": 2,
+        "r": 4
+      }
+    }
+  ],
+  "parties": [
+    {
+      "id": "party-0",
+      "name": "Kereama's Company",
+      "members": [
+        "Bessi",
+        "Goodife",
+        "Gumhild"
+      ],
+      "location": "Highsnow",
+      "status": "travel",
+      "travel": {
+        "destination": "Dragonmill",
+        "terrain": "mountains",
+        "milesRemaining": 12,
+        "milesPerHour": 0.5
+      }
+    },
+    {
+      "id": "band-0",
+      "name": "Bobby's Band",
+      "members": [
+        "Edytha",
+        "Tisamenos"
+      ],
+      "location": "Dragonmill",
+      "status": "idle"
+    }
+  ],
+  "roads": [
+    [
+      "settlement-0",
+      "settlement-1"
+    ],
+    [
+      "settlement-0",
+      "settlement-2"
+    ],
+    [
+      "settlement-0",
+      "settlement-3"
+    ],
+    [
+      "settlement-3",
+      "settlement-0"
+    ]
+  ],
+  "startedAt": "2026-01-01T02:17:00.492Z"
+}
