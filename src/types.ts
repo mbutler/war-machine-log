@@ -43,9 +43,16 @@ export type Terrain =
   | 'hills'
   | 'mountains'
   | 'swamp'
-  | 'desert';
+  | 'desert'
+  | 'coastal'    // Land adjacent to sea - can have ports
+  | 'ocean'      // Open sea - ships only
+  | 'reef'       // Dangerous waters
+  | 'river';     // Navigable river
 
-export type Good = 'grain' | 'timber' | 'ore' | 'textiles' | 'salt' | 'fish' | 'livestock';
+export type Good = 
+  | 'grain' | 'timber' | 'ore' | 'textiles' | 'salt' | 'fish' | 'livestock'
+  // Exotic goods (primarily arrive by sea)
+  | 'spices' | 'silk' | 'gems' | 'ivory' | 'wine' | 'dyes';
 export type PriceTrend = 'low' | 'normal' | 'high';
 export type RareFind = 'artifact' | 'relic' | 'ancient-map';
 
@@ -113,6 +120,11 @@ export interface Settlement {
   mood: number; // -3..3
   lastTownLogDay?: string;
   priceTrends?: Record<Good, PriceTrend>;
+  // Naval properties
+  isPort?: boolean;           // Can receive ships
+  portSize?: 'minor' | 'major' | 'great'; // Determines ship capacity
+  shipyard?: boolean;         // Can build/repair ships
+  lighthouse?: boolean;       // Reduces shipwreck chance
 }
 
 export interface Stronghold {
@@ -299,14 +311,76 @@ export interface FactionState {
   recentWins: number;    // Accumulated wins (triggers expansion)
 }
 
+export type FactionOperationType =
+  // === MILITARY OPERATIONS ===
+  | 'raid'              // Quick strike for plunder
+  | 'patrol'            // Defensive presence
+  | 'conquest'          // Taking territory
+  | 'siege'             // Prolonged military action
+  | 'defense'           // Reinforcing a location
+  | 'escort'            // Protecting a caravan or person
+  | 'punitive-expedition'  // Retaliatory strike
+  | 'mercenary-hire'    // Hiring sellswords
+  
+  // === ECONOMIC OPERATIONS ===
+  | 'trade-embargo'     // Blocking commerce
+  | 'smuggling'         // Illegal trade routes
+  | 'price-fixing'      // Market manipulation
+  | 'resource-grab'     // Securing materials
+  | 'blockade'          // Cutting off supplies
+  | 'investment'        // Growing wealth in a region
+  
+  // === POLITICAL OPERATIONS ===
+  | 'diplomacy'         // Negotiation and alliance
+  | 'marriage-alliance' // Political wedding
+  | 'bribery'           // Corruption and payoffs
+  | 'blackmail'         // Using secrets as leverage
+  | 'propaganda'        // Shaping public opinion
+  | 'infiltration'      // Placing spies
+  | 'coup'              // Overthrowing leadership
+  
+  // === COVERT OPERATIONS ===
+  | 'assassination'     // Targeted killing
+  | 'sabotage'          // Destroying resources
+  | 'theft'             // Stealing specific items
+  | 'arson'             // Burning structures
+  | 'poisoning'         // Contaminating supplies
+  | 'kidnapping'        // Taking hostages
+  
+  // === RELIGIOUS OPERATIONS ===
+  | 'crusade'           // Holy war
+  | 'pilgrimage'        // Sacred journey
+  | 'conversion'        // Spreading faith
+  | 'inquisition'       // Hunting heretics
+  | 'sanctuary'         // Offering protection
+  | 'excommunication'   // Casting out the faithless
+  
+  // === EXPANSION OPERATIONS ===
+  | 'colonization'      // Settling new territory
+  | 'recruitment'       // Growing membership
+  | 'expansion'         // General growth
+  | 'fortification'     // Building defenses
+  | 'exploration'       // Scouting new areas
+  
+  // === SUPPORT OPERATIONS ===
+  | 'relief'            // Humanitarian aid
+  | 'healing-mission'   // Medical support
+  | 'festival'          // Public celebration
+  | 'monument'          // Building legacy
+  | 'education';        // Training and knowledge
+
 export interface FactionOperation {
   id: string;
-  type: 'raid' | 'patrol' | 'expansion' | 'recruitment' | 'assassination' | 'sabotage' | 'diplomacy' | 'conquest';
+  type: FactionOperationType;
   target: string;        // Settlement, faction, or NPC
+  secondaryTarget?: string;
   startedAt: Date;
   completesAt: Date;
   participants: string[]; // NPC IDs involved
   successChance: number;
+  resources: number;     // Gold/resources committed
+  secret: boolean;       // Is this a covert operation?
+  reason?: string;       // Why this operation was launched
 }
 
 export interface WorldEvent {
@@ -415,5 +489,13 @@ export interface EnhancedWorldState extends WorldState {
   factionStates?: Record<string, FactionState>;
   partyStates?: Record<string, PartyState>;
   eventHistory?: WorldEvent[];
+  
+  // New systems state
+  retainerRoster?: import('./retainers.ts').RetainerRoster;
+  guildState?: import('./guilds.ts').GuildState;
+  ecologyState?: import('./ecology.ts').EcologyState;
+  dynastyState?: import('./dynasty.ts').DynastyState;
+  treasureState?: import('./treasure.ts').TreasureState;
+  navalState?: import('./naval.ts').NavalState;
 }
 

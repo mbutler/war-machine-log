@@ -61,22 +61,99 @@ export interface WorldEvent {
 // NPC MEMORY SYSTEM - NPCs remember events and act on them
 // ============================================================================
 
+// Memory categories determine how NPCs reference and act on their memories
+export type MemoryCategory = 
+  // HARM MEMORIES - Drive revenge, caution, fear
+  | 'was-betrayed'           // Someone they trusted turned on them
+  | 'was-attacked'           // They were the victim of violence
+  | 'was-robbed'             // Their wealth was stolen
+  | 'was-insulted'           // Their honor was publicly damaged
+  | 'was-threatened'         // Someone made credible threats
+  | 'lost-loved-one'         // Someone they cared for died
+  | 'lost-home'              // Their residence was destroyed
+  | 'was-imprisoned'         // They were jailed or captured
+  | 'was-exiled'             // They were cast out
+  
+  // POSITIVE MEMORIES - Drive loyalty, gratitude, cooperation
+  | 'was-saved'              // Someone rescued them from danger
+  | 'was-healed'             // Someone cured their illness/wounds
+  | 'was-enriched'           // Someone made them wealthy
+  | 'was-defended'           // Someone stood up for them
+  | 'was-taught'             // Someone shared valuable knowledge
+  | 'was-promoted'           // They rose in status/rank
+  | 'was-married'            // They wed (joyful or not)
+  | 'had-child'              // They became a parent
+  | 'was-forgiven'           // Their sins were pardoned
+  
+  // WITNESSED EVENTS - Shape worldview and rumors
+  | 'witnessed-heroism'      // Saw great bravery
+  | 'witnessed-cruelty'      // Saw terrible evil
+  | 'witnessed-miracle'      // Saw divine intervention
+  | 'witnessed-betrayal'     // Saw someone else betrayed
+  | 'witnessed-death'        // Saw someone die
+  | 'witnessed-discovery'    // Saw something revealed
+  | 'witnessed-battle'       // Was present at combat
+  | 'witnessed-festival'     // Participated in celebration
+  
+  // PERSONAL ACTIONS - Define character and create guilt/pride
+  | 'committed-violence'     // They harmed someone
+  | 'committed-betrayal'     // They betrayed someone
+  | 'committed-theft'        // They stole something
+  | 'committed-heroism'      // They acted bravely
+  | 'committed-mercy'        // They showed compassion
+  | 'committed-cruelty'      // They were deliberately cruel
+  | 'broke-oath'             // They violated a promise
+  | 'kept-oath'              // They honored a promise despite cost
+  
+  // RELATIONSHIP CHANGES - Affect social dynamics
+  | 'made-friend'            // Formed a new alliance
+  | 'made-enemy'             // Created a new rivalry
+  | 'lost-friend'            // Alliance ended badly
+  | 'reconciled'             // Mended a broken relationship
+  | 'fell-in-love'           // Romantic feelings emerged
+  | 'fell-out-of-love'       // Romantic feelings ended
+  | 'was-rejected'           // Love was not returned
+  | 'discovered-secret'      // Learned hidden information about someone;
+
+export type MemoryEmotion = 
+  | 'grateful'      // Wants to repay kindness
+  | 'angry'         // Wants revenge or confrontation
+  | 'fearful'       // Wants to avoid or flee
+  | 'grieving'      // Processing loss
+  | 'inspired'      // Motivated to act boldly
+  | 'suspicious'    // Distrustful, watchful
+  | 'guilty'        // Regretful of own actions
+  | 'proud'         // Satisfied with own actions
+  | 'bitter'        // Resentful of circumstances
+  | 'hopeful'       // Optimistic about the future
+  | 'jealous'       // Envious of another
+  | 'ashamed'       // Embarrassed by exposure
+  | 'loyal'         // Bound by gratitude/duty
+  | 'loving';       // Romantic attachment
+
 export interface NPCMemory {
-  eventId: string;
+  id: string;
+  category: MemoryCategory;
   eventType: WorldEventType;
   timestamp: Date;
-  emotional: 'grateful' | 'angry' | 'fearful' | 'grieving' | 'inspired' | 'suspicious';
-  target?: string;       // Who they associate with this memory
+  location: string;
+  emotion: MemoryEmotion;
+  target?: string;       // Who they associate with this memory (name, not ID)
+  targetId?: string;     // ID if available
+  secondaryTarget?: string; // Another person involved
   intensity: number;     // 1-10, decays over time
   acted: boolean;        // Have they acted on this memory?
+  narrative?: string;    // Brief description for log generation
+  secret: boolean;       // Is this something they'd hide?
 }
 
 export interface NPCAgenda {
-  type: 'revenge' | 'protection' | 'ambition' | 'loyalty' | 'greed' | 'fear' | 'love' | 'duty' | 'stronghold' | 'research' | 'nexus' | 'betrayal' | 'romance';
+  type: 'revenge' | 'protection' | 'ambition' | 'loyalty' | 'greed' | 'fear' | 'love' | 'duty' | 'stronghold' | 'research' | 'nexus' | 'betrayal' | 'romance' | 'redemption' | 'escape' | 'vengeance' | 'inheritance' | 'investigation';
   target?: string;       // Person/faction/place involved
   priority: number;      // 1-10
   progress: number;      // 0-100%
   description: string;
+  sourceMemoryId?: string; // Which memory spawned this agenda
 }
 
 // Extended NPC with memory and agenda
@@ -227,15 +304,19 @@ function processRaid(
     } else {
       (victim as ReactiveNPC).morale = ((victim as ReactiveNPC).morale ?? 0) - 3;
       // Add memory of the attack
-      addNPCMemory(victim as ReactiveNPC, {
-        eventId: event.id,
-        eventType: 'raid',
-        timestamp: event.timestamp,
-        emotional: rng.pick(['angry', 'fearful', 'grieving']),
-        target: event.perpetrators?.[0],
-        intensity: 5 + rng.int(5),
-        acted: false,
-      });
+      const memory = createRichMemory(
+        'was-attacked',
+        'raid',
+        event.timestamp,
+        event.location,
+        rng.pick(['angry', 'fearful', 'bitter'] as MemoryEmotion[]),
+        5 + rng.int(5),
+        event.perpetrators?.[0],
+        undefined,
+        undefined,
+        false,
+      );
+      addNPCMemory(victim as ReactiveNPC, memory);
     }
   }
 
@@ -467,16 +548,21 @@ function processDeath(
         if (!relatedNpc || relatedNpc.alive === false) continue;
 
         // Add grief/anger memory
-        addNPCMemory(relatedNpc, {
-          eventId: event.id,
-          eventType: 'death',
-          timestamp: event.timestamp,
-          emotional: rel.type === 'enemy' ? 'grateful' : 
-                     (killedBy ? 'angry' : 'grieving'),
-          target: killedBy,
-          intensity: 5 + rel.strength,
-          acted: false,
-        });
+        const deathEmotion: MemoryEmotion = rel.type === 'enemy' ? 'grateful' : 
+                     (killedBy ? 'angry' : 'grieving');
+        const deathMemory = createRichMemory(
+          rel.type === 'enemy' ? 'witnessed-death' : 'lost-loved-one',
+          'death',
+          event.timestamp,
+          event.location,
+          deathEmotion,
+          5 + rel.strength,
+          killedBy ?? victim.name,
+          undefined,
+          victim.name,
+          false,
+        );
+        addNPCMemory(relatedNpc, deathMemory);
 
         // Close relationships spawn revenge agendas
         if (['ally', 'lover', 'kin', 'mentor'].includes(rel.type) && killedBy) {
@@ -823,15 +909,19 @@ function processBetrayal(
   
   // Add intense memory and revenge agenda
   if (betrayedNpc && betrayedNpc.alive !== false) {
-    addNPCMemory(betrayedNpc, {
-      eventId: event.id,
-      eventType: 'betrayal',
-      timestamp: event.timestamp,
-      emotional: 'angry',
-      target: betrayer,
-      intensity: 10,
-      acted: false,
-    });
+    const betrayalMemory = createRichMemory(
+      'was-betrayed',
+      'betrayal',
+      event.timestamp,
+      event.location,
+      'angry',
+      10,
+      betrayer,
+      undefined,
+      undefined,
+      false,
+    );
+    addNPCMemory(betrayedNpc, betrayalMemory);
     
     addNPCAgenda(betrayedNpc, {
       type: 'revenge',
@@ -839,6 +929,7 @@ function processBetrayal(
       priority: 10,
       progress: 0,
       description: `Make ${betrayer} pay for their treachery`,
+      sourceMemoryId: betrayalMemory.id,
     });
     
     logs.push({
@@ -881,12 +972,265 @@ function processBetrayal(
 // NPC MEMORY HELPERS
 // ============================================================================
 
+function generateMemoryId(): string {
+  return `mem-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+// Create a rich memory with narrative potential
+export function createRichMemory(
+  category: MemoryCategory,
+  eventType: WorldEventType,
+  timestamp: Date,
+  location: string,
+  emotion: MemoryEmotion,
+  intensity: number,
+  target?: string,
+  targetId?: string,
+  secondaryTarget?: string,
+  secret: boolean = false,
+): NPCMemory {
+  // Generate narrative snippet based on category
+  const narratives: Record<MemoryCategory, string[]> = {
+    'was-betrayed': [
+      `remembers when ${target ?? 'someone trusted'} betrayed them`,
+      `will never forget the knife in the back from ${target ?? 'an ally'}`,
+      `still tastes the bitterness of ${target ?? 'that'} betrayal`,
+    ],
+    'was-attacked': [
+      `bears scars from the attack by ${target ?? 'assailants'}`,
+      `remembers the violence done by ${target ?? 'enemies'}`,
+      `flinches at memories of ${target ?? 'that'} assault`,
+    ],
+    'was-robbed': [
+      `lost everything to ${target ?? 'thieves'}`,
+      `remembers when ${target ?? 'bandits'} took what was theirs`,
+      `still seethes at the theft by ${target ?? 'criminals'}`,
+    ],
+    'was-insulted': [
+      `burns with shame from ${target ?? 'public'} humiliation`,
+      `will not forget the insult delivered by ${target ?? 'that snake'}`,
+      `remembers every word of ${target ?? 'the'} mockery`,
+    ],
+    'was-threatened': [
+      `lives with the threat made by ${target ?? 'enemies'}`,
+      `sleeps poorly since ${target ?? 'those'} threats`,
+      `knows ${target ?? 'someone'} wants them dead`,
+    ],
+    'lost-loved-one': [
+      `grieves for ${target ?? 'the fallen'}`,
+      `carries the loss of ${target ?? 'loved ones'} every day`,
+      `lights candles for ${target ?? 'the dead'}`,
+    ],
+    'lost-home': [
+      `dreams of ${target ?? 'their lost home'}`,
+      `has no place to return to since ${target ?? 'the destruction'}`,
+      `wanders, homeless since ${target ?? 'that day'}`,
+    ],
+    'was-imprisoned': [
+      `knows the inside of ${target ?? 'a cell'} too well`,
+      `still has nightmares of ${target ?? 'imprisonment'}`,
+      `values freedom after ${target ?? 'captivity'}`,
+    ],
+    'was-exiled': [
+      `was cast out of ${target ?? 'their homeland'}`,
+      `remembers the gates of ${target ?? 'home'} closing forever`,
+      `burns to return to ${target ?? 'where they belong'}`,
+    ],
+    'was-saved': [
+      `owes their life to ${target ?? 'a savior'}`,
+      `will never forget when ${target ?? 'someone'} rescued them`,
+      `considers ${target ?? 'their rescuer'} the truest friend`,
+    ],
+    'was-healed': [
+      `was brought back from death's door by ${target ?? 'a healer'}`,
+      `owes their health to ${target ?? 'skilled hands'}`,
+      `remembers ${target ?? 'who'} drove away the fever`,
+    ],
+    'was-enriched': [
+      `prospered thanks to ${target ?? 'a benefactor'}`,
+      `remembers when ${target ?? 'fortune'} smiled upon them`,
+      `knows ${target ?? 'who'} made them wealthy`,
+    ],
+    'was-defended': [
+      `remembers when ${target ?? 'a champion'} stood for them`,
+      `knows ${target ?? 'who'} had their back when it mattered`,
+      `will always be grateful to ${target ?? 'their defender'}`,
+    ],
+    'was-taught': [
+      `learned everything from ${target ?? 'a mentor'}`,
+      `carries the lessons of ${target ?? 'a teacher'} still`,
+      `owes their skills to ${target ?? 'a master'}`,
+    ],
+    'was-promoted': [
+      `rose high thanks to ${target ?? 'opportunity'}`,
+      `remembers when ${target ?? 'fortune'} elevated them`,
+      `knows ${target ?? 'who'} saw their potential`,
+    ],
+    'was-married': [
+      `wed ${target ?? 'their spouse'} in ${location}`,
+      `remembers the day ${target ?? 'they'} exchanged vows`,
+      `built a life with ${target ?? 'a partner'}`,
+    ],
+    'had-child': [
+      `became a parent when ${target ?? 'their child'} was born`,
+      `remembers the cry of ${target ?? 'their newborn'}`,
+      `lives now for ${target ?? 'their children'}`,
+    ],
+    'was-forgiven': [
+      `was pardoned by ${target ?? 'those wronged'}`,
+      `received mercy from ${target ?? 'the aggrieved'}`,
+      `knows the weight lifted by ${target ?? 'forgiveness'}`,
+    ],
+    'witnessed-heroism': [
+      `saw ${target ?? 'a hero'} do the impossible`,
+      `witnessed ${target ?? 'true'} bravery`,
+      `tells tales of ${target ?? 'heroic'} deeds`,
+    ],
+    'witnessed-cruelty': [
+      `saw what ${target ?? 'monsters'} are capable of`,
+      `witnessed atrocities committed by ${target ?? 'the cruel'}`,
+      `cannot unsee what ${target ?? 'evil'} did`,
+    ],
+    'witnessed-miracle': [
+      `saw divine intervention in ${location}`,
+      `witnessed ${target ?? 'a miracle'} that changed everything`,
+      `knows the gods are real after ${target ?? 'the miracle'}`,
+    ],
+    'witnessed-betrayal': [
+      `saw ${target ?? 'someone'} betray ${secondaryTarget ?? 'an ally'}`,
+      `witnessed treachery between ${target ?? 'allies'}`,
+      `knows what ${target ?? 'the traitor'} is capable of`,
+    ],
+    'witnessed-death': [
+      `watched ${target ?? 'someone'} die`,
+      `was there when ${target ?? 'they'} fell`,
+      `carries the memory of ${target ?? 'death'}`,
+    ],
+    'witnessed-discovery': [
+      `was present when ${target ?? 'secrets'} were revealed`,
+      `saw ${target ?? 'the discovery'} that changed everything`,
+      `knows what was found in ${location}`,
+    ],
+    'witnessed-battle': [
+      `survived the battle at ${location}`,
+      `saw ${target ?? 'armies'} clash`,
+      `knows the chaos of combat firsthand`,
+    ],
+    'witnessed-festival': [
+      `celebrated ${target ?? 'the festival'} in ${location}`,
+      `remembers the joy of ${target ?? 'that celebration'}`,
+      `danced and drank at ${target ?? 'the feast'}`,
+    ],
+    'committed-violence': [
+      `shed ${target ?? 'blood'} with their own hands`,
+      `remembers striking down ${target ?? 'an enemy'}`,
+      `knows the weight of killing ${target ?? 'another'}`,
+    ],
+    'committed-betrayal': [
+      `betrayed ${target ?? 'someone who trusted them'}`,
+      `turned on ${target ?? 'an ally'} when it served them`,
+      `knows they wronged ${target ?? 'a friend'}`,
+    ],
+    'committed-theft': [
+      `stole from ${target ?? 'others'}`,
+      `took what belonged to ${target ?? 'someone else'}`,
+      `prospers from ${target ?? 'theft'}`,
+    ],
+    'committed-heroism': [
+      `saved ${target ?? 'lives'} through courage`,
+      `stood against ${target ?? 'danger'} when others fled`,
+      `earned glory through ${target ?? 'brave deeds'}`,
+    ],
+    'committed-mercy': [
+      `spared ${target ?? 'those'} they could have destroyed`,
+      `showed compassion to ${target ?? 'enemies'}`,
+      `let ${target ?? 'the fallen'} live`,
+    ],
+    'committed-cruelty': [
+      `did terrible things to ${target ?? 'victims'}`,
+      `showed no mercy to ${target ?? 'the helpless'}`,
+      `carries dark deeds against ${target ?? 'innocents'}`,
+    ],
+    'broke-oath': [
+      `violated their promise to ${target ?? 'someone'}`,
+      `broke faith with ${target ?? 'those who trusted'}`,
+      `is known to have lied to ${target ?? 'allies'}`,
+    ],
+    'kept-oath': [
+      `honored their word to ${target ?? 'all'} despite the cost`,
+      `proved their loyalty to ${target ?? 'their promise'}`,
+      `paid dearly to keep faith with ${target ?? 'an oath'}`,
+    ],
+    'made-friend': [
+      `formed a bond with ${target ?? 'an ally'}`,
+      `found a true companion in ${target ?? 'someone'}`,
+      `counts ${target ?? 'a new friend'} among allies`,
+    ],
+    'made-enemy': [
+      `earned the hatred of ${target ?? 'an enemy'}`,
+      `crossed ${target ?? 'someone dangerous'}`,
+      `knows ${target ?? 'a foe'} wishes them ill`,
+    ],
+    'lost-friend': [
+      `lost ${target ?? 'a friend'} to circumstance or death`,
+      `mourns the friendship with ${target ?? 'an old ally'}`,
+      `no longer speaks with ${target ?? 'a former friend'}`,
+    ],
+    'reconciled': [
+      `mended the rift with ${target ?? 'an estranged ally'}`,
+      `forgave ${target ?? 'an old wrong'} and moved on`,
+      `rebuilt the bond with ${target ?? 'someone lost'}`,
+    ],
+    'fell-in-love': [
+      `loves ${target ?? 'someone'} deeply`,
+      `burns with passion for ${target ?? 'another'}`,
+      `dreams of ${target ?? 'their beloved'}`,
+    ],
+    'fell-out-of-love': [
+      `no longer loves ${target ?? 'a former partner'}`,
+      `watches ${target ?? 'their ex'} with cold eyes`,
+      `wonders what they ever saw in ${target ?? 'that one'}`,
+    ],
+    'was-rejected': [
+      `was spurned by ${target ?? 'the one they loved'}`,
+      `knows ${target ?? 'that person'} will never return their feelings`,
+      `carries the sting of ${target ?? 'romantic'} rejection`,
+    ],
+    'discovered-secret': [
+      `knows ${target ?? 'someone\'s'} darkest secret`,
+      `learned what ${target ?? 'others'} tried to hide`,
+      `holds dangerous knowledge about ${target ?? 'certain parties'}`,
+    ],
+  };
+  
+  const narrativeOptions = narratives[category] ?? [`remembers something about ${target ?? 'the past'}`];
+  const narrative = narrativeOptions[Math.floor(Math.random() * narrativeOptions.length)];
+  
+  return {
+    id: generateMemoryId(),
+    category,
+    eventType,
+    timestamp,
+    location,
+    emotion,
+    target,
+    targetId,
+    secondaryTarget,
+    intensity,
+    acted: false,
+    narrative,
+    secret,
+  };
+}
+
 function addNPCMemory(npc: ReactiveNPC, memory: NPCMemory): void {
   if (!npc.memories) npc.memories = [];
   npc.memories.push(memory);
-  // Limit memory size
-  if (npc.memories.length > 20) {
-    npc.memories = npc.memories.slice(-20);
+  // Limit memory size - keep most intense and most recent
+  if (npc.memories.length > 30) {
+    npc.memories.sort((a, b) => b.intensity - a.intensity || 
+      new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+    npc.memories = npc.memories.slice(0, 30);
   }
 }
 
@@ -895,6 +1239,146 @@ function addNPCAgenda(npc: ReactiveNPC, agenda: NPCAgenda): void {
   // Don't duplicate agendas
   if (npc.agendas.some(a => a.type === agenda.type && a.target === agenda.target)) return;
   npc.agendas.push(agenda);
+}
+
+// Generate log entries when NPCs act on memories
+export function generateMemoryEvent(
+  npc: ReactiveNPC,
+  memory: NPCMemory,
+  world: WorldState,
+  rng: Random,
+  worldTime: Date,
+): LogEntry | null {
+  // Only surface memories periodically
+  if (memory.acted || memory.intensity < 3) return null;
+  
+  const MEMORY_NARRATIVES: Partial<Record<MemoryCategory, { summaries: string[]; details: string[] }>> = {
+    'was-betrayed': {
+      summaries: [
+        `${npc.name} speaks bitterly of ${memory.target ?? 'old treachery'}`,
+        `${npc.name}'s eyes darken at mention of ${memory.target ?? 'the past'}`,
+        `${npc.name} mutters about trust and betrayal`,
+      ],
+      details: [
+        'The wound has not healed.',
+        'Some betrayals cannot be forgiven.',
+        'The memory poisons every interaction.',
+      ],
+    },
+    'lost-loved-one': {
+      summaries: [
+        `${npc.name} visits the grave of ${memory.target ?? 'the fallen'}`,
+        `${npc.name} grows quiet when ${memory.target ?? 'the dead'} is mentioned`,
+        `${npc.name} lights a candle in memory`,
+      ],
+      details: [
+        'Grief does not fade; it only changes shape.',
+        'The living must carry the dead.',
+        'Some absences echo forever.',
+      ],
+    },
+    'was-saved': {
+      summaries: [
+        `${npc.name} speaks warmly of ${memory.target ?? 'a savior'}`,
+        `${npc.name} mentions the debt owed to ${memory.target ?? 'their rescuer'}`,
+        `${npc.name} offers a toast to ${memory.target ?? 'absent friends'}`,
+      ],
+      details: [
+        'Some debts can never be repaid.',
+        'Gratitude runs deeper than gold.',
+        'They would die for who saved them.',
+      ],
+    },
+    'committed-violence': {
+      summaries: [
+        `${npc.name} stares at their hands, lost in thought`,
+        `${npc.name} flinches at reminders of ${memory.target ?? 'past violence'}`,
+        `${npc.name} drinks to forget ${memory.target ?? 'what they did'}`,
+      ],
+      details: [
+        'The weight of killing never lightens.',
+        'Blood washes off hands, not conscience.',
+        'They did what they had to do. They repeat it like a prayer.',
+      ],
+    },
+    'fell-in-love': {
+      summaries: [
+        `${npc.name} watches ${memory.target ?? 'someone'} from across the room`,
+        `${npc.name} sighs at mention of ${memory.target ?? 'their beloved'}`,
+        `${npc.name} finds excuses to be near ${memory.target ?? 'the one they love'}`,
+      ],
+      details: [
+        'Love makes fools of the wise.',
+        'Every glance speaks volumes.',
+        'They burn with feelings they cannot name.',
+      ],
+    },
+    'was-rejected': {
+      summaries: [
+        `${npc.name} averts their eyes from ${memory.target ?? 'the one who spurned them'}`,
+        `${npc.name} bristles at mention of ${memory.target ?? 'past heartbreak'}`,
+        `${npc.name} nurses old wounds over ale`,
+      ],
+      details: [
+        'Rejection leaves scars that do not show.',
+        'Love unreturned curdles into something else.',
+        'They have not moved on. They may never.',
+      ],
+    },
+    'discovered-secret': {
+      summaries: [
+        `${npc.name} watches ${memory.target ?? 'certain people'} with knowing eyes`,
+        `${npc.name} hints at knowledge they should not possess`,
+        `${npc.name} speaks in riddles about ${memory.target ?? 'hidden truths'}`,
+      ],
+      details: [
+        'Knowledge is power—and danger.',
+        'Some secrets are worth more than gold.',
+        'They know. And soon, others might too.',
+      ],
+    },
+    'committed-betrayal': {
+      summaries: [
+        `${npc.name} grows tense when ${memory.target ?? 'the past'} is mentioned`,
+        `${npc.name} avoids ${memory.target ?? 'certain people'}`,
+        `${npc.name} justifies old decisions to anyone who will listen`,
+      ],
+      details: [
+        'Guilt is a heavy companion.',
+        'They had their reasons. The reasons ring hollow now.',
+        'The betrayed may yet learn the truth.',
+      ],
+    },
+    'witnessed-cruelty': {
+      summaries: [
+        `${npc.name} cannot forget what ${memory.target ?? 'the cruel'} did`,
+        `${npc.name} speaks of horrors witnessed in ${memory.location}`,
+        `${npc.name} refuses to discuss ${memory.target ?? 'that day'}`,
+      ],
+      details: [
+        'Some sights cannot be unseen.',
+        'Evil has a face now. They know it well.',
+        'The nightmares have not stopped.',
+      ],
+    },
+  };
+  
+  const narrativeSet = MEMORY_NARRATIVES[memory.category];
+  if (!narrativeSet) return null;
+  
+  // Mark as acted upon
+  memory.acted = true;
+  
+  return {
+    category: 'town',
+    summary: rng.pick(narrativeSet.summaries),
+    details: rng.pick(narrativeSet.details),
+    location: npc.location,
+    actors: memory.target ? [npc.name, memory.target] : [npc.name],
+    worldTime,
+    realTime: new Date(),
+    seed: world.seed,
+  };
 }
 
 function createNPCMemories(event: WorldEvent, world: WorldState, rng: Random): LogEntry[] {
@@ -906,24 +1390,49 @@ function createNPCMemories(event: WorldEvent, world: WorldState, rng: Random): L
     n.location === event.location && n.alive !== false
   );
   
+  // Map event types to memory categories
+  const eventToCategory: Partial<Record<WorldEventType, MemoryCategory>> = {
+    'battle': 'witnessed-battle',
+    'raid': 'was-attacked',
+    'death': 'witnessed-death',
+    'betrayal': 'witnessed-betrayal',
+    'discovery': 'witnessed-discovery',
+    'miracle': 'witnessed-miracle',
+    'festival': 'witnessed-festival',
+  };
+  
+  const eventToEmotion: Partial<Record<WorldEventType, MemoryEmotion[]>> = {
+    'battle': ['fearful', 'angry', 'proud'],
+    'raid': ['fearful', 'angry'],
+    'death': ['grieving', 'fearful'],
+    'betrayal': ['suspicious', 'angry'],
+    'miracle': ['inspired', 'hopeful'],
+    'festival': ['hopeful', 'grateful'],
+    'discovery': ['inspired', 'suspicious'],
+  };
+  
   for (const witness of witnesses) {
-    if (rng.chance(0.3)) { // 30% chance to form strong memory
+    if (rng.chance(0.35)) { // 35% chance to form strong memory
       const reactiveNpc = witness as ReactiveNPC;
       
-      let emotional: NPCMemory['emotional'] = 'suspicious';
-      if (event.type === 'battle' || event.type === 'raid') emotional = rng.pick(['fearful', 'angry']);
-      if (event.type === 'death') emotional = 'grieving';
-      if (event.type === 'miracle' || event.type === 'festival') emotional = 'inspired';
+      const category = eventToCategory[event.type] ?? 'witnessed-battle';
+      const emotionPool = eventToEmotion[event.type] ?? ['suspicious'];
+      const emotion = rng.pick(emotionPool);
       
-      addNPCMemory(reactiveNpc, {
-        eventId: event.id,
-        eventType: event.type,
-        timestamp: event.timestamp,
-        emotional,
-        target: event.actors?.[0],
-        intensity: event.magnitude,
-        acted: false,
-      });
+      const memory = createRichMemory(
+        category,
+        event.type,
+        event.timestamp,
+        event.location,
+        emotion,
+        event.magnitude,
+        event.actors?.[0],
+        undefined,
+        event.actors?.[1],
+        false,
+      );
+      
+      addNPCMemory(reactiveNpc, memory);
     }
   }
   

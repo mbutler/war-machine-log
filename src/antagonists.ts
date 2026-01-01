@@ -26,7 +26,13 @@ export type AntagonistType =
   | 'beast-lord'
   | 'necromancer'
   | 'fey-lord'
-  | 'demon-bound';
+  | 'demon-bound'
+  // Naval antagonists
+  | 'pirate-captain'
+  | 'sea-raider'
+  | 'kraken-cult'
+  | 'ghost-ship'
+  | 'sea-witch';
 
 export interface Antagonist {
   id: string;
@@ -63,6 +69,12 @@ const EPITHETS: Record<AntagonistType, string[]> = {
   'necromancer': ['the Pale', 'Gravebinder', 'of the Charnel House', 'the Deathless', 'Bonewarden'],
   'fey-lord': ['the Mercurial', 'of the Twilight Court', 'the Enchanter', 'Dreamweaver', 'the Fair Folk\'s Champion'],
   'demon-bound': ['the Damned', 'Hellsworn', 'of the Burning Pact', 'the Tormented', 'Soultrader'],
+  // Naval antagonists
+  'pirate-captain': ['Blacksail', 'the Scourge', 'of the Crimson Tide', 'Stormchaser', 'the Corsair King', 'Deadwater'],
+  'sea-raider': ['the Reaver', 'Wavebreaker', 'of the Northern Fleet', 'Ironprow', 'the Sea Wolf', 'Saltblood'],
+  'kraken-cult': ['Voice of the Deep', 'the Tentacled One', 'Deepcaller', 'the Drowned Prophet', 'Ink-Touched'],
+  'ghost-ship': ['the Eternal', 'of the Phantom Fleet', 'Never-Sinking', 'the Damned Voyage', 'Deathwatch'],
+  'sea-witch': ['of the Sunken Isle', 'Storm-Sister', 'the Tide-Turner', 'Saltweaver', 'the Siren\'s Bane'],
 };
 
 const MOTIVATIONS: Record<AntagonistType, string[]> = {
@@ -77,6 +89,37 @@ const MOTIVATIONS: Record<AntagonistType, string[]> = {
     'Uniting the tribes under one banner',
     'Driving the softskins from ancestral lands',
     'Pleasing the dark gods with slaughter',
+  ],
+  // Naval antagonists
+  'pirate-captain': [
+    'Plunder enough gold to retire as a king',
+    'Vengeance on the navy that betrayed them',
+    'Building a pirate republic free from all law',
+    'Finding the legendary treasure of a lost fleet',
+  ],
+  'sea-raider': [
+    'Glory and plunder in the old ways',
+    'Claiming coastal lands for their people',
+    'Sacrifices to appease the sea gods',
+    'Testing their strength against softened southerners',
+  ],
+  'kraken-cult': [
+    'Awakening the great beast from the deep',
+    'Drowning the surface world in endless waves',
+    'Gaining the favor of things that should not be',
+    'Preparing the way for the masters below',
+  ],
+  'ghost-ship': [
+    'Breaking the curse that binds the crew',
+    'Collecting souls to replace the damned',
+    'Eternal hunting of those who wronged them in life',
+    'Completing the voyage they were denied',
+  ],
+  'sea-witch': [
+    'Dominion over all who sail',
+    'Revenge on the sailors who wronged them',
+    'Gathering power from drowned souls',
+    'Summoning leviathans to do their bidding',
   ],
   'dark-wizard': [
     'Forbidden knowledge at any cost',
@@ -153,6 +196,12 @@ const TRAITS: Record<AntagonistType, string[]> = {
   'necromancer': ['surrounded by undead', 'fears true death', 'hoards knowledge', 'once was idealistic'],
   'fey-lord': ['bound by their word', 'capricious moods', 'allergic to iron', 'cannot lie outright'],
   'demon-bound': ['hellfire at their call', 'desperate and dangerous', 'seeks victims constantly', 'bound by the contract'],
+  // Naval antagonists
+  'pirate-captain': ['knows every cove', 'crew would die for them', 'master sailor', 'surprisingly honorable to their code'],
+  'sea-raider': ['born on the waves', 'berserker fury', 'strike fast and vanish', 'worship the old sea gods'],
+  'kraken-cult': ['speak with sea creatures', 'breathe underwater', 'inhuman patience', 'madness grants insight'],
+  'ghost-ship': ['cannot truly die', 'passes through storms', 'crew feels no pain', 'draws other lost ships'],
+  'sea-witch': ['commands weather', 'knows drowned secrets', 'binds sailors to service', 'ageless and bitter'],
 };
 
 const WEAKNESSES: Record<AntagonistType, string[]> = {
@@ -168,6 +217,12 @@ const WEAKNESSES: Record<AntagonistType, string[]> = {
   'necromancer': ['destroy the phylactery', 'consecrated ground', 'the dead sometimes rebel'],
   'fey-lord': ['cold iron', 'broken promises', 'cannot enter uninvited'],
   'demon-bound': ['holy water', 'true names', 'the contract has loopholes'],
+  // Naval antagonists
+  'pirate-captain': ['letters of marque can sway them', 'crew loyalty has limits', 'trapped on land', 'old rivals among pirates'],
+  'sea-raider': ['ice in their homeland', 'gods demand costly sacrifices', 'divided clans', 'vulnerable on land'],
+  'kraken-cult': ['the beast demands feeding', 'other cults oppose them', 'surface dwellers are needed', 'symbols of the sun god'],
+  'ghost-ship': ['the original log tells their doom', 'holy ground blocks them', 'bound to certain waters', 'can be put to rest'],
+  'sea-witch': ['must touch seawater daily', 'iron shackles', 'old lovers remember the truth', 'the drowned can rebel'],
 };
 
 // Generate a new antagonist

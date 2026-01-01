@@ -2,6 +2,7 @@ import { Random } from './rng.ts';
 import { LogEntry, WorldState, Dungeon, Terrain, RareFind } from './types.ts';
 import { createRumor, logRumor } from './rumors.ts';
 import { StockedRoom } from './stocking.ts';
+import { TreasureType, discoverTreasure, TreasureState, createTreasureState } from './treasure.ts';
 
 const WANDER_ODDS_BY_TERRAIN: Record<Terrain, number> = {
   road: 1 / 12,
@@ -11,6 +12,10 @@ const WANDER_ODDS_BY_TERRAIN: Record<Terrain, number> = {
   mountains: 1 / 6,
   swamp: 1 / 6,
   desert: 1 / 8,
+  coastal: 1 / 8,
+  ocean: 1 / 6,
+  reef: 1 / 6,
+  river: 1 / 10,
 };
 
 const DUNGEON_WANDER_ODDS = 1 / 6; // per hour inside
@@ -47,21 +52,46 @@ function wanderOutcome(rng: Random, actors: string[]): { summary: string; detail
   };
 }
 
+// Map dungeon danger to treasure type
+function getDungeonTreasureType(danger: number, roomType: string, rng: Random): TreasureType {
+  if (roomType === 'lair') {
+    // Lair treasures based on danger level
+    if (danger >= 5) return rng.pick(['E', 'F', 'D'] as TreasureType[]);
+    if (danger >= 3) return rng.pick(['C', 'D', 'B'] as TreasureType[]);
+    return rng.pick(['C', 'J', 'K'] as TreasureType[]);
+  }
+  // Regular treasure rooms
+  if (danger >= 5) return rng.pick(['D', 'E'] as TreasureType[]);
+  if (danger >= 3) return rng.pick(['C', 'D'] as TreasureType[]);
+  return rng.pick(['J', 'K', 'L', 'M'] as TreasureType[]);
+}
+
 function applyRoomOutcome(
   rng: Random,
   dungeon: Dungeon,
   room: StockedRoom,
   actors: string[],
   world: WorldState | undefined,
-): { summary: string; details: string; fameDelta?: number; injury?: boolean; death?: boolean; rare?: RareFind } {
+  treasureState?: TreasureState,
+  worldTime?: Date,
+): { summary: string; details: string; fameDelta?: number; injury?: boolean; death?: boolean; rare?: RareFind; treasureLogs?: LogEntry[] } {
   switch (room.type) {
     case 'treasure': {
-      const loot = rng.pick(DUNGEON_TREASURE);
+      // Use BECMI treasure types!
+      const treasureType = getDungeonTreasureType(dungeon.danger, 'treasure', rng);
+      const treasureLogs: LogEntry[] = [];
+      
+      if (treasureState && world && worldTime) {
+        const logs = discoverTreasure(rng, treasureType, dungeon.name, actors[0], treasureState, world, worldTime);
+        treasureLogs.push(...logs);
+      }
+      
       return {
-        summary: `${actors[0]} secure ${loot}`,
-        details: 'Hard-won prize from the dark.',
+        summary: `${actors[0]} discover a treasure cache`,
+        details: `Type ${treasureType} treasure found in the depths.`,
         fameDelta: 1,
         rare: room.rare,
+        treasureLogs,
       };
     }
     case 'trap': {
@@ -76,12 +106,22 @@ function applyRoomOutcome(
     }
     case 'lair': {
       const death = rng.chance(0.15);
+      const treasureLogs: LogEntry[] = [];
+      
+      // Monsters have treasure!
+      if (!death && treasureState && world && worldTime) {
+        const treasureType = getDungeonTreasureType(dungeon.danger, 'lair', rng);
+        const logs = discoverTreasure(rng, treasureType, dungeon.name, actors[0], treasureState, world, worldTime);
+        treasureLogs.push(...logs);
+      }
+      
       return {
         summary: `${actors[0]} battle lair denizens`,
-        details: death ? 'They withdraw, leaving fallen behind.' : 'Beasts broken after a grim melee.',
+        details: death ? 'They withdraw, leaving fallen behind.' : 'Beasts broken after a grim melee. Their hoard is claimed.',
         fameDelta: death ? -1 : 1,
         death,
         injury: !death && rng.chance(0.3),
+        treasureLogs,
       };
     }
     case 'shrine':
@@ -107,6 +147,7 @@ export function exploreDungeonTick(
   worldTime: Date,
   seed: string,
   world: WorldState,
+  treasureState?: TreasureState,
 ): LogEntry[] {
   const logs: LogEntry[] = [];
   if (!dungeon.rooms || dungeon.rooms.length === 0) {
@@ -124,7 +165,7 @@ export function exploreDungeonTick(
   }
   const room = dungeon.rooms.shift()!;
   dungeon.explored = (dungeon.explored ?? 0) + 1;
-  const outcome = applyRoomOutcome(rng, dungeon, room, actors, world);
+  const outcome = applyRoomOutcome(rng, dungeon, room, actors, world, treasureState, worldTime);
 
   // Fame adjustments
   const party = world.parties.find((p) => p.name === actors[0]);
@@ -170,6 +211,12 @@ export function exploreDungeonTick(
     realTime: new Date(),
     seed,
   });
+  
+  // Add treasure discovery logs
+  if (outcome.treasureLogs) {
+    logs.push(...outcome.treasureLogs);
+  }
+  
   return logs;
 }
 

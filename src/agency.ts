@@ -7,7 +7,7 @@
  */
 
 import { Random } from './rng.ts';
-import { WorldState, LogEntry, Party, NPC, Faction, Settlement } from './types.ts';
+import { WorldState, LogEntry, Party, NPC, Faction, Settlement, FactionOperation, FactionOperationType } from './types.ts';
 import { 
   ReactiveNPC, 
   PartyState, 
@@ -16,6 +16,8 @@ import {
   getFactionState,
   processWorldEvent,
   WorldEvent,
+  NPCMemory,
+  MemoryCategory,
 } from './causality.ts';
 import { Antagonist } from './antagonists.ts';
 import { StoryThread } from './stories.ts';
@@ -58,6 +60,9 @@ export function tickNexuses(world: WorldState, rng: Random, worldTime: Date): Lo
               completesAt: new Date(worldTime.getTime() + 48 * 60 * 60 * 1000),
               participants: [],
               successChance: 0.5,
+              resources: 100,
+              secret: false,
+              reason: `Claim the ${nexus.powerType} nexus ${nexus.name}`,
             });
             
             logs.push({
@@ -255,15 +260,28 @@ export function tickNPCAgency(
     if (npc.alive === false) continue;
     
     const reactiveNpc = npc as ReactiveNPC;
-    if (!reactiveNpc.agendas || reactiveNpc.agendas.length === 0) continue;
     
-    // Only act occasionally
-    if (!rng.chance(0.05)) continue;
+    // === AGENDA-BASED ACTIONS ===
+    if (reactiveNpc.agendas && reactiveNpc.agendas.length > 0 && rng.chance(0.05)) {
+      // Act on highest priority agenda
+      const agenda = reactiveNpc.agendas.sort((a, b) => b.priority - a.priority)[0];
+      const actionLogs = executeNPCAgenda(reactiveNpc, agenda, world, rng, worldTime, antagonists, storyThreads);
+      logs.push(...actionLogs);
+    }
     
-    // Act on highest priority agenda
-    const agenda = reactiveNpc.agendas.sort((a, b) => b.priority - a.priority)[0];
-    const actionLogs = executeNPCAgenda(reactiveNpc, agenda, world, rng, worldTime, antagonists, storyThreads);
-    logs.push(...actionLogs);
+    // === MEMORY SURFACING - NPCs reference their past ===
+    if (reactiveNpc.memories && reactiveNpc.memories.length > 0 && rng.chance(0.02)) {
+      // Pick an unacted memory with high intensity
+      const significantMemories = reactiveNpc.memories.filter(m => !m.acted && m.intensity >= 5);
+      if (significantMemories.length > 0) {
+        const memory = rng.pick(significantMemories);
+        const memoryLog = generateMemoryNarrative(reactiveNpc, memory, world, rng, worldTime);
+        if (memoryLog) {
+          logs.push(memoryLog);
+          memory.acted = true;
+        }
+      }
+    }
   }
 
   // Decay memory intensity over time
@@ -281,6 +299,235 @@ export function tickNPCAgency(
   }
 
   return logs;
+}
+
+// Generate narrative log from NPC memory
+function generateMemoryNarrative(
+  npc: ReactiveNPC,
+  memory: NPCMemory,
+  world: WorldState,
+  rng: Random,
+  worldTime: Date,
+): LogEntry | null {
+  // Memory narratives by category
+  const MEMORY_SURFACES: Partial<Record<MemoryCategory, { summaries: string[]; details: string[] }>> = {
+    'was-betrayed': {
+      summaries: [
+        `${npc.name} speaks bitterly of ${memory.target ?? 'old treachery'}`,
+        `${npc.name}'s eyes darken at mention of ${memory.target ?? 'the past'}`,
+        `${npc.name} mutters about trust and betrayal`,
+        `${npc.name} recalls the day ${memory.target ?? 'someone'} turned on them`,
+      ],
+      details: [
+        'The wound has not healed. Perhaps it never will.',
+        'Some betrayals cannot be forgiven, only avenged.',
+        'The memory poisons every interaction.',
+        'They trusted once. They will not make that mistake again.',
+      ],
+    },
+    'lost-loved-one': {
+      summaries: [
+        `${npc.name} visits the grave of ${memory.target ?? 'the fallen'}`,
+        `${npc.name} grows quiet when ${memory.target ?? 'the dead'} is mentioned`,
+        `${npc.name} lights a candle in memory of ${memory.target ?? 'the departed'}`,
+        `${npc.name} speaks of ${memory.target ?? 'those gone'} with wet eyes`,
+      ],
+      details: [
+        'Grief does not fade; it only changes shape.',
+        'The living must carry the dead with them.',
+        'Some absences echo forever.',
+        'They would give anything for one more conversation.',
+      ],
+    },
+    'was-saved': {
+      summaries: [
+        `${npc.name} speaks warmly of ${memory.target ?? 'a savior'}`,
+        `${npc.name} mentions the debt owed to ${memory.target ?? 'their rescuer'}`,
+        `${npc.name} offers a toast to ${memory.target ?? 'absent friends'}`,
+        `${npc.name} credits ${memory.target ?? 'another'} with their survival`,
+      ],
+      details: [
+        'Some debts can never be repaid, only honored.',
+        'Gratitude runs deeper than gold.',
+        'They would die for the one who saved them.',
+        'Every day since has been a gift.',
+      ],
+    },
+    'was-attacked': {
+      summaries: [
+        `${npc.name} tenses at mention of ${memory.target ?? 'the attack'}`,
+        `${npc.name} fingers an old scar thoughtfully`,
+        `${npc.name} speaks of ${memory.target ?? 'violence past'} with cold fury`,
+        `${npc.name} recalls the assault by ${memory.target ?? 'enemies'}`,
+      ],
+      details: [
+        'The body heals. The fear lingers.',
+        'They will be ready next time.',
+        'Violence begets violence, they know.',
+        'The memory surfaces in every shadow.',
+      ],
+    },
+    'committed-violence': {
+      summaries: [
+        `${npc.name} stares at their hands, lost in thought`,
+        `${npc.name} flinches at reminders of ${memory.target ?? 'past violence'}`,
+        `${npc.name} drinks to forget ${memory.target ?? 'what they did'}`,
+        `${npc.name} is haunted by what happened with ${memory.target ?? 'the fallen'}`,
+      ],
+      details: [
+        'The weight of killing never lightens.',
+        'Blood washes off hands, not conscience.',
+        'They did what they had to do. They repeat it like a prayer.',
+        'Some nights, the faces come back.',
+      ],
+    },
+    'fell-in-love': {
+      summaries: [
+        `${npc.name} watches ${memory.target ?? 'someone'} from across the room`,
+        `${npc.name} sighs at mention of ${memory.target ?? 'their beloved'}`,
+        `${npc.name} finds excuses to be near ${memory.target ?? 'the one they love'}`,
+        `${npc.name} blushes when ${memory.target ?? 'a certain name'} is spoken`,
+      ],
+      details: [
+        'Love makes fools of the wise and cowards of the brave.',
+        'Every glance speaks volumes, to those who listen.',
+        'They burn with feelings they dare not name.',
+        'The heart wants what the heart wants.',
+      ],
+    },
+    'was-rejected': {
+      summaries: [
+        `${npc.name} averts their eyes from ${memory.target ?? 'the one who spurned them'}`,
+        `${npc.name} bristles at mention of ${memory.target ?? 'past heartbreak'}`,
+        `${npc.name} nurses old wounds over ale`,
+        `${npc.name} pretends not to care about ${memory.target ?? 'that person'}`,
+      ],
+      details: [
+        'Rejection leaves scars that do not show.',
+        'Love unreturned curdles into something else.',
+        'They have not moved on. They may never.',
+        'The sting fades. The memory does not.',
+      ],
+    },
+    'discovered-secret': {
+      summaries: [
+        `${npc.name} watches ${memory.target ?? 'certain people'} with knowing eyes`,
+        `${npc.name} hints at knowledge they should not possess`,
+        `${npc.name} speaks in riddles about ${memory.target ?? 'hidden truths'}`,
+        `${npc.name} smiles when ${memory.target ?? 'that matter'} is discussed`,
+      ],
+      details: [
+        'Knowledge is power—and danger.',
+        'Some secrets are worth more than gold.',
+        'They know. And soon, others might too.',
+        'Information is the currency of the careful.',
+      ],
+    },
+    'committed-betrayal': {
+      summaries: [
+        `${npc.name} grows tense when ${memory.target ?? 'the past'} is mentioned`,
+        `${npc.name} avoids ${memory.target ?? 'certain people'}`,
+        `${npc.name} justifies old decisions to anyone who will listen`,
+        `${npc.name} looks over their shoulder when ${memory.target ?? 'that name'} comes up`,
+      ],
+      details: [
+        'Guilt is a heavy companion.',
+        'They had their reasons. The reasons ring hollow now.',
+        'The betrayed may yet learn the truth.',
+        'Sleep does not come easy to traitors.',
+      ],
+    },
+    'witnessed-cruelty': {
+      summaries: [
+        `${npc.name} cannot forget what ${memory.target ?? 'the cruel'} did`,
+        `${npc.name} speaks of horrors witnessed in ${memory.location}`,
+        `${npc.name} refuses to discuss ${memory.target ?? 'that day'}`,
+        `${npc.name} shudders at memories of ${memory.target ?? 'evil'}`,
+      ],
+      details: [
+        'Some sights cannot be unseen.',
+        'Evil has a face now. They know it well.',
+        'The nightmares have not stopped.',
+        'They will never be the same.',
+      ],
+    },
+    'witnessed-heroism': {
+      summaries: [
+        `${npc.name} tells tales of ${memory.target ?? 'heroic deeds'}`,
+        `${npc.name} recalls when ${memory.target ?? 'a hero'} saved the day`,
+        `${npc.name} still speaks of ${memory.target ?? 'bravery'} with awe`,
+        `${npc.name} holds ${memory.target ?? 'the brave one'} as an example`,
+      ],
+      details: [
+        'True courage inspires for a lifetime.',
+        'They saw what one person can do.',
+        'Heroes are real. They witnessed one.',
+        'The memory sustains them in dark times.',
+      ],
+    },
+    'was-insulted': {
+      summaries: [
+        `${npc.name} seethes at the memory of ${memory.target ?? 'public humiliation'}`,
+        `${npc.name} plots revenge against ${memory.target ?? 'those who mocked'}`,
+        `${npc.name} cannot forget the words of ${memory.target ?? 'mockers'}`,
+      ],
+      details: [
+        'Pride is a wound that festers.',
+        'Honor demands satisfaction.',
+        'They will have their day.',
+      ],
+    },
+    'was-exiled': {
+      summaries: [
+        `${npc.name} dreams of ${memory.target ?? 'their lost homeland'}`,
+        `${npc.name} speaks wistfully of ${memory.target ?? 'home'}`,
+        `${npc.name} marks the anniversary of their exile`,
+      ],
+      details: [
+        'Home is where they cannot return.',
+        'The exile plans their return—someday.',
+        'Every stranger reminds them of what was lost.',
+      ],
+    },
+    'made-enemy': {
+      summaries: [
+        `${npc.name} speaks darkly of ${memory.target ?? 'an enemy'}`,
+        `${npc.name} warns others about ${memory.target ?? 'a foe'}`,
+        `${npc.name} keeps watch for ${memory.target ?? 'enemies'}`,
+      ],
+      details: [
+        'They know who wishes them ill.',
+        'Trust is earned. This one failed.',
+        'The enmity will not be forgotten.',
+      ],
+    },
+    'made-friend': {
+      summaries: [
+        `${npc.name} speaks fondly of ${memory.target ?? 'a friend'}`,
+        `${npc.name} inquires after ${memory.target ?? 'an ally'}`,
+        `${npc.name} credits ${memory.target ?? 'a companion'} for past support`,
+      ],
+      details: [
+        'True friends are rare treasures.',
+        'They would stand with this one through anything.',
+        'Some bonds are forged in fire.',
+      ],
+    },
+  };
+  
+  const narrativeSet = MEMORY_SURFACES[memory.category];
+  if (!narrativeSet) return null;
+  
+  return {
+    category: 'town',
+    summary: rng.pick(narrativeSet.summaries),
+    details: rng.pick(narrativeSet.details),
+    location: npc.location,
+    actors: memory.target ? [npc.name, memory.target] : [npc.name],
+    worldTime,
+    realTime: new Date(),
+    seed: world.seed,
+  };
 }
 
 function executeNPCAgenda(
@@ -1139,6 +1386,9 @@ export function tickFactionOperations(
             completesAt: new Date(worldTime.getTime() + (12 + rng.int(24)) * 60 * 60 * 1000),
             participants: [],
             successChance: 0.4 + state.power / 200,
+            resources: faction.wealth * 0.2,
+            secret: false,
+            reason: hasCB ? hasCB.reason : `War against ${enemy.name}`,
           };
           state.activeOperations.push(op);
           
@@ -1191,12 +1441,15 @@ export function tickFactionOperations(
           // Found a settlement with the resource we need!
           const op: FactionOperation = {
             id: `op-res-${Date.now()}`,
-            type: 'conquest',
+            type: 'resource-grab',
             target: targetSettlement.name,
             startedAt: worldTime,
             completesAt: new Date(worldTime.getTime() + (24 + rng.int(48)) * 60 * 60 * 1000),
             participants: [],
             successChance: 0.3 + state.power / 200,
+            resources: faction.wealth * 0.15,
+            secret: false,
+            reason: `Secure ${need} supplies from ${targetSettlement.name}`,
           };
           state.activeOperations.push(op);
           
@@ -1262,6 +1515,279 @@ export function tickFactionOperations(
         }, 0);
         
         state.recentWins = 0;
+      }
+    }
+    
+    // === ADDITIONAL OPERATION TYPES ===
+    
+    // Trade embargo against enemies (trade factions)
+    if (faction.focus === 'trade' && state.enemies.length > 0 && rng.chance(0.03)) {
+      const enemyId = rng.pick(state.enemies);
+      const enemy = world.factions.find(f => f.id === enemyId);
+      const enemyState = getFactionState(world, enemyId);
+      
+      if (enemy && enemyState.territory.length > 0 && !state.activeOperations.some(op => op.type === 'trade-embargo')) {
+        const target = rng.pick(enemyState.territory);
+        const op: FactionOperation = {
+          id: `op-embargo-${Date.now()}`,
+          type: 'trade-embargo',
+          target,
+          startedAt: worldTime,
+          completesAt: new Date(worldTime.getTime() + 7 * 24 * 60 * 60 * 1000), // 1 week
+          participants: [],
+          successChance: 0.7,
+          resources: faction.wealth * 0.1,
+          secret: false,
+          reason: `Economic warfare against ${enemy.name}`,
+        };
+        state.activeOperations.push(op);
+        
+        logs.push({
+          category: 'faction',
+          summary: `${faction.name} declares embargo on ${target}`,
+          details: `Trade caravans are turned away. Merchants grumble. The economic stranglehold begins.`,
+          location: target,
+          actors: [faction.name, enemy.name],
+          worldTime,
+          realTime: new Date(),
+          seed: world.seed,
+        });
+      }
+    }
+    
+    // Crusade (pious factions)
+    if (faction.focus === 'pious' && state.power >= 60 && rng.chance(0.02)) {
+      // Find heretical or enemy-controlled settlement
+      const heretical = world.settlements.find(s => {
+        const sState = getSettlementState(world, s.name);
+        return sState.controlledBy && state.enemies.includes(sState.controlledBy);
+      });
+      
+      if (heretical && !state.activeOperations.some(op => op.type === 'crusade')) {
+        const op: FactionOperation = {
+          id: `op-crusade-${Date.now()}`,
+          type: 'crusade',
+          target: heretical.name,
+          startedAt: worldTime,
+          completesAt: new Date(worldTime.getTime() + 14 * 24 * 60 * 60 * 1000), // 2 weeks
+          participants: [],
+          successChance: 0.5,
+          resources: faction.wealth * 0.3,
+          secret: false,
+          reason: `Holy war to reclaim ${heretical.name} for the faithful`,
+        };
+        state.activeOperations.push(op);
+        
+        logs.push({
+          category: 'faction',
+          summary: `${faction.name} declares a crusade against ${heretical.name}`,
+          details: `The faithful take up arms. Temple bells ring. A holy war begins.`,
+          location: heretical.name,
+          actors: [faction.name],
+          worldTime,
+          realTime: new Date(),
+          seed: world.seed,
+        });
+      }
+    }
+    
+    // Propaganda campaign (any faction)
+    if (state.morale < -3 && rng.chance(0.05)) {
+      const homeTerritory = state.territory[0] ?? world.settlements[0]?.name;
+      if (homeTerritory && !state.activeOperations.some(op => op.type === 'propaganda')) {
+        const op: FactionOperation = {
+          id: `op-prop-${Date.now()}`,
+          type: 'propaganda',
+          target: homeTerritory,
+          startedAt: worldTime,
+          completesAt: new Date(worldTime.getTime() + 3 * 24 * 60 * 60 * 1000), // 3 days
+          participants: [],
+          successChance: 0.8,
+          resources: 50,
+          secret: false,
+          reason: 'Restoring morale through public messaging',
+        };
+        state.activeOperations.push(op);
+        
+        logs.push({
+          category: 'faction',
+          summary: `${faction.name} launches propaganda campaign`,
+          details: `Heralds spread word of past glories. Bards sing of heroic deeds. The people must believe.`,
+          location: homeTerritory,
+          actors: [faction.name],
+          worldTime,
+          realTime: new Date(),
+          seed: world.seed,
+        });
+      }
+    }
+    
+    // Assassination of enemy leadership (any faction at war)
+    if (state.enemies.length > 0 && faction.focus === 'martial' && rng.chance(0.01)) {
+      const enemyId = rng.pick(state.enemies);
+      const enemy = world.factions.find(f => f.id === enemyId);
+      
+      // Find a prominent NPC aligned with the enemy
+      const enemyLeaders = world.npcs.filter(n => 
+        n.alive !== false && 
+        (n as ReactiveNPC).loyalty === enemyId &&
+        (n.level ?? 1) >= 5
+      );
+      
+      if (enemy && enemyLeaders.length > 0 && !state.activeOperations.some(op => op.type === 'assassination')) {
+        const target = rng.pick(enemyLeaders);
+        const op: FactionOperation = {
+          id: `op-assassin-${Date.now()}`,
+          type: 'assassination',
+          target: target.name,
+          secondaryTarget: enemy.name,
+          startedAt: worldTime,
+          completesAt: new Date(worldTime.getTime() + 5 * 24 * 60 * 60 * 1000), // 5 days
+          participants: [],
+          successChance: 0.3,
+          resources: 200,
+          secret: true,
+          reason: `Eliminate ${target.name}, a key figure in ${enemy.name}`,
+        };
+        state.activeOperations.push(op);
+        
+        // Secret operations don't log publicly initially
+      }
+    }
+    
+    // Marriage alliance (political maneuvering)
+    if (state.allies.length === 0 && world.factions.length > 2 && rng.chance(0.02)) {
+      // Find a faction that isn't an enemy
+      const potential = world.factions.find(f => 
+        f.id !== faction.id && 
+        !state.enemies.includes(f.id) &&
+        !state.allies.includes(f.id)
+      );
+      
+      if (potential && !state.activeOperations.some(op => op.type === 'marriage-alliance')) {
+        const op: FactionOperation = {
+          id: `op-marriage-${Date.now()}`,
+          type: 'marriage-alliance',
+          target: potential.name,
+          startedAt: worldTime,
+          completesAt: new Date(worldTime.getTime() + 30 * 24 * 60 * 60 * 1000), // 1 month
+          participants: [],
+          successChance: 0.5,
+          resources: 500,
+          secret: false,
+          reason: `Forge alliance with ${potential.name} through marriage`,
+        };
+        state.activeOperations.push(op);
+        
+        logs.push({
+          category: 'faction',
+          summary: `${faction.name} proposes marriage alliance with ${potential.name}`,
+          details: `Envoys are sent. Dowries discussed. A political wedding could reshape alliances.`,
+          actors: [faction.name, potential.name],
+          worldTime,
+          realTime: new Date(),
+          seed: world.seed,
+        });
+      }
+    }
+    
+    // Inquisition (pious factions against perceived threats)
+    if (faction.focus === 'pious' && rng.chance(0.01)) {
+      const territory = state.territory[0];
+      if (territory && !state.activeOperations.some(op => op.type === 'inquisition')) {
+        const op: FactionOperation = {
+          id: `op-inq-${Date.now()}`,
+          type: 'inquisition',
+          target: territory,
+          startedAt: worldTime,
+          completesAt: new Date(worldTime.getTime() + 14 * 24 * 60 * 60 * 1000), // 2 weeks
+          participants: [],
+          successChance: 0.7,
+          resources: 100,
+          secret: false,
+          reason: 'Root out heresy and corruption',
+        };
+        state.activeOperations.push(op);
+        
+        logs.push({
+          category: 'faction',
+          summary: `${faction.name} launches inquisition in ${territory}`,
+          details: `Investigators arrive. Questions are asked. The faithful have nothing to fear—or so they say.`,
+          location: territory,
+          actors: [faction.name],
+          worldTime,
+          realTime: new Date(),
+          seed: world.seed,
+        });
+      }
+    }
+    
+    // Blockade (martial factions during war)
+    if (faction.focus === 'martial' && state.enemies.length > 0 && rng.chance(0.02)) {
+      const enemyId = rng.pick(state.enemies);
+      const enemyState = getFactionState(world, enemyId);
+      
+      if (enemyState.territory.length > 0 && !state.activeOperations.some(op => op.type === 'blockade')) {
+        const target = rng.pick(enemyState.territory);
+        const op: FactionOperation = {
+          id: `op-block-${Date.now()}`,
+          type: 'blockade',
+          target,
+          startedAt: worldTime,
+          completesAt: new Date(worldTime.getTime() + 10 * 24 * 60 * 60 * 1000), // 10 days
+          participants: [],
+          successChance: 0.6,
+          resources: faction.wealth * 0.15,
+          secret: false,
+          reason: `Starve out ${target}`,
+        };
+        state.activeOperations.push(op);
+        
+        logs.push({
+          category: 'faction',
+          summary: `${faction.name} blockades ${target}`,
+          details: `Roads are cut. Caravans turned back. Nothing enters or leaves.`,
+          location: target,
+          actors: [faction.name],
+          worldTime,
+          realTime: new Date(),
+          seed: world.seed,
+        });
+      }
+    }
+    
+    // Relief mission (pious or trade factions, during crises)
+    const crisisSettlement = world.settlements.find(s => {
+      const sState = getSettlementState(world, s.name);
+      return sState.disease || sState.prosperity < -5;
+    });
+    
+    if (crisisSettlement && (faction.focus === 'pious' || faction.focus === 'trade') && rng.chance(0.03)) {
+      if (!state.activeOperations.some(op => op.type === 'relief')) {
+        const op: FactionOperation = {
+          id: `op-relief-${Date.now()}`,
+          type: 'relief',
+          target: crisisSettlement.name,
+          startedAt: worldTime,
+          completesAt: new Date(worldTime.getTime() + 7 * 24 * 60 * 60 * 1000), // 1 week
+          participants: [],
+          successChance: 0.9,
+          resources: 300,
+          secret: false,
+          reason: `Aid the suffering of ${crisisSettlement.name}`,
+        };
+        state.activeOperations.push(op);
+        
+        logs.push({
+          category: 'faction',
+          summary: `${faction.name} sends relief to ${crisisSettlement.name}`,
+          details: `Wagons of grain and medicine roll toward the suffering. Compassion—or calculated politics?`,
+          location: crisisSettlement.name,
+          actors: [faction.name],
+          worldTime,
+          realTime: new Date(),
+          seed: world.seed,
+        });
       }
     }
   }

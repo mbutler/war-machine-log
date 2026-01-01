@@ -73,6 +73,22 @@ const CREATURES_BY_TERRAIN: Record<Terrain, { creatures: string[]; weights: numb
     creatures: ['bandits', 'giant scorpions', 'gnolls', 'nomads', 'giant snakes', 'sand wurms', 'dust devils', 'mummies'],
     weights: [2, 2, 2, 1, 1, 1, 1, 1],
   },
+  coastal: {
+    creatures: ['pirates', 'smugglers', 'fishermen', 'sahuagin', 'sea hags', 'giant crabs', 'merfolk', 'shipwreck survivors'],
+    weights: [2, 2, 2, 1, 1, 1, 1, 1],
+  },
+  ocean: {
+    creatures: ['sea serpent', 'pirates', 'merfolk', 'sahuagin raiders', 'giant sharks', 'water elementals', 'ghost ship', 'kraken spawn'],
+    weights: [2, 2, 2, 1, 1, 1, 1, 1],
+  },
+  reef: {
+    creatures: ['giant crabs', 'merfolk', 'sahuagin', 'sea hags', 'nixies', 'lacedons', 'shipwreck survivors', 'treasure hunters'],
+    weights: [2, 2, 2, 1, 1, 1, 1, 1],
+  },
+  river: {
+    creatures: ['fishermen', 'smugglers', 'river pirates', 'giant pike', 'nixies', 'water elementals', 'crocodiles', 'kelpies'],
+    weights: [2, 2, 2, 1, 1, 1, 1, 1],
+  },
 };
 
 // Creature descriptors for flavor
@@ -82,6 +98,15 @@ const CREATURE_DESCRIPTORS: Record<string, string[]> = {
   wolves: ['gaunt', 'massive', 'winter-hungry', 'shadowy', 'patient', 'silver-furred'],
   'orc raiders': ['battle-scarred', 'tribal', 'disciplined', 'frenzied', 'mounted', 'war-painted'],
   brigands: ['former soldiers', 'ruthless', 'organized', 'poorly equipped', 'seasoned', 'cruel'],
+  pirates: ['salt-crusted', 'tattooed', 'cutlass-wielding', 'one-eyed', 'rum-soaked', 'desperate'],
+  smugglers: ['nervous', 'well-connected', 'armed', 'secretive', 'night-working', 'cunning'],
+  sahuagin: ['scaled', 'trident-wielding', 'pack-hunting', 'blood-frenzied', 'deep-dwelling', 'territorial'],
+  merfolk: ['curious', 'wary', 'shimmering', 'armed with coral spears', 'singing', 'ancient-looking'],
+  'sea serpent': ['massive', 'coiling', 'barnacle-encrusted', 'ancient', 'territorial', 'hungry'],
+  'giant crabs': ['armored', 'snapping', 'massive-clawed', 'beach-dwelling', 'aggressive', 'tide-hunting'],
+  'sea hags': ['cackling', 'seaweed-draped', 'curse-wielding', 'drowned-looking', 'malevolent', 'ancient'],
+  nixies: ['playful', 'enchanting', 'mischievous', 'water-dancing', 'alluring', 'territorial'],
+  'ghost ship': ['spectral', 'fog-shrouded', 'creaking', 'crewed by the damned', 'silent', 'cursed'],
   ogres: ['dim-witted', 'hungry', 'massive', 'armored', 'solitary', 'kin to giants'],
   'giant spiders': ['web-spinning', 'venomous', 'patient', 'ancient', 'bloated', 'intelligent'],
   lizardfolk: ['scaled warriors', 'primitive', 'territorial', 'shaman-led', 'hunting party', 'traders'],
@@ -291,9 +316,23 @@ export function enhancedEncounter(
     mountains: 1 / 5,
     swamp: 1 / 5,
     desert: 1 / 6,
+    coastal: 1 / 8,
+    ocean: 1 / 6,
+    reef: 1 / 5,
+    river: 1 / 8,
   };
 
   let odds = BASE_ODDS[terrain] ?? 1 / 8;
+  
+  // Check ecology for nearby monster populations - increases encounter chance
+  if (world.ecologyState) {
+    const nearbyPopulations = world.ecologyState.populations.filter(pop => 
+      pop.population > 0 && pop.territoryName === location
+    );
+    if (nearbyPopulations.length > 0) {
+      odds *= 1.3; // More monsters nearby = more encounters
+    }
+  }
 
   // Night increases danger (except on roads with patrols)
   if (isNight && terrain !== 'road') {

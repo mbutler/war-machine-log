@@ -106,3 +106,163 @@ export function logRumor(rumor: Rumor, worldTime: Date, seed: string): import('.
   };
 }
 
+// ============================================================================
+// TREASURE RUMORS - Rare items attract attention
+// ============================================================================
+
+const TREASURE_RUMOR_SOURCES = [
+  'a loose-tongued innkeeper',
+  'a boastful adventurer',
+  'a merchant counting coins',
+  'a wounded survivor',
+  'a jealous rival',
+  'a temple acolyte',
+  'a fence with nervous eyes',
+  'a bard embellishing tales',
+  'a spy in the shadows',
+  'a drunk celebrating too loudly',
+];
+
+const TREASURE_RUMOR_REACTIONS = [
+  'Collectors take note.',
+  'Thieves sharpen their knives.',
+  'Rivals grow envious.',
+  'Old enemies remember.',
+  'Dragons stir in their lairs.',
+  'Dark forces take interest.',
+  'Noble houses dispatch agents.',
+  'The greedy make plans.',
+  'Fortune-seekers gather.',
+  'The underworld whispers.',
+];
+
+export type TreasureRumorType = 
+  | 'legendary-item'      // A legendary magic item was found
+  | 'rare-item'           // A rare magic item was found
+  | 'massive-hoard'       // A huge treasure hoard discovered
+  | 'ongoing-extraction'  // Party slowly removing a hoard
+  | 'unguarded-treasure'  // Abandoned extraction or discovered location
+  | 'magic-weapon'        // Powerful weapon found
+  | 'artifact';           // True artifact discovered
+
+export interface TreasureRumor extends Rumor {
+  treasureType: TreasureRumorType;
+  itemId?: string;        // Magic item ID if applicable
+  itemName?: string;
+  estimatedValue?: number;
+  discoveredBy?: string;
+  attractsTypes: string[]; // What types of entities this attracts
+}
+
+export function createTreasureRumor(
+  rng: Random,
+  world: WorldState,
+  type: TreasureRumorType,
+  itemName: string | undefined,
+  location: string,
+  discoveredBy: string,
+  estimatedValue: number,
+  itemId?: string,
+): TreasureRumor {
+  const source = rng.pick(TREASURE_RUMOR_SOURCES);
+  const reaction = rng.pick(TREASURE_RUMOR_REACTIONS);
+  
+  // Determine what this attracts based on type
+  let attractsTypes: string[] = [];
+  let text: string;
+  
+  switch (type) {
+    case 'legendary-item':
+      attractsTypes = ['thieves-guild', 'rival-party', 'collector', 'dragon', 'antagonist', 'faction'];
+      text = `whispered treasure: ${source} tells of ${discoveredBy} finding ${itemName ?? 'a legendary artifact'}. ${reaction}`;
+      break;
+    case 'artifact':
+      attractsTypes = ['antagonist', 'faction', 'dragon', 'collector', 'dark-cult'];
+      text = `urgent treasure: ${source} speaks of ${discoveredBy} possessing ${itemName ?? 'an artifact of immense power'}. ${reaction}`;
+      break;
+    case 'rare-item':
+      attractsTypes = ['thieves-guild', 'rival-party', 'collector'];
+      text = `boastful treasure: ${source} mentions ${discoveredBy} carrying ${itemName ?? 'a rare magic item'}. ${reaction}`;
+      break;
+    case 'magic-weapon':
+      attractsTypes = ['rival-party', 'faction', 'warlord'];
+      text = `conflicting treasure: ${source} describes ${itemName ?? 'a powerful enchanted weapon'} now wielded by ${discoveredBy}. ${reaction}`;
+      break;
+    case 'massive-hoard':
+      attractsTypes = ['thieves-guild', 'rival-party', 'dragon', 'faction', 'bandit'];
+      text = `urgent treasure: ${source} whispers of ${discoveredBy} discovering a hoard worth ${estimatedValue.toLocaleString()} gold. ${reaction}`;
+      break;
+    case 'ongoing-extraction':
+      attractsTypes = ['thieves-guild', 'rival-party', 'bandit', 'monster'];
+      text = `cryptic treasure: ${source} notes ${discoveredBy} making repeated trips to ${location}, laden with gold each time. ${reaction}`;
+      break;
+    case 'unguarded-treasure':
+      attractsTypes = ['rival-party', 'monster', 'bandit', 'faction'];
+      text = `whispered treasure: ${source} claims a fortune lies abandoned in ${location}, left behind by ${discoveredBy}. ${reaction}`;
+      break;
+  }
+  
+  // Find nearest settlement for origin
+  const settlements = world.settlements.filter(s => s.name !== location);
+  const origin = settlements.length > 0 ? rng.pick(settlements).name : location;
+  
+  // Freshness based on type - legendary rumors last longer
+  const freshness = type === 'legendary-item' || type === 'artifact' 
+    ? 14 + rng.int(14)  // 2-4 weeks
+    : type === 'massive-hoard'
+    ? 10 + rng.int(10)  // 10-20 days
+    : 5 + rng.int(7);   // 5-12 days
+  
+  return {
+    id: `treasure-rumor-${Date.now()}-${rng.int(1e6)}`,
+    kind: 'mystery',
+    text,
+    target: location,
+    origin,
+    freshness,
+    treasureType: type,
+    itemId,
+    itemName,
+    estimatedValue,
+    discoveredBy,
+    attractsTypes,
+  };
+}
+
+// Spread treasure rumor to multiple settlements
+export function spreadTreasureRumor(
+  rng: Random,
+  world: WorldState,
+  baseRumor: TreasureRumor,
+): TreasureRumor[] {
+  const rumors: TreasureRumor[] = [baseRumor];
+  
+  // Legendary items spread to many settlements
+  const spreadCount = 
+    baseRumor.treasureType === 'legendary-item' || baseRumor.treasureType === 'artifact' ? 2 + rng.int(3) :
+    baseRumor.treasureType === 'massive-hoard' ? 1 + rng.int(2) :
+    rng.chance(0.5) ? 1 : 0;
+  
+  const otherSettlements = world.settlements.filter(s => s.name !== baseRumor.origin);
+  
+  for (let i = 0; i < Math.min(spreadCount, otherSettlements.length); i++) {
+    const settlement = otherSettlements[i];
+    const variant = { ...baseRumor };
+    variant.id = `treasure-rumor-${Date.now()}-${rng.int(1e6)}`;
+    variant.origin = settlement.name;
+    variant.freshness = baseRumor.freshness - 1 - rng.int(3); // Slightly stale
+    
+    // Rumors get distorted as they spread
+    if (rng.chance(0.3)) {
+      variant.estimatedValue = Math.floor((variant.estimatedValue ?? 0) * (1.2 + rng.next())); // Exaggerated!
+      variant.text = variant.text.replace('whispered', 'exaggerated');
+    }
+    
+    if (variant.freshness > 0) {
+      rumors.push(variant);
+    }
+  }
+  
+  return rumors;
+}
+

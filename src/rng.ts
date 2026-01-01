@@ -3,6 +3,7 @@ export interface Random {
   int(maxExclusive: number): number;
   pick<T>(items: readonly T[]): T;
   chance(probability: number): boolean;
+  shuffle<T>(items: readonly T[]): T[];
 }
 
 function hashSeed(seed: string): number {
@@ -44,6 +45,15 @@ export function makeRandom(seed: string): Random {
       if (probability <= 0) return false;
       if (probability >= 1) return true;
       return rng() < probability;
+    },
+    shuffle<T>(items: readonly T[]): T[] {
+      const result = [...items];
+      // Fisher-Yates shuffle
+      for (let i = result.length - 1; i > 0; i--) {
+        const j = this.int(i + 1);
+        [result[i], result[j]] = [result[j], result[i]];
+      }
+      return result;
     },
   };
 }

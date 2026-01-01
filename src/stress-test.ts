@@ -27,6 +27,14 @@ import { maybeLegendarySpike, createLegendaryState, checkLegendaryEncounter } fr
 import { encounterSign, enhancedEncounter } from './encounters-enhanced.ts';
 import { exploreDungeonTick } from './dungeon.ts';
 
+// New systems
+import { createRetainerRoster, tickRetainers, startHiringSearch, generateRetainer, hireRetainer } from './retainers.ts';
+import { createGuildState, seedGuilds, tickGuilds, planHeist } from './guilds.ts';
+import { createEcologyState, seedEcology, tickEcology } from './ecology.ts';
+import { createDynastyState, seedDynasty, tickDynasty } from './dynasty.ts';
+import { createTreasureState, tickTreasure, TreasureState } from './treasure.ts';
+import { NavalState, seedNavalState, tickNavalHourly, tickNavalDaily, markSettlementAsPort } from './naval.ts';
+
 async function runStressTest() {
   const seed = 'test-seed-' + Date.now();
   const rng = makeRandom(seed);
@@ -43,6 +51,55 @@ async function runStressTest() {
   let antagonists = seedAntagonists(rng, world);
   let storyThreads: StoryThread[] = [];
   let legendaryState = createLegendaryState();
+
+  // Initialize new systems
+  let retainerRoster = createRetainerRoster();
+  let guildState = seedGuilds(rng, world, startWorldTime);
+  let ecologyState = seedEcology(rng, world, startWorldTime);
+  let dynastyState = seedDynasty(rng, world, startWorldTime);
+  let treasureState = createTreasureState();
+  
+  // Mark some settlements as ports and seed naval state
+  // Ensure at least one port exists for testing
+  let hasPort = false;
+  for (const settlement of world.settlements) {
+    if (rng.chance(0.35) || (!hasPort && settlement === world.settlements[world.settlements.length - 1])) {
+      markSettlementAsPort(settlement, rng);
+      hasPort = true;
+    }
+  }
+  let navalState = seedNavalState(world, rng);
+
+  const portCount = world.settlements.filter(s => s.isPort).length;
+  console.log(`New Systems Seeded:
+    - Thieves' Guilds: ${guildState.guilds.length}
+    - Monster Populations: ${ecologyState.populations.length}
+    - Noble Bloodlines: ${dynastyState.bloodlines.length}
+    - Existing Marriages: ${dynastyState.marriages.length}
+    - Port Towns: ${portCount}
+    - Ships: ${navalState.ships.length}
+    - Sea Routes: ${navalState.seaRoutes.length}
+    - Pirate Fleets: ${navalState.pirates.length}
+  `);
+
+  // Trigger some initial retainer hiring for testing
+  if (world.parties.length > 0 && world.settlements.length > 0) {
+    const party = world.parties[0];
+    const settlement = world.settlements.find(s => s.name === party.location) ?? world.settlements[0];
+    startHiringSearch(rng, 'man-at-arms', settlement.name, party.id, startWorldTime, retainerRoster);
+    startHiringSearch(rng, 'sage', settlement.name, party.id, startWorldTime, retainerRoster);
+    console.log(`Started hiring searches for ${party.name} in ${settlement.name}`);
+  }
+
+  // Trigger an initial heist plan for testing
+  if (guildState.guilds.length > 0 && world.settlements.length > 0) {
+    const guild = guildState.guilds[0];
+    const settlement = world.settlements.find(s => s.name === guild.headquarters);
+    if (settlement) {
+      planHeist(rng, guild, 'merchant', 'test-merchant', 'a wealthy merchant', settlement.name, 150, guildState, startWorldTime);
+      console.log(`${guild.name} is planning a heist in ${settlement.name}`);
+    }
+  }
 
   const SIMULATED_DAYS = 90;
   const TICKS_PER_DAY = 24 * 6; // 10 minute turns
@@ -61,7 +118,7 @@ async function runStressTest() {
       if (party.status === 'idle') {
         const dungeon = world.dungeons.find((d) => d.name === party.location);
         if (dungeon && dungeon.rooms && dungeon.rooms.length > 0) {
-          exploreDungeonTick(rng, dungeon, [party.name], event.worldTime, world.seed, world);
+          exploreDungeonTick(rng, dungeon, [party.name], event.worldTime, world.seed, world, treasureState);
         }
       }
     }
@@ -96,6 +153,14 @@ async function runStressTest() {
       tickDisease(world, rng, event.worldTime);
       tickMercenaries(world, rng, event.worldTime);
       tickDiplomacy(world, rng, event.worldTime);
+
+      // New systems
+      tickRetainers(rng, retainerRoster, world, event.worldTime);
+      tickGuilds(rng, guildState, world, event.worldTime);
+      tickEcology(rng, ecologyState, world, antagonists, event.worldTime);
+      tickDynasty(rng, dynastyState, world, event.worldTime);
+      tickTreasure(rng, treasureState, world, event.worldTime);
+      tickNavalHourly(navalState, world, rng, event.worldTime, calendar.weather);
     }
 
     // DAILY TICK
@@ -106,6 +171,7 @@ async function runStressTest() {
       dailyTownTick(world, rng, event.worldTime);
       tickDomains(world, rng, event.worldTime);
       maybeLegendarySpike(rng, world, event.worldTime, legendaryState);
+      tickNavalDaily(navalState, world, rng, event.worldTime, calendar.weather, getSeason(calendar.month));
       
       process.stdout.write('.'); // Progress indicator
     }
@@ -121,7 +187,65 @@ async function runStressTest() {
     - Cleared Ruins: ${world.ruins?.filter(r => r.cleared).length ?? 0}
     - Diseased Settlements: ${Object.values(world.settlementStates || {}).filter(s => s.disease).length}
     - Ransomed Prisoners: ${world.eventHistory?.filter(e => e.type === 'ransom').length ?? 0}
+  
+  New Systems:
+    - Active Retainers: ${retainerRoster.retainers.filter(r => r.alive).length}
+    - Pending Hires: ${retainerRoster.pendingHires.length}
+    - Desertions: ${retainerRoster.desertions.length}
+    - Thieves' Guilds: ${guildState.guilds.filter(g => g.active).length}
+    - Completed Heists: ${guildState.operations.filter(o => o.status === 'completed').length}
+    - Failed Heists: ${guildState.operations.filter(o => o.status === 'failed').length}
+    - Hot Goods Pending: ${guildState.hotGoods.length}
+    - Guild Wars: ${guildState.guilds.reduce((sum, g) => sum + g.enemies.length, 0) / 2}
+    - Monster Populations: ${ecologyState.populations.length}
+    - Extinctions: ${ecologyState.extinctions.length}
+    - Active Migrations: ${ecologyState.migrations.length}
+    - Territorial Disputes: ${ecologyState.territorialDisputes.length}
+    - Noble Bloodlines: ${dynastyState.bloodlines.length}
+    - Active Marriages: ${dynastyState.marriages.filter(m => !m.dissolved).length}
+    - Pregnancies: ${dynastyState.pregnancies.length}
+    - Succession Crises: ${dynastyState.successionCrises.filter(c => !c.resolved).length}
+    - Courtships: ${dynastyState.courtships.filter(c => c.stage !== 'rejected' && c.stage !== 'married').length}
+    - Burials: ${dynastyState.burials.length}
+    - Discovered Hoards: ${treasureState.discoveredHoards.length}
+    - Total Treasure Found: ${treasureState.discoveredHoards.reduce((sum, h) => sum + h.totalValue, 0).toLocaleString()} gp
+    - Active Extractions: ${treasureState.activeExtractions.filter(e => !e.completed && !e.abandoned).length}
+    - Completed Extractions: ${treasureState.activeExtractions.filter(e => e.completed).length}
+    - Abandoned Extractions: ${treasureState.activeExtractions.filter(e => e.abandoned).length}
+    - Magic Items in Circulation: ${treasureState.circulatingMagicItems.length}
+    - Magic Items Owned: ${treasureState.circulatingMagicItems.filter(m => m.ownerId).length}
+    - Legendary Items: ${treasureState.circulatingMagicItems.filter(m => m.rarity === 'legendary' || m.rarity === 'very-rare').length}
+
+  Naval:
+    - Port Towns: ${world.settlements.filter(s => s.isPort).length}
+    - Ships (Active): ${navalState.ships.filter(s => s.status !== 'shipwrecked').length}
+    - Ships (Shipwrecked): ${navalState.ships.filter(s => s.status === 'shipwrecked').length}
+    - Ships At Sea: ${navalState.ships.filter(s => s.status === 'at-sea').length}
+    - Sea Routes: ${navalState.seaRoutes.length}
+    - Pirate Fleets: ${navalState.pirates.length}
+    - Total Pirate Crew: ${navalState.pirates.reduce((sum, p) => sum + p.crew, 0)}
+    - Total Bounties: ${navalState.pirates.reduce((sum, p) => sum + p.bounty, 0).toLocaleString()} gp
+    - Shipwrecks: ${navalState.recentShipwrecks.length}
+    - Salvaged Wrecks: ${navalState.recentShipwrecks.filter(w => w.salvaged).length}
+    - Distant Lands Known: ${navalState.distantLands.length}
+    - Distant Figures Known: ${navalState.distantFigures.length}
   `);
+  
+  // Show some of the discovered distant lands
+  if (navalState.distantLands.length > 0) {
+    console.log('  Discovered Distant Lands:');
+    for (const land of navalState.distantLands.slice(0, 5)) {
+      console.log(`    - ${land.name} (${land.culture}): known for ${land.knownFor.join(', ')}`);
+    }
+  }
+  
+  if (navalState.distantFigures.length > 0) {
+    console.log('  Known Distant Figures:');
+    for (const figure of navalState.distantFigures.slice(0, 5)) {
+      const land = navalState.distantLands.find(l => l.id === figure.landId);
+      console.log(`    - ${figure.title} (${figure.role} of ${land?.name ?? 'unknown'}): ${figure.reputation}`);
+    }
+  }
 }
 
 runStressTest().catch(err => {

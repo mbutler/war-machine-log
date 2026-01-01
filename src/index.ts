@@ -38,6 +38,14 @@ import { tickDiplomacy } from './diplomacy.ts';
 // Legendary spikes
 import { LegendaryState, createLegendaryState, maybeLegendarySpike, checkLegendaryEncounter } from './legendary.ts';
 
+// New systems
+import { RetainerRoster, createRetainerRoster, tickRetainers } from './retainers.ts';
+import { GuildState, createGuildState, seedGuilds, tickGuilds } from './guilds.ts';
+import { EcologyState, createEcologyState, seedEcology, tickEcology } from './ecology.ts';
+import { DynastyState, createDynastyState, seedDynasty, tickDynasty } from './dynasty.ts';
+import { TreasureState, createTreasureState, tickTreasure } from './treasure.ts';
+import { NavalState, seedNavalState, tickNavalHourly, tickNavalDaily, markSettlementAsPort } from './naval.ts';
+
 const bus = new EventBus();
 const rng = makeRandom(config.seed);
 const logger = new Logger(config.logDir);
@@ -48,6 +56,15 @@ let calendar: CalendarState;
 let antagonists: Antagonist[] = [];
 let storyThreads: StoryThread[] = [];
 let legendaryState: LegendaryState = createLegendaryState();
+
+// New systems state
+let retainerRoster: RetainerRoster = createRetainerRoster();
+let guildState: GuildState = createGuildState();
+let ecologyState: EcologyState = createEcologyState();
+let dynastyState: DynastyState = createDynastyState();
+let treasureState: TreasureState = createTreasureState();
+let navalState: NavalState = { ships: [], seaRoutes: [], pirates: [], recentShipwrecks: [], portActivity: {}, distantLands: [], distantFigures: [] };
+
 let initialized = false;
 
 // Log helper with consequence analysis
@@ -108,6 +125,14 @@ async function initWorld(): Promise<void> {
     
     // Restore legendary state
     legendaryState = (world as any).legendaryState ?? createLegendaryState();
+    
+    // Restore new systems state
+    retainerRoster = world.retainerRoster ?? createRetainerRoster();
+    guildState = world.guildState ?? createGuildState();
+    ecologyState = world.ecologyState ?? createEcologyState();
+    dynastyState = world.dynastyState ?? createDynastyState();
+    treasureState = world.treasureState ?? createTreasureState();
+    navalState = world.navalState ?? { ships: [], seaRoutes: [], pirates: [], recentShipwrecks: [], portActivity: {}, distantLands: [], distantFigures: [] };
   } else {
     // Fresh world
     world = createInitialWorld(rng, config.seed, config.startWorldTime) as EnhancedWorldState;
@@ -122,6 +147,20 @@ async function initWorld(): Promise<void> {
 
     // Seed initial antagonists
     antagonists = seedAntagonists(rng, world);
+
+    // Seed new systems
+    guildState = seedGuilds(rng, world, config.startWorldTime);
+    ecologyState = seedEcology(rng, world, config.startWorldTime);
+    dynastyState = seedDynasty(rng, world, config.startWorldTime);
+    
+    // Mark coastal settlements as ports and seed naval state
+    for (const settlement of world.settlements) {
+      const hex = world.hexes.find(h => h.coord.q === settlement.coord.q && h.coord.r === settlement.coord.r);
+      if (hex && (hex.terrain === 'coastal' || rng.chance(0.25))) {
+        markSettlementAsPort(settlement, rng);
+      }
+    }
+    navalState = seedNavalState(world, rng);
 
     // Log world creation
     await log({
@@ -280,11 +319,43 @@ function onHourTick(event: TickEvent): void {
     const diplomacyLogs = tickDiplomacy(world, rng, event.worldTime);
     for (const l of diplomacyLogs) await log(l);
 
+    // === NEW SYSTEMS ===
+    
+    // Retainers - Hiring, loyalty, monthly pay
+    const retainerLogs = tickRetainers(rng, retainerRoster, world, event.worldTime);
+    for (const l of retainerLogs) await log(l);
+    
+    // Thieves' Guild - Heists, fencing, turf wars
+    const guildLogs = tickGuilds(rng, guildState, world, event.worldTime);
+    for (const l of guildLogs) await log(l);
+    
+    // Monster Ecology - Breeding, migration, apex predators
+    const ecologyLogs = tickEcology(rng, ecologyState, world, antagonists, event.worldTime);
+    for (const l of ecologyLogs) await log(l);
+    
+    // Dynasty - Aging, births, marriages, succession
+    const dynastyLogs = tickDynasty(rng, dynastyState, world, event.worldTime);
+    for (const l of dynastyLogs) await log(l);
+    
+    // Treasure - Magic item tracking, economic effects
+    const treasureLogs = tickTreasure(rng, treasureState, world, event.worldTime);
+    for (const l of treasureLogs) await log(l);
+    
+    // Naval - Ship voyages, arrivals
+    const navalHourlyLogs = tickNavalHourly(navalState, world, rng, event.worldTime, calendar.weather);
+    for (const l of navalHourlyLogs) await log(l);
+
     // Save enhanced state
     world.calendar = calendar;
     world.antagonists = antagonists as EnhancedWorldState['antagonists'];
     world.storyThreads = storyThreads as EnhancedWorldState['storyThreads'];
     world.consequenceQueue = getConsequenceQueue();
+    world.retainerRoster = retainerRoster;
+    world.guildState = guildState;
+    world.ecologyState = ecologyState;
+    world.dynastyState = dynastyState;
+    world.treasureState = treasureState;
+    world.navalState = navalState;
     await saveWorld(world);
   })();
 }
@@ -338,12 +409,22 @@ function onDayTick(event: TickEvent): void {
     // === LEGENDARY SPIKES: Inject rare, unique elements ===
     const legendaryLogs = maybeLegendarySpike(rng, world, event.worldTime, legendaryState);
     for (const entry of legendaryLogs) await log(entry);
+    
+    // Naval daily - Ship departures, pirate raids, sea monsters
+    const navalDailyLogs = tickNavalDaily(navalState, world, rng, event.worldTime, calendar.weather, getSeason(calendar.month));
+    for (const l of navalDailyLogs) await log(l);
 
     // Save state (including legendary state)
     world.calendar = calendar;
     world.antagonists = antagonists as EnhancedWorldState['antagonists'];
     world.storyThreads = storyThreads as EnhancedWorldState['storyThreads'];
     world.consequenceQueue = getConsequenceQueue();
+    world.retainerRoster = retainerRoster;
+    world.guildState = guildState;
+    world.ecologyState = ecologyState;
+    world.dynastyState = dynastyState;
+    world.treasureState = treasureState;
+    world.navalState = navalState;
     (world as any).legendaryState = legendaryState; // Persist legendary elements
     await saveWorld(world);
   })();
@@ -358,7 +439,7 @@ function onTurnTick(event: TickEvent): void {
         const dungeon = world.dungeons.find((d) => d.name === party.location);
         if (dungeon && dungeon.rooms && dungeon.rooms.length > 0) {
           // If in a dungeon, explore 1 room per turn
-          const delveLogs = exploreDungeonTick(rng, dungeon, [party.name], event.worldTime, world.seed, world);
+          const delveLogs = exploreDungeonTick(rng, dungeon, [party.name], event.worldTime, world.seed, world, treasureState);
           for (const entry of delveLogs) await log(entry);
         }
       }
