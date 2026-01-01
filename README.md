@@ -56,10 +56,70 @@ Watch as:
 
 ## Configuration
 
-Edit `src/config.ts` to change:
-- `seed` — Random seed for reproducible worlds
-- `timeScale` — Speed multiplier (1 = real-time)
-- `startWorldTime` — When the simulation begins
+Environment variables:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `SIM_SEED` | `default-seed` | Random seed for reproducible worlds |
+| `SIM_TIME_SCALE` | `1` | Speed multiplier (1 = real-time, 60 = 1 min/sec) |
+| `SIM_CATCH_UP` | `true` | Enable catch-up mode on restart |
+| `SIM_CATCH_UP_SPEED` | `10` | Turns per second during catch-up |
+| `SIM_LOG_DIR` | `logs` | Directory for log files |
+
+Example:
+```bash
+SIM_SEED=my-world SIM_TIME_SCALE=60 bun run start
+```
+
+## Persistence & Catch-Up
+
+The world **persists** between runs via `world.json`. When you stop and restart:
+
+1. The simulator detects how much real time has passed
+2. It simulates the missed time at accelerated speed (catch-up mode)
+3. Then resumes 1:1 real-time simulation
+
+```
+⏰ Catching up 2d 6h of missed time (324 turns)...
+⏰ Catch-up progress: 50% (162/324 turns)
+✓ Caught up! World time is now synchronized.
+```
+
+### Catch-Up Limits
+- **Maximum**: 7 days of catch-up (to prevent hours-long waits)
+- Beyond 7 days, the world catches up 7 days then continues
+
+### Disable Catch-Up
+```bash
+# Skip catch-up, jump directly to current time
+SIM_CATCH_UP=false bun run start
+```
+
+### Fresh Start
+To reset the world completely:
+```bash
+rm world.json logs/events.*
+bun run start
+```
+
+### New World with Different Names
+The seed controls procedural generation. Same seed = same towns, NPCs, and factions.
+
+```bash
+# Delete old world and use a new seed
+rm world.json logs/events.*
+SIM_SEED=my-unique-world bun run start
+
+# Or use a random seed (timestamp)
+rm world.json logs/events.*
+SIM_SEED=$(date +%s) bun run start
+```
+
+| Scenario | Result |
+|----------|--------|
+| `world.json` exists | Loads saved world (continues simulation) |
+| `world.json` deleted, same seed | Regenerates identical world |
+| `world.json` deleted, new seed | Completely new world with different names |
 
 ## Building
 

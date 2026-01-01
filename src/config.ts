@@ -16,6 +16,8 @@ export interface SimConfig extends SimContext {
   hourTurns: number;
   dayHours: number;
   logDir: string;
+  catchUp: boolean; // Whether to catch up missed time on restart
+  catchUpSpeed: number; // How fast to catch up (turns per second)
 }
 
 export function loadConfig(): SimConfig {
@@ -39,6 +41,8 @@ export function loadConfig(): SimConfig {
     logDir: process.env.SIM_LOG_DIR ?? 'logs',
     seed: process.env.SIM_SEED ?? 'default-seed',
     startWorldTime,
+    catchUp: process.env.SIM_CATCH_UP !== 'false', // Default: true
+    catchUpSpeed: parseNumber(process.env.SIM_CATCH_UP_SPEED, 10), // Turns per second during catch-up
   };
 }
 

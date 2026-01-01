@@ -36,6 +36,7 @@ export async function loadWorld(): Promise<WorldState | null> {
     const parsed = JSON.parse(raw);
     // Rehydrate dates
     parsed.startedAt = new Date(parsed.startedAt);
+    if (parsed.lastTickAt) parsed.lastTickAt = new Date(parsed.lastTickAt);
     
     // Rehydrate story thread dates
     if (parsed.storyThreads) {

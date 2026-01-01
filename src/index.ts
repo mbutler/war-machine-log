@@ -356,6 +356,7 @@ function onHourTick(event: TickEvent): void {
     world.dynastyState = dynastyState;
     world.treasureState = treasureState;
     world.navalState = navalState;
+    world.lastTickAt = event.worldTime; // Track for catch-up
     await saveWorld(world);
   })();
 }
@@ -425,6 +426,7 @@ function onDayTick(event: TickEvent): void {
     world.dynastyState = dynastyState;
     world.treasureState = treasureState;
     world.navalState = navalState;
+    world.lastTickAt = event.worldTime; // Track for catch-up
     (world as any).legendaryState = legendaryState; // Persist legendary elements
     await saveWorld(world);
   })();
@@ -447,6 +449,69 @@ function onTurnTick(event: TickEvent): void {
   })();
 }
 
+// Helper to simulate a single turn during catch-up (faster, no delays)
+async function simulateTurn(worldTime: Date, turnIndex: number): Promise<void> {
+  const tick: TickEvent = { kind: 'turn', worldTime, turnIndex };
+  
+  // Process turn events synchronously for catch-up
+  onTurnTick(tick);
+  
+  // Check if it's an hour tick
+  if (turnIndex % config.hourTurns === 0) {
+    onHourTick({ ...tick, kind: 'hour' });
+  }
+  
+  // Check if it's a day tick
+  if (turnIndex % (config.hourTurns * config.dayHours) === 0) {
+    onDayTick({ ...tick, kind: 'day' });
+  }
+}
+
+// Catch up missed time when resuming after a pause
+async function catchUpMissedTime(): Promise<void> {
+  if (!config.catchUp || !world.lastTickAt) return;
+  
+  const lastTick = new Date(world.lastTickAt);
+  const now = new Date();
+  const missedMs = now.getTime() - lastTick.getTime();
+  const turnMs = config.turnMinutes * 60 * 1000;
+  const missedTurns = Math.floor(missedMs / turnMs);
+  
+  if (missedTurns <= 0) return;
+  
+  // Cap catch-up at 7 days (1008 turns) to prevent very long waits
+  const maxCatchUp = 7 * 24 * 6; // 7 days of turns
+  const turnsToSimulate = Math.min(missedTurns, maxCatchUp);
+  const missedDays = Math.floor(missedTurns / (config.hourTurns * config.dayHours));
+  const missedHours = Math.floor((missedTurns % (config.hourTurns * config.dayHours)) / config.hourTurns);
+  
+  console.log(`\n⏰ Catching up ${missedDays}d ${missedHours}h of missed time (${turnsToSimulate} turns)...`);
+  
+  const catchUpDelayMs = 1000 / config.catchUpSpeed; // ms between turns
+  let simulatedTurns = 0;
+  
+  for (let i = 0; i < turnsToSimulate; i++) {
+    const turnWorldTime = new Date(lastTick.getTime() + (i + 1) * turnMs);
+    await simulateTurn(turnWorldTime, i + 1);
+    simulatedTurns++;
+    
+    // Progress update every 100 turns
+    if (simulatedTurns % 100 === 0) {
+      const pct = Math.floor((simulatedTurns / turnsToSimulate) * 100);
+      process.stdout.write(`\r⏰ Catch-up progress: ${pct}% (${simulatedTurns}/${turnsToSimulate} turns)`);
+    }
+    
+    // Small delay to prevent CPU overload and allow logs to flush
+    await new Promise(r => setTimeout(r, catchUpDelayMs));
+  }
+  
+  console.log(`\n✓ Caught up! World time is now synchronized.`);
+  
+  // Update world time to now
+  world.lastTickAt = now;
+  await saveWorld(world);
+}
+
 async function main() {
   // Initialize world before starting scheduler
   await initWorld();
@@ -456,25 +521,32 @@ async function main() {
   bus.subscribe('hour', onHourTick);
   bus.subscribe('day', onDayTick);
 
+  // Catch up any missed time from previous session
+  await catchUpMissedTime();
+
   // Seed initial travel
   const initialTravel = maybeStartTravel(world, rng, config.startWorldTime);
   for (const entry of initialTravel) await log(entry);
   await saveWorld(world);
 
   const turnMs = config.msPerWorldMinute * config.turnMinutes;
+  const pad = (s: string) => `║  ${s.padEnd(62)}║`;
+  const activeStories = storyThreads.filter((s) => !s.resolved).length;
+  const statsLine = `Settlements: ${world.settlements.length}   Parties: ${world.parties.length}   Antagonists: ${antagonists.length}`;
+  
   process.stdout.write(
-    `\n╔════════════════════════════════════════════════════════════════╗\n` +
-    `║  BECMI Real-Time Simulator                                     ║\n` +
-    `║  ${formatDate(calendar).padEnd(48)}       ║\n` +
-    `╠════════════════════════════════════════════════════════════════╣\n` +
-    `║  Seed: ${config.seed.padEnd(54)}  ║\n` +
-    `║  Time Scale: ${config.timeScale}x (turn every ${turnMs}ms)${' '.repeat(Math.max(0, 30 - String(turnMs).length))}║\n` +
-    `║  Settlements: ${world.settlements.length}   Parties: ${world.parties.length}   Antagonists: ${antagonists.length}${' '.repeat(Math.max(0, 15 - String(antagonists.length).length))}║\n` +
-    `║  Active Stories: ${storyThreads.filter((s) => !s.resolved).length}${' '.repeat(45)}║\n` +
-    `╚════════════════════════════════════════════════════════════════╝\n\n`,
+    `\n╔${'═'.repeat(64)}╗\n` +
+    pad('BECMI Real-Time Simulator') + '\n' +
+    pad(formatDate(calendar)) + '\n' +
+    `╠${'═'.repeat(64)}╣\n` +
+    pad(`Seed: ${config.seed}`) + '\n' +
+    pad(`Time Scale: ${config.timeScale}x (turn every ${turnMs}ms)`) + '\n' +
+    pad(statsLine) + '\n' +
+    pad(`Active Stories: ${activeStories}`) + '\n' +
+    `╚${'═'.repeat(64)}╝\n\n`,
   );
 
-  // Start the scheduler
+  // Start the scheduler (now synchronized with real time)
   const scheduler = new Scheduler(bus, config);
   scheduler.start();
 }

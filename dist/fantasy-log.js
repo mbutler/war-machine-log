@@ -23,7 +23,9 @@ function loadConfig() {
     dayHours,
     logDir: process.env.SIM_LOG_DIR ?? "logs",
     seed: process.env.SIM_SEED ?? "default-seed",
-    startWorldTime
+    startWorldTime,
+    catchUp: process.env.SIM_CATCH_UP !== "false",
+    catchUpSpeed: parseNumber(process.env.SIM_CATCH_UP_SPEED, 10)
   };
 }
 var config = loadConfig();
@@ -14248,6 +14250,8 @@ async function loadWorld() {
     const raw = await fs2.readFile(WORLD_PATH, "utf8");
     const parsed = JSON.parse(raw);
     parsed.startedAt = new Date(parsed.startedAt);
+    if (parsed.lastTickAt)
+      parsed.lastTickAt = new Date(parsed.lastTickAt);
     if (parsed.storyThreads) {
       for (const story of parsed.storyThreads) {
         if (story.startedAt)
@@ -26358,6 +26362,7 @@ function onHourTick(event) {
     world.dynastyState = dynastyState;
     world.treasureState = treasureState;
     world.navalState = navalState;
+    world.lastTickAt = event.worldTime;
     await saveWorld(world);
   })();
 }
@@ -26413,6 +26418,7 @@ function onDayTick(event) {
     world.dynastyState = dynastyState;
     world.treasureState = treasureState;
     world.navalState = navalState;
+    world.lastTickAt = event.worldTime;
     world.legendaryState = legendaryState;
     await saveWorld(world);
   })();
@@ -26431,26 +26437,73 @@ function onTurnTick(event) {
     }
   })();
 }
+async function simulateTurn(worldTime, turnIndex) {
+  const tick = { kind: "turn", worldTime, turnIndex };
+  onTurnTick(tick);
+  if (turnIndex % config.hourTurns === 0) {
+    onHourTick({ ...tick, kind: "hour" });
+  }
+  if (turnIndex % (config.hourTurns * config.dayHours) === 0) {
+    onDayTick({ ...tick, kind: "day" });
+  }
+}
+async function catchUpMissedTime() {
+  if (!config.catchUp || !world.lastTickAt)
+    return;
+  const lastTick = new Date(world.lastTickAt);
+  const now = new Date;
+  const missedMs = now.getTime() - lastTick.getTime();
+  const turnMs = config.turnMinutes * 60 * 1000;
+  const missedTurns = Math.floor(missedMs / turnMs);
+  if (missedTurns <= 0)
+    return;
+  const maxCatchUp = 7 * 24 * 6;
+  const turnsToSimulate = Math.min(missedTurns, maxCatchUp);
+  const missedDays = Math.floor(missedTurns / (config.hourTurns * config.dayHours));
+  const missedHours = Math.floor(missedTurns % (config.hourTurns * config.dayHours) / config.hourTurns);
+  console.log(`
+⏰ Catching up ${missedDays}d ${missedHours}h of missed time (${turnsToSimulate} turns)...`);
+  const catchUpDelayMs = 1000 / config.catchUpSpeed;
+  let simulatedTurns = 0;
+  for (let i = 0;i < turnsToSimulate; i++) {
+    const turnWorldTime = new Date(lastTick.getTime() + (i + 1) * turnMs);
+    await simulateTurn(turnWorldTime, i + 1);
+    simulatedTurns++;
+    if (simulatedTurns % 100 === 0) {
+      const pct = Math.floor(simulatedTurns / turnsToSimulate * 100);
+      process.stdout.write(`\r⏰ Catch-up progress: ${pct}% (${simulatedTurns}/${turnsToSimulate} turns)`);
+    }
+    await new Promise((r) => setTimeout(r, catchUpDelayMs));
+  }
+  console.log(`
+✓ Caught up! World time is now synchronized.`);
+  world.lastTickAt = now;
+  await saveWorld(world);
+}
 async function main() {
   await initWorld();
   bus.subscribe("turn", onTurnTick);
   bus.subscribe("hour", onHourTick);
   bus.subscribe("day", onDayTick);
+  await catchUpMissedTime();
   const initialTravel = maybeStartTravel(world, rng, config.startWorldTime);
   for (const entry of initialTravel)
     await log(entry);
   await saveWorld(world);
   const turnMs = config.msPerWorldMinute * config.turnMinutes;
+  const pad = (s) => `║  ${s.padEnd(62)}║`;
+  const activeStories = storyThreads.filter((s) => !s.resolved).length;
+  const statsLine = `Settlements: ${world.settlements.length}   Parties: ${world.parties.length}   Antagonists: ${antagonists.length}`;
   process.stdout.write(`
-╔════════════════════════════════════════════════════════════════╗
-` + `║  BECMI Real-Time Simulator                                     ║
-` + `║  ${formatDate(calendar).padEnd(48)}       ║
-` + `╠════════════════════════════════════════════════════════════════╣
-` + `║  Seed: ${config.seed.padEnd(54)}  ║
-` + `║  Time Scale: ${config.timeScale}x (turn every ${turnMs}ms)${" ".repeat(Math.max(0, 30 - String(turnMs).length))}║
-` + `║  Settlements: ${world.settlements.length}   Parties: ${world.parties.length}   Antagonists: ${antagonists.length}${" ".repeat(Math.max(0, 15 - String(antagonists.length).length))}║
-` + `║  Active Stories: ${storyThreads.filter((s) => !s.resolved).length}${" ".repeat(45)}║
-` + `╚════════════════════════════════════════════════════════════════╝
+╔${"═".repeat(64)}╗
+` + pad("BECMI Real-Time Simulator") + `
+` + pad(formatDate(calendar)) + `
+` + `╠${"═".repeat(64)}╣
+` + pad(`Seed: ${config.seed}`) + `
+` + pad(`Time Scale: ${config.timeScale}x (turn every ${turnMs}ms)`) + `
+` + pad(statsLine) + `
+` + pad(`Active Stories: ${activeStories}`) + `
+` + `╚${"═".repeat(64)}╝
 
 `);
   const scheduler = new Scheduler(bus, config);

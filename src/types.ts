@@ -228,6 +228,7 @@ export interface WorldState {
   nexuses: Nexus[];
   mercenaries: MercenaryCompany[];
   startedAt: Date;
+  lastTickAt?: Date; // When the simulation last ran (for catch-up)
 }
 
 export interface StockedRoom {
