@@ -33,7 +33,10 @@ import { createGuildState, seedGuilds, tickGuilds, planHeist } from './guilds.ts
 import { createEcologyState, seedEcology, tickEcology } from './ecology.ts';
 import { createDynastyState, seedDynasty, tickDynasty } from './dynasty.ts';
 import { createTreasureState, tickTreasure, TreasureState } from './treasure.ts';
-import { NavalState, seedNavalState, tickNavalHourly, tickNavalDaily, markSettlementAsPort } from './naval.ts';
+import { NavalState, seedNavalState, tickNavalHourly, tickNavalDaily, markSettlementAsPort, generateNavalRumor } from './naval.ts';
+import { processWorldEvent, getSettlementState, getFactionState, getPartyState } from './causality.ts';
+import { spawnRumor, decayRumors } from './rumors.ts';
+import { settlementScene, marketBeat } from './prose.ts';
 
 async function runStressTest() {
   const seed = 'test-seed-' + Date.now();
@@ -101,11 +104,13 @@ async function runStressTest() {
     }
   }
 
-  const SIMULATED_DAYS = 90;
+  // Full year simulation for comprehensive testing
+  const SIMULATED_DAYS = 365;
   const TICKS_PER_DAY = 24 * 6; // 10 minute turns
   const TOTAL_TICKS = SIMULATED_DAYS * TICKS_PER_DAY;
 
-  console.log(`Simulating ${SIMULATED_DAYS} days (${TOTAL_TICKS} turns)...`);
+  console.log(`Simulating ${SIMULATED_DAYS} days (${TOTAL_TICKS} turns) - 1 full year...`);
+  console.log(`This tests all seasonal cycles, weather patterns, and long-term dynamics.\n`);
 
   let currentWorldTime = new Date(startWorldTime);
 
@@ -140,6 +145,20 @@ async function runStressTest() {
         const npc = rng.pick(world.npcs) as DeepNPC;
         if (npc.depth && npc.alive !== false) relationshipEvent(rng, npc, world, event.worldTime);
       }
+      
+      // Antagonist activity
+      if (rng.chance(0.03)) {
+        const activeAntagonists = antagonists.filter((a) => a.alive);
+        if (activeAntagonists.length) {
+          const ant = rng.pick(activeAntagonists);
+          antagonistAct(ant, world, rng, event.worldTime);
+        }
+      }
+      
+      // Story thread progression
+      if (rng.chance(0.1)) {
+        tickStories(rng, storyThreads, world, event.worldTime);
+      }
 
       tickNPCAgency(world, rng, event.worldTime, antagonists, storyThreads);
       tickPartyAgency(world, rng, event.worldTime, antagonists, storyThreads);
@@ -173,20 +192,58 @@ async function runStressTest() {
       maybeLegendarySpike(rng, world, event.worldTime, legendaryState);
       tickNavalDaily(navalState, world, rng, event.worldTime, calendar.weather, getSeason(calendar.month));
       
+      // Decay rumors
+      decayRumors(world);
+      
+      // Spawn new rumors occasionally
+      if (rng.chance(0.2) && world.settlements.length > 0) {
+        const origin = rng.pick(world.settlements).name;
+        spawnRumor(world, rng, origin);
+      }
+      
+      // Naval rumors from ports
+      if (rng.chance(0.1)) {
+        generateNavalRumor(rng, navalState, world);
+      }
+      
+      // Generate prose for settlements (exercises prose engine)
+      for (const settlement of world.settlements) {
+        settlementScene(rng, settlement, event.worldTime);
+        const npcsHere = world.npcs.filter((n) => n.location === settlement.name && n.alive !== false);
+        const partiesHere = world.parties.filter((p) => p.location === settlement.name);
+        marketBeat(rng, settlement, event.worldTime, {
+          npcs: npcsHere,
+          parties: partiesHere,
+          tension: settlement.mood,
+        });
+      }
+      
       process.stdout.write('.'); // Progress indicator
     }
   }
 
-  console.log('\nStress Test Completed Successfully!');
-  console.log(`Final World State:
+  console.log('\n\n========================================');
+  console.log('   STRESS TEST COMPLETED SUCCESSFULLY!');
+  console.log('========================================\n');
+  
+  console.log(`Simulated: ${SIMULATED_DAYS} days (${Math.floor(SIMULATED_DAYS/30)} months)`);
+  console.log(`Final Season: ${getSeason(calendar.month)}`);
+  console.log(`Final Weather: ${calendar.weather}\n`);
+  
+  console.log(`Core World State:
     - Settlements: ${world.settlements.length}
-    - Persistent NPCs: ${world.npcs.length}
+    - Persistent NPCs: ${world.npcs.length} (${world.npcs.filter(n => n.alive !== false).length} alive)
+    - Adventuring Parties: ${world.parties.length}
+    - Active Antagonists: ${antagonists.filter(a => a.alive).length}
+    - Active Story Threads: ${storyThreads.filter(s => !s.resolved).length}
+    - Resolved Stories: ${storyThreads.filter(s => s.resolved).length}
+    - Active Rumors: ${world.activeRumors?.length ?? 0}
     - Active Armies: ${world.armies.length}
     - Strongholds (Finished): ${world.strongholds.filter(s => s.constructionFinished).length}
     - Strongholds (In Progress): ${world.npcs.filter(n => (n as any).agendas?.some((a: any) => a.type === 'stronghold')).length}
     - Cleared Ruins: ${world.ruins?.filter(r => r.cleared).length ?? 0}
     - Diseased Settlements: ${Object.values(world.settlementStates || {}).filter(s => s.disease).length}
-    - Ransomed Prisoners: ${world.eventHistory?.filter(e => e.type === 'ransom').length ?? 0}
+    - World Events Logged: ${world.eventHistory?.length ?? 0}
   
   New Systems:
     - Active Retainers: ${retainerRoster.retainers.filter(r => r.alive).length}

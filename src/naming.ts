@@ -55,6 +55,8 @@ const FACTION_SYMBOLS = [
   'Shield', 'Coin', 'Scale', 'Compass', 'Anchor', 'Key', 'Chalice',
   'Eye', 'Hand', 'Heart', 'Skull', 'Tower', 'Gate', 'Bridge', 'Path',
   'Chain', 'Ring', 'Wheel', 'Hammer', 'Anvil', 'Quill', 'Scroll',
+  'Ash', 'Storm', 'Bone', 'Blood', 'Shadow', 'Frost', 'Dawn', 'Dusk',
+  'Wyrm', 'Phoenix', 'Griffin', 'Stag', 'Bear', 'Hawk', 'Spider', 'Viper',
 ];
 
 const FACTION_PLURALS = [
