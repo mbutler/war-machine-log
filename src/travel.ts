@@ -3,13 +3,17 @@ import { Random } from './rng.ts';
 import { LogEntry, Terrain, WorldState } from './types.ts';
 import { randomPlace, randomName } from './naming.ts';
 import { pathTerrain, distanceMiles } from './world.ts';
+import { chooseRumorGoal } from './town.ts';
+import { dungeonWanders, exploreDungeonTick } from './dungeon.ts';
+import { npcArrivalLogs } from './npc.ts';
 
 function isDay(worldTime: Date): boolean {
   const hour = worldTime.getUTCHours();
   return hour >= 6 && hour < 18;
 }
 
-function pickDestination(world: WorldState, rng: Random, origin: string): string {
+function pickDestination(world: WorldState, rng: Random, origin: string, partyGoal?: string): string {
+  if (partyGoal) return partyGoal;
   if (world.settlements.length <= 1) return randomPlace(rng);
   const options = world.settlements.map((s) => s.name).filter((name) => name !== origin);
   if (!options.length) return origin;
@@ -31,7 +35,7 @@ function milesPerHour(terrain: Terrain): number {
   return perDay / 24; // BECMI daily divided into 24 hours
 }
 
-function applyFatigueSpeed(baseMph: number, fatigue: number | undefined): number {
+export function applyFatigueSpeed(baseMph: number, fatigue: number | undefined): number {
   if (!fatigue || fatigue <= 0) return baseMph;
   const factor = 1 / (1 + 0.3 * fatigue);
   return baseMph * factor;
@@ -48,7 +52,14 @@ function ensureTravel(world: WorldState, rng: Random, worldTime: Date): LogEntry
   for (const party of world.parties) {
     if (party.restHoursRemaining && party.restHoursRemaining > 0) continue;
     if (party.status === 'idle' && rng.chance(0.8)) {
-      const destination = pickDestination(world, rng, party.location);
+      // Grab rumor goal if any.
+      if (!party.goal) {
+        const rumor = chooseRumorGoal(world, rng, party.id);
+        if (rumor) {
+          party.goal = { kind: 'travel-to', target: rumor.target, sourceRumorId: rumor.id };
+        }
+      }
+      const destination = pickDestination(world, rng, party.location, party.goal?.target);
       if (destination === party.location) continue;
       const distance = distanceMiles(world, party.location, destination);
       if (!distance || distance <= 0) continue;
@@ -81,7 +92,13 @@ function ensureTravel(world: WorldState, rng: Random, worldTime: Date): LogEntry
       if (party.restHoursRemaining && party.restHoursRemaining > 0) {
         return logs;
       }
-      const destination = pickDestination(world, rng, party.location);
+      if (!party.goal) {
+        const rumor = chooseRumorGoal(world, rng, party.id);
+        if (rumor) {
+          party.goal = { kind: 'travel-to', target: rumor.target, sourceRumorId: rumor.id };
+        }
+      }
+      const destination = pickDestination(world, rng, party.location, party.goal?.target);
       if (destination !== party.location) {
         const distance = distanceMiles(world, party.location, destination);
         if (distance && distance > 0) {
@@ -187,8 +204,31 @@ export function updateTravel(world: WorldState, rng: Random, worldTime: Date): L
           party.wounded = true;
           party.restHoursRemaining = Math.max(party.restHoursRemaining ?? 0, 24);
         }
+        if (encounter.death) {
+          party.fame = Math.max(0, (party.fame ?? 0) - 1);
+          logs.push({
+            category: 'road',
+            summary: `${party.name} suffers losses`,
+            details: 'A grim tally after the fight.',
+            actors: [party.name],
+            location: party.location,
+            worldTime,
+            realTime: new Date(),
+            seed: world.seed,
+          });
+        } else {
+          party.fame = (party.fame ?? 0) + 1;
+        }
         logs.push(encounter);
       }
+    }
+
+    // If destination is a dungeon, simulate wandering checks as they draw near.
+    const destinationIsDungeon = world.dungeons.some((d) => d.name === party.travel.destination);
+    if (destinationIsDungeon && rng.chance(0.3)) {
+      const dungeon = world.dungeons.find((d) => d.name === party.travel.destination)!;
+      const wand = dungeonWanders(rng, dungeon, [party.name], worldTime, world.seed, world);
+      if (wand) logs.push(wand);
     }
 
     // Advance time for this leg.
@@ -199,6 +239,10 @@ export function updateTravel(world: WorldState, rng: Random, worldTime: Date): L
       const arrivedAt = party.location;
       party.status = 'idle';
       party.travel = undefined;
+      // Clear goal if reached
+      if (party.goal && party.goal.target === arrivedAt) {
+        party.goal = undefined;
+      }
       // Recover a bit of fatigue on arrival.
       if (party.fatigue && party.fatigue > 0) {
         party.fatigue = Math.max(0, party.fatigue - 1);
@@ -215,6 +259,23 @@ export function updateTravel(world: WorldState, rng: Random, worldTime: Date): L
         realTime: new Date(),
         seed: world.seed,
       });
+      const dungeon = world.dungeons.find((d) => d.name === arrivedAt);
+      if (dungeon) {
+        const delveLogs = exploreDungeonTick(rng, dungeon, [party.name], worldTime, world.seed, world);
+        logs.push(...delveLogs);
+      }
+      // Fame spotlight
+      if ((party.fame ?? 0) >= 5 && rng.chance(0.3)) {
+        logs.push({
+          category: 'town',
+          summary: `${party.name} gain renown`,
+          details: 'Locals share tales of their exploits.',
+          location: arrivedAt,
+          worldTime,
+          realTime: new Date(),
+          seed: world.seed,
+        });
+      }
     }
   }
 

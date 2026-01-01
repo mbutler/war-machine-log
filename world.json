@@ -259,72 +259,162 @@
   "settlements": [
     {
       "id": "settlement-0",
-      "name": "Minasbran",
-      "population": 1364,
+      "name": "Namysaton",
+      "population": 1407,
       "type": "town",
       "coord": {
         "q": 0,
         "r": 5
+      },
+      "supply": {
+        "grain": 1,
+        "timber": 1,
+        "ore": 2,
+        "textiles": 2,
+        "salt": -1,
+        "fish": 2,
+        "livestock": 0
+      },
+      "mood": -3,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "normal"
       }
     },
     {
       "id": "settlement-1",
-      "name": "Dragonmill",
-      "population": 1748,
+      "name": "Holbeck",
+      "population": 1011,
       "type": "town",
       "coord": {
         "q": 4,
         "r": 1
+      },
+      "supply": {
+        "grain": -1,
+        "timber": 2,
+        "ore": 1,
+        "textiles": 0,
+        "salt": 0,
+        "fish": 2,
+        "livestock": -2
+      },
+      "mood": 0,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "normal"
       }
     },
     {
       "id": "settlement-2",
-      "name": "Highsnow",
-      "population": 1269,
-      "type": "village",
+      "name": "Estorden",
+      "population": 688,
+      "type": "town",
       "coord": {
         "q": 5,
         "r": 2
+      },
+      "supply": {
+        "grain": 0,
+        "timber": -2,
+        "ore": -1,
+        "textiles": -1,
+        "salt": 2,
+        "fish": 2,
+        "livestock": 2
+      },
+      "mood": 2,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "normal"
       }
     },
     {
       "id": "settlement-3",
-      "name": "Wormsgrip",
-      "population": 787,
-      "type": "town",
+      "name": "Inverdock",
+      "population": 963,
+      "type": "village",
       "coord": {
         "q": 2,
         "r": 4
+      },
+      "supply": {
+        "grain": -1,
+        "timber": 2,
+        "ore": -2,
+        "textiles": 0,
+        "salt": 0,
+        "fish": 2,
+        "livestock": 0
+      },
+      "mood": -3,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "normal"
       }
     }
   ],
   "parties": [
     {
       "id": "party-0",
-      "name": "Kereama's Company",
+      "name": "Anoz's Wolves",
       "members": [
-        "Bessi",
-        "Goodife",
-        "Gumhild"
+        "Urrea",
+        "Gerazan",
+        "Mabyle"
       ],
-      "location": "Highsnow",
+      "location": "Namysaton",
       "status": "travel",
       "travel": {
-        "destination": "Dragonmill",
-        "terrain": "mountains",
-        "milesRemaining": 12,
-        "milesPerHour": 0.5
-      }
+        "destination": "Estorden",
+        "terrain": "road",
+        "milesRemaining": 2,
+        "milesPerHour": 1.5
+      },
+      "wounded": true,
+      "restHoursRemaining": 2,
+      "fame": 2,
+      "fatigue": 1
     },
     {
       "id": "band-0",
-      "name": "Bobby's Band",
+      "name": "The Free Blades",
       "members": [
-        "Edytha",
-        "Tisamenos"
+        "Gretje",
+        "Lorent"
       ],
-      "location": "Dragonmill",
-      "status": "idle"
+      "location": "Inverdock",
+      "status": "travel",
+      "travel": {
+        "destination": "Estorden",
+        "terrain": "swamp",
+        "milesRemaining": 20,
+        "milesPerHour": 0.5
+      },
+      "fame": 6,
+      "fatigue": 2,
+      "wounded": true,
+      "restHoursRemaining": 9
     }
   ],
   "roads": [
@@ -341,9 +431,1015 @@
       "settlement-3"
     ],
     [
-      "settlement-3",
-      "settlement-0"
+      "settlement-2",
+      "settlement-1"
     ]
   ],
-  "startedAt": "2026-01-01T02:17:00.492Z"
+  "dungeons": [
+    {
+      "id": "dungeon-0",
+      "name": "The Caverns of Shadowed Blood",
+      "coord": {
+        "q": 3,
+        "r": 5
+      },
+      "depth": 3,
+      "danger": 4,
+      "rooms": [
+        {
+          "type": "empty",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "laboratory",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "lair",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "trap",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 3,
+          "loot": true,
+          "rare": "relic"
+        },
+        {
+          "type": "lair",
+          "threat": 4,
+          "loot": false
+        }
+      ],
+      "explored": 0
+    }
+  ],
+  "activeRumors": [
+    {
+      "id": "rumor-1767247265861-327224",
+      "kind": "threat",
+      "text": "Travelers speak of Leutfrid Blackhand. Wealth stolen from the rich and kept from the poor.",
+      "target": "Namysaton",
+      "origin": "Namysaton",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767247268759-346160",
+      "kind": "threat",
+      "text": "Travelers speak of Theophano Packmaster. Ruling a kingdom of fang and claw.",
+      "target": "Holbeck",
+      "origin": "Holbeck",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767247275517-122892",
+      "kind": "mystery",
+      "text": "Helga tells all who will listen: \"The Free Blades clash with giant leeches.\" The tale spreads.",
+      "target": "Inverdock",
+      "origin": "Inverdock",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767247281310-359012",
+      "kind": "mystery",
+      "text": "Helga tells all who will listen: \"The Free Blades clash with Leonnatos's giant leeches.\" The tale spreads.",
+      "target": "Inverdock",
+      "origin": "Inverdock",
+      "freshness": 7
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc-0",
+      "name": "Helga",
+      "role": "guard",
+      "home": "settlement-0",
+      "location": "Inverdock",
+      "reputation": 1,
+      "fame": 0,
+      "alive": true,
+      "depth": {
+        "traits": [
+          "brave",
+          "greedy",
+          "ambitious"
+        ],
+        "background": "farmhand-turned-guard",
+        "motivation": "duty",
+        "relationships": [
+          {
+            "targetId": "npc-6",
+            "targetName": "Fierelus",
+            "type": "creditor",
+            "strength": 5,
+            "history": "Gold is owed, and gold will be had."
+          },
+          {
+            "targetId": "npc-5",
+            "targetName": "Sylvester",
+            "type": "rival",
+            "strength": 2,
+            "history": "Competed for the same position in Namysaton."
+          },
+          {
+            "targetId": "npc-1",
+            "targetName": "Agobard",
+            "type": "ally",
+            "strength": 4,
+            "history": "Shared a cell, or a foxhole, or both."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "laughs at inappropriate moments",
+          "collects small bones"
+        ]
+      },
+      "age": 63,
+      "title": "Watch-Captain",
+      "appearance": "a limp from an old wound",
+      "secretsKnown": []
+    },
+    {
+      "id": "npc-1",
+      "name": "Agobard",
+      "role": "merchant",
+      "home": "settlement-0",
+      "location": "Namysaton",
+      "reputation": -1,
+      "fame": 0,
+      "alive": true,
+      "depth": {
+        "traits": [
+          "brave",
+          "honorable"
+        ],
+        "background": "orphan-thief",
+        "motivation": "home",
+        "secretMotivation": "justice",
+        "relationships": [
+          {
+            "targetId": "npc-9",
+            "targetName": "Iolanthe",
+            "type": "creditor",
+            "strength": 2,
+            "history": "Expects repayment, with interest."
+          },
+          {
+            "targetId": "npc-2",
+            "targetName": "Baiona",
+            "type": "creditor",
+            "strength": 4,
+            "history": "Expects repayment, with interest."
+          },
+          {
+            "targetId": "npc-5",
+            "targetName": "Sylvester",
+            "type": "kin",
+            "strength": 5,
+            "history": "Estranged, but kin nonetheless."
+          },
+          {
+            "targetId": "npc-7",
+            "targetName": "Chloë",
+            "type": "ally",
+            "strength": 1,
+            "history": "Owe each other debts that gold cannot repay."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "collects small bones",
+          "quotes ancient philosophers"
+        ]
+      },
+      "age": 47,
+      "title": "Chandler",
+      "appearance": "calluses of a lifetime of sword work",
+      "secretsKnown": []
+    },
+    {
+      "id": "npc-2",
+      "name": "Baiona",
+      "role": "scout",
+      "home": "settlement-2",
+      "location": "Estorden",
+      "reputation": 0,
+      "fame": 0,
+      "alive": true,
+      "depth": {
+        "traits": [
+          "cunning",
+          "pragmatic",
+          "romantic"
+        ],
+        "background": "hedge-wizard",
+        "motivation": "redemption",
+        "relationships": [
+          {
+            "targetId": "npc-1",
+            "targetName": "Agobard",
+            "type": "debtor",
+            "strength": 4,
+            "history": "Expects repayment, with interest."
+          },
+          {
+            "targetId": "npc-6",
+            "targetName": "Fierelus",
+            "type": "betrayer",
+            "strength": 1,
+            "history": "The knife came from behind, as always."
+          },
+          {
+            "targetId": "npc-5",
+            "targetName": "Sylvester",
+            "type": "student",
+            "strength": 1,
+            "history": "Still learning, still surprising."
+          },
+          {
+            "targetId": "npc-8",
+            "targetName": "Hernais",
+            "type": "mentor",
+            "strength": 5,
+            "history": "Taught them everything worth knowing."
+          },
+          {
+            "targetId": "npc-4",
+            "targetName": "Aias",
+            "type": "rival",
+            "strength": 2,
+            "history": "Both loved the same person, once."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "always knows which way is north",
+          "hums old war songs"
+        ]
+      },
+      "age": 25,
+      "title": "Ranger",
+      "appearance": "missing two fingers on the left hand",
+      "secretsKnown": []
+    },
+    {
+      "id": "npc-3",
+      "name": "Odouart",
+      "role": "merchant",
+      "home": "settlement-2",
+      "location": "Estorden",
+      "reputation": 0,
+      "fame": 0,
+      "alive": true,
+      "depth": {
+        "traits": [
+          "cunning",
+          "romantic",
+          "greedy"
+        ],
+        "background": "noble-exile",
+        "motivation": "power",
+        "relationships": [
+          {
+            "targetId": "npc-5",
+            "targetName": "Sylvester",
+            "type": "rival",
+            "strength": 4,
+            "history": "Both loved the same person, once."
+          },
+          {
+            "targetId": "npc-8",
+            "targetName": "Hernais",
+            "type": "betrayed",
+            "strength": 2,
+            "history": "The knife came from behind, as always."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Wavin",
+            "type": "enemy",
+            "strength": 1,
+            "history": "Only one of them can have what they both want."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "keeps a journal in cipher",
+          "cannot resist a wager"
+        ]
+      },
+      "age": 21,
+      "title": "Chandler",
+      "appearance": "eyes of mismatched color",
+      "secretsKnown": []
+    },
+    {
+      "id": "npc-4",
+      "name": "Aias",
+      "role": "laborer",
+      "home": "settlement-0",
+      "location": "Namysaton",
+      "reputation": 0,
+      "fame": 0,
+      "alive": true,
+      "depth": {
+        "traits": [
+          "loyal",
+          "romantic",
+          "naive"
+        ],
+        "background": "farmhand-turned-guard",
+        "motivation": "knowledge",
+        "relationships": [
+          {
+            "targetId": "npc-2",
+            "targetName": "Baiona",
+            "type": "rival",
+            "strength": 2,
+            "history": "Both loved the same person, once."
+          },
+          {
+            "targetId": "npc-1",
+            "targetName": "Agobard",
+            "type": "rival",
+            "strength": 3,
+            "history": "An old grudge over a matter of honor."
+          },
+          {
+            "targetId": "npc-6",
+            "targetName": "Fierelus",
+            "type": "debtor",
+            "strength": 3,
+            "history": "Interest compounds, and so does resentment."
+          },
+          {
+            "targetId": "npc-6",
+            "targetName": "Fierelus",
+            "type": "mentor",
+            "strength": 3,
+            "history": "Will surpass the master, given time."
+          },
+          {
+            "targetId": "npc-9",
+            "targetName": "Iolanthe",
+            "type": "debtor",
+            "strength": 2,
+            "history": "Extended credit when no one else would."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "prays before every meal",
+          "speaks in proverbs",
+          "constantly counts coins"
+        ]
+      },
+      "age": 54,
+      "title": "Porter",
+      "appearance": "a limp from an old wound",
+      "secretsKnown": []
+    },
+    {
+      "id": "npc-5",
+      "name": "Sylvester",
+      "role": "scout",
+      "home": "settlement-3",
+      "location": "Inverdock",
+      "reputation": 0,
+      "fame": 0,
+      "alive": true,
+      "depth": {
+        "traits": [
+          "greedy",
+          "cruel"
+        ],
+        "background": "foreign-exile",
+        "motivation": "redemption",
+        "relationships": [
+          {
+            "targetId": "npc-0",
+            "targetName": "Helga",
+            "type": "rival",
+            "strength": 2,
+            "history": "Competed for the same position in Namysaton."
+          },
+          {
+            "targetId": "npc-3",
+            "targetName": "Odouart",
+            "type": "rival",
+            "strength": 4,
+            "history": "Both loved the same person, once."
+          },
+          {
+            "targetId": "npc-1",
+            "targetName": "Agobard",
+            "type": "kin",
+            "strength": 5,
+            "history": "Estranged, but kin nonetheless."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "quotes ancient philosophers",
+          "hums old war songs"
+        ]
+      },
+      "age": 18,
+      "title": "Path-Finder",
+      "appearance": "ink-stained fingers of a scholar",
+      "secretsKnown": []
+    },
+    {
+      "id": "npc-6",
+      "name": "Fierelus",
+      "role": "guard",
+      "home": "settlement-2",
+      "location": "Estorden",
+      "reputation": -2,
+      "fame": 0,
+      "alive": true,
+      "depth": {
+        "traits": [
+          "ambitious",
+          "honorable"
+        ],
+        "background": "disgraced-priest",
+        "motivation": "duty",
+        "relationships": [
+          {
+            "targetId": "npc-2",
+            "targetName": "Baiona",
+            "type": "betrayed",
+            "strength": 1,
+            "history": "The knife came from behind, as always."
+          },
+          {
+            "targetId": "npc-4",
+            "targetName": "Aias",
+            "type": "student",
+            "strength": 3,
+            "history": "Will surpass the master, given time."
+          },
+          {
+            "targetId": "npc-7",
+            "targetName": "Chloë",
+            "type": "betrayed",
+            "strength": 2,
+            "history": "Trust, once given, was spectacularly misplaced."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "collects small bones"
+        ]
+      },
+      "age": 57,
+      "title": "Corporal",
+      "appearance": "an aristocratic bearing despite rough clothes",
+      "secretsKnown": []
+    },
+    {
+      "id": "npc-7",
+      "name": "Chloë",
+      "role": "laborer",
+      "home": "settlement-2",
+      "location": "Estorden",
+      "reputation": -3,
+      "fame": 0,
+      "alive": true,
+      "depth": {
+        "traits": [
+          "cunning",
+          "romantic"
+        ],
+        "background": "hedge-wizard",
+        "motivation": "duty",
+        "secretMotivation": "revenge",
+        "relationships": [
+          {
+            "targetId": "npc-6",
+            "targetName": "Fierelus",
+            "type": "betrayer",
+            "strength": 2,
+            "history": "Trust, once given, was spectacularly misplaced."
+          },
+          {
+            "targetId": "npc-1",
+            "targetName": "Agobard",
+            "type": "ally",
+            "strength": 1,
+            "history": "Owe each other debts that gold cannot repay."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Wavin",
+            "type": "debtor",
+            "strength": 1,
+            "history": "Extended credit when no one else would."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "constantly counts coins",
+          "fears deep water"
+        ]
+      },
+      "age": 50,
+      "title": "Digger",
+      "appearance": "eyes of mismatched color",
+      "secretsKnown": []
+    },
+    {
+      "id": "npc-8",
+      "name": "Hernais",
+      "role": "scout",
+      "home": "settlement-3",
+      "location": "Holbeck",
+      "reputation": 0,
+      "fame": 0,
+      "alive": true,
+      "depth": {
+        "traits": [
+          "skeptical",
+          "treacherous",
+          "pious"
+        ],
+        "background": "shipwreck-survivor",
+        "motivation": "duty",
+        "relationships": [
+          {
+            "targetId": "npc-0",
+            "targetName": "Helga",
+            "type": "betrayer",
+            "strength": 5,
+            "history": "Trust, once given, was spectacularly misplaced."
+          },
+          {
+            "targetId": "npc-3",
+            "targetName": "Odouart",
+            "type": "betrayer",
+            "strength": 2,
+            "history": "The knife came from behind, as always."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "refuses to eat meat"
+        ]
+      },
+      "age": 46,
+      "title": "Ranger",
+      "appearance": "scarred face and knowing eyes",
+      "secretsKnown": []
+    },
+    {
+      "id": "npc-9",
+      "name": "Iolanthe",
+      "role": "merchant",
+      "home": "settlement-1",
+      "location": "Holbeck",
+      "reputation": 0,
+      "fame": 0,
+      "alive": true,
+      "depth": {
+        "traits": [
+          "honorable",
+          "treacherous",
+          "brave"
+        ],
+        "background": "plague-orphan",
+        "motivation": "survival",
+        "secretMotivation": "survival",
+        "relationships": [
+          {
+            "targetId": "npc-4",
+            "targetName": "Aias",
+            "type": "creditor",
+            "strength": 2,
+            "history": "Extended credit when no one else would."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "collects small bones",
+          "trusts no one who smiles too easily",
+          "always wears a lucky charm"
+        ]
+      },
+      "age": 22,
+      "title": "Chandler",
+      "appearance": "missing two fingers on the left hand",
+      "secretsKnown": []
+    },
+    {
+      "id": "npc-10",
+      "name": "Wavin",
+      "role": "bard",
+      "home": "settlement-3",
+      "location": "Inverdock",
+      "reputation": -3,
+      "fame": 0,
+      "alive": true,
+      "depth": {
+        "traits": [
+          "charitable",
+          "cunning"
+        ],
+        "background": "retired-adventurer",
+        "motivation": "fame",
+        "relationships": [
+          {
+            "targetId": "npc-3",
+            "targetName": "Odouart",
+            "type": "enemy",
+            "strength": 1,
+            "history": "Only one of them can have what they both want."
+          },
+          {
+            "targetId": "npc-7",
+            "targetName": "Chloë",
+            "type": "creditor",
+            "strength": 1,
+            "history": "Extended credit when no one else would."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "speaks in proverbs"
+        ]
+      },
+      "age": 31,
+      "title": "Rhapsode",
+      "appearance": "the cautious movements of one used to danger",
+      "secretsKnown": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "faction-0",
+      "name": "Guild of Storms",
+      "attitude": {
+        "Inverdock": 1
+      },
+      "wealth": 93,
+      "focus": "trade"
+    },
+    {
+      "id": "faction-1",
+      "name": "Order of the Sword",
+      "attitude": {
+        "Inverdock": 2
+      },
+      "wealth": 63,
+      "focus": "martial"
+    },
+    {
+      "id": "faction-2",
+      "name": "House of the Rose",
+      "attitude": {
+        "Inverdock": 1
+      },
+      "wealth": 97,
+      "focus": "pious"
+    },
+    {
+      "id": "faction-3",
+      "name": "Guild of Wolves",
+      "attitude": {},
+      "wealth": 64,
+      "focus": "trade"
+    }
+  ],
+  "caravans": [
+    {
+      "id": "caravan-0",
+      "name": "Geruuara & Sons",
+      "route": [
+        "settlement-0",
+        "settlement-1"
+      ],
+      "goods": [
+        "livestock"
+      ],
+      "location": "Namysaton",
+      "progressHours": 22,
+      "direction": "outbound",
+      "escorts": [
+        "npc-2"
+      ],
+      "merchantId": "npc-3"
+    },
+    {
+      "id": "caravan-1",
+      "name": "Ardaric & Sons",
+      "route": [
+        "settlement-2",
+        "settlement-3"
+      ],
+      "goods": [
+        "ore",
+        "timber"
+      ],
+      "location": "Estorden",
+      "progressHours": 22,
+      "direction": "outbound",
+      "escorts": [
+        "npc-5"
+      ],
+      "merchantId": "npc-9"
+    }
+  ],
+  "startedAt": "2026-01-01T06:01:02.950Z",
+  "factionStates": {
+    "faction-0": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "activeOperations": [],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-1": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "activeOperations": [],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-2": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "activeOperations": [],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-3": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "activeOperations": [],
+      "recentLosses": 0,
+      "recentWins": 0
+    }
+  },
+  "calendar": {
+    "year": 1056,
+    "month": 0,
+    "day": 15,
+    "weather": "rain",
+    "weatherDuration": 12,
+    "moonPhase": "waning",
+    "activeEffects": {}
+  },
+  "antagonists": [
+    {
+      "id": "antagonist-1767247262954-9040",
+      "name": "Theophano",
+      "epithet": "Packmaster",
+      "type": "beast-lord",
+      "threat": 5,
+      "territory": "Holbeck",
+      "motivation": "Ruling a kingdom of fang and claw",
+      "notoriety": 1,
+      "defeats": 0,
+      "victories": 0,
+      "nemeses": [],
+      "followers": 10,
+      "treasure": 515,
+      "alive": true,
+      "traits": [
+        "commands beasts"
+      ],
+      "weaknesses": [
+        "cannot enter settlements",
+        "beasts can be calmed or frightened"
+      ]
+    },
+    {
+      "id": "antagonist-1767247262954-9715",
+      "name": "Leutfrid",
+      "epithet": "Blackhand",
+      "type": "bandit-chief",
+      "threat": 5,
+      "territory": "Namysaton",
+      "motivation": "Wealth stolen from the rich and kept from the poor",
+      "notoriety": 3,
+      "defeats": 0,
+      "victories": 0,
+      "nemeses": [],
+      "followers": 54,
+      "treasure": 901,
+      "alive": true,
+      "traits": [
+        "never fights fair",
+        "cunning tactician"
+      ],
+      "weaknesses": [
+        "gold can buy their followers"
+      ]
+    }
+  ],
+  "storyThreads": [
+    {
+      "id": "story-1767247262962-9998",
+      "type": "hunt",
+      "title": "Tracking the Leutfrid Blackhand",
+      "summary": "A deadly game of cat and mouse unfolds near Namysaton.",
+      "phase": "inciting",
+      "actors": [
+        "Leutfrid Blackhand"
+      ],
+      "location": "Namysaton",
+      "startedAt": "2026-01-01T06:01:02.950Z",
+      "lastUpdated": "2026-01-01T06:01:02.950Z",
+      "tension": 1,
+      "beats": [
+        {
+          "timestamp": "2026-01-01T06:01:02.950Z",
+          "summary": "A new threat arises: Leutfrid Blackhand",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The quarry is slain.",
+        "The quarry escapes to parts unknown.",
+        "The hunters become the hunted.",
+        "An unexpected alliance forms."
+      ],
+      "resolved": false
+    },
+    {
+      "id": "story-1767247279381-3224",
+      "type": "feud",
+      "title": "The Inverdock Vendetta",
+      "summary": "Inverdock becomes the stage for an escalating conflict.",
+      "phase": "inciting",
+      "actors": [
+        "The Free Blades",
+        "Leonnatos's giant leeches"
+      ],
+      "location": "Inverdock",
+      "startedAt": "2026-01-01T23:01:02.950Z",
+      "lastUpdated": "2026-01-01T23:01:02.950Z",
+      "tension": 1,
+      "beats": [
+        {
+          "timestamp": "2026-01-01T23:01:02.950Z",
+          "summary": "The Free Blades clash with Leonnatos's giant leeches",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "One side is destroyed utterly.",
+        "A fragile peace is negotiated.",
+        "Both sides are weakened; a third party profits.",
+        "The feud spreads, drawing in new participants."
+      ],
+      "resolved": false
+    }
+  ],
+  "consequenceQueue": {
+    "pending": [
+      {
+        "type": "spawn-event",
+        "triggerEvent": "Helga's flight",
+        "turnsUntilResolution": 5,
+        "data": {
+          "category": "town",
+          "summary": "Helga arrives in Estorden",
+          "details": "The refugee finds uncertain welcome in their new home.",
+          "location": "Estorden",
+          "actors": [
+            "Helga"
+          ]
+        },
+        "priority": 2,
+        "id": "conseq-1767247263935-7jetxbu6uo4"
+      },
+      {
+        "type": "spawn-event",
+        "triggerEvent": "Helga's flight",
+        "turnsUntilResolution": 11,
+        "data": {
+          "category": "town",
+          "summary": "Helga arrives in Inverdock",
+          "details": "The refugee finds uncertain welcome in their new home.",
+          "location": "Inverdock",
+          "actors": [
+            "Helga"
+          ]
+        },
+        "priority": 2,
+        "id": "conseq-1767247264896-9u0awxb1s48"
+      },
+      {
+        "type": "spawn-event",
+        "triggerEvent": "Hernais's flight",
+        "turnsUntilResolution": 7,
+        "data": {
+          "category": "town",
+          "summary": "Hernais arrives in Holbeck",
+          "details": "The refugee finds uncertain welcome in their new home.",
+          "location": "Holbeck",
+          "actors": [
+            "Hernais"
+          ]
+        },
+        "priority": 2,
+        "id": "conseq-1767247274553-yjwh5t07vgs"
+      },
+      {
+        "type": "spawn-event",
+        "triggerEvent": "Guild of Wolves retaliation",
+        "turnsUntilResolution": 1,
+        "data": {
+          "category": "faction",
+          "summary": "Guild of Wolves strikes back",
+          "details": "Agents of Guild of Wolves carry out their vengeance. The repercussions will be felt.",
+          "location": "Inverdock",
+          "actors": [
+            "Guild of Wolves"
+          ]
+        },
+        "priority": 4,
+        "id": "conseq-1767247274553-8n81yjlg3ph"
+      },
+      {
+        "type": "faction-action",
+        "triggerEvent": "The Free Blades clash with Leonnatos's giant leeches",
+        "turnsUntilResolution": 3,
+        "data": {
+          "factionId": "faction-0",
+          "action": "patrol",
+          "targetLocation": "Inverdock"
+        },
+        "priority": 3,
+        "id": "conseq-1767247279380-w78vju4e1ee"
+      },
+      {
+        "type": "faction-action",
+        "triggerEvent": "giant leeches ambush The Free Blades",
+        "turnsUntilResolution": 1,
+        "data": {
+          "factionId": "faction-3",
+          "action": "patrol",
+          "targetLocation": "Inverdock"
+        },
+        "priority": 3,
+        "id": "conseq-1767247280345-j4uonrfo04"
+      }
+    ]
+  }
 }

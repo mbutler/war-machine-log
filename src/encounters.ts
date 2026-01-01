@@ -7,6 +7,7 @@ interface EncounterResult {
   delayMiles?: number;
   fatigueDelta?: number;
   injured?: boolean;
+  death?: boolean;
 }
 
 const ENCOUNTER_ODDS_DAY: Record<Terrain, number> = {
@@ -85,12 +86,14 @@ function resolveEncounter(rng: Random, terrain: Terrain, actors: string[]): Enco
       injured: rng.chance(0.15),
     };
   }
+  const death = rng.chance(0.2); // OSR-ish lethality on bad ambush
   return {
     summary: `${actors[0]} ambushed by ${foe}`,
-    details: 'Forced retreat; they fall back to regroup.',
+    details: death ? 'Casualties suffered in the rout.' : 'Forced retreat; they fall back to regroup.',
     delayMiles: 6 + rng.int(6),
     fatigueDelta: 1 + rng.int(2),
-    injured: rng.chance(0.4),
+    injured: !death && rng.chance(0.4),
+    death,
   };
 }
 
