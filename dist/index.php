@@ -62,6 +62,133 @@ if (file_exists($worldPath)) {
     }
 }
 
+// Deep context lookups - NPC backstory and relationships
+function getNPCByName($world, $name) {
+    if (!$world || empty($world['npcs'])) return null;
+    foreach ($world['npcs'] as $npc) {
+        if ($npc['name'] === $name) return $npc;
+    }
+    return null;
+}
+
+function getNPCDeepContext($world, $name) {
+    $npc = getNPCByName($world, $name);
+    if (!$npc) return null;
+    
+    $lines = [];
+    $depth = $npc['depth'] ?? [];
+    
+    // Background and motivation
+    if (!empty($depth['background'])) {
+        $bg = str_replace('-', ' ', $depth['background']);
+        $lines[] = ucfirst($bg);
+    }
+    if (!empty($depth['motivation'])) {
+        $lines[] = "Driven by: " . $depth['motivation'];
+    }
+    if (!empty($depth['secretMotivation'])) {
+        $lines[] = "Secret desire: " . $depth['secretMotivation'];
+    }
+    
+    // Traits
+    if (!empty($depth['traits'])) {
+        $lines[] = "Traits: " . implode(', ', $depth['traits']);
+    }
+    
+    // Quirks
+    if (!empty($depth['quirks'])) {
+        $lines[] = "Quirk: " . $depth['quirks'][0];
+    }
+    
+    // Relationships - the juicy stuff!
+    if (!empty($depth['relationships'])) {
+        foreach ($depth['relationships'] as $rel) {
+            $type = $rel['type'] ?? 'knows';
+            $target = $rel['targetName'] ?? 'someone';
+            $history = $rel['history'] ?? '';
+            if ($history) {
+                $lines[] = "$type $target: \"$history\"";
+            }
+        }
+    }
+    
+    // Secrets known
+    if (!empty($npc['secretsKnown'])) {
+        $lines[] = "Knows secrets...";
+    }
+    
+    // Marriage
+    if (!empty($npc['spouseId'])) {
+        $spouse = getNPCById($world, $npc['spouseId']);
+        if ($spouse) {
+            $lines[] = "Married to " . $spouse['name'];
+        }
+    }
+    
+    return $lines ? implode("\n", $lines) : null;
+}
+
+function getNPCById($world, $id) {
+    if (!$world || empty($world['npcs'])) return null;
+    foreach ($world['npcs'] as $npc) {
+        if ($npc['id'] === $id) return $npc;
+    }
+    return null;
+}
+
+// Find active story threads involving this actor or location
+function getActiveStories($world, $actors, $location) {
+    if (!$world || empty($world['storyThreads'])) return [];
+    $stories = [];
+    foreach ($world['storyThreads'] as $story) {
+        if ($story['resolved'] ?? false) continue;
+        
+        $match = false;
+        if ($location && ($story['location'] ?? '') === $location) $match = true;
+        if (!empty($actors) && !empty($story['actors'])) {
+            foreach ($actors as $actor) {
+                if (in_array($actor, $story['actors'])) $match = true;
+            }
+        }
+        
+        if ($match) {
+            $title = $story['title'] ?? 'Unknown tale';
+            $phase = $story['phase'] ?? 'unfolding';
+            $tension = $story['tension'] ?? 0;
+            $outcomes = $story['potentialOutcomes'] ?? [];
+            $outcome = !empty($outcomes) ? $outcomes[0] : '';
+            
+            $storyLine = "\"$title\" ($phase, tension $tension)";
+            if ($outcome) $storyLine .= "\nPossible end: $outcome";
+            $stories[] = $storyLine;
+        }
+    }
+    return $stories;
+}
+
+// Find relationships between actors in this event
+function getRelationshipsBetween($world, $actors) {
+    if (!$world || count($actors) < 2) return [];
+    $rels = [];
+    
+    foreach ($actors as $actorName) {
+        $npc = getNPCByName($world, $actorName);
+        if (!$npc || empty($npc['depth']['relationships'])) continue;
+        
+        foreach ($npc['depth']['relationships'] as $rel) {
+            $targetName = $rel['targetName'] ?? '';
+            if (in_array($targetName, $actors)) {
+                $type = $rel['type'] ?? 'knows';
+                $history = $rel['history'] ?? '';
+                if ($history) {
+                    $rels[] = "$actorName → $targetName ($type): \"$history\"";
+                }
+            }
+        }
+    }
+    return $rels;
+}
+
 // Format timestamp
 function formatTime($iso) {
     $dt = new DateTime($iso);
@@ -117,6 +244,15 @@ function formatWorldDate($iso) {
             font-weight: 600;
             color: #c084fc;
             letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        
+        h2 {
+            font-size: 11px;
+            font-weight: 400;
+            color: #6b6b7a;
+            letter-spacing: 0.3px;
+            margin-top: 0;
         }
         
         .meta {
@@ -220,7 +356,8 @@ function formatWorldDate($iso) {
 <body>
     <div class="container">
         <header>
-            <h1>⚔ BECMI FANTASY CHRONICLE</h1>
+            <h1>⚔ WORLD WITHOUT PLAYERS</h1>
+            <h2>A BECMI event log</h2>
             <div class="meta">
                 <?php if ($world): ?>
                 <span><span class="dot">●</span> <?= htmlspecialchars($world['archetype'] ?? 'Unknown') ?></span>
@@ -241,10 +378,41 @@ function formatWorldDate($iso) {
                 $color = $categoryColors[$cat] ?? '#94a3b8';
             ?>
             <div class="event">
-                <div class="time"><?= formatWorldDate($e['worldTime'] ?? '') ?></div>
+                <div class="time" title="<?= htmlspecialchars($e['worldTime'] ?? '') ?>"><?= formatWorldDate($e['worldTime'] ?? '') ?></div>
                 <div class="category" style="color: <?= $color ?>"><?= htmlspecialchars($cat) ?></div>
                 <div class="content">
-                    <div class="summary">
+                    <?php
+                    // Build contextual tooltip with DEEP backstory from world.json
+                    $tooltipParts = [];
+                    $actors = $e['actors'] ?? [];
+                    $location = $e['location'] ?? '';
+                    
+                    // 1. RELATIONSHIPS BETWEEN ACTORS IN THIS EVENT
+                    $relationships = getRelationshipsBetween($world, $actors);
+                    if ($relationships) {
+                        $tooltipParts[] = "═══ HISTORY ═══\n" . implode("\n", $relationships);
+                    }
+                    
+                    // 2. ACTIVE STORY THREADS involving these actors/location
+                    $stories = getActiveStories($world, $actors, $location);
+                    if ($stories) {
+                        $tooltipParts[] = "═══ ACTIVE PLOTS ═══\n" . implode("\n\n", $stories);
+                    }
+                    
+                    // 3. NPC BACKSTORIES for actors (limit to first 2 to avoid huge tooltip)
+                    $npcCount = 0;
+                    foreach ($actors as $actor) {
+                        if ($npcCount >= 2) break;
+                        $npcCtx = getNPCDeepContext($world, $actor);
+                        if ($npcCtx) {
+                            $tooltipParts[] = "═══ $actor ═══\n$npcCtx";
+                            $npcCount++;
+                        }
+                    }
+                    
+                    $tooltip = implode("\n\n", $tooltipParts);
+                    ?>
+                    <div class="summary"<?= $tooltip ? ' title="' . htmlspecialchars($tooltip) . '"' : '' ?>>
                         <?php if (!empty($e['location'])): ?>
                         <span class="location"><?= htmlspecialchars($e['location']) ?>:</span>
                         <?php endif; ?>
