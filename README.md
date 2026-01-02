@@ -121,6 +121,45 @@ SIM_SEED=$(date +%s) bun run start
 | `world.json` deleted, same seed | Regenerates identical world |
 | `world.json` deleted, new seed | Completely new world with different names |
 
+## Backwards Compatibility
+
+The simulator is designed to let you **make code changes while a simulation is running**. When you restart, your existing `world.json` will be migrated automatically.
+
+### Safe Changes ✅
+
+| Change | Why It's Safe |
+|--------|---------------|
+| Adding new fields to entities | Defaults are applied during load |
+| Adding new event/story types | Old stories continue unchanged |
+| Adding new subsystems | Initialized with defaults on load |
+| Tweaking probabilities | Only affects future events |
+| Adding new terrain types | Old hexes keep their terrain |
+| Bug fixes | Won't corrupt existing state |
+
+### Risky Changes ⚠️
+
+| Change | Risk | Mitigation |
+|--------|------|------------|
+| Renaming fields | Load fails | Create migration in `normalize()` |
+| Changing field types | Parse error | Add type coercion in `normalize()` |
+| Removing required fields | Undefined errors | Keep deprecated fields temporarily |
+| Changing enum values | Invalid state | Map old values to new in `normalize()` |
+
+### Schema Versioning
+
+The world file includes a `schemaVersion` field. When loading an older version:
+```
+📦 Migrating world from schema v1 to v2...
+✓ World loaded successfully (schema v2)
+```
+
+### Best Practices for Long-Running Simulations
+
+1. **Test changes with stress tests first**: `bun run src/stress-test.ts`
+2. **Back up your world**: `cp world.json world.backup.json`
+3. **Add new features with defaults**: `newField ?? defaultValue`
+4. **Don't delete old fields** — mark them deprecated instead
+
 ## Building
 
 ```bash

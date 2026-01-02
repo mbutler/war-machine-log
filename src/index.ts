@@ -516,7 +516,15 @@ async function simulateTurn(worldTime: Date, turnIndex: number): Promise<void> {
 
 // Catch up missed time when resuming after a pause
 async function catchUpMissedTime(): Promise<void> {
-  if (!config.catchUp || !world.lastTickAt) return;
+  if (!config.catchUp) {
+    console.log(`⏰ Catch-up disabled (SIM_CATCH_UP=false)`);
+    return;
+  }
+  
+  if (!world.lastTickAt) {
+    console.log(`⏰ No lastTickAt in world - starting fresh (no catch-up needed)`);
+    return;
+  }
   
   const lastTick = new Date(world.lastTickAt);
   const now = new Date();
@@ -524,7 +532,10 @@ async function catchUpMissedTime(): Promise<void> {
   const turnMs = config.turnMinutes * 60 * 1000;
   const missedTurns = Math.floor(missedMs / turnMs);
   
-  if (missedTurns <= 0) return;
+  if (missedTurns <= 0) {
+    console.log(`⏰ World is current (lastTickAt: ${lastTick.toISOString()})`);
+    return;
+  }
   
   // Cap catch-up at 7 days (1008 turns) to prevent very long waits
   const maxCatchUp = 7 * 24 * 6; // 7 days of turns

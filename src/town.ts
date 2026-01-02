@@ -59,7 +59,7 @@ function rumorFromSupply(rng: Random, s: WorldState['settlements'][number]): str
   return null;
 }
 
-function maybeRumor(world: WorldState, rng: Random, origin: string, logs: LogEntry[]) {
+function maybeRumor(world: WorldState, rng: Random, origin: string, logs: LogEntry[], worldTime: Date) {
   if (rng.chance(0.35)) {
     const rumor = spawnRumor(world, rng, origin);
     world.activeRumors.push(rumor);
@@ -68,7 +68,7 @@ function maybeRumor(world: WorldState, rng: Random, origin: string, logs: LogEnt
       summary: `Rumor in ${origin}`,
       details: rumor.text,
       location: origin,
-      worldTime: new Date(),
+      worldTime,
       realTime: new Date(),
       seed: world.seed,
     });
@@ -125,7 +125,7 @@ export function dailyTownTick(world: WorldState, rng: Random, worldTime: Date): 
       world.activeRumors.push(rumor);
       logs.push(logRumor(rumor, worldTime, world.seed));
     } else {
-      maybeRumor(world, rng, s.name, logs);
+      maybeRumor(world, rng, s.name, logs, worldTime);
     }
     logs.push(...factionTownBeat(world, rng, s.name, worldTime));
     s.lastTownLogDay = day;

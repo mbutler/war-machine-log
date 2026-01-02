@@ -208,6 +208,7 @@ export interface Nexus {
 export type WorldArchetype = 'Standard' | 'Age of War' | 'The Great Plague' | 'Arcane Bloom' | 'Wilderness Unbound' | 'Golden Age';
 
 export interface WorldState {
+  schemaVersion?: number; // For backwards compatibility migrations
   seed: string;
   archetype: WorldArchetype;
   hexes: HexTile[];

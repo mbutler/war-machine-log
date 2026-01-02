@@ -1,8 +1,47 @@
-2026-01-01T19:35:29.262Z [system] The chronicle begins: Arcane Bloom — 15th of Deepwinter, Year 1056. The simulation awakens in an era known as the Arcane Bloom.
-2026-01-01T19:35:29.262Z [town] @ Namysaton Namysaton stirs to life — Merchants hawked wares in crowded market squares as purple shadows gathered.
-2026-01-01T19:35:29.262Z [faction] @ Namysaton [Tyeceline] A new tale begins: "The Old Darkness Returns" — Ancient wards fail. What they imprisoned walks again.
-2026-01-01T19:35:29.262Z [town] @ Holbeck Holbeck stirs to life — Guild banners snapped in the breeze with the setting of the sun.
-2026-01-01T19:35:29.262Z [town] @ Estorden Estorden stirs to life — Tavern brawls spilled into the streets as bats took wing.
-2026-01-01T19:35:29.262Z [faction] @ Namysaton [Rawlin Gravebinder] Rawlin Gravebinder makes their presence known — Old tombs have been opened. What was taken? What was released?
-2026-01-01T19:35:29.262Z [road] @ Namysaton [Jordan's Company] Jordan's Company departs Namysaton — Bound for Holbeck across road (~12 miles).
-2026-01-01T19:35:29.262Z [road] @ Estorden [Auic's Company] Auic's Company departs Estorden — Bound for Namysaton across road (~18 miles).
+2026-01-01T02:00:00.000Z [road] @ Namysaton [Jordan's Company] Jordan's Company spot signs of danger — A broken wagon wheel lies by the verge. No sign of the wagon.
+2026-01-01T02:00:00.000Z [faction] The Frost Compact declares a shortage of textiles — Their stockpiles are low. They will seek textiles by any means necessary.
+2026-01-01T03:00:00.000Z [faction] The Frost Compact declares a shortage of salt — Their stockpiles are low. They will seek salt by any means necessary.
+2026-01-01T03:00:00.000Z [faction] Order of the Wheel declares a shortage of ore — Their stockpiles are low. They will seek ore by any means necessary.
+2026-01-01T04:00:00.000Z [road] @ Namysaton [Jordan's Company] Jordan's Company spot signs of danger — A broken wagon wheel lies by the verge. No sign of the wagon.
+2026-01-01T04:00:00.000Z [road] @ Namysaton [Jordan's Company] Jordan's Company ambushed by patrolling guards — Forced retreat; they fall back to regroup.
+2026-01-01T04:00:00.000Z [road] @ Holbeck [The Old Caravan, Order of the Wheel] The Old Caravan is raided! — Order of the Wheel forces have intercepted the caravan en route to Estorden.
+2026-01-01T04:00:00.000Z [town] @ Holbeck Trade routes near Holbeck grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-01T04:00:00.000Z [faction] @ Namysaton [Geruuara & Sons, Order of the Wheel] Fire in Namysaton approaches its climax — The threads of fate draw tight. A decisive moment is at hand.
+2026-01-01T05:00:00.000Z [road] @ Namysaton [Jordan's Company] Jordan's Company shadowed by merchants — Tense standoff; both sides withdraw before blades are drawn.
+2026-01-01T06:00:00.000Z [road] @ Namysaton [Jordan's Company] Jordan's Company spot signs of danger — A broken wagon wheel lies by the verge. No sign of the wagon.
+2026-01-01T06:00:00.000Z [road] @ Holbeck The Old Caravan makes camp under escort — Road to Estorden (forest) quiet tonight.
+2026-01-01T06:00:00.000Z [town] @ Namysaton [Osith, Aelmar] Aelmar confronts Osith about old treachery — Some betrayals can never be undone.
+2026-01-01T07:00:00.000Z [road] @ Holbeck The Northern Caravan makes camp under escort — Road to Namysaton (road) quiet tonight.
+2026-01-01T08:00:00.000Z [road] @ Namysaton [Jordan's Company] Jordan's Company spot signs of danger — A broken wagon wheel lies by the verge. No sign of the wagon.
+2026-01-01T08:00:00.000Z [town] @ Estorden [Felise] Construction continues on Felise's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2026-01-01T08:00:00.000Z [faction] Order of the Wheel declares a shortage of grain — Their stockpiles are low. They will seek grain by any means necessary.
+2026-01-01T10:00:00.000Z [faction] @ Holbeck [Ethelmar] Ethelmar's Last Stand: The quarry leaves a taunt. It's personal now. — The hunt enters its final phase. One will not survive.
+2026-01-01T11:00:00.000Z [road] @ Namysaton [Jordan's Company] Jordan's Company spot signs of danger — Fresh hoofprints diverge from the road, as if riders left in haste.
+2026-01-01T12:00:00.000Z [road] @ Holbeck [Jordan's Company] Jordan's Company arrives at Holbeck — They find an inn and stable their mounts.
+2026-01-01T12:00:00.000Z [town] @ Holbeck Jordan's Company gain renown — Locals share tales of their exploits.
+2026-01-01T12:00:00.000Z [town] @ Namysaton [Osith] Divine blessing upon Namysaton — Osith performs a grand ritual of sanctification. A sense of peace fills the air.
+2026-01-01T12:00:00.000Z [faction] The Frost Compact declares a shortage of ore — Their stockpiles are low. They will seek ore by any means necessary.
+2026-01-01T15:00:00.000Z [town] @ Namysaton The Northern Caravan arrives at Namysaton — Bringing ore/timber from Holbeck with escorts under banner of Order of the Wheel.
+2026-01-01T15:00:00.000Z [town] @ Namysaton Actaëe arrives in Namysaton — scout from Estorden
+2026-01-01T15:00:00.000Z [town] @ Namysaton Agirre arrives in Namysaton — merchant from Holbeck
+2026-01-01T17:00:00.000Z [town] @ Estorden [Urraka] Divine blessing upon Estorden — Urraka performs a grand ritual of sanctification. A sense of peace fills the air.
+2026-01-01T19:00:00.000Z [faction] @ Holbeck [Order of the Wheel] Order of the Wheel increases patrols — Armed members of Order of the Wheel now walk the roads near Holbeck.
+2026-01-01T19:00:00.000Z [town] @ Namysaton [Aelmar] Aelmar spreads tales — The scout speaks openly of Jordan's Company ambushed by patrolling guards. The story grows in the telling.
+2026-01-01T19:00:00.000Z [town] @ Namysaton Word spreads in Namysaton — Aelmar tells all who will listen: "Jordan's Company ambushed by patrolling guards." The tale spreads.
+2026-01-01T22:00:00.000Z [road] @ Holbeck The Old Caravan makes camp under escort — Road to Estorden (forest) quiet tonight.
+2026-01-01T22:00:00.000Z [town] @ Holbeck Geruuara & Sons arrives at Holbeck — Bringing livestock from Namysaton with escorts.
+2026-01-01T22:00:00.000Z [town] @ Holbeck Aelmar arrives in Holbeck — scout from Holbeck
+2026-01-01T22:00:00.000Z [town] @ Holbeck Agirre arrives in Holbeck — merchant from Holbeck
+2026-01-02T00:00:00.000Z [faction] @ Holbeck [The Frost Compact] The Frost Compact seeks retribution — The arcane faction marshals resources for action against Holbeck.
+2026-01-02T00:00:00.000Z [weather] @ Namysaton Namysaton wakes to fresh snowfall — Children made sport while adults worried over firewood.
+2026-01-02T00:00:00.000Z [town] @ Namysaton Namysaton tempers frayed — Surplus timber/ore/fish/livestock and shortages in salt.
+2026-01-02T00:00:00.000Z [town] @ Namysaton Rumor in Namysaton — boastful treasure: a wounded messenger says Eteocles heard of a caravan late by two days (from Namysaton).
+2026-01-02T00:00:00.000Z [town] @ Namysaton Rumor in Namysaton — Order of the Wheel offers protection for caravans.
+2026-01-02T00:00:00.000Z [town] @ Holbeck Holbeck folk watchful — Surplus timber/ore/livestock.
+2026-01-02T00:00:00.000Z [town] @ Holbeck Rumor in Holbeck — The Frost Compact watches the markets quietly.
+2026-01-02T00:00:00.000Z [town] @ Estorden Estorden folk watchful — Surplus salt/fish.
+2026-01-02T00:00:00.000Z [town] @ Estorden Rumor in Estorden — boastful treasure: an old map fragment says Geroldus heard of missing heirlooms traced toward Morarder Dungeon (from Estorden).
+2026-01-02T01:00:00.000Z [town] @ Namysaton [Actaëe] Magical mist chokes Namysaton — A toxic green cloud, conjured by Actaëe, rolls through the streets. Panic ensues.
+2026-01-02T03:00:00.000Z [town] @ Estorden The Old Caravan arrives at Estorden — Bringing ore/timber from Holbeck with escorts under banner of Order of the Wheel.
+2026-01-02T03:00:00.000Z [town] @ Estorden Actaëe arrives in Estorden — scout from Estorden
+2026-01-02T03:00:00.000Z [town] @ Estorden Agirre arrives in Estorden — merchant from Holbeck

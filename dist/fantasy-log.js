@@ -13029,7 +13029,7 @@ function rumorFromSupply(rng, s) {
   }
   return null;
 }
-function maybeRumor(world, rng, origin, logs) {
+function maybeRumor(world, rng, origin, logs, worldTime) {
   if (rng.chance(0.35)) {
     const rumor = spawnRumor(world, rng, origin);
     world.activeRumors.push(rumor);
@@ -13038,7 +13038,7 @@ function maybeRumor(world, rng, origin, logs) {
       summary: `Rumor in ${origin}`,
       details: rumor.text,
       location: origin,
-      worldTime: new Date,
+      worldTime,
       realTime: new Date,
       seed: world.seed
     });
@@ -13089,7 +13089,7 @@ function dailyTownTick(world, rng, worldTime) {
       world.activeRumors.push(rumor);
       logs.push(logRumor(rumor, worldTime, world.seed));
     } else {
-      maybeRumor(world, rng, s.name, logs);
+      maybeRumor(world, rng, s.name, logs, worldTime);
     }
     logs.push(...factionTownBeat(world, rng, s.name, worldTime));
     s.lastTownLogDay = day;
@@ -14411,13 +14411,41 @@ function maybeStartTravel(world, rng, worldTime) {
 // src/persistence.ts
 var { default: fs2} = (() => ({}));
 var WORLD_PATH = "world.json";
+var WORLD_SCHEMA_VERSION = 2;
+var VALID_TERRAINS = [
+  "road",
+  "clear",
+  "forest",
+  "hills",
+  "mountains",
+  "swamp",
+  "desert",
+  "coastal",
+  "ocean",
+  "reef",
+  "river"
+];
 function normalize2(world) {
+  if (!world.schemaVersion)
+    world.schemaVersion = 1;
   if (!world.activeRumors)
     world.activeRumors = [];
   if (!world.dungeons)
     world.dungeons = [];
   if (!world.roads)
     world.roads = [];
+  if (!world.landmarks)
+    world.landmarks = [];
+  if (!world.ruins)
+    world.ruins = [];
+  if (!world.strongholds)
+    world.strongholds = [];
+  if (!world.armies)
+    world.armies = [];
+  if (!world.mercenaries)
+    world.mercenaries = [];
+  if (!world.nexuses)
+    world.nexuses = [];
   const goods = ["grain", "timber", "ore", "textiles", "salt", "fish", "livestock"];
   for (const s of world.settlements) {
     if (!s.supply) {
@@ -14445,15 +14473,36 @@ function normalize2(world) {
     if (d.explored === undefined)
       d.explored = 0;
   }
+  for (const hex of world.hexes) {
+    if (!VALID_TERRAINS.includes(hex.terrain)) {
+      console.warn(`Unknown terrain type "${hex.terrain}" at (${hex.coord.q},${hex.coord.r}), defaulting to "clear"`);
+      hex.terrain = "clear";
+    }
+  }
+  for (const party of world.parties) {
+    if (party.fame === undefined)
+      party.fame = 0;
+    if (party.fatigue === undefined)
+      party.fatigue = 0;
+  }
+  world.schemaVersion = WORLD_SCHEMA_VERSION;
   return world;
 }
 async function loadWorld() {
   try {
     const raw = await fs2.readFile(WORLD_PATH, "utf8");
     const parsed = JSON.parse(raw);
+    const loadedVersion = parsed.schemaVersion ?? 1;
+    if (loadedVersion < WORLD_SCHEMA_VERSION) {
+      console.log(`\uD83D\uDCE6 Migrating world from schema v${loadedVersion} to v${WORLD_SCHEMA_VERSION}...`);
+    }
     parsed.startedAt = new Date(parsed.startedAt);
-    if (parsed.lastTickAt)
+    if (parsed.lastTickAt) {
       parsed.lastTickAt = new Date(parsed.lastTickAt);
+    } else {
+      parsed.lastTickAt = new Date(parsed.startedAt);
+      console.log(`⏰ No lastTickAt found - using startedAt for catch-up baseline`);
+    }
     if (parsed.storyThreads) {
       for (const story of parsed.storyThreads) {
         if (story.startedAt)
@@ -14474,7 +14523,9 @@ async function loadWorld() {
           ant.lastSeen = new Date(ant.lastSeen);
       }
     }
-    return normalize2(parsed);
+    const normalized = normalize2(parsed);
+    console.log(`✓ World loaded successfully (schema v${WORLD_SCHEMA_VERSION})`);
+    return normalized;
   } catch (err) {
     if (err.code === "ENOENT")
       return null;
@@ -26683,15 +26734,23 @@ async function simulateTurn(worldTime, turnIndex) {
   }
 }
 async function catchUpMissedTime() {
-  if (!config.catchUp || !world.lastTickAt)
+  if (!config.catchUp) {
+    console.log(`⏰ Catch-up disabled (SIM_CATCH_UP=false)`);
     return;
+  }
+  if (!world.lastTickAt) {
+    console.log(`⏰ No lastTickAt in world - starting fresh (no catch-up needed)`);
+    return;
+  }
   const lastTick = new Date(world.lastTickAt);
   const now = new Date;
   const missedMs = now.getTime() - lastTick.getTime();
   const turnMs = config.turnMinutes * 60 * 1000;
   const missedTurns = Math.floor(missedMs / turnMs);
-  if (missedTurns <= 0)
+  if (missedTurns <= 0) {
+    console.log(`⏰ World is current (lastTickAt: ${lastTick.toISOString()})`);
     return;
+  }
   const maxCatchUp = 7 * 24 * 6;
   const turnsToSimulate = Math.min(missedTurns, maxCatchUp);
   const missedDays = Math.floor(missedTurns / (config.hourTurns * config.dayHours));

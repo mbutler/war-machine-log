@@ -269,23 +269,24 @@
       },
       "supply": {
         "grain": 1,
-        "timber": 1,
-        "ore": 2,
-        "textiles": 2,
-        "salt": -1,
+        "timber": 4,
+        "ore": 3,
+        "textiles": 1,
+        "salt": -2,
         "fish": 2,
-        "livestock": 0
+        "livestock": 3
       },
-      "mood": -1,
+      "mood": -3,
       "priceTrends": {
         "grain": "normal",
-        "timber": "normal",
-        "ore": "normal",
+        "timber": "low",
+        "ore": "low",
         "textiles": "normal",
-        "salt": "normal",
-        "fish": "normal",
-        "livestock": "normal"
-      }
+        "salt": "high",
+        "fish": "low",
+        "livestock": "low"
+      },
+      "lastTownLogDay": "2026-01-02"
     },
     {
       "id": "settlement-1",
@@ -298,23 +299,24 @@
       },
       "supply": {
         "grain": -1,
-        "timber": 2,
-        "ore": 1,
-        "textiles": 0,
+        "timber": 4,
+        "ore": 4,
+        "textiles": 1,
         "salt": 0,
-        "fish": 2,
-        "livestock": -2
+        "fish": 1,
+        "livestock": 2
       },
       "mood": 0,
       "priceTrends": {
         "grain": "normal",
-        "timber": "normal",
-        "ore": "normal",
+        "timber": "low",
+        "ore": "low",
         "textiles": "normal",
         "salt": "normal",
         "fish": "normal",
-        "livestock": "normal"
-      }
+        "livestock": "low"
+      },
+      "lastTownLogDay": "2026-01-02"
     },
     {
       "id": "settlement-2",
@@ -327,23 +329,24 @@
       },
       "supply": {
         "grain": 0,
-        "timber": -2,
-        "ore": -1,
+        "timber": 1,
+        "ore": 2,
         "textiles": -1,
-        "salt": 2,
+        "salt": 3,
         "fish": 2,
-        "livestock": 2
+        "livestock": 1
       },
-      "mood": 2,
+      "mood": -1,
       "priceTrends": {
         "grain": "normal",
         "timber": "normal",
-        "ore": "normal",
+        "ore": "low",
         "textiles": "normal",
-        "salt": "normal",
-        "fish": "normal",
+        "salt": "low",
+        "fish": "low",
         "livestock": "normal"
-      }
+      },
+      "lastTownLogDay": "2026-01-02"
     }
   ],
   "parties": [
@@ -373,14 +376,17 @@
           "maxHp": 10
         }
       ],
-      "location": "Namysaton",
-      "status": "travel",
-      "xp": 0,
-      "travel": {
-        "destination": "Holbeck",
-        "terrain": "road",
-        "milesRemaining": 12,
-        "milesPerHour": 1.5
+      "location": "Holbeck",
+      "status": "idle",
+      "xp": 1532,
+      "fame": 25,
+      "fatigue": -1,
+      "wounded": false,
+      "restHoursRemaining": 0,
+      "goal": {
+        "kind": "travel-to",
+        "target": "Holbeck",
+        "sourceRumorId": "rumor-1767322117493-248456"
       }
     },
     {
@@ -402,14 +408,15 @@
           "maxHp": 14
         }
       ],
-      "location": "Estorden",
-      "status": "travel",
+      "location": "Namysaton",
+      "status": "idle",
       "xp": 0,
-      "travel": {
-        "destination": "Namysaton",
-        "terrain": "road",
-        "milesRemaining": 18,
-        "milesPerHour": 1.5
+      "fame": 1,
+      "fatigue": -2,
+      "goal": {
+        "kind": "travel-to",
+        "target": "Namysaton",
+        "sourceRumorId": "rumor-1767322034262-284242"
       }
     }
   ],
@@ -502,7 +509,240 @@
       "explored": 0
     }
   ],
-  "activeRumors": [],
+  "activeRumors": [
+    {
+      "id": "rumor-1767322051878-446477",
+      "kind": "feud",
+      "text": "official missing: a caravan guard says Costin heard of bandits offering odd coins (from Holbeck).",
+      "target": "Estorden",
+      "origin": "Holbeck",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767322064031-789135",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Holbeck.",
+      "target": "Holbeck",
+      "origin": "Estorden",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767322066462-699850",
+      "kind": "mystery",
+      "text": "Bargain prices on ore; traders racing to Namysaton.",
+      "target": "Namysaton",
+      "origin": "Namysaton",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767322066462-991620",
+      "kind": "mystery",
+      "text": "Bargain prices on textiles; traders racing to Holbeck.",
+      "target": "Holbeck",
+      "origin": "Holbeck",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767322068283-116716",
+      "kind": "feud",
+      "text": "Word spreads that The Old Caravan of Order of the Wheel reached Holbeck with ore/timber.",
+      "target": "Holbeck",
+      "origin": "Holbeck",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767322080442-469318",
+      "kind": "feud",
+      "text": "Word spreads that The Northern Caravan of Order of the Wheel reached Namysaton with ore/timber.",
+      "target": "Namysaton",
+      "origin": "Namysaton",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767322081047-372257",
+      "kind": "feud",
+      "text": "Sisterhood of the Thorn watches the markets quietly.",
+      "target": "Namysaton",
+      "origin": "Namysaton",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767322081047-106046",
+      "kind": "dungeon",
+      "text": "conflicting treasure: a wounded messenger says Eumaeus heard of missing heirlooms traced toward Morarder Dungeon (from Estorden).",
+      "target": "Morarder Dungeon",
+      "origin": "Estorden",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767322084079-770700",
+      "kind": "feud",
+      "text": "The Northern Caravan of Order of the Wheel lost goods on the road; prices may shift.",
+      "target": "Namysaton",
+      "origin": "Namysaton",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767322085900-742316",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Holbeck.",
+      "target": "Holbeck",
+      "origin": "Namysaton",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767322089535-96171",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Holbeck.",
+      "target": "Holbeck",
+      "origin": "Estorden",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767322095601-145200",
+      "kind": "mystery",
+      "text": "Thieves struck near Holbeck. The roads grow dangerous.",
+      "target": "Holbeck",
+      "origin": "Namysaton",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767322095602-491329",
+      "kind": "feud",
+      "text": "whispered treasure: a wandering priest says Garoa heard of a caravan late by two days (from Namysaton).",
+      "target": "Namysaton",
+      "origin": "Namysaton",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767322095603-871642",
+      "kind": "feud",
+      "text": "The Frost Compact watches the markets quietly.",
+      "target": "Holbeck",
+      "origin": "Holbeck",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767322095603-825085",
+      "kind": "monster-sign",
+      "text": "cryptic treasure: a bard fresh from the road says Auic heard of beasts refusing to cross the old road (from Estorden).",
+      "target": "Llynworthy",
+      "origin": "Estorden",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767322104717-862957",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Holbeck.",
+      "target": "Holbeck",
+      "origin": "Estorden",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767322107158-495306",
+      "kind": "feud",
+      "text": "Word spreads that The Northern Caravan of Order of the Wheel reached Holbeck with ore/timber.",
+      "target": "Holbeck",
+      "origin": "Holbeck",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767322117493-248456",
+      "kind": "feud",
+      "text": "The Old Caravan of Order of the Wheel lost goods on the road; prices may shift.",
+      "target": "Holbeck",
+      "origin": "Holbeck",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767322124774-467458",
+      "kind": "mystery",
+      "text": "Levies rumored to secure salt; officials say caravans delayed.",
+      "target": "Namysaton",
+      "origin": "Namysaton",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767322124774-15140",
+      "kind": "feud",
+      "text": "The Frost Compact watches the markets quietly.",
+      "target": "Namysaton",
+      "origin": "Namysaton",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767322124774-330338",
+      "kind": "feud",
+      "text": "Order of the Wheel offers protection for caravans.",
+      "target": "Namysaton",
+      "origin": "Namysaton",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767322124774-165571",
+      "kind": "dungeon",
+      "text": "conflicting treasure: a bard fresh from the road says Amane heard of whispers of depth 7 halls (from Holbeck).",
+      "target": "Morarder Dungeon",
+      "origin": "Holbeck",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767322124774-652553",
+      "kind": "feud",
+      "text": "whispered mystery: a drunken soldier says Amiable heard of a caravan late by two days (from Estorden).",
+      "target": "Holbeck",
+      "origin": "Estorden",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767322124774-210987",
+      "kind": "feud",
+      "text": "Order of the Wheel watches the markets quietly.",
+      "target": "Estorden",
+      "origin": "Estorden",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767323110597-599061",
+      "kind": "mystery",
+      "text": "Aelmar tells all who will listen: \"Jordan's Company ambushed by patrolling guards.\" The tale spreads.",
+      "target": "Namysaton",
+      "origin": "Namysaton",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767323113640-949046",
+      "kind": "dungeon",
+      "text": "boastful treasure: a wounded messenger says Eteocles heard of a caravan late by two days (from Namysaton).",
+      "target": "Morarder Dungeon",
+      "origin": "Namysaton",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767323113640-273730",
+      "kind": "feud",
+      "text": "Order of the Wheel offers protection for caravans.",
+      "target": "Namysaton",
+      "origin": "Namysaton",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767323113641-729084",
+      "kind": "feud",
+      "text": "The Frost Compact watches the markets quietly.",
+      "target": "Holbeck",
+      "origin": "Holbeck",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767323113641-54654",
+      "kind": "dungeon",
+      "text": "boastful treasure: an old map fragment says Geroldus heard of missing heirlooms traced toward Morarder Dungeon (from Estorden).",
+      "target": "Morarder Dungeon",
+      "origin": "Estorden",
+      "freshness": 6
+    }
+  ],
   "npcs": [
     {
       "id": "npc-0",
@@ -567,7 +807,7 @@
       "name": "Agirre",
       "role": "merchant",
       "home": "settlement-1",
-      "location": "Holbeck",
+      "location": "Estorden",
       "reputation": 1,
       "fame": 0,
       "alive": true,
@@ -709,7 +949,34 @@
       "title": "Acolyte",
       "appearance": "eyes of mismatched color",
       "secretsKnown": [],
-      "memories": [],
+      "memories": [
+        {
+          "id": "mem-1767322074959-brnws6",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2025-12-29T13:00:00.000Z",
+          "location": "Namysaton",
+          "emotion": "suspicious",
+          "target": "Order of the Wheel",
+          "intensity": 2.9000000000000234,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        },
+        {
+          "id": "mem-1767322092567-xn1om6",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2025-12-30T18:00:00.000Z",
+          "location": "Namysaton",
+          "emotion": "suspicious",
+          "target": "Order of the Wheel",
+          "intensity": 3.1900000000000173,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        }
+      ],
       "agendas": [
         {
           "type": "research",
@@ -746,7 +1013,8 @@
       "xp": 0,
       "spells": [
         "Cure Light Wounds",
-        "Protection from Evil"
+        "Protection from Evil",
+        "Bless"
       ],
       "depth": {
         "traits": [
@@ -795,7 +1063,7 @@
         {
           "type": "research",
           "priority": 5,
-          "progress": 13,
+          "progress": 100,
           "description": "Unlock deeper magical secrets"
         }
       ],
@@ -809,7 +1077,8 @@
       "acknowledged": true,
       "healthCondition": "healthy",
       "widowed": false,
-      "divorces": 0
+      "divorces": 0,
+      "lastHealthCheck": "2026-01-01T11:00:00.000Z"
     },
     {
       "id": "npc-4",
@@ -825,7 +1094,10 @@
       "xp": 0,
       "spells": [
         "Read Magic",
-        "Sleep"
+        "Sleep",
+        "Web",
+        "Shield",
+        "Floating Disc"
       ],
       "depth": {
         "traits": [
@@ -870,12 +1142,65 @@
       "title": "Path-Finder",
       "appearance": "the bearing of one who has worn armor",
       "secretsKnown": [],
-      "memories": [],
+      "memories": [
+        {
+          "id": "mem-1767322059171-gd0rji",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2025-12-28T11:00:00.000Z",
+          "location": "Holbeck",
+          "emotion": "suspicious",
+          "target": "Order of the Wheel",
+          "intensity": 2.640000000000029,
+          "acted": false,
+          "narrative": "survived the battle at Holbeck",
+          "secret": false
+        },
+        {
+          "id": "mem-1767322071920-d5h9st",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2025-12-29T08:00:00.000Z",
+          "location": "Holbeck",
+          "emotion": "suspicious",
+          "target": "Order of the Wheel",
+          "intensity": 2.8500000000000245,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        },
+        {
+          "id": "mem-1767322092568-aw2xfr",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2025-12-30T18:00:00.000Z",
+          "location": "Namysaton",
+          "emotion": "suspicious",
+          "target": "Order of the Wheel",
+          "intensity": 3.1900000000000173,
+          "acted": false,
+          "narrative": "survived the battle at Namysaton",
+          "secret": false
+        },
+        {
+          "id": "mem-1767323101488-s5294b",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-01T04:00:00.000Z",
+          "location": "Holbeck",
+          "emotion": "suspicious",
+          "target": "Order of the Wheel",
+          "intensity": 3.760000000000005,
+          "acted": false,
+          "narrative": "saw Order of the Wheel clash",
+          "secret": false
+        }
+      ],
       "agendas": [
         {
           "type": "research",
           "priority": 5,
-          "progress": 27,
+          "progress": 100,
           "description": "Unlock deeper magical secrets"
         }
       ],
@@ -940,12 +1265,26 @@
       "title": "Prior",
       "appearance": "calluses of a lifetime of sword work",
       "secretsKnown": [],
-      "memories": [],
+      "memories": [
+        {
+          "id": "mem-1767322053695-b4osfm",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2025-12-28T02:00:00.000Z",
+          "location": "Estorden",
+          "emotion": "suspicious",
+          "target": "Order of the Wheel",
+          "intensity": 2.550000000000031,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        }
+      ],
       "agendas": [
         {
           "type": "stronghold",
           "priority": 8,
-          "progress": 13,
+          "progress": 13.56148010629229,
           "description": "Establish a seat of power"
         },
         {
@@ -1013,7 +1352,34 @@
       "title": "Ranger",
       "appearance": "graying at the temples despite apparent youth",
       "secretsKnown": [],
-      "memories": [],
+      "memories": [
+        {
+          "id": "mem-1767322047012-nyg4mf",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2025-12-27T15:00:00.000Z",
+          "location": "Holbeck",
+          "emotion": "suspicious",
+          "target": "Order of the Wheel",
+          "intensity": 2.4400000000000333,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        },
+        {
+          "id": "mem-1767322074959-jgcnmg",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2025-12-29T13:00:00.000Z",
+          "location": "Namysaton",
+          "emotion": "suspicious",
+          "target": "Order of the Wheel",
+          "intensity": 2.9000000000000234,
+          "acted": false,
+          "narrative": "saw Order of the Wheel clash",
+          "secret": false
+        }
+      ],
       "agendas": [],
       "morale": 0,
       "loyalty": "faction-1",
@@ -1098,9 +1464,10 @@
       "claims": [],
       "legitimate": true,
       "acknowledged": true,
-      "healthCondition": "healthy",
+      "healthCondition": "frail",
       "widowed": false,
-      "divorces": 0
+      "divorces": 0,
+      "lastHealthCheck": "2026-01-01T11:00:00.000Z"
     },
     {
       "id": "npc-8",
@@ -1148,7 +1515,7 @@
         {
           "type": "stronghold",
           "priority": 8,
-          "progress": 28,
+          "progress": 28.58032452093205,
           "description": "Establish a seat of power"
         },
         {
@@ -1178,23 +1545,34 @@
     {
       "id": "faction-0",
       "name": "The Frost Compact",
-      "attitude": {},
+      "attitude": {
+        "Namysaton": 1
+      },
       "wealth": 51,
-      "focus": "arcane"
+      "focus": "arcane",
+      "lastNoted": "Holbeck"
     },
     {
       "id": "faction-1",
       "name": "Order of the Wheel",
-      "attitude": {},
-      "wealth": 85,
-      "focus": "martial"
+      "attitude": {
+        "Estorden": 1,
+        "Namysaton": 3,
+        "Holbeck": 3
+      },
+      "wealth": 109,
+      "focus": "martial",
+      "lastNoted": "Namysaton"
     },
     {
       "id": "faction-2",
       "name": "Sisterhood of the Thorn",
-      "attitude": {},
+      "attitude": {
+        "Namysaton": 1
+      },
       "wealth": 139,
-      "focus": "pious"
+      "focus": "pious",
+      "lastNoted": "Namysaton"
     }
   ],
   "caravans": [
@@ -1209,11 +1587,14 @@
         "ore",
         "timber"
       ],
-      "location": "Holbeck",
-      "progressHours": 0,
-      "direction": "outbound",
-      "escorts": [],
-      "factionId": "faction-1"
+      "location": "Namysaton",
+      "progressHours": 12,
+      "direction": "inbound",
+      "escorts": [
+        "npc-4"
+      ],
+      "factionId": "faction-1",
+      "merchantId": "npc-1"
     },
     {
       "id": "caravan-1",
@@ -1226,11 +1607,14 @@
         "ore",
         "timber"
       ],
-      "location": "Holbeck",
+      "location": "Estorden",
       "progressHours": 0,
-      "direction": "outbound",
-      "escorts": [],
-      "factionId": "faction-1"
+      "direction": "inbound",
+      "escorts": [
+        "npc-4"
+      ],
+      "factionId": "faction-1",
+      "merchantId": "npc-1"
     },
     {
       "id": "caravan-2",
@@ -1242,16 +1626,144 @@
       "goods": [
         "livestock"
       ],
-      "location": "Namysaton",
-      "progressHours": 0,
-      "direction": "outbound",
-      "escorts": []
+      "location": "Holbeck",
+      "progressHours": 5,
+      "direction": "inbound",
+      "escorts": [
+        "npc-6"
+      ],
+      "merchantId": "npc-1"
     }
   ],
   "strongholds": [],
   "armies": [],
-  "landmarks": [],
-  "ruins": [],
+  "landmarks": [
+    {
+      "id": "landmark-1767321991700-243",
+      "name": "The Obsidian Statue",
+      "description": "A obsidian statue, bearing the marks of a thousand years.",
+      "location": {
+        "q": 2,
+        "r": 4
+      },
+      "terrain": "road",
+      "discoveryDate": "2025-12-25T14:00:00.000Z",
+      "discoveredBy": "Auic's Company",
+      "effect": "fey-blessing",
+      "knownBy": [
+        "Auic's Company"
+      ]
+    },
+    {
+      "id": "landmark-1767322037912-715",
+      "name": "The Silver Cairn",
+      "description": "A silver cairn, dripping with a thick, dark sap.",
+      "location": {
+        "q": 5,
+        "r": 2
+      },
+      "terrain": "road",
+      "discoveryDate": "2025-12-27T00:00:00.000Z",
+      "discoveredBy": "Jordan's Company",
+      "effect": "treasure-clue",
+      "knownBy": [
+        "Jordan's Company"
+      ]
+    },
+    {
+      "id": "landmark-1767322085898-78",
+      "name": "The Silver Monolith",
+      "description": "A silver monolith, etched with shifting, golden runes.",
+      "location": {
+        "q": 5,
+        "r": 2
+      },
+      "terrain": "forest",
+      "discoveryDate": "2025-12-30T07:00:00.000Z",
+      "discoveredBy": "Jordan's Company",
+      "effect": "arcane-insight",
+      "knownBy": [
+        "Jordan's Company"
+      ]
+    }
+  ],
+  "ruins": [
+    {
+      "id": "ruin-1767321991699-506",
+      "name": "Cursed Citadel",
+      "description": "An ancient cursed citadel from the Age of Wonders.",
+      "location": {
+        "q": 4,
+        "r": 1
+      },
+      "rooms": [
+        {
+          "type": "treasure",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 5,
+          "loot": true,
+          "rare": "relic"
+        },
+        {
+          "type": "empty",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "empty",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "empty",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "trap",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "laboratory",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 5,
+          "loot": false
+        }
+      ],
+      "cleared": false,
+      "danger": 5,
+      "history": "Cursed Citadel was once a center of magic before its fall."
+    }
+  ],
   "nexuses": [
     {
       "id": "nexus-0",
@@ -1329,7 +1841,7 @@
       "id": "merc-0",
       "name": "The Iron Brotherhood",
       "captainId": "npc-merc-captain-0",
-      "location": "Namysaton",
+      "location": "Estorden",
       "size": 175,
       "quality": 6,
       "monthlyRate": 390,
@@ -1369,7 +1881,7 @@
       "id": "merc-4",
       "name": "Red Ravagers",
       "captainId": "npc-merc-captain-4",
-      "location": "Estorden",
+      "location": "Holbeck",
       "size": 140,
       "quality": 4,
       "monthlyRate": 415,
@@ -1379,12 +1891,932 @@
       "id": "merc-5",
       "name": "The Free Company",
       "captainId": "npc-merc-captain-5",
-      "location": "Holbeck",
+      "location": "Estorden",
       "size": 170,
       "quality": 3,
       "monthlyRate": 488,
       "loyalty": 9
     }
   ],
-  "startedAt": "2026-01-01T19:35:29.262Z"
+  "startedAt": "2026-01-01T00:00:00.000Z",
+  "schemaVersion": 2,
+  "lastTickAt": "2026-01-02T03:04:59.126Z",
+  "factionStates": {
+    "faction-0": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [
+        "livestock",
+        "fish",
+        "grain",
+        "textiles",
+        "salt",
+        "ore"
+      ],
+      "casusBelli": {},
+      "activeOperations": [
+        {
+          "id": "op-marriage-1767322023929",
+          "type": "marriage-alliance",
+          "target": "Order of the Wheel",
+          "startedAt": "2025-12-26T01:00:00.000Z",
+          "completesAt": "2026-01-25T01:00:00.000Z",
+          "participants": [],
+          "successChance": 0.5,
+          "resources": 500,
+          "secret": false,
+          "reason": "Forge alliance with Order of the Wheel through marriage"
+        },
+        {
+          "id": "op-res-1767322124167",
+          "type": "resource-grab",
+          "target": "Estorden",
+          "startedAt": "2026-01-01T22:00:00.000Z",
+          "completesAt": "2026-01-04T13:00:00.000Z",
+          "participants": [],
+          "successChance": 0.55,
+          "resources": 7.6499999999999995,
+          "secret": false,
+          "reason": "Secure fish supplies from Estorden"
+        }
+      ],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-1": {
+      "power": 50,
+      "territory": [],
+      "enemies": [
+        "faction-1"
+      ],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [
+        "salt",
+        "livestock",
+        "fish",
+        "ore",
+        "grain"
+      ],
+      "casusBelli": {
+        "faction-1": {
+          "reason": "the robbery of their caravan near Holbeck",
+          "magnitude": 5
+        }
+      },
+      "activeOperations": [
+        {
+          "id": "op-marriage-1767322048229",
+          "type": "marriage-alliance",
+          "target": "The Frost Compact",
+          "startedAt": "2025-12-27T17:00:00.000Z",
+          "completesAt": "2026-01-26T17:00:00.000Z",
+          "participants": [],
+          "successChance": 0.5,
+          "resources": 500,
+          "secret": false,
+          "reason": "Forge alliance with The Frost Compact through marriage"
+        },
+        {
+          "id": "op-res-1767322119308",
+          "type": "resource-grab",
+          "target": "Estorden",
+          "startedAt": "2026-01-01T14:00:00.000Z",
+          "completesAt": "2026-01-02T14:00:00.000Z",
+          "participants": [],
+          "successChance": 0.55,
+          "resources": 15.45,
+          "secret": false,
+          "reason": "Secure fish supplies from Estorden"
+        }
+      ],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-2": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [
+        "fish",
+        "salt",
+        "timber",
+        "ore"
+      ],
+      "casusBelli": {},
+      "activeOperations": [
+        {
+          "id": "op-marriage-1767322024539",
+          "type": "marriage-alliance",
+          "target": "The Frost Compact",
+          "startedAt": "2025-12-26T02:00:00.000Z",
+          "completesAt": "2026-01-25T02:00:00.000Z",
+          "participants": [],
+          "successChance": 0.5,
+          "resources": 500,
+          "secret": false,
+          "reason": "Forge alliance with The Frost Compact through marriage"
+        },
+        {
+          "id": "op-relief-1767322087716",
+          "type": "relief",
+          "target": "Holbeck",
+          "startedAt": "2025-12-30T10:00:00.000Z",
+          "completesAt": "2026-01-06T10:00:00.000Z",
+          "participants": [],
+          "successChance": 0.9,
+          "resources": 300,
+          "secret": false,
+          "reason": "Aid the suffering of Holbeck"
+        }
+      ],
+      "recentLosses": 0,
+      "recentWins": 0
+    }
+  },
+  "settlementStates": {
+    "Namysaton": {
+      "prosperity": -5,
+      "safety": 3,
+      "unrest": 0,
+      "populationDelta": -50,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Holbeck": {
+      "prosperity": -11,
+      "safety": -11,
+      "unrest": 0,
+      "populationDelta": -50,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Estorden": {
+      "prosperity": -1,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    }
+  },
+  "calendar": {
+    "year": 1056,
+    "month": 0,
+    "day": 16,
+    "weather": "snow",
+    "weatherDuration": 12,
+    "moonPhase": "waning",
+    "activeEffects": {}
+  },
+  "antagonists": [],
+  "storyThreads": [
+    {
+      "id": "story-1767322037311-2482",
+      "type": "haunting",
+      "title": "The Estorden Haunting",
+      "summary": "Aiglante confronts spirits who refuse to pass on.",
+      "phase": "inciting",
+      "actors": [
+        "Aiglante"
+      ],
+      "location": "Estorden",
+      "startedAt": "2025-12-26T23:00:00.000Z",
+      "lastUpdated": "2025-12-30T01:00:00.000Z",
+      "tension": 2,
+      "beats": [
+        {
+          "timestamp": "2025-12-26T23:00:00.000Z",
+          "summary": "Estorden spirits high",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2025-12-30T01:00:00.000Z",
+          "summary": "The manifestations intensify.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The spirits are laid to rest.",
+        "The haunting intensifies to lethal levels.",
+        "Coexistence is negotiated.",
+        "The ghosts reveal crucial information.",
+        "The \"haunting\" proves to have mortal origins."
+      ],
+      "resolved": false
+    },
+    {
+      "id": "story-1767322051880-4215",
+      "type": "haunting",
+      "title": "Echoes of the Past",
+      "summary": "What do the ghosts want? What will make them stop?",
+      "phase": "inciting",
+      "actors": [
+        "Ambra"
+      ],
+      "location": "Holbeck",
+      "startedAt": "2025-12-27T23:00:00.000Z",
+      "lastUpdated": "2026-01-01T01:00:00.000Z",
+      "tension": 3,
+      "beats": [
+        {
+          "timestamp": "2025-12-27T23:00:00.000Z",
+          "summary": "Holbeck spirits high",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2025-12-29T15:00:00.000Z",
+          "summary": "The ghost's identity is learned.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-01T01:00:00.000Z",
+          "summary": "The unfinished business is understood.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The spirits are laid to rest.",
+        "The haunting intensifies to lethal levels.",
+        "Coexistence is negotiated.",
+        "The ghosts reveal crucial information.",
+        "The \"haunting\" proves to have mortal origins."
+      ],
+      "resolved": false
+    },
+    {
+      "id": "story-1767322053698-9431",
+      "type": "hunt",
+      "title": "Tracking the Meinswindis",
+      "summary": "A deadly game of cat and mouse unfolds near Estorden.",
+      "phase": "inciting",
+      "actors": [
+        "Meinswindis"
+      ],
+      "location": "Estorden",
+      "startedAt": "2025-12-28T02:00:00.000Z",
+      "lastUpdated": "2025-12-31T14:00:00.000Z",
+      "tension": 2,
+      "beats": [
+        {
+          "timestamp": "2025-12-28T02:00:00.000Z",
+          "summary": "Trade routes near Estorden grow dangerous",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2025-12-31T14:00:00.000Z",
+          "summary": "The quarry leaves a taunt. It's personal now.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The quarry is slain.",
+        "The quarry escapes to parts unknown.",
+        "The hunters become the hunted.",
+        "An unexpected alliance forms.",
+        "The quarry is captured alive—but for what purpose?"
+      ],
+      "resolved": false
+    },
+    {
+      "id": "story-1767322059173-4194",
+      "type": "hunt",
+      "title": "Ethelmar's Last Stand",
+      "summary": "The hunt enters its final phase. One will not survive.",
+      "phase": "inciting",
+      "actors": [
+        "Ethelmar"
+      ],
+      "location": "Holbeck",
+      "startedAt": "2025-12-28T11:00:00.000Z",
+      "lastUpdated": "2026-01-01T10:00:00.000Z",
+      "tension": 3,
+      "beats": [
+        {
+          "timestamp": "2025-12-28T11:00:00.000Z",
+          "summary": "Trade routes near Holbeck grow dangerous",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2025-12-29T15:00:00.000Z",
+          "summary": "Tracks are found. The quarry draws near.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-01T10:00:00.000Z",
+          "summary": "The quarry leaves a taunt. It's personal now.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The quarry is slain.",
+        "The quarry escapes to parts unknown.",
+        "The hunters become the hunted.",
+        "An unexpected alliance forms.",
+        "The quarry is captured alive—but for what purpose?"
+      ],
+      "resolved": false
+    },
+    {
+      "id": "story-1767322074961-9775",
+      "type": "raid",
+      "title": "Fire in Namysaton",
+      "summary": "Geruuara & Sons strikes fast at Namysaton and withdraws before retaliation.",
+      "phase": "climax",
+      "actors": [
+        "Geruuara & Sons",
+        "Order of the Wheel"
+      ],
+      "location": "Namysaton",
+      "startedAt": "2025-12-29T13:00:00.000Z",
+      "lastUpdated": "2026-01-01T04:00:00.000Z",
+      "tension": 8.666666666666666,
+      "beats": [
+        {
+          "timestamp": "2025-12-29T13:00:00.000Z",
+          "summary": "Geruuara & Sons is raided!",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2025-12-30T01:00:00.000Z",
+          "summary": "Events unfold.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2025-12-30T18:00:00.000Z",
+          "summary": "Events unfold.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2025-12-30T18:00:00.000Z",
+          "summary": "The Northern Caravan is raided!",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2025-12-31T05:00:00.000Z",
+          "summary": "Events unfold.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-01T12:00:00.000Z",
+          "summary": "Events unfold.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-01T04:00:00.000Z",
+          "summary": "Events unfold.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The raid succeeds with heavy plunder.",
+        "The raiders are intercepted and destroyed.",
+        "The raid escalates into open war.",
+        "The raiders demand tribute to stop."
+      ],
+      "resolved": false
+    },
+    {
+      "id": "story-1767322082261-6701",
+      "type": "hunt",
+      "title": "The Hunt for Climence",
+      "summary": "The hunt enters its final phase. One will not survive.",
+      "phase": "inciting",
+      "actors": [
+        "Climence"
+      ],
+      "location": "Holbeck",
+      "startedAt": "2025-12-30T01:00:00.000Z",
+      "lastUpdated": "2025-12-30T01:00:00.000Z",
+      "tension": 1,
+      "beats": [
+        {
+          "timestamp": "2025-12-30T01:00:00.000Z",
+          "summary": "Trade routes near Holbeck grow dangerous",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The quarry is slain.",
+        "The quarry escapes to parts unknown.",
+        "The hunters become the hunted.",
+        "An unexpected alliance forms.",
+        "The quarry is captured alive—but for what purpose?"
+      ],
+      "resolved": false
+    },
+    {
+      "id": "story-1767322082867-9714",
+      "type": "mystery",
+      "title": "Strange Happenings",
+      "summary": "Strange events in Holbeck demand explanation.",
+      "phase": "inciting",
+      "actors": [
+        "Jordan's Company",
+        "wolves"
+      ],
+      "location": "Holbeck",
+      "startedAt": "2025-12-30T02:00:00.000Z",
+      "lastUpdated": "2025-12-30T02:00:00.000Z",
+      "tension": 1,
+      "beats": [
+        {
+          "timestamp": "2025-12-30T02:00:00.000Z",
+          "summary": "Jordan's Company and wolves find common cause",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The truth is revealed—and it's worse than imagined.",
+        "The mystery remains unsolved; some doors are better left closed.",
+        "A hidden conspiracy is exposed.",
+        "The investigation claims lives before answers emerge.",
+        "The \"mystery\" was an elaborate distraction."
+      ],
+      "resolved": false
+    },
+    {
+      "id": "story-1767322095607-4624",
+      "type": "rise",
+      "title": "A Star Ascends",
+      "summary": "From humble origins, greatness emerges.",
+      "phase": "inciting",
+      "actors": [
+        "Stonildi"
+      ],
+      "location": "Holbeck",
+      "startedAt": "2025-12-30T23:00:00.000Z",
+      "lastUpdated": "2025-12-30T23:00:00.000Z",
+      "tension": 1,
+      "beats": [
+        {
+          "timestamp": "2025-12-30T23:00:00.000Z",
+          "summary": "Jordan's Company hailed in Holbeck",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "They achieve their ambition and more.",
+        "They overreach and crash down.",
+        "They attract powerful enemies.",
+        "They become what they once despised.",
+        "They lift others as they climb."
+      ],
+      "resolved": false
+    }
+  ],
+  "consequenceQueue": {
+    "pending": [
+      {
+        "type": "faction-action",
+        "triggerEvent": "Battle joined between Jordan's Company and wolves",
+        "turnsUntilResolution": 38,
+        "data": {
+          "factionId": "faction-2",
+          "action": "retaliate",
+          "targetLocation": "Holbeck"
+        },
+        "priority": 3,
+        "id": "conseq-1767322081652-06qvygsuhj6"
+      },
+      {
+        "type": "faction-action",
+        "triggerEvent": "Battle joined between Jordan's Company and Josina's wolves",
+        "turnsUntilResolution": 25,
+        "data": {
+          "factionId": "faction-0",
+          "action": "retaliate",
+          "targetLocation": "Holbeck"
+        },
+        "priority": 3,
+        "id": "conseq-1767322084686-sj00qmr2mo"
+      },
+      {
+        "type": "spawn-rumor",
+        "triggerEvent": "Legendary weapon: Orc-Prod",
+        "turnsUntilResolution": 283,
+        "data": {
+          "origin": "Holbeck",
+          "target": "Holbeck",
+          "kind": "mystery",
+          "text": "Treasure-seekers speak of Orc-Prod. Some say it lies in a forgotten ruin. Others claim a monster guards it."
+        },
+        "priority": 5,
+        "id": "conseq-1767322095610-31e9njv6ggi"
+      },
+      {
+        "type": "npc-reaction",
+        "triggerEvent": "Jordan's Company ambushed by patrolling guards",
+        "turnsUntilResolution": 11,
+        "data": {
+          "npcId": "npc-3",
+          "reaction": "seek-revenge",
+          "cause": "Jordan's Company ambushed by patrolling guards"
+        },
+        "priority": 2,
+        "id": "conseq-1767323101487-y3zobum4bq"
+      },
+      {
+        "type": "faction-action",
+        "triggerEvent": "Jordan's Company ambushed by patrolling guards",
+        "turnsUntilResolution": 76,
+        "data": {
+          "factionId": "faction-1",
+          "action": "retaliate",
+          "targetLocation": "Namysaton"
+        },
+        "priority": 3,
+        "id": "conseq-1767323101487-6cckc22qtud"
+      },
+      {
+        "type": "spawn-rumor",
+        "triggerEvent": "robbery",
+        "turnsUntilResolution": 4,
+        "data": {
+          "origin": "Estorden",
+          "target": "Holbeck",
+          "kind": "mystery",
+          "text": "A valuable shipment was lost near Holbeck."
+        },
+        "priority": 4,
+        "id": "conseq-1767323101489-0y3gmenxkk6b"
+      },
+      {
+        "type": "spawn-event",
+        "triggerEvent": "The Frost Compact retaliation",
+        "turnsUntilResolution": 395,
+        "data": {
+          "category": "faction",
+          "summary": "The Frost Compact strikes back",
+          "details": "Agents of The Frost Compact carry out their vengeance. The repercussions will be felt.",
+          "location": "Holbeck",
+          "actors": [
+            "The Frost Compact"
+          ]
+        },
+        "priority": 4,
+        "id": "conseq-1767323113633-plirywmj0ym"
+      }
+    ]
+  },
+  "retainerRoster": {
+    "retainers": [],
+    "pendingHires": [],
+    "desertions": []
+  },
+  "guildState": {
+    "guilds": [],
+    "operations": [],
+    "hotGoods": []
+  },
+  "ecologyState": {
+    "populations": [],
+    "extinctions": [],
+    "migrations": [],
+    "territorialDisputes": []
+  },
+  "dynastyState": {
+    "bloodlines": [],
+    "marriages": [],
+    "pregnancies": [],
+    "successionCrises": [],
+    "courtships": [],
+    "burials": []
+  },
+  "treasureState": {
+    "discoveredHoards": [],
+    "circulatingMagicItems": [],
+    "recentInfluxes": [],
+    "activeExtractions": []
+  },
+  "navalState": {
+    "ships": [],
+    "seaRoutes": [],
+    "pirates": [],
+    "recentShipwrecks": [],
+    "portActivity": {},
+    "distantLands": [],
+    "distantFigures": []
+  },
+  "partyStates": {
+    "band-0": {
+      "morale": 5,
+      "resources": 50,
+      "enemies": [],
+      "allies": [],
+      "questLog": [],
+      "killList": [],
+      "reputation": {}
+    },
+    "party-0": {
+      "morale": 5,
+      "resources": 50,
+      "enemies": [],
+      "allies": [],
+      "questLog": [],
+      "killList": [],
+      "reputation": {}
+    }
+  },
+  "eventHistory": [
+    {
+      "id": "robbery-1767322026363",
+      "type": "robbery",
+      "timestamp": "2025-12-26T05:00:00.000Z",
+      "location": "Holbeck",
+      "actors": [
+        "Order of the Wheel"
+      ],
+      "perpetrators": [
+        "Order of the Wheel"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 147,
+        "targetType": "caravan",
+        "factionId": "faction-1",
+        "goods": [
+          "ore",
+          "timber"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767322047011",
+      "type": "robbery",
+      "timestamp": "2025-12-27T15:00:00.000Z",
+      "location": "Holbeck",
+      "actors": [
+        "Order of the Wheel"
+      ],
+      "perpetrators": [
+        "Order of the Wheel"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 106,
+        "targetType": "caravan",
+        "goods": [
+          "livestock"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767322053695",
+      "type": "robbery",
+      "timestamp": "2025-12-28T02:00:00.000Z",
+      "location": "Estorden",
+      "actors": [
+        "Order of the Wheel"
+      ],
+      "perpetrators": [
+        "Order of the Wheel"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 91,
+        "targetType": "caravan",
+        "factionId": "faction-1",
+        "goods": [
+          "ore",
+          "timber"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767322059170",
+      "type": "robbery",
+      "timestamp": "2025-12-28T11:00:00.000Z",
+      "location": "Holbeck",
+      "actors": [
+        "Order of the Wheel"
+      ],
+      "perpetrators": [
+        "Order of the Wheel"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 124,
+        "targetType": "caravan",
+        "goods": [
+          "livestock"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767322071920",
+      "type": "robbery",
+      "timestamp": "2025-12-29T08:00:00.000Z",
+      "location": "Holbeck",
+      "actors": [
+        "Order of the Wheel"
+      ],
+      "perpetrators": [
+        "Order of the Wheel"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 126,
+        "targetType": "caravan",
+        "factionId": "faction-1",
+        "goods": [
+          "ore",
+          "timber"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767322074959",
+      "type": "robbery",
+      "timestamp": "2025-12-29T13:00:00.000Z",
+      "location": "Namysaton",
+      "actors": [
+        "Order of the Wheel"
+      ],
+      "perpetrators": [
+        "Order of the Wheel"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 147,
+        "targetType": "caravan",
+        "goods": [
+          "livestock"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767322082259",
+      "type": "robbery",
+      "timestamp": "2025-12-30T01:00:00.000Z",
+      "location": "Holbeck",
+      "actors": [
+        "Order of the Wheel"
+      ],
+      "perpetrators": [
+        "Order of the Wheel"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 105,
+        "targetType": "caravan",
+        "factionId": "faction-1",
+        "goods": [
+          "ore",
+          "timber"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767322092567",
+      "type": "robbery",
+      "timestamp": "2025-12-30T18:00:00.000Z",
+      "location": "Namysaton",
+      "actors": [
+        "Order of the Wheel"
+      ],
+      "perpetrators": [
+        "Order of the Wheel"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 149,
+        "targetType": "caravan",
+        "factionId": "faction-1",
+        "goods": [
+          "ore",
+          "timber"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767322099238",
+      "type": "robbery",
+      "timestamp": "2025-12-31T05:00:00.000Z",
+      "location": "Holbeck",
+      "actors": [
+        "Order of the Wheel"
+      ],
+      "perpetrators": [
+        "Order of the Wheel"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 58,
+        "targetType": "caravan",
+        "goods": [
+          "livestock"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767322118096",
+      "type": "robbery",
+      "timestamp": "2026-01-01T12:00:00.000Z",
+      "location": "Holbeck",
+      "actors": [
+        "Order of the Wheel"
+      ],
+      "perpetrators": [
+        "Order of the Wheel"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 147,
+        "targetType": "caravan",
+        "factionId": "faction-1",
+        "goods": [
+          "ore",
+          "timber"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767323101487",
+      "type": "robbery",
+      "timestamp": "2026-01-01T04:00:00.000Z",
+      "location": "Holbeck",
+      "actors": [
+        "Order of the Wheel"
+      ],
+      "perpetrators": [
+        "Order of the Wheel"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 93,
+        "targetType": "caravan",
+        "factionId": "faction-1",
+        "goods": [
+          "ore",
+          "timber"
+        ]
+      }
+    }
+  ],
+  "legendaryState": {
+    "weapons": [
+      {
+        "id": "weapon-1767322095610-672",
+        "name": "Orc-Prod",
+        "epithet": "the Liberator",
+        "type": "spear",
+        "material": "star-metal",
+        "power": 8,
+        "history": "Created to slay a specific demon; that demon still lives.",
+        "discovered": false,
+        "sightings": 1
+      }
+    ],
+    "armor": [],
+    "monsters": [],
+    "prophecies": [],
+    "treasures": [
+      {
+        "id": "treasure-1767322095611",
+        "name": "The Emperor's Treasury",
+        "type": "vault",
+        "description": "The combined wealth of a dozen conquered kingdoms.",
+        "location": "Namysaton",
+        "contents": [
+          "jewels by the bushel",
+          "relics of power",
+          "historical records"
+        ],
+        "guardian": "a curse that kills intruders",
+        "discovered": false,
+        "looted": false,
+        "clues": [
+          "An old map mentions ruins near Namysaton.",
+          "A dying explorer spoke of treasures beyond imagining.",
+          "Ancient texts reference the The Vault of Kings."
+        ]
+      }
+    ]
+  }
 }
