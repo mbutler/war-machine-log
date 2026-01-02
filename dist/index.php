@@ -214,7 +214,7 @@ function formatWorldDate($iso) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="refresh" content="60">
-    <title>Fantasy Chronicle</title>
+    <title>World Without Players</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -351,6 +351,64 @@ function formatWorldDate($iso) {
         
         a { color: #c084fc; text-decoration: none; }
         a:hover { text-decoration: underline; }
+        
+        /* Custom styled tooltip */
+        .has-tooltip {
+            position: relative;
+            cursor: help;
+        }
+        
+        .custom-tooltip {
+            position: fixed;
+            z-index: 1000;
+            max-width: 400px;
+            padding: 12px 16px;
+            background: #1a1a24;
+            border: 1px solid #3a3a4a;
+            border-radius: 6px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            font-size: 11px;
+            line-height: 1.5;
+            color: #b8b8c8;
+            white-space: pre-wrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+        
+        .custom-tooltip.visible {
+            opacity: 1;
+        }
+        
+        .custom-tooltip .tt-header {
+            color: #c084fc;
+            font-weight: 600;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid #2a2a35;
+            padding-bottom: 4px;
+        }
+        
+        .custom-tooltip .tt-section {
+            margin-bottom: 8px;
+        }
+        
+        .custom-tooltip .tt-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .custom-tooltip .tt-label {
+            color: #6b8aaf;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .custom-tooltip .tt-quote {
+            color: #a8a878;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -412,7 +470,7 @@ function formatWorldDate($iso) {
                     
                     $tooltip = implode("\n\n", $tooltipParts);
                     ?>
-                    <div class="summary"<?= $tooltip ? ' title="' . htmlspecialchars($tooltip) . '"' : '' ?>>
+                    <div class="summary<?= $tooltip ? ' has-tooltip' : '' ?>"<?= $tooltip ? ' data-tooltip="' . htmlspecialchars($tooltip) . '"' : '' ?>>
                         <?php if (!empty($e['location'])): ?>
                         <span class="location"><?= htmlspecialchars($e['location']) ?>:</span>
                         <?php endif; ?>
@@ -448,5 +506,90 @@ function formatWorldDate($iso) {
             </span>
         </footer>
     </div>
+    
+    <!-- Custom tooltip container -->
+    <div id="tooltip" class="custom-tooltip"></div>
+    
+    <script>
+    (function() {
+        const tooltip = document.getElementById('tooltip');
+        let showTimeout;
+        
+        // Helper to escape HTML for safe display
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Format tooltip with styled sections
+        function formatTooltip(raw) {
+            // Split into lines and process each
+            const lines = raw.split('\n');
+            let html = '';
+            
+            for (const line of lines) {
+                // Section headers
+                const headerMatch = line.match(/^═══ (.+) ═══$/);
+                if (headerMatch) {
+                    html += '<div class="tt-label">' + escapeHtml(headerMatch[1]) + '</div>';
+                    continue;
+                }
+                
+                // Lines with quotes - style the quoted part
+                let processedLine = escapeHtml(line);
+                processedLine = processedLine.replace(/&quot;([^&]+)&quot;/g, '<span class="tt-quote">"$1"</span>');
+                processedLine = processedLine.replace(/"([^"]+)"/g, '<span class="tt-quote">"$1"</span>');
+                
+                if (line.trim()) {
+                    html += '<div>' + processedLine + '</div>';
+                }
+            }
+            
+            return html;
+        }
+        
+        document.querySelectorAll('.has-tooltip').forEach(el => {
+            el.addEventListener('mouseenter', function(e) {
+                const text = this.getAttribute('data-tooltip');
+                if (!text) return;
+                
+                clearTimeout(showTimeout);
+                showTimeout = setTimeout(() => {
+                    tooltip.innerHTML = formatTooltip(text);
+                    
+                    // Position near cursor
+                    let x = e.clientX + 15;
+                    let y = e.clientY + 15;
+                    
+                    tooltip.style.left = x + 'px';
+                    tooltip.style.top = y + 'px';
+                    tooltip.classList.add('visible');
+                    
+                    // Adjust if off-screen
+                    const ttRect = tooltip.getBoundingClientRect();
+                    if (ttRect.right > window.innerWidth - 20) {
+                        tooltip.style.left = (window.innerWidth - ttRect.width - 20) + 'px';
+                    }
+                    if (ttRect.bottom > window.innerHeight - 20) {
+                        tooltip.style.top = (y - ttRect.height - 30) + 'px';
+                    }
+                }, 300);
+            });
+            
+            el.addEventListener('mouseleave', function() {
+                clearTimeout(showTimeout);
+                tooltip.classList.remove('visible');
+            });
+            
+            el.addEventListener('mousemove', function(e) {
+                if (tooltip.classList.contains('visible')) {
+                    tooltip.style.left = (e.clientX + 15) + 'px';
+                    tooltip.style.top = (e.clientY + 15) + 'px';
+                }
+            });
+        });
+    })();
+    </script>
 </body>
 </html>
