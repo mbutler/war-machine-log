@@ -68,6 +68,57 @@ let navalState: NavalState = { ships: [], seaRoutes: [], pirates: [], recentShip
 
 let initialized = false;
 
+// Global error handling for production stability
+process.on('uncaughtException', (error) => {
+  console.error('🚨 UNCAUGHT EXCEPTION:', error);
+  console.error('Stack trace:', error.stack);
+  // Save state before exit
+  if (world) {
+    saveWorld(world).catch(saveError => {
+      console.error('Failed to save world on crash:', saveError);
+    }).finally(() => {
+      process.exit(1);
+    });
+  } else {
+    process.exit(1);
+  }
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('🚨 UNHANDLED REJECTION at:', promise, 'reason:', reason);
+  // Don't exit - let the process continue
+});
+
+process.on('SIGTERM', () => {
+  console.log('📡 Received SIGTERM, shutting down gracefully...');
+  if (world) {
+    saveWorld(world).then(() => {
+      console.log('💾 World saved successfully');
+      process.exit(0);
+    }).catch(error => {
+      console.error('Failed to save world on shutdown:', error);
+      process.exit(1);
+    });
+  } else {
+    process.exit(0);
+  }
+});
+
+process.on('SIGINT', () => {
+  console.log('📡 Received SIGINT, shutting down gracefully...');
+  if (world) {
+    saveWorld(world).then(() => {
+      console.log('💾 World saved successfully');
+      process.exit(0);
+    }).catch(error => {
+      console.error('Failed to save world on shutdown:', error);
+      process.exit(1);
+    });
+  } else {
+    process.exit(0);
+  }
+});
+
 // Log helper with consequence analysis
 async function log(entry: Omit<LogEntry, 'realTime'>) {
   const fullEntry = { ...entry, realTime: new Date() };
