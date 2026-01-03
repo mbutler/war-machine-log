@@ -92,18 +92,35 @@ export async function loadWorld(): Promise<WorldState | null> {
       console.log(`⏰ No lastTickAt found - using startedAt for catch-up baseline`);
     }
     
-    // Rehydrate story thread dates
-    if (parsed.storyThreads) {
-      for (const story of parsed.storyThreads) {
-        if (story.startedAt) story.startedAt = new Date(story.startedAt);
-        if (story.lastUpdated) story.lastUpdated = new Date(story.lastUpdated);
-        if (story.beats) {
-          for (const beat of story.beats) {
-            if (beat.timestamp) beat.timestamp = new Date(beat.timestamp);
-          }
+  // Rehydrate story thread dates and add enhanced fields
+  if (parsed.storyThreads) {
+    for (const story of parsed.storyThreads) {
+      if (story.startedAt) story.startedAt = new Date(story.startedAt);
+      if (story.lastUpdated) story.lastUpdated = new Date(story.lastUpdated);
+      if (story.beats) {
+        for (const beat of story.beats) {
+          if (beat.timestamp) beat.timestamp = new Date(beat.timestamp);
         }
       }
+
+      // Add enhanced context fields for richer storytelling (backwards compatible)
+      if (!story.context) {
+        story.context = {
+          actorRelationships: [],
+          keyLocations: [],
+          themes: [],
+          motivations: {}
+        };
+      }
+      if (!story.branchingState) {
+        story.branchingState = {
+          path: undefined,
+          choices: [],
+          variables: {}
+        };
+      }
     }
+  }
     
     // Rehydrate antagonist dates
     if (parsed.antagonists) {

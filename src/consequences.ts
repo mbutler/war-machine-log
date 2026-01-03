@@ -260,10 +260,37 @@ function resolveFactionAction(
 
   switch (action) {
     case 'patrol': {
+      const patrolPhrases = {
+        martial: [
+          `Armed members of ${faction.name} now patrol the roads${targetLocation ? ` near ${targetLocation}` : ''}.`,
+          `${faction.name} deploys additional troops to secure trade routes${targetLocation ? ` around ${targetLocation}` : ''}.`,
+          `Warriors from ${faction.name} stand guard along the highways${targetLocation ? ` near ${targetLocation}` : ''}.`,
+          `${faction.name} establishes checkpoints to deter bandits${targetLocation ? ` around ${targetLocation}` : ''}.`,
+        ],
+        pious: [
+          `Devout members of ${faction.name} now walk the roads in prayer${targetLocation ? ` near ${targetLocation}` : ''}.`,
+          `${faction.name} blesses travelers and watches for signs of corruption${targetLocation ? ` around ${targetLocation}` : ''}.`,
+          `Pilgrims from ${faction.name} patrol the sacred paths${targetLocation ? ` near ${targetLocation}` : ''}.`,
+          `${faction.name} sends holy warriors to protect the faithful${targetLocation ? ` around ${targetLocation}` : ''}.`,
+        ],
+        trade: [
+          `Mercantile guards from ${faction.name} now protect the roads${targetLocation ? ` near ${targetLocation}` : ''}.`,
+          `${faction.name} hires additional caravan escorts for safety${targetLocation ? ` around ${targetLocation}` : ''}.`,
+          `Traders from ${faction.name} organize mutual protection pacts${targetLocation ? ` near ${targetLocation}` : ''}.`,
+          `${faction.name} establishes toll stations to fund road security${targetLocation ? ` around ${targetLocation}` : ''}.`,
+        ],
+        arcane: [
+          `Mystical wards from ${faction.name} now protect the roads${targetLocation ? ` near ${targetLocation}` : ''}.`,
+          `${faction.name} summons guardians to watch over travelers${targetLocation ? ` around ${targetLocation}` : ''}.`,
+          `Arcane sentinels from ${faction.name} patrol the pathways${targetLocation ? ` near ${targetLocation}` : ''}.`,
+          `${faction.name} enchants the roads against unlawful passage${targetLocation ? ` around ${targetLocation}` : ''}.`,
+        ],
+      };
+
       logs.push({
         category: 'faction',
         summary: `${faction.name} increases patrols`,
-        details: `Armed members of ${faction.name} now walk the roads${targetLocation ? ` near ${targetLocation}` : ''}.`,
+        details: rng.pick(patrolPhrases[faction.focus] || patrolPhrases.martial),
         location: targetLocation,
         actors: [faction.name],
         worldTime,
@@ -281,10 +308,37 @@ function resolveFactionAction(
 
     case 'retaliate': {
       const targetName = targetLocation ?? 'their enemies';
+      const retributionPhrases = {
+        martial: [
+          `${faction.name} marshals troops for vengeance against ${targetName}.`,
+          `Warriors of ${faction.name} prepare a punitive expedition against ${targetName}.`,
+          `${faction.name} declares a blood feud against ${targetName}.`,
+          `The ${faction.focus} faction raises arms for retribution against ${targetName}.`,
+        ],
+        pious: [
+          `${faction.name} calls for divine justice against ${targetName}.`,
+          `Holy warriors of ${faction.name} prepare to smite ${targetName}.`,
+          `${faction.name} declares a crusade against the wickedness of ${targetName}.`,
+          `The ${faction.focus} faction marshals the faithful against ${targetName}.`,
+        ],
+        trade: [
+          `${faction.name} organizes a trade embargo against ${targetName}.`,
+          `Mercantile houses of ${faction.name} cut ties with ${targetName}.`,
+          `${faction.name} hires bounty hunters to pursue ${targetName}.`,
+          `The ${faction.focus} faction marshals economic power against ${targetName}.`,
+        ],
+        arcane: [
+          `${faction.name} weaves curses against ${targetName}.`,
+          `Mages of ${faction.name} prepare mystical vengeance on ${targetName}.`,
+          `${faction.name} summons otherworldly allies against ${targetName}.`,
+          `The ${faction.focus} faction marshals arcane forces against ${targetName}.`,
+        ],
+      };
+
       logs.push({
         category: 'faction',
         summary: `${faction.name} seeks retribution`,
-        details: `The ${faction.focus} faction marshals resources for action against ${targetName}.`,
+        details: rng.pick(retributionPhrases[faction.focus] || retributionPhrases.martial),
         location: targetLocation,
         actors: [faction.name],
         worldTime,

@@ -18,6 +18,748 @@ import { Antagonist } from './antagonists.ts';
 import { queueConsequence } from './consequences.ts';
 import { randomName } from './naming.ts';
 
+// Story progression beats - moved to module scope for access by multiple functions
+const PROGRESSION_BEATS: Record<StoryType, string[]> = {
+  // CONFLICT
+  hunt: [
+    'Tracks are found. The quarry draws near.',
+    'A witness points the way.',
+    'The hunter\'s patience wears thin.',
+    'The quarry leaves a taunt. It\'s personal now.',
+    'The hunt leads through treacherous terrain.',
+    'Allies offer aid, but at a steep price.',
+    'The quarry seems to anticipate every move.',
+    'A storm hampers the pursuit.',
+    'Local villagers share rumors of the prey.',
+    'The hunters discover they are not alone in the chase.',
+    'Supplies dwindle; the hunt becomes desperate.',
+    'The quarry turns the tables, becoming the hunter.',
+    'Ancient ruins hold clues to the prey\'s location.',
+    'A bounty is placed, attracting more hunters.',
+    'The chase crosses into forbidden territory.',
+  ],
+  feud: [
+    'Harsh words are exchanged publicly.',
+    'An ally is subverted.',
+    'Blood is spilled in a back alley.',
+    'Neutral parties are forced to choose sides.',
+    'A peace offering is rejected with scorn.',
+    'Rumors of assassination attempts spread.',
+    'Economic pressure is applied through boycotts.',
+    'Marriage alliances are proposed to end the feud.',
+    'A third party profits from the conflict.',
+    'Religious leaders attempt mediation.',
+    'The feud spreads to younger generations.',
+    'Property is vandalized in the night.',
+    'Legal battles drain both sides\' resources.',
+    'Mercenaries are hired for dirty work.',
+    'A beloved figure is caught in the crossfire.',
+  ],
+  revenge: [
+    'The avenger moves closer.',
+    'Old alliances are tested.',
+    'The weight of vengeance grows heavier.',
+    'The target learns they are being hunted.',
+    'Friends warn the avenger to stop.',
+    'The target hires bodyguards.',
+    'A weapon is forged for the final confrontation.',
+    'The avenger trains relentlessly.',
+    'Memories of the original wrong fuel the fire.',
+    'The target flees to a distant land.',
+    'Allies of the target are threatened.',
+    'The avenger infiltrates the target\'s inner circle.',
+    'A bounty is placed on the avenger.',
+    'The original crime\'s details emerge.',
+    'The avenger questions their own motives.',
+  ],
+  war: [
+    'Skirmishes break out along the border.',
+    'Diplomatic options narrow.',
+    'The drums beat louder.',
+    'Mercenaries arrive, choosing sides.',
+    'Fortifications are hastily constructed.',
+    'Spies infiltrate enemy territory.',
+    'Supply lines are disrupted.',
+    'Deserters tell tales of enemy weakness.',
+    'Religious figures bless the troops.',
+    'A famous commander takes the field.',
+    'Siege engines are brought forward.',
+    'Naval blockades are established.',
+    'Refugees flee the war zone.',
+    'Neutral territories are invaded.',
+    'Peace negotiations are attempted and fail.',
+  ],
+  siege: [
+    'Supplies inside the walls dwindle.',
+    'A sortie attempts to break the ring.',
+    'Disease spreads among the besieged.',
+    'Siege engines are brought into position.',
+    'Miners tunnel under the walls.',
+    'Catapults hurl flaming projectiles.',
+    'Defenders sally forth at night.',
+    'Psychological warfare begins.',
+    'Reinforcements arrive for the attackers.',
+    'The besieged attempt to smuggle messages out.',
+    'Water sources are poisoned or diverted.',
+    'Religious ceremonies bolster morale.',
+    'A famous hero leads the defense.',
+    'Weather hampers siege operations.',
+    'Negotiations occur under a flag of truce.',
+  ],
+  rebellion: [
+    'Another village joins the uprising.',
+    'The authorities respond with force.',
+    'A charismatic leader emerges.',
+    'Nobles flee the region.',
+    'Secret meetings are held in hidden places.',
+    'Propaganda leaflets circulate.',
+    'Taxes are refused, leading to conflict.',
+    'Armories are raided for weapons.',
+    'Foreign powers offer support.',
+    'The rebels establish their own courts.',
+    'Loyalists organize counter-rebellions.',
+    'Religious leaders take sides.',
+    'Trade is disrupted by blockades.',
+    'Prisoners are taken and ransomed.',
+    'The rebellion spreads to neighboring regions.',
+  ],
+  duel: [
+    'Seconds negotiate the terms.',
+    'One party attempts reconciliation.',
+    'Rumors spread about the coming fight.',
+    'Spectators gather to witness.',
+    'The chosen weapons are prepared.',
+    'The location is scouted and agreed upon.',
+    'Wagers are placed on the outcome.',
+    'Family members attempt intervention.',
+    'Medical aid is arranged.',
+    'The duel is delayed by weather or omens.',
+    'One combatant trains intensely.',
+    'Honor codes are debated.',
+    'A poet composes verses about the duel.',
+    'Political implications are discussed.',
+    'The duel becomes a matter of public interest.',
+  ],
+  raid: [
+    'Scouts report enemy movements.',
+    'Defenses are hastily reinforced.',
+    'Fires on the horizon approach.',
+    'Refugees flee ahead of the raiders.',
+    'Livestock is driven off in the night.',
+    'Ambushes are set along expected routes.',
+    'Raiders demand tribute to spare settlements.',
+    'Prisoners are taken for ransom.',
+    'War cries echo through the valleys.',
+    'Smoke signals warn of the advance.',
+    'Villagers hide their valuables.',
+    'The raiders employ guerrilla tactics.',
+    'Local heroes organize resistance.',
+    'The raid escalates into open warfare.',
+    'Survivors tell tales of the attackers.',
+  ],
+
+  // DISCOVERY
+  mystery: [
+    'A new clue surfaces.',
+    'Someone who knew too much falls silent.',
+    'The pattern becomes clearer—and more disturbing.',
+    'An old document reveals a connection.',
+    'Witnesses contradict each other.',
+    'Strange symbols appear in unexpected places.',
+    'Dreams plague those investigating.',
+    'Ancient ruins yield cryptic messages.',
+    'A suspect is cleared, pointing elsewhere.',
+    'The mystery seems connected to ancient legends.',
+    'False leads waste valuable time.',
+    'A trusted ally is revealed as unreliable.',
+    'The investigators receive anonymous warnings.',
+    'The mystery touches personal lives.',
+    'Time pressure mounts as events accelerate.',
+  ],
+  treasure: [
+    'A rival expedition sets out.',
+    'The map proves partially false.',
+    'Greed begins to poison the company.',
+    'Guardians of the treasure awaken.',
+    'Supplies are lost to bandits or weather.',
+    'Team members desert with portions of the map.',
+    'Ancient traps claim lives.',
+    'The treasure proves to be cursed.',
+    'Local legends prove partially true.',
+    'The expedition splits over strategy.',
+    'A guide betrays the group.',
+    'The treasure hoard proves disappointingly small.',
+    'Magical wards must be overcome.',
+    'The treasure attracts monstrous attention.',
+    'Political complications arise.',
+  ],
+  prophecy: [
+    'Another sign manifests.',
+    'Believers grow in number.',
+    'The skeptics fall silent.',
+    'Those who would prevent the prophecy act.',
+    'Interpretations of the prophecy conflict.',
+    'A false prophet emerges.',
+    'Sacred texts are rediscovered.',
+    'Miracles are attributed to the prophecy.',
+    'Skeptics are converted by events.',
+    'The prophesied figure remains hidden.',
+    'Political factions align around interpretations.',
+    'Ancient artifacts confirm the prophecy.',
+    'The prophesied events begin small.',
+    'Opponents attempt to forge counter-prophecies.',
+    'The prophecy affects daily life.',
+  ],
+  expedition: [
+    'The terrain becomes impassable.',
+    'Strange landmarks appear as described.',
+    'Supplies run dangerously low.',
+    'Contact with home is lost.',
+    'The expedition encounters hostile natives.',
+    'Disease strikes the explorers.',
+    'Weather turns against the group.',
+    'Internal conflicts emerge.',
+    'Amazing discoveries are made.',
+    'The expedition must turn back.',
+    'A mutiny threatens the leadership.',
+    'The goal proves farther than expected.',
+    'Valuable trade opportunities appear.',
+    'The expedition inspires future explorers.',
+    'Tragedy strikes the group.',
+  ],
+  artifact: [
+    'A fragment of the artifact is found.',
+    'Another seeker enters the race.',
+    'The artifact\'s location is narrowed down.',
+    'Visions reveal the artifact\'s power.',
+    'The artifact begins to influence seekers.',
+    'Ancient guardians oppose the search.',
+    'False artifacts mislead seekers.',
+    'The artifact chooses its own path.',
+    'Political powers become involved.',
+    'The artifact proves sentient.',
+    'Time pressure mounts.',
+    'The search reveals other secrets.',
+    'Betrayals occur among seekers.',
+    'The artifact\'s true nature emerges.',
+    'Unintended consequences appear.',
+  ],
+  'lost-heir': [
+    'Evidence of the bloodline surfaces.',
+    'Enemies of the heir move to suppress the claim.',
+    'The heir learns fragments of their history.',
+    'Old servants remember the true lineage.',
+    'The heir proves their claim.',
+    'Imposters emerge to challenge the claim.',
+    'The heir must prove their worth.',
+    'Ancient secrets are revealed.',
+    'Political alliances shift.',
+    'The heir faces assassination attempts.',
+    'Family members have divided loyalties.',
+    'The throne proves contested.',
+    'The heir discovers hidden talents.',
+    'The past catches up with the family.',
+    'Loyal supporters rally to the cause.',
+  ],
+  'ancient-evil': [
+    'Tremors shake the earth.',
+    'Animals flee the area.',
+    'The seals show signs of weakening.',
+    'Dreams of darkness plague the populace.',
+    'Strange creatures appear at night.',
+    'Ancient runes glow with power.',
+    'The ground becomes unstable.',
+    'Local wildlife behaves erratically.',
+    'Old artifacts reactivate.',
+    'Scholars debate the signs.',
+    'The evil sends visions to the weak.',
+    'Guardians of the seal grow restless.',
+    'Time seems to distort near the site.',
+    'The evil influences local politics.',
+    'Heroes are drawn to confront it.',
+  ],
+  portal: [
+    'Strange creatures emerge.',
+    'The portal fluctuates in stability.',
+    'Communication across the threshold begins.',
+    'The other side sends an emissary.',
+    'Energy signatures change.',
+    'Local magic becomes unreliable.',
+    'Time flows differently near the portal.',
+    'Strange materials appear.',
+    'The portal attracts scholars.',
+    'Monsters from beyond appear.',
+    'The portal begins to expand.',
+    'Communication becomes clearer.',
+    'Trade through the portal begins.',
+    'The other side requests aid.',
+    'The portal threatens to become permanent.',
+  ],
+
+  // SOCIAL
+  romance: [
+    'A secret meeting is arranged.',
+    'Jealousy rears its head.',
+    'Families object to the union.',
+    'A rival for affection appears.',
+    'Love letters are exchanged.',
+    'A romantic gesture goes wrong.',
+    'Family secrets complicate matters.',
+    'Social expectations create tension.',
+    'A scandal threatens the relationship.',
+    'Long separations test their bond.',
+    'Cultural differences emerge.',
+    'Friends offer conflicting advice.',
+    'A grand romantic gesture is planned.',
+    'Misunderstandings create drama.',
+    'True feelings are finally revealed.',
+  ],
+  rise: [
+    'Another triumph adds to the legend.',
+    'Enemies begin to take notice.',
+    'The price of success becomes apparent.',
+    'Old allies are left behind.',
+    'New opportunities present themselves.',
+    'Rivals attempt to undermine success.',
+    'The rising figure inspires others.',
+    'Power brings unexpected responsibilities.',
+    'Jealousy affects old relationships.',
+    'Success attracts dangerous attention.',
+    'The figure questions their ambitions.',
+    'Mentors offer guidance.',
+    'New allies seek association.',
+    'The path becomes more dangerous.',
+    'Success brings moral dilemmas.',
+  ],
+  fall: [
+    'Another supporter abandons ship.',
+    'Debts come due.',
+    'The vultures circle lower.',
+    'Former rivals offer hollow sympathy.',
+    'Mistakes from the past resurface.',
+    'Allies prove unreliable.',
+    'The fall happens gradually.',
+    'Public opinion turns.',
+    'Internal conflicts weaken resolve.',
+    'Opportunities for redemption appear.',
+    'The fallen figure loses confidence.',
+    'Old enemies take advantage.',
+    'Supporters dwindle.',
+    'The fall becomes inevitable.',
+    'Rock bottom offers new perspective.',
+  ],
+  scandal: [
+    'Whispers become open conversation.',
+    'Evidence surfaces—real or fabricated.',
+    'Allies distance themselves.',
+    'Public condemnation begins.',
+    'The accused denies everything.',
+    'Investigations are launched.',
+    'Media attention grows.',
+    'Friends are forced to choose sides.',
+    'The scandal affects innocent bystanders.',
+    'Damage control efforts begin.',
+    'The truth becomes obscured.',
+    'Political implications emerge.',
+    'Legal battles ensue.',
+    'The scandal spreads to others.',
+    'Time reveals the full story.',
+  ],
+  betrayal: [
+    'Small inconsistencies are noticed.',
+    'The betrayer grows bolder.',
+    'Suspicion falls on the wrong person.',
+    'The moment of truth approaches.',
+    'Evidence begins to accumulate.',
+    'The betrayed feels growing unease.',
+    'Allies offer conflicting information.',
+    'The betrayal affects multiple people.',
+    'Confrontation becomes inevitable.',
+    'The betrayer\'s motives emerge.',
+    'Collateral damage occurs.',
+    'Trust is shattered.',
+    'Reconciliation seems impossible.',
+    'The betrayal changes everything.',
+    'Lessons are learned too late.',
+  ],
+  succession: [
+    'Alliances form behind each claimant.',
+    'Legal scholars debate legitimacy.',
+    'Gold changes hands to buy support.',
+    'Assassination attempts multiply.',
+    'Public opinion sways.',
+    'Ancient laws are consulted.',
+    'Foreign powers become involved.',
+    'The claimants campaign actively.',
+    'Scandals affect various candidates.',
+    'Military support is courted.',
+    'Religious approval is sought.',
+    'The succession becomes contested.',
+    'Compromises are proposed.',
+    'Violence breaks out.',
+    'A winner finally emerges.',
+  ],
+  exile: [
+    'The exile finds temporary shelter.',
+    'Messages from home bring mixed news.',
+    'The exile\'s skills prove valuable abroad.',
+    'Plots to return home form.',
+    'The exile adapts to new surroundings.',
+    'Old enemies pursue relentlessly.',
+    'New allies are found.',
+    'The exile learns valuable lessons.',
+    'Home seems both distant and alluring.',
+    'Time softens the pain of exile.',
+    'The exile builds a new life.',
+    'Calls for return grow louder.',
+    'The exile faces temptation.',
+    'Old wounds are reopened.',
+    'The exile finds inner peace.',
+  ],
+  redemption: [
+    'A small act of kindness is noted.',
+    'Old victims are confronted.',
+    'The path proves harder than expected.',
+    'A test of true change arrives.',
+    'Progress is made slowly.',
+    'Skeptics remain unconvinced.',
+    'New opportunities emerge.',
+    'The redeemed faces temptation.',
+    'Allies offer support.',
+    'Old habits prove hard to break.',
+    'Public opinion shifts gradually.',
+    'The redeemed proves their sincerity.',
+    'Forgiveness is granted.',
+    'A new chapter begins.',
+    'True redemption is achieved.',
+  ],
+
+  // SURVIVAL
+  rescue: [
+    'A ransom demand arrives.',
+    'A rescue attempt fails.',
+    'Hope dwindles with each passing day.',
+    'The captive sends a secret message.',
+    'Rescuers gather resources.',
+    'The captors grow impatient.',
+    'Negotiations begin.',
+    'Time runs short.',
+    'A rescue plan is formulated.',
+    'Unexpected complications arise.',
+    'The captive\'s condition deteriorates.',
+    'Allies provide crucial aid.',
+    'The rescue becomes desperate.',
+    'Success seems within reach.',
+    'The outcome hangs in balance.',
+  ],
+  plague: [
+    'The sickness spreads.',
+    'A cure is rumored.',
+    'Quarantines prove inadequate.',
+    'The source of the plague is suspected.',
+    'Symptoms become more severe.',
+    'Healers work tirelessly.',
+    'Fear grips the population.',
+    'Quack cures proliferate.',
+    'The plague affects the powerful.',
+    'Scientific investigation begins.',
+    'Traditional remedies are tried.',
+    'The plague changes society.',
+    'Heroes emerge.',
+    'The source is finally identified.',
+    'Recovery begins.',
+  ],
+  famine: [
+    'Rations are cut again.',
+    'Hoarding is punished severely.',
+    'The desperate turn to crime.',
+    'Relief supplies are diverted.',
+    'The famine affects the powerful.',
+    'Migration begins.',
+    'Social order breaks down.',
+    'Aid arrives from unexpected sources.',
+    'The famine changes society.',
+    'Innovation solves problems.',
+    'The famine ends gradually.',
+    'Scars remain.',
+    'Lessons are learned.',
+    'Society rebuilds stronger.',
+    'Memory fades with time.',
+  ],
+  migration: [
+    'The column stretches for miles.',
+    'Local populations react with fear.',
+    'Resources along the route are exhausted.',
+    'Splinter groups break away.',
+    'The migrants face hostility.',
+    'New lands prove challenging.',
+    'Cultural clashes occur.',
+    'The migration changes everyone.',
+    'Adaptation proves difficult.',
+    'New communities form.',
+    'The journey tests resolve.',
+    'Unexpected allies appear.',
+    'The migrants reach their goal.',
+    'Integration begins.',
+    'A new chapter opens.',
+  ],
+  sanctuary: [
+    'The defenses are tested.',
+    'Supplies begin to run low.',
+    'Tension rises between refugees.',
+    'A spy is suspected within.',
+    'The sanctuary proves inadequate.',
+    'External threats grow.',
+    'Internal conflicts emerge.',
+    'Resources are rationed.',
+    'The sanctuary becomes overcrowded.',
+    'Leadership is challenged.',
+    'Allies provide support.',
+    'The sanctuary holds.',
+    'Compromises are made.',
+    'Growth occurs.',
+    'The sanctuary evolves.',
+  ],
+  curse: [
+    'The curse begins to manifest.',
+    'Victims seek relief.',
+    'The curse affects the innocent.',
+    'Ancient knowledge is consulted.',
+    'The curse spreads.',
+    'Heroes investigate.',
+    'The source is revealed.',
+    'Breaking the curse proves difficult.',
+    'Sacrifices are made.',
+    'The curse changes everything.',
+    'Hope emerges.',
+    'The curse is broken.',
+    'Consequences remain.',
+    'Lessons are learned.',
+    'Healing begins.',
+  ],
+  'hunt-survival': [
+    'The hunted evades capture.',
+    'Pursuers close in.',
+    'The hunted finds temporary refuge.',
+    'The chase becomes personal.',
+    'Allies aid the hunted.',
+    'The hunted turns the tables.',
+    'Time runs short.',
+    'The hunted faces despair.',
+    'Unexpected help arrives.',
+    'The hunted proves resourceful.',
+    'The chase ends.',
+    'Consequences follow.',
+    'The hunted survives.',
+    'New threats emerge.',
+    'The story continues.',
+  ],
+
+  // INTRIGUE
+  conspiracy: [
+    'Whispers spread in dark corners.',
+    'Allies prove unreliable.',
+    'The conspiracy grows.',
+    'Evidence is planted.',
+    'Doubts emerge.',
+    'The conspiracy succeeds.',
+    'Exposure threatens.',
+    'Internal conflicts arise.',
+    'The conspiracy evolves.',
+    'Truth emerges.',
+    'Consequences follow.',
+    'Justice is served.',
+    'The conspiracy ends.',
+    'Lessons are learned.',
+    'Society changes.',
+  ],
+  heist: [
+    'Planning intensifies.',
+    'Team members are recruited.',
+    'Security is studied.',
+    'Complications arise.',
+    'The plan changes.',
+    'Execution begins.',
+    'Unexpected obstacles appear.',
+    'Tension builds.',
+    'Success seems possible.',
+    'Betrayal threatens.',
+    'The heist proceeds.',
+    'Consequences emerge.',
+    'The outcome is decided.',
+    'Aftermath follows.',
+    'New opportunities arise.',
+  ],
+  infiltration: [
+    'The infiltrator gains access.',
+    'Trust is established.',
+    'Information is gathered.',
+    'Suspicion grows.',
+    'The infiltrator acts.',
+    'Discovery threatens.',
+    'The mission succeeds.',
+    'Escape becomes necessary.',
+    'Consequences follow.',
+    'The infiltrator reflects.',
+    'New missions await.',
+    'The story evolves.',
+    'Allies emerge.',
+    'The infiltration ends.',
+    'Lessons are learned.',
+  ],
+  blackmail: [
+    'Secrets are discovered.',
+    'Demands are made.',
+    'Victims react.',
+    'The blackmailer acts.',
+    'Resistance grows.',
+    'Consequences emerge.',
+    'The blackmail succeeds.',
+    'Exposure threatens.',
+    'The blackmailer reflects.',
+    'New opportunities arise.',
+    'The story continues.',
+    'Allies emerge.',
+    'The blackmail ends.',
+    'Lessons are learned.',
+    'Society changes.',
+  ],
+  imposter: [
+    'The deception begins.',
+    'Trust is gained.',
+    'The imposter acts.',
+    'Suspicion emerges.',
+    'The deception deepens.',
+    'Discovery threatens.',
+    'The imposter succeeds.',
+    'Exposure occurs.',
+    'Consequences follow.',
+    'The imposter reflects.',
+    'New identities await.',
+    'The story evolves.',
+    'Allies emerge.',
+    'The deception ends.',
+    'Lessons are learned.',
+  ],
+  cult: [
+    'The cult grows.',
+    'Rituals are performed.',
+    'Converts join.',
+    'Opposition emerges.',
+    'The cult acts.',
+    'Internal conflicts arise.',
+    'The cult succeeds.',
+    'Exposure threatens.',
+    'The cult reflects.',
+    'New followers await.',
+    'The story evolves.',
+    'Allies emerge.',
+    'The cult ends.',
+    'Lessons are learned.',
+    'Society changes.',
+  ],
+
+  // SUPERNATURAL
+  haunting: [
+    'Manifestations increase.',
+    'The haunted seek help.',
+    'The haunting affects the living.',
+    'Investigations begin.',
+    'The source is revealed.',
+    'The haunting intensifies.',
+    'Resolution approaches.',
+    'The haunting ends.',
+    'Consequences remain.',
+    'Lessons are learned.',
+    'The story continues.',
+    'New hauntings begin.',
+    'The haunted reflect.',
+    'Allies emerge.',
+    'Peace returns.',
+  ],
+  possession: [
+    'Changes become noticeable.',
+    'The possessed acts strangely.',
+    'Loved ones react.',
+    'Exorcism is attempted.',
+    'The possession deepens.',
+    'Control slips.',
+    'Resolution approaches.',
+    'The possession ends.',
+    'Consequences remain.',
+    'Lessons are learned.',
+    'The possessed reflects.',
+    'Allies emerge.',
+    'New possessions begin.',
+    'The story evolves.',
+    'Recovery occurs.',
+  ],
+  transformation: [
+    'Changes begin.',
+    'The transformed adapts.',
+    'Others react with fear.',
+    'The transformation progresses.',
+    'Control becomes difficult.',
+    'Benefits emerge.',
+    'The transformation completes.',
+    'Consequences follow.',
+    'The transformed reflects.',
+    'Allies emerge.',
+    'New transformations begin.',
+    'The story evolves.',
+    'Acceptance occurs.',
+    'Lessons are learned.',
+  ],
+  pact: [
+    'The pact is made.',
+    'Terms are tested.',
+    'Benefits emerge.',
+    'Costs become apparent.',
+    'The pact deepens.',
+    'Regret grows.',
+    'Breaking the pact proves difficult.',
+    'Consequences follow.',
+    'The pact-maker reflects.',
+    'Allies emerge.',
+    'New pacts are made.',
+    'The story evolves.',
+    'Redemption occurs.',
+    'Lessons are learned.',
+  ],
+  rift: [
+    'The rift opens.',
+    'Reality warps.',
+    'Creatures emerge.',
+    'The rift expands.',
+    'Control becomes difficult.',
+    'Closing the rift proves hard.',
+    'Consequences follow.',
+    'The rift closes.',
+    'Reality stabilizes.',
+    'Lessons are learned.',
+    'The story continues.',
+    'New rifts open.',
+    'Survivors reflect.',
+    'Allies emerge.',
+  ],
+  awakening: [
+    'Power manifests.',
+    'The awakened adapts.',
+    'Others sense the change.',
+    'Control becomes difficult.',
+    'The awakening progresses.',
+    'Responsibilities emerge.',
+    'The full awakening occurs.',
+    'Consequences follow.',
+    'The awakened reflects.',
+    'Allies emerge.',
+    'New awakenings begin.',
+    'The story evolves.',
+    'Mastery occurs.',
+    'Lessons are learned.',
+  ],
+};
+
 export type StoryType =
   // === CONFLICT STORIES ===
   | 'hunt'           // Party pursuing a threat
@@ -96,6 +838,21 @@ export interface StoryThread {
   potentialOutcomes: string[]; // Ways this might end
   resolved: boolean;
   resolution?: string;
+
+  // Enhanced context for richer storytelling (backwards compatible)
+  context?: {
+    actorRelationships?: string[]; // e.g., ["John hates Mary", "Sarah is Mary's sister"]
+    keyLocations?: string[]; // Specific places mentioned in the story
+    themes?: string[]; // e.g., ["revenge", "redemption", "betrayal"]
+    motivations?: Record<string, string>; // Actor -> their personal stake
+  };
+
+  // Branching narrative state (backwards compatible)
+  branchingState?: {
+    path?: string; // Current narrative branch taken
+    choices?: string[]; // Available next steps (for future AI/player choice)
+    variables?: Record<string, any>; // Story-specific state
+  };
 }
 
 export interface StoryBeat {
@@ -823,14 +1580,39 @@ export function generateStoryThread(
 
   // Generate title
   let title = rng.pick(template.titles);
-  // Replace first %ACTOR% with first actor, second with second actor
-  title = title.replace('%ACTOR%', actors[0] ?? 'Someone');
-  title = title.replace('%ACTOR%', actors[1] ?? actors[0] ?? 'Someone');
+
+  // Replace placeholders with proper handling to avoid double articles
+  if (actors[0]) {
+    // For first actor, avoid "The The Name" by checking if name starts with "The"
+    let actorName = actors[0];
+    title = title.replace('%ACTOR%', actorName);
+  } else {
+    title = title.replace('%ACTOR%', 'Someone');
+  }
+
+  if (actors[1]) {
+    // For second actor, same logic
+    let actorName = actors[1];
+    title = title.replace('%ACTOR%', actorName);
+  } else if (actors[0]) {
+    // If no second actor, replace remaining %ACTOR% with first actor
+    title = title.replace('%ACTOR%', actors[0]);
+  } else {
+    title = title.replace('%ACTOR%', 'Someone');
+  }
+
   title = title.replace('%LOCATION%', location);
+
+  // Clean up any remaining double articles
+  title = title.replace(/\bThe The\b/g, 'The');
 
   // Generate summary
   const summaryOptions = template.summaries(actors, location);
   const summary = rng.pick(summaryOptions);
+
+  // Build enhanced context for richer storytelling
+  const context = buildStoryContext(rng, type, actors, location, worldTime);
+  const branchingState = initializeBranchingState(rng, type);
 
   return {
     id: `story-${Date.now()}-${rng.int(10000)}`,
@@ -852,7 +1634,218 @@ export function generateStoryThread(
     ],
     potentialOutcomes: template.outcomes,
     resolved: false,
+    context,
+    branchingState,
   };
+}
+
+// Build contextual information for richer storytelling
+function buildStoryContext(
+  rng: Random,
+  type: StoryType,
+  actors: string[],
+  location: string,
+  worldTime: Date,
+): StoryThread['context'] {
+  const context: NonNullable<StoryThread['context']> = {
+    actorRelationships: [],
+    keyLocations: [],
+    themes: [],
+    motivations: {},
+  };
+
+  // Extract themes based on story type
+  const themeMap: Partial<Record<StoryType, string[]>> = {
+    hunt: ['pursuit', 'survival', 'justice'],
+    feud: ['conflict', 'honor', 'rivalry'],
+    revenge: ['vengeance', 'justice', 'obsession'],
+    war: ['conquest', 'survival', 'glory'],
+    siege: ['endurance', 'strategy', 'desperation'],
+    rebellion: ['freedom', 'justice', 'change'],
+    duel: ['honor', 'skill', 'resolution'],
+    raid: ['greed', 'surprise', 'destruction'],
+    mystery: ['discovery', 'truth', 'danger'],
+    treasure: ['wealth', 'adventure', 'greed'],
+    prophecy: ['fate', 'belief', 'destiny'],
+    expedition: ['exploration', 'discovery', 'courage'],
+    artifact: ['power', 'knowledge', 'danger'],
+    'lost-heir': ['identity', 'inheritance', 'legitimacy'],
+    'ancient-evil': ['corruption', 'salvation', 'doom'],
+    romance: ['love', 'passion', 'heartbreak'],
+    rise: ['ambition', 'success', 'power'],
+    fall: ['hubris', 'failure', 'redemption'],
+    scandal: ['shame', 'reputation', 'deception'],
+    betrayal: ['trust', 'treachery', 'revenge'],
+    succession: ['power', 'legitimacy', 'ambition'],
+    exile: ['banishment', 'redemption', 'survival'],
+    redemption: ['forgiveness', 'atonement', 'change'],
+    rescue: ['heroism', 'urgency', 'sacrifice'],
+    plague: ['suffering', 'healing', 'fear'],
+    famine: ['scarcity', 'survival', 'community'],
+    migration: ['journey', 'hope', 'adaptation'],
+    sanctuary: ['protection', 'refuge', 'threat'],
+    curse: ['affliction', 'breaking', 'suffering'],
+    'hunt-survival': ['pursuit', 'evasion', 'survival'],
+    conspiracy: ['deception', 'plot', 'exposure'],
+    heist: ['theft', 'skill', 'risk'],
+    infiltration: ['deception', 'espionage', 'discovery'],
+    blackmail: ['secrets', 'power', 'extortion'],
+    imposter: ['deception', 'identity', 'exposure'],
+    cult: ['belief', 'devotion', 'manipulation'],
+    haunting: ['supernatural', 'torment', 'release'],
+    possession: ['control', 'struggle', 'exorcism'],
+    transformation: ['change', 'identity', 'acceptance'],
+    pact: ['bargain', 'power', 'consequences'],
+    rift: ['reality', 'chaos', 'closure'],
+    awakening: ['power', 'responsibility', 'control'],
+  };
+
+  // Pick 1-3 themes for this story
+  const availableThemes = themeMap[type] || ['conflict'];
+  const numThemes = Math.min(rng.int(3) + 1, availableThemes.length);
+  context.themes = [];
+  const shuffledThemes = rng.shuffle(availableThemes);
+  for (let i = 0; i < numThemes; i++) {
+    context.themes.push(shuffledThemes[i]);
+  }
+
+  // Generate actor motivations
+  for (const actor of actors) {
+    const motivationTemplates = [
+      'seeks power and influence',
+      'driven by personal vendetta',
+      'motivated by duty and honor',
+      'seeks wealth and riches',
+      'driven by curiosity and discovery',
+      'motivated by love and protection',
+      'seeks justice and righteousness',
+      'driven by ambition and status',
+      'motivated by fear and survival',
+      'seeks knowledge and wisdom',
+    ];
+    context.motivations![actor] = rng.pick(motivationTemplates);
+  }
+
+  // Add key locations
+  context.keyLocations = [location];
+  if (rng.chance(0.3)) context.keyLocations.push(rng.pick(['ancient ruins', 'hidden grove', 'abandoned tower', 'sacred temple', 'forgotten crypt']));
+
+  // Add actor relationships (if multiple actors)
+  if (actors.length >= 2 && actors[0] && actors[1]) {
+    const relationshipTemplates = [
+      `${actors[0]} and ${actors[1]} were once allies`,
+      `${actors[0]} betrayed ${actors[1]} in the past`,
+      `${actors[0]} is ${actors[1]}'s rival`,
+      `${actors[0]} owes ${actors[1]} a debt`,
+      `${actors[0]} and ${actors[1]} share a common enemy`,
+      `${actors[0]} is jealous of ${actors[1]}`,
+      `${actors[0]} mentors ${actors[1]}`,
+      `${actors[0]} and ${actors[1]} are family`,
+    ];
+    if (rng.chance(0.6)) {
+      context.actorRelationships!.push(rng.pick(relationshipTemplates));
+    }
+  }
+
+  return context;
+}
+
+// Initialize branching narrative state
+function initializeBranchingState(rng: Random, type: StoryType): StoryThread['branchingState'] {
+  // For now, start with basic branching potential
+  // Future enhancement: more complex branching based on story type
+  const choices: string[] = [];
+
+  if (type === 'revenge') {
+    choices.push('pursue direct confrontation', 'use deception and allies', 'seek magical aid');
+  } else if (type === 'mystery') {
+    choices.push('follow the evidence trail', 'consult local experts', 'risk dangerous shortcuts');
+  } else if (type === 'war') {
+    choices.push('focus on defense', 'launch preemptive strikes', 'seek diplomatic solutions');
+  }
+
+  return {
+    path: 'main',
+    choices: choices.length > 0 ? choices : undefined,
+    variables: {},
+  };
+}
+
+// Generate contextual progression beats using story context
+function generateContextualBeat(rng: Random, story: StoryThread, worldTime: Date): string {
+  const context = story.context;
+  const actors = story.actors;
+  const location = story.location;
+  const type = story.type;
+
+  // Start with generic beats
+  let beat = rng.pick(PROGRESSION_BEATS[story.type] ?? PROGRESSION_BEATS.mystery);
+
+  // Enhance with context if available
+  if (context) {
+    // Replace generic terms with specific actor names
+    if (actors.length > 0) {
+      // Replace hunter/pursuer terms with first actor
+      beat = beat.replace(/\bhunter\b|\bhunters\b|\bavenger\b|\bpursuer\b/gi, actors[0]);
+      beat = beat.replace(/\bseeker\b|\bseekers\b|\bexplorer\b|\bexplorers\b/gi, actors[0]);
+
+      if (actors.length > 1) {
+        // Replace target/enemy terms with second actor
+        beat = beat.replace(/\btarget\b|\benemy\b|\bfoe\b|\bquarry\b/gi, actors[1]);
+        beat = beat.replace(/\brival\b|\brivals\b|\bcompetitor\b|\bcompetitors\b/gi, actors[1]);
+      }
+    }
+
+    // Add location-specific details
+    if (context.keyLocations && context.keyLocations.length > 1) {
+      const secondaryLocation = context.keyLocations.find(loc => loc !== location);
+      if (secondaryLocation && rng.chance(0.3)) {
+        beat = beat.replace(/area|region|territory/gi, secondaryLocation);
+      }
+    }
+
+    // Add motivation-driven details
+    if (context.motivations && Object.keys(context.motivations).length > 0) {
+      const motivations = Object.values(context.motivations);
+      if (rng.chance(0.2)) {
+        const motivation = rng.pick(motivations);
+        // Make sure we have an actor to reference
+        if (actors[0]) {
+          beat += ` ${actors[0]} remains ${motivation}.`;
+        }
+      }
+    }
+
+    // Add theme-appropriate embellishments
+    if (context.themes && context.themes.length > 0) {
+      const theme = rng.pick(context.themes);
+      if (rng.chance(0.15)) {
+        const embellishments = {
+          revenge: 'The cycle of vengeance continues.',
+          justice: 'Justice demands its due.',
+          power: 'Power shifts in subtle ways.',
+          discovery: 'Secrets begin to surface.',
+          betrayal: 'Trust proves fragile.',
+          redemption: 'Paths to redemption emerge.',
+          corruption: 'Darkness spreads its influence.',
+          salvation: 'Hope flickers in the darkness.',
+        };
+        if (embellishments[theme as keyof typeof embellishments]) {
+          beat += ` ${embellishments[theme as keyof typeof embellishments]}`;
+        }
+      }
+    }
+
+    // Add relationship-driven details
+    if (context.actorRelationships && context.actorRelationships.length > 0 && rng.chance(0.1)) {
+      const relationship = rng.pick(context.actorRelationships);
+      if (relationship && relationship.trim()) {
+        beat += ` ${relationship}, complicating matters.`;
+      }
+    }
+  }
+
+  return beat;
 }
 
 // Add a beat to an existing story
@@ -1265,279 +2258,9 @@ export function tickStories(
     const daysSinceUpdate = (worldTime.getTime() - lastUpdated.getTime()) / (24 * 60 * 60 * 1000);
     if (daysSinceUpdate >= 1 && rng.chance(0.2)) {
       // Something happens in this story
-      const PROGRESSION_BEATS: Record<StoryType, string[]> = {
-        // CONFLICT
-        hunt: [
-          'Tracks are found. The quarry draws near.',
-          'A witness points the way.',
-          'The hunter\'s patience wears thin.',
-          'The quarry leaves a taunt. It\'s personal now.',
-        ],
-        feud: [
-          'Harsh words are exchanged publicly.',
-          'An ally is subverted.',
-          'Blood is spilled in a back alley.',
-          'Neutral parties are forced to choose sides.',
-        ],
-        revenge: [
-          'The avenger moves closer.',
-          'Old alliances are tested.',
-          'The weight of vengeance grows heavier.',
-          'The target learns they are being hunted.',
-        ],
-        war: [
-          'Skirmishes break out along the border.',
-          'Diplomatic options narrow.',
-          'The drums beat louder.',
-          'Mercenaries arrive, choosing sides.',
-        ],
-        siege: [
-          'Supplies inside the walls dwindle.',
-          'A sortie attempts to break the ring.',
-          'Disease spreads among the besieged.',
-          'Siege engines are brought into position.',
-        ],
-        rebellion: [
-          'Another village joins the uprising.',
-          'The authorities respond with force.',
-          'A charismatic leader emerges.',
-          'Nobles flee the region.',
-        ],
-        duel: [
-          'Seconds negotiate the terms.',
-          'One party attempts reconciliation.',
-          'Rumors spread about the coming fight.',
-          'Spectators gather to witness.',
-        ],
-        raid: [
-          'Scouts report enemy movements.',
-          'Defenses are hastily reinforced.',
-          'Fires on the horizon approach.',
-          'Refugees flee ahead of the raiders.',
-        ],
 
-        // DISCOVERY
-        mystery: [
-          'A new clue surfaces.',
-          'Someone who knew too much falls silent.',
-          'The pattern becomes clearer—and more disturbing.',
-          'An old document reveals a connection.',
-        ],
-        treasure: [
-          'A rival expedition sets out.',
-          'The map proves partially false.',
-          'Greed begins to poison the company.',
-          'Guardians of the treasure awaken.',
-        ],
-        prophecy: [
-          'Another sign manifests.',
-          'Believers grow in number.',
-          'The skeptics fall silent.',
-          'Those who would prevent the prophecy act.',
-        ],
-        expedition: [
-          'The terrain becomes impassable.',
-          'Strange landmarks appear as described.',
-          'Supplies run dangerously low.',
-          'Contact with home is lost.',
-        ],
-        artifact: [
-          'A fragment of the artifact is found.',
-          'Another seeker enters the race.',
-          'The artifact\'s location is narrowed down.',
-          'Visions reveal the artifact\'s power.',
-        ],
-        'lost-heir': [
-          'Evidence of the bloodline surfaces.',
-          'Enemies of the heir move to suppress the claim.',
-          'The heir learns fragments of their history.',
-          'Old servants remember the true lineage.',
-        ],
-        'ancient-evil': [
-          'Tremors shake the earth.',
-          'Animals flee the area.',
-          'The seals show signs of weakening.',
-          'Dreams of darkness plague the populace.',
-        ],
-        portal: [
-          'Strange creatures emerge.',
-          'The portal fluctuates in stability.',
-          'Communication across the threshold begins.',
-          'The other side sends an emissary.',
-        ],
-
-        // SOCIAL
-        romance: [
-          'A secret meeting is arranged.',
-          'Jealousy rears its head.',
-          'Families object to the union.',
-          'A rival for affection appears.',
-        ],
-        rise: [
-          'Another triumph adds to the legend.',
-          'Enemies begin to take notice.',
-          'The price of success becomes apparent.',
-          'Old allies are left behind.',
-        ],
-        fall: [
-          'Another supporter abandons ship.',
-          'Debts come due.',
-          'The vultures circle lower.',
-          'Former rivals offer hollow sympathy.',
-        ],
-        scandal: [
-          'Whispers become open conversation.',
-          'Evidence surfaces—real or fabricated.',
-          'Allies distance themselves.',
-          'Public condemnation begins.',
-        ],
-        betrayal: [
-          'Small inconsistencies are noticed.',
-          'The betrayer grows bolder.',
-          'Suspicion falls on the wrong person.',
-          'The moment of truth approaches.',
-        ],
-        succession: [
-          'Alliances form behind each claimant.',
-          'Legal scholars debate legitimacy.',
-          'Gold changes hands to buy support.',
-          'Assassination attempts multiply.',
-        ],
-        exile: [
-          'The exile finds temporary shelter.',
-          'Messages from home bring mixed news.',
-          'The exile\'s skills prove valuable abroad.',
-          'Plots to return home form.',
-        ],
-        redemption: [
-          'A small act of kindness is noted.',
-          'Old victims are confronted.',
-          'The path proves harder than expected.',
-          'A test of true change arrives.',
-        ],
-
-        // SURVIVAL
-        rescue: [
-          'A ransom demand arrives.',
-          'A rescue attempt fails.',
-          'Hope dwindles with each passing day.',
-          'The captive sends a secret message.',
-        ],
-        plague: [
-          'The sickness spreads.',
-          'A cure is rumored.',
-          'Quarantines prove inadequate.',
-          'The source of the plague is suspected.',
-        ],
-        famine: [
-          'Rations are cut again.',
-          'Hoarding is punished severely.',
-          'The desperate turn to crime.',
-          'Relief supplies are diverted.',
-        ],
-        migration: [
-          'The column stretches for miles.',
-          'Local populations react with fear.',
-          'Resources along the route are exhausted.',
-          'Splinter groups break away.',
-        ],
-        sanctuary: [
-          'The defenses are tested.',
-          'Supplies begin to run low.',
-          'Tension rises between refugees.',
-          'A spy is suspected within.',
-        ],
-        curse: [
-          'The symptoms worsen.',
-          'Potential cures prove false.',
-          'The origin of the curse is revealed.',
-          'The price of lifting the curse becomes clear.',
-        ],
-        'hunt-survival': [
-          'Another narrow escape.',
-          'Pursuers gain ground.',
-          'A potential ally proves false.',
-          'Exhaustion takes its toll.',
-        ],
-
-        // INTRIGUE
-        conspiracy: [
-          'Another connection is discovered.',
-          'A conspirator is identified.',
-          'The scope proves larger than imagined.',
-          'Counter-surveillance is detected.',
-        ],
-        heist: [
-          'The plan hits an unexpected snag.',
-          'A crew member gets cold feet.',
-          'Security is tighter than expected.',
-          'The inside contact proves unreliable.',
-        ],
-        infiltration: [
-          'The spy narrows the suspects.',
-          'False accusations fly.',
-          'Trust erodes among allies.',
-          'The spy grows careless.',
-        ],
-        blackmail: [
-          'Another payment is demanded.',
-          'Evidence of the threat surfaces.',
-          'The victim considers confession.',
-          'A third party learns the secret.',
-        ],
-        imposter: [
-          'A small detail doesn\'t match.',
-          'Someone who knew the real person arrives.',
-          'The imposter makes a critical error.',
-          'The truth becomes impossible to ignore.',
-        ],
-        cult: [
-          'New converts are recruited.',
-          'Disturbing rituals are witnessed.',
-          'The cult\'s true goal becomes clearer.',
-          'Members in high places are revealed.',
-        ],
-
-        // SUPERNATURAL
-        haunting: [
-          'The manifestations intensify.',
-          'The ghost\'s identity is learned.',
-          'Physical harm begins to occur.',
-          'The unfinished business is understood.',
-        ],
-        possession: [
-          'The changes become more obvious.',
-          'Loved ones notice something wrong.',
-          'The possessor\'s goal becomes clear.',
-          'Control slips in moments of stress.',
-        ],
-        transformation: [
-          'The changes spread.',
-          'Control becomes more difficult.',
-          'Others react with fear.',
-          'The transformation offers unexpected benefits.',
-        ],
-        pact: [
-          'The terms are tested.',
-          'The other party demands more.',
-          'Escape clauses prove illusory.',
-          'The final payment approaches.',
-        ],
-        rift: [
-          'The rift widens.',
-          'Strange laws of physics apply near the tear.',
-          'Something on the other side notices.',
-          'Reality warps in unpredictable ways.',
-        ],
-        awakening: [
-          'The power manifests unexpectedly.',
-          'Others sense the awakening.',
-          'Control proves difficult.',
-          'The source of the power is revealed.',
-        ],
-      };
-
-      const beat = rng.pick(PROGRESSION_BEATS[story.type] ?? PROGRESSION_BEATS.mystery);
+      // Use contextual or generic progression beats
+      const beat = generateContextualBeat(rng, story, worldTime);
       addStoryBeat(story, beat, 1, worldTime);
 
       logs.push({

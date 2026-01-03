@@ -15,6 +15,8 @@ function loadConfig() {
   const hourTurns = 6;
   const dayHours = 24;
   const startWorldTime = process.env.SIM_START_WORLD_TIME && !Number.isNaN(Date.parse(process.env.SIM_START_WORLD_TIME)) ? new Date(process.env.SIM_START_WORLD_TIME) : new Date;
+  const batchDaysEnv = process.env.SIM_BATCH_DAYS;
+  const batchDays = batchDaysEnv ? parseNumber(batchDaysEnv, 0) : null;
   return {
     timeScale,
     msPerWorldMinute,
@@ -25,7 +27,8 @@ function loadConfig() {
     seed: process.env.SIM_SEED ?? "default-seed",
     startWorldTime,
     catchUp: process.env.SIM_CATCH_UP !== "false",
-    catchUpSpeed: parseNumber(process.env.SIM_CATCH_UP_SPEED, 10)
+    catchUpSpeed: parseNumber(process.env.SIM_CATCH_UP_SPEED, 10),
+    batchDays
   };
 }
 var config = loadConfig();
@@ -13254,10 +13257,36 @@ function resolveFactionAction(faction, action, targetLocation, world, rng, world
   const logs = [];
   switch (action) {
     case "patrol": {
+      const patrolPhrases = {
+        martial: [
+          `Armed members of ${faction.name} now patrol the roads${targetLocation ? ` near ${targetLocation}` : ""}.`,
+          `${faction.name} deploys additional troops to secure trade routes${targetLocation ? ` around ${targetLocation}` : ""}.`,
+          `Warriors from ${faction.name} stand guard along the highways${targetLocation ? ` near ${targetLocation}` : ""}.`,
+          `${faction.name} establishes checkpoints to deter bandits${targetLocation ? ` around ${targetLocation}` : ""}.`
+        ],
+        pious: [
+          `Devout members of ${faction.name} now walk the roads in prayer${targetLocation ? ` near ${targetLocation}` : ""}.`,
+          `${faction.name} blesses travelers and watches for signs of corruption${targetLocation ? ` around ${targetLocation}` : ""}.`,
+          `Pilgrims from ${faction.name} patrol the sacred paths${targetLocation ? ` near ${targetLocation}` : ""}.`,
+          `${faction.name} sends holy warriors to protect the faithful${targetLocation ? ` around ${targetLocation}` : ""}.`
+        ],
+        trade: [
+          `Mercantile guards from ${faction.name} now protect the roads${targetLocation ? ` near ${targetLocation}` : ""}.`,
+          `${faction.name} hires additional caravan escorts for safety${targetLocation ? ` around ${targetLocation}` : ""}.`,
+          `Traders from ${faction.name} organize mutual protection pacts${targetLocation ? ` near ${targetLocation}` : ""}.`,
+          `${faction.name} establishes toll stations to fund road security${targetLocation ? ` around ${targetLocation}` : ""}.`
+        ],
+        arcane: [
+          `Mystical wards from ${faction.name} now protect the roads${targetLocation ? ` near ${targetLocation}` : ""}.`,
+          `${faction.name} summons guardians to watch over travelers${targetLocation ? ` around ${targetLocation}` : ""}.`,
+          `Arcane sentinels from ${faction.name} patrol the pathways${targetLocation ? ` near ${targetLocation}` : ""}.`,
+          `${faction.name} enchants the roads against unlawful passage${targetLocation ? ` around ${targetLocation}` : ""}.`
+        ]
+      };
       logs.push({
         category: "faction",
         summary: `${faction.name} increases patrols`,
-        details: `Armed members of ${faction.name} now walk the roads${targetLocation ? ` near ${targetLocation}` : ""}.`,
+        details: rng.pick(patrolPhrases[faction.focus] || patrolPhrases.martial),
         location: targetLocation,
         actors: [faction.name],
         worldTime,
@@ -13272,10 +13301,36 @@ function resolveFactionAction(faction, action, targetLocation, world, rng, world
     }
     case "retaliate": {
       const targetName = targetLocation ?? "their enemies";
+      const retributionPhrases = {
+        martial: [
+          `${faction.name} marshals troops for vengeance against ${targetName}.`,
+          `Warriors of ${faction.name} prepare a punitive expedition against ${targetName}.`,
+          `${faction.name} declares a blood feud against ${targetName}.`,
+          `The ${faction.focus} faction raises arms for retribution against ${targetName}.`
+        ],
+        pious: [
+          `${faction.name} calls for divine justice against ${targetName}.`,
+          `Holy warriors of ${faction.name} prepare to smite ${targetName}.`,
+          `${faction.name} declares a crusade against the wickedness of ${targetName}.`,
+          `The ${faction.focus} faction marshals the faithful against ${targetName}.`
+        ],
+        trade: [
+          `${faction.name} organizes a trade embargo against ${targetName}.`,
+          `Mercantile houses of ${faction.name} cut ties with ${targetName}.`,
+          `${faction.name} hires bounty hunters to pursue ${targetName}.`,
+          `The ${faction.focus} faction marshals economic power against ${targetName}.`
+        ],
+        arcane: [
+          `${faction.name} weaves curses against ${targetName}.`,
+          `Mages of ${faction.name} prepare mystical vengeance on ${targetName}.`,
+          `${faction.name} summons otherworldly allies against ${targetName}.`,
+          `The ${faction.focus} faction marshals arcane forces against ${targetName}.`
+        ]
+      };
       logs.push({
         category: "faction",
         summary: `${faction.name} seeks retribution`,
-        details: `The ${faction.focus} faction marshals resources for action against ${targetName}.`,
+        details: rng.pick(retributionPhrases[faction.focus] || retributionPhrases.martial),
         location: targetLocation,
         actors: [faction.name],
         worldTime,
@@ -13574,6 +13629,560 @@ function analyzeEventForConsequences(event, world, rng) {
 }
 
 // src/treasure.ts
+var COIN_VALUE = { cp: 0.01, sp: 0.1, ep: 0.5, gp: 1, pp: 5 };
+var TREASURE_TYPES = {
+  A: {
+    coins: {
+      cp: { chance: 0.25, dice: "1d6*1000" },
+      sp: { chance: 0.3, dice: "1d6*1000" },
+      ep: { chance: 0.2, dice: "1d4*1000" },
+      gp: { chance: 0.35, dice: "2d6*1000" },
+      pp: { chance: 0.25, dice: "1d2*1000" }
+    },
+    gems: { chance: 0.5, count: "6d6" },
+    jewelry: { chance: 0.5, count: "6d6" },
+    magic: { chance: 0.3, count: 3 },
+    isLair: true,
+    typicalValue: { min: 1e4, max: 50000 }
+  },
+  B: {
+    coins: {
+      cp: { chance: 0.5, dice: "1d8*1000" },
+      sp: { chance: 0.25, dice: "1d6*1000" },
+      ep: { chance: 0.25, dice: "1d4*1000" },
+      gp: { chance: 0.25, dice: "1d3*1000" }
+    },
+    gems: { chance: 0.25, count: "1d6" },
+    jewelry: { chance: 0.25, count: "1d6" },
+    magic: { chance: 0.1, count: 1, types: ["weapon", "armor"] },
+    isLair: true,
+    typicalValue: { min: 2000, max: 1e4 }
+  },
+  C: {
+    coins: {
+      cp: { chance: 0.2, dice: "1d12*1000" },
+      sp: { chance: 0.3, dice: "1d4*1000" },
+      ep: { chance: 0.1, dice: "1d4*1000" }
+    },
+    gems: { chance: 0.25, count: "1d4" },
+    jewelry: { chance: 0.25, count: "1d4" },
+    magic: { chance: 0.1, count: 2 },
+    isLair: true,
+    typicalValue: { min: 1000, max: 5000 }
+  },
+  D: {
+    coins: {
+      cp: { chance: 0.1, dice: "1d8*1000" },
+      sp: { chance: 0.15, dice: "1d12*1000" },
+      gp: { chance: 0.6, dice: "1d6*1000" }
+    },
+    gems: { chance: 0.3, count: "1d8" },
+    jewelry: { chance: 0.3, count: "1d8" },
+    magic: { chance: 0.15, count: 2, types: ["potion", "scroll"] },
+    isLair: true,
+    typicalValue: { min: 2000, max: 8000 }
+  },
+  E: {
+    coins: {
+      cp: { chance: 0.05, dice: "1d10*1000" },
+      sp: { chance: 0.3, dice: "1d12*1000" },
+      ep: { chance: 0.25, dice: "1d4*1000" },
+      gp: { chance: 0.25, dice: "1d8*1000" }
+    },
+    gems: { chance: 0.1, count: "1d10" },
+    jewelry: { chance: 0.1, count: "1d10" },
+    magic: { chance: 0.25, count: 3, types: ["scroll", "ring", "wand"] },
+    isLair: true,
+    typicalValue: { min: 3000, max: 12000 }
+  },
+  F: {
+    coins: {
+      sp: { chance: 0.1, dice: "2d10*1000" },
+      ep: { chance: 0.2, dice: "1d8*1000" },
+      gp: { chance: 0.45, dice: "1d12*1000" },
+      pp: { chance: 0.3, dice: "1d3*1000" }
+    },
+    gems: { chance: 0.2, count: "2d12" },
+    jewelry: { chance: 0.1, count: "1d12" },
+    magic: { chance: 0.3, count: 3, types: ["potion", "scroll", "weapon"] },
+    isLair: true,
+    typicalValue: { min: 5000, max: 25000 }
+  },
+  G: {
+    coins: {
+      gp: { chance: 0.75, dice: "10d4*1000" },
+      pp: { chance: 0.5, dice: "1d6*1000" }
+    },
+    gems: { chance: 0.25, count: "3d6" },
+    jewelry: { chance: 0.25, count: "1d10" },
+    magic: { chance: 0.35, count: 4, types: ["weapon", "armor", "misc"] },
+    isLair: true,
+    typicalValue: { min: 8000, max: 40000 }
+  },
+  H: {
+    coins: {
+      cp: { chance: 0.25, dice: "3d8*1000" },
+      sp: { chance: 0.5, dice: "1d100*1000" },
+      ep: { chance: 0.5, dice: "10d4*1000" },
+      gp: { chance: 0.5, dice: "10d6*1000" },
+      pp: { chance: 0.25, dice: "5d4*1000" }
+    },
+    gems: { chance: 0.5, count: "1d100" },
+    jewelry: { chance: 0.5, count: "10d4" },
+    magic: { chance: 0.15, count: 4 },
+    isLair: true,
+    typicalValue: { min: 25000, max: 1e5 }
+  },
+  I: {
+    gems: { chance: 0.5, count: "2d6" },
+    jewelry: { chance: 0.5, count: "2d6" },
+    magic: { chance: 0.15, count: 1 },
+    coins: {},
+    isLair: true,
+    typicalValue: { min: 1000, max: 5000 }
+  },
+  J: {
+    coins: { cp: { chance: 1, dice: "3d8" } },
+    isLair: false,
+    typicalValue: { min: 1, max: 3 }
+  },
+  K: {
+    coins: { sp: { chance: 1, dice: "3d6" } },
+    isLair: false,
+    typicalValue: { min: 1, max: 5 }
+  },
+  L: {
+    coins: { ep: { chance: 1, dice: "2d6" } },
+    isLair: false,
+    typicalValue: { min: 3, max: 10 }
+  },
+  M: {
+    coins: { gp: { chance: 1, dice: "2d4" } },
+    isLair: false,
+    typicalValue: { min: 2, max: 10 }
+  },
+  N: {
+    coins: { pp: { chance: 1, dice: "1d6" } },
+    isLair: false,
+    typicalValue: { min: 5, max: 30 }
+  },
+  O: {
+    coins: {
+      cp: { chance: 0.25, dice: "1d4*10" },
+      sp: { chance: 0.25, dice: "1d3*10" }
+    },
+    isLair: false,
+    typicalValue: { min: 5, max: 20 }
+  },
+  P: {
+    coins: {
+      cp: { chance: 0.3, dice: "4d6" },
+      sp: { chance: 0.3, dice: "3d6" },
+      ep: { chance: 0.1, dice: "2d6" }
+    },
+    isLair: false,
+    typicalValue: { min: 5, max: 25 }
+  },
+  Q: {
+    gems: { chance: 0.5, count: "1d4" },
+    coins: {},
+    isLair: false,
+    typicalValue: { min: 50, max: 200 }
+  },
+  R: {
+    coins: { gp: { chance: 0.4, dice: "2d6" } },
+    gems: { chance: 0.4, count: "1d4" },
+    jewelry: { chance: 0.5, count: "1d4" },
+    isLair: false,
+    typicalValue: { min: 100, max: 500 }
+  },
+  S: {
+    coins: {},
+    magic: { chance: 0.4, count: 1, types: ["potion"] },
+    isLair: false,
+    typicalValue: { min: 100, max: 300 }
+  },
+  T: {
+    coins: {},
+    magic: { chance: 0.5, count: 1, types: ["scroll"] },
+    isLair: false,
+    typicalValue: { min: 100, max: 500 }
+  },
+  U: {
+    coins: {},
+    gems: { chance: 0.1, count: "1d4" },
+    jewelry: { chance: 0.1, count: "1d4" },
+    magic: { chance: 0.7, count: 1 },
+    isLair: false,
+    typicalValue: { min: 500, max: 2000 }
+  },
+  V: {
+    coins: {},
+    magic: { chance: 0.85, count: 2 },
+    isLair: false,
+    typicalValue: { min: 1000, max: 5000 }
+  },
+  Nil: {
+    coins: {},
+    isLair: false,
+    typicalValue: { min: 0, max: 0 }
+  }
+};
+var WEAPON_NAMES = [
+  "Longsword",
+  "Shortsword",
+  "Greatsword",
+  "Battleaxe",
+  "Warhammer",
+  "Mace",
+  "Flail",
+  "Spear",
+  "Dagger",
+  "Bow",
+  "Crossbow",
+  "Halberd"
+];
+var WEAPON_PREFIXES = [
+  "Flaming",
+  "Frost",
+  "Lightning",
+  "Venomous",
+  "Holy",
+  "Unholy",
+  "Keen",
+  "Vorpal",
+  "Dancing",
+  "Defending",
+  "Disrupting",
+  "Seeking",
+  "Giant-Slaying",
+  "Dragon-Slaying",
+  "Undead-Bane",
+  "Orc-Cleaver"
+];
+var ARMOR_NAMES = [
+  "Chain Mail",
+  "Plate Mail",
+  "Shield",
+  "Leather Armor",
+  "Scale Mail",
+  "Banded Mail",
+  "Splint Mail",
+  "Helm",
+  "Gauntlets",
+  "Boots"
+];
+var ARMOR_PREFIXES = [
+  "Elven",
+  "Dwarven",
+  "Mithral",
+  "Adamantine",
+  "Ethereal",
+  "Reflecting",
+  "Resistance",
+  "Fortification",
+  "Shadow",
+  "Silent",
+  "Flying"
+];
+var POTION_TYPES = [
+  "Healing",
+  "Greater Healing",
+  "Supreme Healing",
+  "Giant Strength",
+  "Flying",
+  "Invisibility",
+  "Speed",
+  "Fire Resistance",
+  "Cold Resistance",
+  "Water Breathing",
+  "Gaseous Form",
+  "Diminution",
+  "Growth",
+  "Heroism",
+  "Clairvoyance",
+  "ESP",
+  "Longevity",
+  "Poison",
+  "Delusion"
+];
+var SCROLL_TYPES = [
+  "Fireball",
+  "Lightning Bolt",
+  "Dispel Magic",
+  "Protection from Evil",
+  "Invisibility",
+  "Fly",
+  "Haste",
+  "Slow",
+  "Polymorph",
+  "Teleport",
+  "Raise Dead",
+  "Remove Curse",
+  "Disintegrate",
+  "Meteor Swarm",
+  "Wish"
+];
+var RING_TYPES = [
+  "Protection",
+  "Invisibility",
+  "Fire Resistance",
+  "Spell Storing",
+  "Regeneration",
+  "Three Wishes",
+  "Telekinesis",
+  "X-Ray Vision",
+  "Water Walking",
+  "Feather Falling",
+  "Spell Turning",
+  "Free Action",
+  "Weakness",
+  "Contrariness"
+];
+var WAND_TYPES = [
+  "Magic Missiles",
+  "Lightning",
+  "Fire",
+  "Cold",
+  "Polymorph",
+  "Paralysis",
+  "Fear",
+  "Illusion",
+  "Enemy Detection",
+  "Secret Door Detection",
+  "Negation",
+  "Wonder"
+];
+var MISC_ITEMS = [
+  "Bag of Holding",
+  "Boots of Speed",
+  "Boots of Elvenkind",
+  "Cloak of Elvenkind",
+  "Cloak of Protection",
+  "Gauntlets of Ogre Power",
+  "Girdle of Giant Strength",
+  "Helm of Telepathy",
+  "Rope of Climbing",
+  "Portable Hole",
+  "Decanter of Endless Water",
+  "Eversmoking Bottle",
+  "Crystal Ball",
+  "Mirror of Life Trapping",
+  "Carpet of Flying",
+  "Broom of Flying",
+  "Figurine of Wondrous Power",
+  "Amulet of Proof Against Detection",
+  "Periapt of Health",
+  "Ioun Stone",
+  "Horn of Blasting",
+  "Drums of Panic",
+  "Pipes of the Sewers",
+  "Scarab of Protection",
+  "Medallion of ESP",
+  "Necklace of Fireballs",
+  "Cube of Force",
+  "Sphere of Annihilation",
+  "Deck of Many Things"
+];
+function rollDice(rng, notation) {
+  const match = notation.match(/(\d+)d(\d+)(?:\*(\d+))?/);
+  if (!match)
+    return 0;
+  const count = parseInt(match[1]);
+  const sides = parseInt(match[2]);
+  const multiplier = match[3] ? parseInt(match[3]) : 1;
+  let total = 0;
+  for (let i = 0;i < count; i++) {
+    total += 1 + rng.int(sides);
+  }
+  return total * multiplier;
+}
+function generateGemJewel(rng, type) {
+  const GEM_TYPES = [
+    { name: "agate", value: 10 },
+    { name: "quartz", value: 10 },
+    { name: "turquoise", value: 10 },
+    { name: "onyx", value: 50 },
+    { name: "amethyst", value: 100 },
+    { name: "garnet", value: 100 },
+    { name: "pearl", value: 100 },
+    { name: "jade", value: 100 },
+    { name: "aquamarine", value: 500 },
+    { name: "topaz", value: 500 },
+    { name: "opal", value: 1000 },
+    { name: "sapphire", value: 1000 },
+    { name: "emerald", value: 1000 },
+    { name: "ruby", value: 5000 },
+    { name: "diamond", value: 5000 },
+    { name: "star ruby", value: 1e4 }
+  ];
+  const JEWELRY_TYPES = [
+    { name: "silver ring", value: 100 },
+    { name: "gold ring", value: 200 },
+    { name: "silver bracelet", value: 200 },
+    { name: "gold bracelet", value: 500 },
+    { name: "silver necklace", value: 300 },
+    { name: "gold necklace", value: 1000 },
+    { name: "jeweled brooch", value: 500 },
+    { name: "platinum tiara", value: 2000 },
+    { name: "gem-encrusted crown", value: 5000 },
+    { name: "royal scepter", value: 1e4 }
+  ];
+  const choices = type === "gem" ? GEM_TYPES : JEWELRY_TYPES;
+  const choice = rng.pick(choices);
+  const variance = 0.5 + rng.next();
+  const value = Math.floor(choice.value * variance);
+  return {
+    id: `${type}-${Date.now()}-${rng.int(1e4)}`,
+    type,
+    description: type === "gem" ? `a ${choice.name}` : `a ${choice.name}`,
+    value
+  };
+}
+function generateMagicItem(rng, category, worldTime, location) {
+  if (!category) {
+    const categories = ["weapon", "armor", "potion", "scroll", "ring", "wand", "misc"];
+    category = rng.pick(categories);
+  }
+  let name;
+  let bonus;
+  let value;
+  let rarity;
+  let properties = [];
+  const cursed = rng.chance(0.05);
+  switch (category) {
+    case "weapon":
+      const weaponBase = rng.pick(WEAPON_NAMES);
+      bonus = rng.chance(0.5) ? 1 : rng.chance(0.7) ? 2 : rng.chance(0.85) ? 3 : rng.chance(0.95) ? 4 : 5;
+      if (rng.chance(0.3)) {
+        const prefix = rng.pick(WEAPON_PREFIXES);
+        name = `${prefix} ${weaponBase} +${bonus}`;
+        properties.push(prefix.toLowerCase());
+      } else {
+        name = `${weaponBase} +${bonus}`;
+      }
+      value = bonus * 1000 + (properties.length > 0 ? 2000 : 0);
+      rarity = bonus >= 4 ? "very-rare" : bonus >= 3 ? "rare" : bonus >= 2 ? "uncommon" : "common";
+      break;
+    case "armor":
+      const armorBase = rng.pick(ARMOR_NAMES);
+      bonus = rng.chance(0.6) ? 1 : rng.chance(0.8) ? 2 : rng.chance(0.95) ? 3 : 4;
+      if (rng.chance(0.25)) {
+        const prefix = rng.pick(ARMOR_PREFIXES);
+        name = `${prefix} ${armorBase} +${bonus}`;
+        properties.push(prefix.toLowerCase());
+      } else {
+        name = `${armorBase} +${bonus}`;
+      }
+      value = bonus * 1500 + (properties.length > 0 ? 3000 : 0);
+      rarity = bonus >= 3 ? "very-rare" : bonus >= 2 ? "rare" : "uncommon";
+      break;
+    case "potion":
+      const potionType = rng.pick(POTION_TYPES);
+      name = `Potion of ${potionType}`;
+      value = potionType.includes("Healing") ? 50 : potionType.includes("Greater") ? 150 : 300;
+      rarity = "common";
+      break;
+    case "scroll":
+      const scrollType = rng.pick(SCROLL_TYPES);
+      name = `Scroll of ${scrollType}`;
+      value = scrollType === "Wish" ? 25000 : scrollType === "Meteor Swarm" ? 5000 : scrollType === "Raise Dead" ? 3000 : 500;
+      rarity = scrollType === "Wish" ? "legendary" : scrollType.includes("Meteor") ? "very-rare" : "uncommon";
+      break;
+    case "ring":
+      const ringType = rng.pick(RING_TYPES);
+      name = `Ring of ${ringType}`;
+      value = ringType === "Three Wishes" ? 50000 : ringType === "Regeneration" ? 25000 : ringType === "Spell Turning" ? 15000 : 5000;
+      rarity = ringType === "Three Wishes" ? "legendary" : ringType === "Regeneration" ? "very-rare" : "rare";
+      break;
+    case "wand":
+      const wandType = rng.pick(WAND_TYPES);
+      name = `Wand of ${wandType}`;
+      value = 5000 + rng.int(5000);
+      rarity = "rare";
+      properties.push(`${10 + rng.int(20)} charges`);
+      break;
+    case "staff":
+      name = `Staff of ${rng.pick(["Power", "the Magi", "Healing", "Fire", "Frost", "Thunder"])}`;
+      value = 15000 + rng.int(15000);
+      rarity = "very-rare";
+      break;
+    case "rod":
+      name = `Rod of ${rng.pick(["Absorption", "Lordly Might", "Rulership", "Cancellation"])}`;
+      value = 20000 + rng.int(20000);
+      rarity = "very-rare";
+      break;
+    case "misc":
+    default:
+      name = rng.pick(MISC_ITEMS);
+      value = name.includes("Sphere") ? 50000 : name.includes("Deck") ? 30000 : name.includes("Crystal") ? 1e4 : 2000 + rng.int(3000);
+      rarity = name.includes("Sphere") || name.includes("Deck") ? "legendary" : name.includes("Crystal") ? "very-rare" : "rare";
+      break;
+  }
+  if (cursed) {
+    name = name.replace(/\+\d/, "-1");
+    properties.push("cursed");
+  }
+  return {
+    id: `magic-${Date.now()}-${rng.int(1e4)}`,
+    name,
+    category,
+    rarity,
+    bonus,
+    cursed,
+    identified: false,
+    value,
+    properties,
+    location: location ?? "unknown",
+    discoveredAt: worldTime
+  };
+}
+function generateTreasure(rng, treasureType, worldTime, location) {
+  const config2 = TREASURE_TYPES[treasureType];
+  const coins = { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
+  const gems = [];
+  const jewelry = [];
+  const magicItems = [];
+  for (const [coinType, coinConfig] of Object.entries(config2.coins)) {
+    if (coinConfig && rng.chance(coinConfig.chance)) {
+      coins[coinType] = rollDice(rng, coinConfig.dice);
+    }
+  }
+  if (config2.gems && rng.chance(config2.gems.chance)) {
+    const count = rollDice(rng, config2.gems.count);
+    for (let i = 0;i < count; i++) {
+      gems.push(generateGemJewel(rng, "gem"));
+    }
+  }
+  if (config2.jewelry && rng.chance(config2.jewelry.chance)) {
+    const count = rollDice(rng, config2.jewelry.count);
+    for (let i = 0;i < count; i++) {
+      jewelry.push(generateGemJewel(rng, "jewelry"));
+    }
+  }
+  if (config2.magic && rng.chance(config2.magic.chance)) {
+    for (let i = 0;i < config2.magic.count; i++) {
+      const category = config2.magic.types ? rng.pick(config2.magic.types) : undefined;
+      magicItems.push(generateMagicItem(rng, category, worldTime, location));
+    }
+  }
+  let totalGoldValue = 0;
+  for (const [coinType, count] of Object.entries(coins)) {
+    totalGoldValue += count * COIN_VALUE[coinType];
+  }
+  totalGoldValue += gems.reduce((sum, g) => sum + g.value, 0);
+  totalGoldValue += jewelry.reduce((sum, j) => sum + j.value, 0);
+  totalGoldValue += magicItems.reduce((sum, m) => sum + m.value, 0);
+  return {
+    coins,
+    totalGoldValue: Math.floor(totalGoldValue),
+    gems,
+    jewelry,
+    magicItems,
+    isHoard: config2.isLair,
+    treasureType
+  };
+}
 var COIN_WEIGHT = 0.1;
 var GEM_WEIGHT = 1;
 var JEWELRY_WEIGHT = 10;
@@ -13594,6 +14203,18 @@ function getTripTime(dungeonRooms, terrain) {
   const baseHours = Math.max(1, Math.ceil(dungeonRooms / 4));
   const terrainMod = terrain === "swamp" ? 1.5 : terrain === "mountains" ? 1.3 : terrain === "forest" ? 1.1 : 1;
   return Math.ceil(baseHours * 2 * terrainMod);
+}
+function calculateHoardWeight(treasure) {
+  let weight = 0;
+  for (const [coinType, count] of Object.entries(treasure.coins)) {
+    weight += count * COIN_WEIGHT;
+  }
+  weight += treasure.gems.length * GEM_WEIGHT;
+  weight += treasure.jewelry.length * JEWELRY_WEIGHT;
+  for (const item of treasure.magicItems) {
+    weight += MAGIC_ITEM_WEIGHT[item.category] ?? 20;
+  }
+  return weight;
 }
 function prioritizeLoad(extraction, magicItems, capacity) {
   const load = {
@@ -13657,6 +14278,173 @@ function createTreasureState() {
     recentInfluxes: [],
     activeExtractions: []
   };
+}
+function discoverTreasure(rng, treasureType, location, discoveredBy, treasureState, world, worldTime) {
+  const logs = [];
+  const treasure = generateTreasure(rng, treasureType, worldTime, location);
+  if (treasure.totalGoldValue === 0 && treasure.magicItems.length === 0) {
+    return logs;
+  }
+  const totalWeight = calculateHoardWeight(treasure);
+  const party = world.parties.find((p) => p.name === discoveredBy);
+  const partySize = party?.members?.length ?? 4;
+  const carryCapacity = partySize * CARRY_CAPACITY_PER_MEMBER;
+  const hoard = {
+    id: `hoard-${Date.now()}`,
+    location,
+    discoveredBy,
+    discoveredAt: worldTime,
+    totalValue: treasure.totalGoldValue,
+    magicItems: treasure.magicItems.map((m) => m.id),
+    liquidated: false,
+    percentSpent: 0
+  };
+  treasureState.discoveredHoards.push(hoard);
+  for (const item of treasure.magicItems) {
+    item.discoveredBy = discoveredBy;
+    item.location = location;
+    treasureState.circulatingMagicItems.push(item);
+  }
+  let details = "";
+  if (treasure.coins.gp > 0 || treasure.coins.pp > 0) {
+    const gpDesc = treasure.coins.gp > 0 ? `${treasure.coins.gp.toLocaleString()} gold` : "";
+    const ppDesc = treasure.coins.pp > 0 ? `${treasure.coins.pp.toLocaleString()} platinum` : "";
+    details += [gpDesc, ppDesc].filter(Boolean).join(" and ") + ". ";
+  }
+  if (treasure.gems.length > 0) {
+    details += `${treasure.gems.length} gems. `;
+  }
+  if (treasure.jewelry.length > 0) {
+    details += `${treasure.jewelry.length} pieces of jewelry. `;
+  }
+  const tripsNeeded = Math.ceil(totalWeight / carryCapacity);
+  const dungeon = world.dungeons.find((d) => d.name === location);
+  const dungeonDepth = dungeon?.rooms?.length ?? 12;
+  const tripHours = getTripTime(dungeonDepth, "hills");
+  if (tripsNeeded <= 1 && totalWeight <= carryCapacity) {
+    logs.push({
+      category: "dungeon",
+      summary: `${discoveredBy} discovers and claims a cache worth ${treasure.totalGoldValue.toLocaleString()} gold`,
+      details: `${details.trim()} Light enough to carry out immediately.`,
+      location,
+      actors: [discoveredBy],
+      worldTime,
+      realTime: new Date,
+      seed: world.seed
+    });
+    for (const item of treasure.magicItems) {
+      item.ownerId = discoveredBy;
+    }
+    if (treasure.totalGoldValue >= 500) {
+      queueConsequence({
+        type: "treasure-influx",
+        triggerEvent: `${discoveredBy} brings treasure to market`,
+        turnsUntilResolution: 24 + rng.int(72),
+        data: { amount: treasure.totalGoldValue, hoardId: hoard.id, location, discoveredBy },
+        priority: 3
+      });
+    }
+  } else {
+    const extraction = {
+      id: `extraction-${Date.now()}`,
+      hoardId: hoard.id,
+      location,
+      extractingParty: discoveredBy,
+      remainingCoins: { ...treasure.coins },
+      remainingGems: treasure.gems.length,
+      remainingJewelry: treasure.jewelry.length,
+      remainingMagicItems: treasure.magicItems.map((m) => m.id),
+      totalWeight,
+      extractedWeight: 0,
+      tripsCompleted: 0,
+      estimatedTripsRemaining: tripsNeeded,
+      startedAt: worldTime,
+      currentLoad: { coins: { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 }, gems: 0, jewelry: 0, magicItems: [], weight: 0 },
+      abandoned: false,
+      completed: false
+    };
+    extraction.currentLoad = prioritizeLoad(extraction, treasureState.circulatingMagicItems, carryCapacity);
+    extraction.nextTripCompletes = new Date(worldTime.getTime() + tripHours * 60 * 60 * 1000);
+    treasureState.activeExtractions.push(extraction);
+    const hoursTotal = tripsNeeded * tripHours;
+    const daysApprox = Math.round(hoursTotal / 24 * 10) / 10;
+    logs.push({
+      category: "dungeon",
+      summary: `${discoveredBy} discovers a massive hoard worth ${treasure.totalGoldValue.toLocaleString()} gold!`,
+      details: `${details.trim()} The hoard weighs ${Math.floor(totalWeight).toLocaleString()} cn. It will take approximately ${tripsNeeded} trips over ${daysApprox} days to extract.`,
+      location,
+      actors: [discoveredBy],
+      worldTime,
+      realTime: new Date,
+      seed: world.seed
+    });
+    if (treasure.coins.cp > 1000) {
+      logs.push({
+        category: "dungeon",
+        summary: `${discoveredBy} prioritizes valuable items`,
+        details: `The ${treasure.coins.cp.toLocaleString()} copper pieces may be left for later... or never. Platinum, gems, and magic items go first.`,
+        location,
+        actors: [discoveredBy],
+        worldTime,
+        realTime: new Date,
+        seed: world.seed
+      });
+    }
+  }
+  for (const item of treasure.magicItems) {
+    if (item.rarity === "rare" || item.rarity === "very-rare" || item.rarity === "legendary") {
+      logs.push({
+        category: "dungeon",
+        summary: `${discoveredBy} finds ${item.name}`,
+        details: item.rarity === "legendary" ? `A legendary item of incredible power! Word of this will spread far.` : `A ${item.rarity} magic item worth approximately ${item.value.toLocaleString()} gold.`,
+        location,
+        actors: [discoveredBy],
+        worldTime,
+        realTime: new Date,
+        seed: world.seed
+      });
+      const rumorChance = item.rarity === "legendary" ? 0.9 : item.rarity === "very-rare" ? 0.6 : item.rarity === "rare" ? 0.3 : 0;
+      if (rng.chance(rumorChance)) {
+        const rumorType = item.rarity === "legendary" ? "legendary-item" : item.category === "weapon" || item.category === "armor" ? "magic-weapon" : "rare-item";
+        const baseRumor = createTreasureRumor(rng, world, rumorType, item.name, location, discoveredBy, item.value, item.id);
+        const allRumors = spreadTreasureRumor(rng, world, baseRumor);
+        for (const rumor of allRumors) {
+          world.activeRumors.push(rumor);
+          logs.push(logRumor(rumor, worldTime, world.seed));
+        }
+        for (const attractType of baseRumor.attractsTypes) {
+          const effectChance = item.rarity === "legendary" ? 0.4 : item.rarity === "very-rare" ? 0.25 : 0.15;
+          if (rng.chance(effectChance)) {
+            queueConsequence({
+              type: `treasure-${attractType}`,
+              triggerEvent: `${attractType} learns of ${item.name}`,
+              turnsUntilResolution: 72 + rng.int(336),
+              data: {
+                itemId: item.id,
+                itemName: item.name,
+                location,
+                discoveredBy,
+                rumorId: baseRumor.id,
+                attractType
+              },
+              priority: attractType === "dragon" || attractType === "antagonist" ? 5 : 3
+            });
+          }
+        }
+      }
+    }
+  }
+  if (treasure.isHoard && treasure.totalGoldValue >= 5000) {
+    if (rng.chance(0.5)) {
+      const baseRumor = createTreasureRumor(rng, world, "massive-hoard", undefined, location, discoveredBy, treasure.totalGoldValue);
+      const allRumors = spreadTreasureRumor(rng, world, baseRumor);
+      for (const rumor of allRumors) {
+        world.activeRumors.push(rumor);
+        logs.push(logRumor(rumor, worldTime, world.seed));
+      }
+    }
+  }
+  return logs;
 }
 function tickExtractions(rng, treasureState, world, worldTime) {
   const logs = [];
@@ -14123,6 +14911,131 @@ function wanderOutcome(rng, actors) {
     details: "They fall back to safer halls."
   };
 }
+function getDungeonTreasureType(danger, roomType, rng) {
+  if (roomType === "lair") {
+    if (danger >= 5)
+      return rng.pick(["E", "F", "D"]);
+    if (danger >= 3)
+      return rng.pick(["C", "D", "B"]);
+    return rng.pick(["C", "J", "K"]);
+  }
+  if (danger >= 5)
+    return rng.pick(["D", "E"]);
+  if (danger >= 3)
+    return rng.pick(["C", "D"]);
+  return rng.pick(["J", "K", "L", "M"]);
+}
+function applyRoomOutcome(rng, dungeon, room, actors, world, treasureState, worldTime) {
+  switch (room.type) {
+    case "treasure": {
+      const treasureType = getDungeonTreasureType(dungeon.danger, "treasure", rng);
+      const treasureLogs = [];
+      if (treasureState && world && worldTime) {
+        const logs = discoverTreasure(rng, treasureType, dungeon.name, actors[0], treasureState, world, worldTime);
+        treasureLogs.push(...logs);
+      }
+      return {
+        summary: `${actors[0]} discover a treasure cache`,
+        details: `Type ${treasureType} treasure found in the depths.`,
+        fameDelta: 1,
+        rare: room.rare,
+        treasureLogs
+      };
+    }
+    case "trap": {
+      const death = rng.chance(0.2);
+      return {
+        summary: `${actors[0]} trigger a trap`,
+        details: death ? "A lethal fall in the dark." : "Bruised and shaken, they press on.",
+        fameDelta: death ? -1 : 0,
+        death,
+        injury: !death
+      };
+    }
+    case "lair": {
+      const death = rng.chance(0.15);
+      const treasureLogs = [];
+      if (!death && treasureState && world && worldTime) {
+        const treasureType = getDungeonTreasureType(dungeon.danger, "lair", rng);
+        const logs = discoverTreasure(rng, treasureType, dungeon.name, actors[0], treasureState, world, worldTime);
+        treasureLogs.push(...logs);
+      }
+      return {
+        summary: `${actors[0]} battle lair denizens`,
+        details: death ? "They withdraw, leaving fallen behind." : "Beasts broken after a grim melee. Their hoard is claimed.",
+        fameDelta: death ? -1 : 1,
+        death,
+        injury: !death && rng.chance(0.3),
+        treasureLogs
+      };
+    }
+    case "shrine":
+    case "laboratory":
+      return {
+        summary: `${actors[0]} uncover a ${room.type}`,
+        details: "Strange glyphs and relics hint at deeper secrets.",
+        fameDelta: 1
+      };
+    case "empty":
+    default:
+      return {
+        summary: `${actors[0]} comb dusty halls`,
+        details: "Old bones and silence."
+      };
+  }
+}
+function exploreDungeonTick(rng, dungeon, actors, worldTime, seed, world, treasureState) {
+  const logs = [];
+  if (!dungeon.rooms || dungeon.rooms.length === 0) {
+    logs.push({
+      category: "dungeon",
+      summary: `${dungeon.name} shows no new clues`,
+      details: "Explorers retrace old steps.",
+      location: dungeon.name,
+      actors,
+      worldTime,
+      realTime: new Date,
+      seed
+    });
+    return logs;
+  }
+  const room = dungeon.rooms.shift();
+  dungeon.explored = (dungeon.explored ?? 0) + 1;
+  const outcome = applyRoomOutcome(rng, dungeon, room, actors, world, treasureState, worldTime);
+  const party = world.parties.find((p) => p.name === actors[0]);
+  if (party && outcome.fameDelta) {
+    party.fame = Math.max(0, (party.fame ?? 0) + outcome.fameDelta);
+  }
+  if (party) {
+    party.xp += 200 + rng.int(800);
+  }
+  if (outcome.rare && world) {
+    const rumor = createRumor(world, rng, dungeon.name, dungeon.name, "mystery", `${actors[0]} emerge with a ${outcome.rare}; traders whisper of shifting prices.`);
+    world.activeRumors.push(rumor);
+    logs.push(logRumor(rumor, worldTime, seed));
+  }
+  if (party && outcome.injury) {
+    party.wounded = true;
+    party.restHoursRemaining = Math.max(party.restHoursRemaining ?? 0, 24);
+  }
+  if (party && outcome.death) {
+    party.fame = Math.max(0, (party.fame ?? 0) - 1);
+  }
+  logs.push({
+    category: "dungeon",
+    summary: `${dungeon.name}: ${outcome.summary}`,
+    details: outcome.details,
+    location: dungeon.name,
+    actors,
+    worldTime,
+    realTime: new Date,
+    seed
+  });
+  if (outcome.treasureLogs) {
+    logs.push(...outcome.treasureLogs);
+  }
+  return logs;
+}
 function dungeonWanders(rng, dungeon, actors, worldTime, seed, world) {
   if (!rng.chance(DUNGEON_WANDER_ODDS))
     return;
@@ -14514,6 +15427,21 @@ async function loadWorld() {
             if (beat.timestamp)
               beat.timestamp = new Date(beat.timestamp);
           }
+        }
+        if (!story.context) {
+          story.context = {
+            actorRelationships: [],
+            keyLocations: [],
+            themes: [],
+            motivations: {}
+          };
+        }
+        if (!story.branchingState) {
+          story.branchingState = {
+            path: undefined,
+            choices: [],
+            variables: {}
+          };
         }
       }
     }
@@ -15895,25 +16823,88 @@ var TERRAIN_ATMOSPHERE = {
       "a milestone marking leagues to the capital",
       "a wayside shrine with fresh offerings",
       "dust rising from distant hooves",
-      "a peddler's cart overturned by the verge"
+      "a peddler's cart overturned by the verge",
+      "an abandoned cart with broken axles",
+      "merchant stalls lined along the roadside",
+      "a hanging sign creaking in the wind",
+      "fresh horse droppings on the path",
+      "a lone scarecrow guarding a field",
+      "toll markers carved into boundary stones",
+      "a caravan of wagons approaching from the distance",
+      "the weathered remains of an old signpost",
+      "a stone bridge arching over a muddy stream",
+      "fresh graffiti on a merchant wagon",
+      "a collapsed roadside well, long abandoned",
+      "merchant flags fluttering from tall poles",
+      "the faint outline of a ruined watchtower",
+      "tracks of many booted feet in the soft earth",
+      "a caravan guard sharpening his sword"
     ],
     sounds: [
       "the creak of wagon wheels",
       "distant hoofbeats",
       "a tinker's bell",
       "the song of road-weary pilgrims",
-      "ravens arguing over carrion"
+      "ravens arguing over carrion",
+      "the jingle of harness bells",
+      "merchants haggling over prices",
+      "the flap of canvas wagon covers",
+      "children laughing from a nearby farm",
+      "the distant bark of a shepherd's dog",
+      "caravan drivers shouting commands",
+      "the clink of coins being counted",
+      "wind whistling through fence posts",
+      "the crunch of gravel under boots",
+      "a lone traveler whistling a tune",
+      "the rumble of distant thunder",
+      "birds singing from roadside trees",
+      "the occasional crack of a whip",
+      "footsteps echoing on cobblestones",
+      "the murmur of passing conversations"
     ],
     smells: [
       "road dust and horse sweat",
       "wildflowers along the verge",
       "smoke from a roadside camp",
-      "the tang of iron from a smithy"
+      "the tang of iron from a smithy",
+      "fresh bread from a traveler's pack",
+      "leather and saddle soap",
+      "wood smoke from distant chimneys",
+      "the sharp scent of pine forests",
+      "wet earth after recent rain",
+      "hay bales stacked by the roadside",
+      "the metallic tang of blood",
+      "spices wafting from merchant wagons",
+      "fresh manure from farm carts",
+      "the sweet smell of wild berries",
+      "tobacco smoke from a pipe",
+      "the faint odor of decay",
+      "perfume from a passing noble",
+      "baking bread from a nearby inn",
+      "fresh-cut hay in wagon beds",
+      "the sharp tang of vinegar"
     ],
     hazards: [
       "a suspicious band loitering at the crossroads",
       "signs of recent violence: bloodstains, abandoned goods",
-      "a broken bridge forcing a detour"
+      "a broken bridge forcing a detour",
+      "bandits watching from the treeline",
+      "a rickety rope bridge over a gorge",
+      "freshly dug pit traps hidden in grass",
+      "a collapsed tunnel through a hill",
+      "wolves howling in the distance",
+      "a storm brewing on the horizon",
+      "flooded ford making crossing dangerous",
+      "a landslide blocking the path ahead",
+      "poisonous snakes sunning on rocks",
+      "a swarm of biting insects",
+      "quicksand near the river crossing",
+      "a weakened bridge creaking ominously",
+      "bear tracks crossing the road",
+      "freshly broken wagon wheel spokes",
+      "a plague sign nailed to a tree",
+      "suspicious footprints in the mud",
+      "a hornet's nest in a low branch"
     ]
   },
   clear: {
@@ -15922,24 +16913,88 @@ var TERRAIN_ATMOSPHERE = {
       "a shepherd minding distant flocks",
       "ancient standing stones on a hilltop",
       "a lone oak spreading its branches wide",
-      "farmsteads dotting the gentle hills"
+      "farmsteads dotting the gentle hills",
+      "vast meadows stretching to the horizon",
+      "a windmill turning lazily in the breeze",
+      "herds of deer grazing peacefully",
+      "plowed fields in neat geometric patterns",
+      "a thatched cottage with smoke curling from the chimney",
+      "stone fences dividing property lines",
+      "a scarecrow dressed in ragged clothes",
+      "wildflowers painting the landscape in color",
+      "a distant village with church spires",
+      "grazing cattle with bells around their necks",
+      "hay bales scattered across harvested fields",
+      "a dirt track winding through the countryside",
+      "orchards heavy with ripening fruit",
+      "sheep being herded by border collies",
+      "a babbling brook cutting through green meadows"
     ],
     sounds: [
       "skylarks singing overhead",
       "the rustle of tall grass",
       "cattle lowing in distant fields",
-      "wind sighing through grain"
+      "wind sighing through grain",
+      "frogs croaking in nearby ponds",
+      "the distant clank of a blacksmith's hammer",
+      "children playing in farmyards",
+      "roosters crowing at dawn",
+      "the buzz of bees in wildflower meadows",
+      "waterwheels turning in streams",
+      "sheep bells tinkling softly",
+      "the flap of laundry on clotheslines",
+      "farmers calling to their livestock",
+      "the rustle of leaves in gentle breezes",
+      "church bells ringing in the distance",
+      "the low hum of summer insects",
+      "dogs barking at passing travelers",
+      "the crunch of gravel paths",
+      "wind chimes on cottage porches",
+      "the occasional rumble of cart wheels"
     ],
     smells: [
       "fresh-turned earth",
       "hay and clover",
       "the sweetness of ripening apples",
-      "wood smoke from a cottage chimney"
+      "wood smoke from a cottage chimney",
+      "new-mown grass and wild herbs",
+      "fresh bread baking in ovens",
+      "damp earth after morning dew",
+      "the sharp scent of cut hay",
+      "fruit ripening on orchard trees",
+      "fresh manure spread on fields",
+      "jasmine blooming in cottage gardens",
+      "the clean smell of washed linen",
+      "smoke from autumn bonfires",
+      "wild mint crushed underfoot",
+      "the metallic tang of well water",
+      "freshly baked pies cooling on windowsills",
+      "the earthy scent of root vegetables",
+      "honeysuckle blooming on fences",
+      "fresh milk from dairy barns",
+      "the sharp tang of farm cider"
     ],
     hazards: [
       "tracks of some large beast in the soft earth",
       "a burned farmstead, still smoldering",
-      "circling crows marking something dead"
+      "circling crows marking something dead",
+      "poisonous snakes hiding in tall grass",
+      "sudden drop-offs hidden by vegetation",
+      "sinks holes in soft meadow soil",
+      "flash floods during heavy rains",
+      "rabid animals wandering the plains",
+      "tornadoes forming on the horizon",
+      "prairie fires spreading rapidly",
+      "locust swarms devouring crops",
+      "feral dogs hunting in packs",
+      "unmarked wells covered by grass",
+      "sudden fog reducing visibility",
+      "lightning strikes during storms",
+      "venomous spiders in hay bales",
+      "sharp stones hidden in meadows",
+      "sudden hailstorms",
+      "marauding bandits using grass for cover",
+      "contaminated water sources"
     ]
   },
   forest: {
@@ -15948,25 +17003,88 @@ var TERRAIN_ATMOSPHERE = {
       "shafts of light piercing the canopy",
       "a clearing where standing stones lurked",
       "fungus growing in strange patterns",
-      "a ruined tower choked by vines"
+      "a ruined tower choked by vines",
+      "towering pines reaching for the sky",
+      "a carpet of fallen autumn leaves",
+      "moss-covered boulders scattered about",
+      "a narrow path winding through underbrush",
+      "sun-dappled glades with wildflowers",
+      "ancient runes carved into tree bark",
+      "a hunter's blind hidden in branches",
+      "streams cutting through rocky beds",
+      "fairy rings of mushrooms in clearings",
+      "vines hanging like curtains from branches",
+      "a hollow tree large enough to enter",
+      "berries ripening on thorny bushes",
+      "animal tracks in soft forest floor",
+      "a hermit's hut overgrown with ivy",
+      "lightning-struck trees split down the middle"
     ],
     sounds: [
       "branches creaking overhead",
       "unseen things rustling in undergrowth",
       "the tap of a woodpecker",
       "an eerie silence where birdsong ceased",
-      "distant howling at dusk"
+      "distant howling at dusk",
+      "leaves crunching underfoot",
+      "small streams bubbling over rocks",
+      "wind whistling through pine needles",
+      "owls hooting in the night",
+      "squirrels chattering in the branches",
+      "the distant crash of a falling tree",
+      "frogs singing from hidden ponds",
+      "the buzz of insects in the undergrowth",
+      "rain dripping from leaves after a shower",
+      "the crack of twigs snapping",
+      "birds calling territorial warnings",
+      "the rustle of small animals fleeing",
+      "water dripping from moss-covered rocks",
+      "the occasional snap of a trap",
+      "echoes of distant axes chopping wood"
     ],
     smells: [
       "leaf mold and decay",
       "pine resin sharp and clean",
       "the musk of some passing beast",
-      "rotting wood and toadstools"
+      "rotting wood and toadstools",
+      "wild mint and forest herbs",
+      "damp earth and wet bark",
+      "the sharp scent of pine sap",
+      "wild berries crushed underfoot",
+      "smoke from a distant campfire",
+      "the clean smell of rain on leaves",
+      "mushrooms sprouting after rain",
+      "cedar wood and bark chips",
+      "the faint scent of wild game",
+      "honeysuckle blooming in clearings",
+      "the earthy smell of truffles",
+      "charred wood from lightning strikes",
+      "fresh sawdust from logging",
+      "the metallic tang of mineral springs",
+      "juniper berries crushed on the path",
+      "the sharp tang of wild onions"
     ],
     hazards: [
       "webs strung between trees, too large for ordinary spiders",
       "claw marks on bark, head-height or higher",
-      "bones scattered near a dark hollow"
+      "bones scattered near a dark hollow",
+      "poisonous plants with alluring berries",
+      "sudden drops into hidden ravines",
+      "quick-mud along stream banks",
+      "wolves hunting in coordinated packs",
+      "bear dens marked by fresh diggings",
+      "bandits using trees for ambush cover",
+      "fallen trees blocking narrow paths",
+      "vines that constrict when touched",
+      "fungus that causes vivid hallucinations",
+      "swarms of stinging insects",
+      "sharp thorns on berry bushes",
+      "unstable ground over abandoned mines",
+      "caves that echo with unnatural sounds",
+      "trees that bleed red sap",
+      "mushrooms that scream when picked",
+      "sudden fog that disorients travelers",
+      "ancient curses bound to specific groves"
     ]
   },
   hills: {
@@ -15975,23 +17093,88 @@ var TERRAIN_ATMOSPHERE = {
       "the mouth of a cave, dark and inviting",
       "a ruined watchtower on the heights",
       "goats picking their way along cliffs",
-      "mist pooling in the valleys below"
+      "mist pooling in the valleys below",
+      "rolling hills covered in heather",
+      "sheep grazing on steep slopes",
+      "stone walls dividing hill farms",
+      "ancient hill forts with crumbling walls",
+      "narrow passes between rocky peaks",
+      "waterfalls cascading down cliffs",
+      "wild ponies roaming free",
+      "quarries carved into hillside rock",
+      "wind-bent trees clinging to slopes",
+      "stone circles on hilltops",
+      "abandoned shepherd huts",
+      "hawk nests on rocky outcrops",
+      "fossils embedded in cliff faces",
+      "hot springs steaming in valleys",
+      "zigzag paths climbing steep inclines"
     ],
     sounds: [
       "wind keening through rocky passes",
       "the clatter of loose stones",
       "a distant rockslide",
-      "the scream of a hunting hawk"
+      "the scream of a hunting hawk",
+      "sheep bells tinkling in the distance",
+      "waterfalls roaring down cliffs",
+      "wind whistling around boulders",
+      "goats bleating on steep slopes",
+      "the crunch of gravel under boots",
+      "streams rushing through narrow gorges",
+      "birds of prey crying overhead",
+      "the distant lowing of cattle",
+      "rain pattering on slate roofs",
+      "thunder echoing between hills",
+      "the occasional crack of splitting rock",
+      "farmers calling to livestock",
+      "wild ponies whinnying",
+      "water wheels turning in streams",
+      "the flap of laundry in the breeze",
+      "church bells from valley villages"
     ],
     smells: [
       "heather and wild thyme",
       "mineral tang from exposed rock",
-      "the cold scent of coming rain"
+      "the cold scent of coming rain",
+      "fresh mountain air and ozone",
+      "sheep wool and lanolin",
+      "damp moss on stone walls",
+      "wild garlic growing in cracks",
+      "smoke from peat fires",
+      "freshly cut stone dust",
+      "mineral springs with a metallic tang",
+      "wild mint crushed on paths",
+      "the sharp scent of gorse flowers",
+      "damp earth in valley bottoms",
+      "cedar trees lining streams",
+      "the faint odor of sheep manure",
+      "freshly baked bread from hill farms",
+      "juniper berries on low bushes",
+      "the clean smell of rain-washed rock",
+      "wild roses blooming on slopes",
+      "the sharp tang of mountain herbs"
     ],
     hazards: [
       "a rope bridge in poor repair",
       "fresh rockfall blocking the path",
-      "smoke rising from caves—someone, or something, dwells within"
+      "smoke rising from caves—someone, or something, dwells within",
+      "sheer drops with no guard rails",
+      "loose scree sliding underfoot",
+      "sudden mists reducing visibility",
+      "bandits using hilltops for surveillance",
+      "unstable cliffs prone to collapse",
+      "flash floods in narrow valleys",
+      "poisonous plants on rocky slopes",
+      "bear dens in hillside caves",
+      "loose stones starting rockslides",
+      "treacherous paths washed out by rain",
+      "sudden gusts of wind",
+      "hidden sinkholes in meadows",
+      "rabid animals in remote areas",
+      "lightning strikes on exposed peaks",
+      "frost heaves cracking pathways",
+      "wild dogs hunting in packs",
+      "ancient curses on hilltop monuments"
     ]
   },
   mountains: {
@@ -16000,23 +17183,88 @@ var TERRAIN_ATMOSPHERE = {
       "a glacier grinding slowly downward",
       "the ruins of a dwarven gatehouse",
       "a frozen waterfall",
-      "vast chasms with no visible bottom"
+      "vast chasms with no visible bottom",
+      "eagles soaring on thermal winds",
+      "switchback paths climbing steep slopes",
+      "avalanche scars on rocky faces",
+      "mountain goats leaping between boulders",
+      "hot springs steaming in rocky basins",
+      "ancient petroglyphs on cliff walls",
+      "copper deposits staining rock faces green",
+      "crystal formations in cave mouths",
+      "lightning-blasted trees at timberline",
+      "stone cairns marking safe paths",
+      "glaciers carving valleys below",
+      "waterfalls plunging into deep pools",
+      "condors circling high overhead",
+      "meteor impact craters on peaks",
+      "bridges spanning raging torrents"
     ],
     sounds: [
       "the groan of shifting ice",
       "thunder echoing between peaks",
       "the shriek of mountain winds",
-      "ominous silence after an avalanche"
+      "ominous silence after an avalanche",
+      "waterfalls roaring into gorges",
+      "wind howling through rocky passes",
+      "the crack of splitting rock",
+      "avalanches rumbling in the distance",
+      "eagles screaming overhead",
+      "streams bubbling over smooth stones",
+      "the occasional boom of falling ice",
+      "wolves howling from distant valleys",
+      "the crunch of boots on gravel",
+      "wind chimes made of bone",
+      "the distant toll of monastery bells",
+      "thunder rolling between peaks",
+      "the splash of mountain streams",
+      "rockslides clattering down slopes",
+      "the sharp crack of ice breaking",
+      "wind whistling through cave entrances"
     ],
     smells: [
       "thin cold air",
       "sulfur from hot springs",
-      "the iron tang of altitude"
+      "the iron tang of altitude",
+      "fresh snow and ice crystals",
+      "pine forests at lower elevations",
+      "mineral-rich hot springs",
+      "ozone from lightning strikes",
+      "wildflowers blooming briefly",
+      "charred wood from forest fires",
+      "the sharp scent of juniper",
+      "freshly quarried stone dust",
+      "cedar incense from monasteries",
+      "wild mint growing in cracks",
+      "the faint metallic tang of ore",
+      "crushed rock and gravel",
+      "smoke from signal fires",
+      "the clean smell of glacial melt",
+      "wild berries ripening on bushes",
+      "the sharp tang of alpine herbs",
+      "fresh goat cheese from herds"
     ],
     hazards: [
       "unstable ice over deep crevasses",
       "giant footprints in the snow",
-      "a cave mouth breathing warm, fetid air"
+      "a cave mouth breathing warm, fetid air",
+      "sudden blizzards reducing visibility",
+      "rockslides triggered by footsteps",
+      "altitude sickness and dizziness",
+      "crevasses hidden by snow bridges",
+      "mountain lions stalking travelers",
+      "sudden fog in mountain passes",
+      "lightning strikes on exposed ridges",
+      "avalanches triggered by noise",
+      "unstable snow bridges over chasms",
+      "poisonous plants at high altitudes",
+      "extreme cold and frostbite",
+      "treacherous ice on steep slopes",
+      "bandits using peaks for ambush",
+      "sudden gusts of hurricane-force wind",
+      "rock falls from crumbling cliffs",
+      "contaminated water sources",
+      "ancient curses on mountain shrines"
     ]
   },
   swamp: {
@@ -16025,23 +17273,88 @@ var TERRAIN_ATMOSPHERE = {
       "a drowned village, rooftops jutting above the murk",
       "twisted trees rising from fog",
       "bubbles rising from the deep",
-      "a heron standing motionless, watching"
+      "a heron standing motionless, watching",
+      "cypress trees draped in Spanish moss",
+      "alligators sunning on muddy banks",
+      "snakelike roots twisting through water",
+      "fog-shrouded islands in the distance",
+      "abandoned fishing boats rotting in shallows",
+      "fireflies dancing at dusk",
+      "moss hanging like curtains from branches",
+      "sinking houses tilting into the mire",
+      "dragonflies skimming the water surface",
+      "ancient burial mounds half-submerged",
+      "frog eyes gleaming in the darkness",
+      "cattails swaying in gentle breezes",
+      "the occasional flash of fish scales",
+      "rusted tools protruding from mud",
+      "vultures perched on dead snags"
     ],
     sounds: [
       "the croak of countless frogs",
       "something heavy sliding into water",
       "the buzz of biting flies",
-      "sucking mud reluctant to release boots"
+      "sucking mud reluctant to release boots",
+      "alligators bellowing in the night",
+      "water dripping from hanging moss",
+      "the splash of jumping fish",
+      "wind rustling through cattails",
+      "the distant hoot of owls",
+      "mosquitoes buzzing in clouds",
+      "the gurgle of methane bubbles",
+      "tree frogs singing in chorus",
+      "the occasional snap of a twig",
+      "water lapping against rotting docks",
+      "the flap of heron wings taking flight",
+      "the deep rumble of bullfrogs",
+      "squirrels chattering in cypress crowns",
+      "the plop of turtles slipping into water",
+      "distant thunder rolling through fog",
+      "the whisper of wind through reeds"
     ],
     smells: [
       "rot and stagnant water",
       "the sweetness of decay",
-      "methane rising from the depths"
+      "methane rising from the depths",
+      "damp earth and wet vegetation",
+      "the sharp scent of cypress bark",
+      "mud and decomposing leaves",
+      "freshwater algae blooming",
+      "wild onions growing in clearings",
+      "smoke from distant cookfires",
+      "the faint tang of salt water",
+      "honeysuckle blooming on vines",
+      "freshly cut marsh grass",
+      "the earthy smell of peat",
+      "fish guts from cleaning stations",
+      "the sharp bite of black pepper plants",
+      "jasmine blooming in the humid air",
+      "the faint odor of gunpowder",
+      "fresh-caught catfish frying",
+      "the metallic tang of bog iron",
+      "wild mint crushed underfoot"
     ],
     hazards: [
       "quicksand lurking beneath innocent-looking moss",
       "humanoid tracks leading into the mire—none returning",
-      "a half-sunken boat, owner unknown"
+      "a half-sunken boat, owner unknown",
+      "venomous snakes hiding in roots",
+      "alligator nests in shallow water",
+      "sinking mud that traps the unwary",
+      "malaria-carrying mosquitoes",
+      "poisonous plants with attractive flowers",
+      "sudden fog reducing visibility to feet",
+      "crocodiles disguised as logs",
+      "unstable ground over hidden waterways",
+      "bandits using fog for ambush",
+      "contaminated water causing illness",
+      "leeches in stagnant pools",
+      "sharp reeds that cut like razors",
+      "sudden storms with lightning",
+      "ancient curses on burial mounds",
+      "fungus that causes fever dreams",
+      "ghost lights leading travelers astray",
+      "corrosive bog water damaging equipment"
     ]
   },
   desert: {
@@ -16050,23 +17363,188 @@ var TERRAIN_ATMOSPHERE = {
       "mirages shimmering on the horizon",
       "a ruined city of sandstone pillars",
       "an oasis ringed with palms",
-      "vultures circling lazily overhead"
+      "vultures circling lazily overhead",
+      "dunes shifting in the wind",
+      "camel caravans crossing the sands",
+      "ancient petroglyphs on canyon walls",
+      "lightning striking distant mesas",
+      "cacti blooming with vibrant flowers",
+      "abandoned mining camps",
+      "fossil beds exposed by erosion",
+      "stone arches carved by wind",
+      "salt flats gleaming white",
+      "thunderheads forming over mountains",
+      "rivers of sand flowing down slopes",
+      "bedouin tents pitched in wadis",
+      "meteor craters in the hardpan",
+      "geyser cones venting steam",
+      "caravanserais along ancient routes"
     ],
     sounds: [
       "the hiss of sand in the wind",
       "the scuttle of scorpions",
       "thunder of a distant sandstorm",
-      "the cry of a desert hawk"
+      "the cry of a desert hawk",
+      "camels grumbling discontentedly",
+      "wind whistling through canyon walls",
+      "the crunch of boots on gravel",
+      "the occasional crack of splitting rock",
+      "jackals yipping in the night",
+      "the flap of tent canvas",
+      "water dripping in hidden springs",
+      "the low hum of heat haze",
+      "sand sliding down dune faces",
+      "the distant toll of caravan bells",
+      "owls hooting from canyon ledges",
+      "the splash of oasis springs",
+      "locusts buzzing in rare vegetation",
+      "thunder echoing across vast distances",
+      "the sharp crack of lightning",
+      "wind chimes on desert shrines"
     ],
     smells: [
       "dry heat and dust",
       "the rare sweetness of date palms",
-      "the musk of passing camels"
+      "the musk of passing camels",
+      "sagebrush and creosote",
+      "the sharp tang of mineral springs",
+      "smoke from desert cookfires",
+      "the faint scent of ozone",
+      "wildflowers blooming after rain",
+      "freshly baked flatbread",
+      "spices carried by traders",
+      "the metallic tang of copper mines",
+      "rain on hot sand creating steam",
+      "jasmine blooming in oases",
+      "the sharp bite of chili peppers",
+      "freshly cut cactus pads",
+      "smoke from signal fires",
+      "the faint odor of decay",
+      "fresh goat milk curdling",
+      "cedar incense from shrines",
+      "the clean smell of gypsum dust"
     ],
     hazards: [
       "signs of a sandstorm on the horizon",
       "a dried corpse clutching an empty waterskin",
-      "strange geometric carvings in exposed bedrock"
+      "strange geometric carvings in exposed bedrock",
+      "scorpions hiding under rocks",
+      "rattlesnakes coiled in shade",
+      "sudden flash floods in wadis",
+      "bandits using dunes for cover",
+      "quicksand in dry riverbeds",
+      "extreme heat causing heatstroke",
+      "contaminated water sources",
+      "cactus spines that cause infection",
+      "sudden sandstorms blinding travelers",
+      "jagged rocks cutting boots",
+      "wild dogs hunting in packs",
+      "ancient curses on desert ruins",
+      "lightning strikes during storms",
+      "sinkholes in gypsum flats",
+      "venomous spiders in abandoned tents",
+      "extreme cold at desert nights",
+      "lost travelers turned hostile"
+    ]
+  },
+  coastal: {
+    sights: [
+      "fishing boats bobbing in the harbor",
+      "nets hung to dry on wooden frames",
+      "seagulls wheeling over the docks",
+      "a lighthouse standing sentinel on the headland",
+      "driftwood scattered along the tideline"
+    ],
+    sounds: [
+      "the cry of seabirds",
+      "waves crashing against rocks",
+      "the creak of mooring lines",
+      "fishermen calling to one another"
+    ],
+    smells: [
+      "salt spray and seaweed",
+      "fresh fish and brine",
+      "tar from boat repairs",
+      "wood smoke from smokehouses"
+    ],
+    hazards: [
+      "treacherous rocks hidden beneath the surf",
+      "a wrecked ship visible at low tide",
+      "smuggler caves in the cliffs"
+    ]
+  },
+  ocean: {
+    sights: [
+      "endless blue stretching to the horizon",
+      "distant sails on the edge of sight",
+      "dolphins racing the bow wave",
+      "dark shapes moving beneath the surface",
+      "a school of flying fish breaking the surface"
+    ],
+    sounds: [
+      "the endless rhythm of waves",
+      "canvas snapping in the wind",
+      "the groan of ship timbers",
+      "the lonely cry of an albatross"
+    ],
+    smells: [
+      "salt air and open water",
+      "tar and rope",
+      "the freshness of a sea breeze"
+    ],
+    hazards: [
+      "storm clouds gathering on the horizon",
+      "debris from a recent shipwreck",
+      "an uncharted reef showing white water"
+    ]
+  },
+  reef: {
+    sights: [
+      "colorful fish darting through coral",
+      "the skeleton of a wrecked ship",
+      "crystal-clear water revealing the seabed",
+      "sea turtles gliding past",
+      "white sand beneath turquoise shallows"
+    ],
+    sounds: [
+      "waves breaking over the reef",
+      "the click and rustle of crabs",
+      "the splash of diving pelicans"
+    ],
+    smells: [
+      "salt and sun-warmed sand",
+      "seaweed drying on rocks",
+      "the clean scent of tropical waters"
+    ],
+    hazards: [
+      "razor-sharp coral lurking beneath the surface",
+      "sharks patrolling the reef edge",
+      "a sudden riptide pulling toward deeper water"
+    ]
+  },
+  river: {
+    sights: [
+      "willows trailing in the current",
+      "a stone bridge arching over the water",
+      "fishermen in small boats",
+      "a watermill turning steadily",
+      "herons standing in the shallows"
+    ],
+    sounds: [
+      "water rushing over stones",
+      "the plop of jumping fish",
+      "the call of kingfishers",
+      "oars dipping rhythmically"
+    ],
+    smells: [
+      "fresh water and wet earth",
+      "water lilies in bloom",
+      "the musk of river mud"
+    ],
+    hazards: [
+      "rapids too dangerous for safe passage",
+      "a flooded ford impassable on foot",
+      "crocodiles sunning on the banks"
     ]
   }
 };
@@ -16172,44 +17650,155 @@ function encounterFlavorText(rng, foe, reaction2, outcome, terrain, actors) {
     `${party} share a fire with wandering ${foe}`,
     `${party} trade news with passing ${foe}`,
     `${party} and ${foe} find common cause`,
-    `${foe} offer ${party} aid on the road`
+    `${foe} offer ${party} aid on the road`,
+    `${party} exchange stories with curious ${foe}`,
+    `${party} share trail rations with hungry ${foe}`,
+    `${foe} guide ${party} to a hidden spring`,
+    `${party} learn local customs from friendly ${foe}`,
+    `${foe} warn ${party} of dangers ahead`,
+    `${party} assist ${foe} with a broken wagon`,
+    `${foe} share hunting tips with ${party}`,
+    `${party} trade crafted goods with ${foe}`,
+    `${foe} invite ${party} to their encampment`,
+    `${party} help ${foe} gather firewood`,
+    `${foe} show ${party} a shortcut through the wilds`,
+    `${party} band together with ${foe} against a common threat`,
+    `${foe} teach ${party} a useful survival skill`,
+    `${party} share songs and tales around the campfire`,
+    `${foe} provide shelter from the weather`,
+    `${party} aid injured ${foe} with healing herbs`
   ];
   const CAUTIOUS_SUMMARIES = [
     `${party} observe ${foe} from a distance`,
     `${party} skirt around wary ${foe}`,
     `${foe} shadow ${party} but keep their distance`,
-    `Tense standoff between ${party} and ${foe}`
+    `Tense standoff between ${party} and ${foe}`,
+    `${party} watch ${foe} warily from cover`,
+    `${foe} eye ${party} suspiciously`,
+    `${party} keep their distance from armed ${foe}`,
+    `${foe} block the path but allow passage`,
+    `${party} signal peaceful intentions to ${foe}`,
+    `${foe} demand tolls from passing ${party}`,
+    `${party} detour to avoid ${foe}'s territory`,
+    `${foe} follow ${party} at a safe distance`,
+    `${party} prepare defenses against potential ${foe} attack`,
+    `${foe} display weapons as a warning`,
+    `${party} offer small gifts to appease ${foe}`,
+    `${foe} test ${party}'s resolve with challenges`,
+    `${party} hide their valuables from view`,
+    `${foe} communicate through gestures and signs`,
+    `${party} move slowly to avoid alarming ${foe}`,
+    `${foe} mark their territory with warning signs`
   ];
   const HOSTILE_SUMMARIES = [
     `${party} clash with ${foe}`,
     `${foe} ambush ${party}`,
     `Battle joined between ${party} and ${foe}`,
-    `${party} face ${foe} in deadly combat`
+    `${party} face ${foe} in deadly combat`,
+    `${foe} attack ${party} without warning`,
+    `${party} defend against ${foe} assault`,
+    `${foe} charge ${party} with weapons drawn`,
+    `${party} battle ${foe} for control of the path`,
+    `${foe} surround ${party} in a coordinated attack`,
+    `${party} repel ${foe} raiding party`,
+    `${foe} launch arrows at ${party} from hiding`,
+    `${party} counterattack ${foe} invaders`,
+    `${foe} poison ${party}'s water supply`,
+    `${party} hunt down marauding ${foe}`,
+    `${foe} set traps for unwary ${party}`,
+    `${party} storm ${foe}'s stronghold`,
+    `${foe} burn ${party}'s supplies`,
+    `${party} duel ${foe} champions`,
+    `${foe} blockade ${party}'s route`,
+    `${party} siege ${foe}'s encampment`
   ];
   const VICTORY_DETAILS = [
     "Steel rang and blood was spilled, but they prevailed.",
     "The fight was brief and brutal. The survivors withdrew.",
     "With discipline and fury, the foe was broken.",
     "Blades flashed in the uncertain light. When it ended, the way was clear.",
-    "Though wounds were taken, the day was won."
+    "Though wounds were taken, the day was won.",
+    "Their tactics turned the tide against overwhelming odds.",
+    "The foe fought bravely but could not withstand the onslaught.",
+    "A decisive strike ended the conflict before it could escalate.",
+    "They stood their ground against the charging enemy.",
+    "Superior positioning gave them the advantage they needed.",
+    "The foe's formation broke under relentless pressure.",
+    "Magic and steel combined to turn certain defeat into victory.",
+    "They exploited a momentary weakness in the enemy line.",
+    "Courage and quick thinking saved the day.",
+    "The battle raged fiercely, but their resolve never wavered.",
+    "They fought like cornered lions, driving back the attackers.",
+    "A well-timed feint created the opening they needed.",
+    "The foe's weapons glanced off enchanted armor.",
+    "They pressed their advantage until the enemy fled.",
+    "Victory came at great cost, but the path was secured."
   ];
   const DEFEAT_DETAILS = [
     "They were driven back, leaving the field to their enemies.",
     "A bitter retreat, carrying wounded through the darkness.",
     "The rout was complete. They would not soon forget this day.",
-    "Blood and humiliation marked the aftermath."
+    "Blood and humiliation marked the aftermath.",
+    "The enemy pressed their advantage relentlessly.",
+    "Overwhelming numbers told against them.",
+    "A critical mistake opened the door to disaster.",
+    "They fought valiantly but were simply outmatched.",
+    "The foe's ferocity was beyond anything they had expected.",
+    "Bad luck and poor positioning sealed their fate.",
+    "They stood their ground as long as they could.",
+    "The battle turned against them with terrifying speed.",
+    "Injuries and fatigue took their toll.",
+    "The enemy's tactics were simply too clever.",
+    "They retreated in good order, preserving what they could.",
+    "The cost of victory was too high for their foe to pursue.",
+    "A momentary lapse led to catastrophic consequences.",
+    "They learned a hard lesson about underestimating enemies.",
+    "The terrain worked against them from the beginning.",
+    "Fate smiled upon their enemies this day."
   ];
   const NEGOTIATION_DETAILS = [
     "Words proved mightier than steel on this occasion.",
     "Coin changed hands. Honor was satisfied, barely.",
     "An uneasy bargain was struck beneath wary eyes.",
-    "Neither side wished to die today. Terms were agreed."
+    "Neither side wished to die today. Terms were agreed.",
+    "Diplomacy prevailed where force might have failed.",
+    "They reached an accommodation that served both sides.",
+    "A compromise was hammered out after tense negotiations.",
+    "They found common ground in their mutual interests.",
+    "The exchange of gifts sealed the temporary truce.",
+    "Cultural misunderstandings were resolved through patience.",
+    "They traded information as valuable as gold.",
+    "A non-aggression pact was established.",
+    "They agreed to respect each other's territories.",
+    "The meeting ended with mutual respect, if not friendship.",
+    "They parted as wary allies rather than bitter enemies.",
+    "A hostage exchange ensured good behavior.",
+    "They established rules for future encounters.",
+    "The negotiation revealed unexpected shared values.",
+    "Both sides gained knowledge that might prove useful.",
+    "They left the meeting with hope for peaceful coexistence."
   ];
   const FLIGHT_DETAILS = [
     "They ran. There was no shame in it—only survival.",
     "Discretion proved the better part of valor.",
     "A fighting withdrawal, but a withdrawal nonetheless.",
-    "Sometimes wisdom is knowing when to flee."
+    "Sometimes wisdom is knowing when to flee.",
+    "They withdrew to fight another day.",
+    "Strategic retreat preserved their strength.",
+    "The odds were insurmountable; they chose life over glory.",
+    "They faded into the wilderness, leaving no trail.",
+    "A tactical withdrawal under covering fire.",
+    "They vanished into the shadows before the enemy could react.",
+    "Preserving their lives was the wiser course.",
+    "They retreated with honor intact.",
+    "The battle was lost, but the war continued.",
+    "They slipped away while the enemy celebrated prematurely.",
+    "A calculated withdrawal to more favorable ground.",
+    "They left the field but not their dignity.",
+    "Survival trumped victory in this encounter.",
+    "They retreated in good order, minimizing losses.",
+    "The enemy's numbers forced a strategic withdrawal.",
+    "They lived to fight—and win—another battle."
   ];
   let summary;
   let detailPool;
@@ -18137,6 +19726,735 @@ function encounterSign(rng, terrain, worldTime, location, partyName, seed) {
 }
 
 // src/stories.ts
+var PROGRESSION_BEATS = {
+  hunt: [
+    "Tracks are found. The quarry draws near.",
+    "A witness points the way.",
+    "The hunter's patience wears thin.",
+    "The quarry leaves a taunt. It's personal now.",
+    "The hunt leads through treacherous terrain.",
+    "Allies offer aid, but at a steep price.",
+    "The quarry seems to anticipate every move.",
+    "A storm hampers the pursuit.",
+    "Local villagers share rumors of the prey.",
+    "The hunters discover they are not alone in the chase.",
+    "Supplies dwindle; the hunt becomes desperate.",
+    "The quarry turns the tables, becoming the hunter.",
+    "Ancient ruins hold clues to the prey's location.",
+    "A bounty is placed, attracting more hunters.",
+    "The chase crosses into forbidden territory."
+  ],
+  feud: [
+    "Harsh words are exchanged publicly.",
+    "An ally is subverted.",
+    "Blood is spilled in a back alley.",
+    "Neutral parties are forced to choose sides.",
+    "A peace offering is rejected with scorn.",
+    "Rumors of assassination attempts spread.",
+    "Economic pressure is applied through boycotts.",
+    "Marriage alliances are proposed to end the feud.",
+    "A third party profits from the conflict.",
+    "Religious leaders attempt mediation.",
+    "The feud spreads to younger generations.",
+    "Property is vandalized in the night.",
+    "Legal battles drain both sides' resources.",
+    "Mercenaries are hired for dirty work.",
+    "A beloved figure is caught in the crossfire."
+  ],
+  revenge: [
+    "The avenger moves closer.",
+    "Old alliances are tested.",
+    "The weight of vengeance grows heavier.",
+    "The target learns they are being hunted.",
+    "Friends warn the avenger to stop.",
+    "The target hires bodyguards.",
+    "A weapon is forged for the final confrontation.",
+    "The avenger trains relentlessly.",
+    "Memories of the original wrong fuel the fire.",
+    "The target flees to a distant land.",
+    "Allies of the target are threatened.",
+    "The avenger infiltrates the target's inner circle.",
+    "A bounty is placed on the avenger.",
+    "The original crime's details emerge.",
+    "The avenger questions their own motives."
+  ],
+  war: [
+    "Skirmishes break out along the border.",
+    "Diplomatic options narrow.",
+    "The drums beat louder.",
+    "Mercenaries arrive, choosing sides.",
+    "Fortifications are hastily constructed.",
+    "Spies infiltrate enemy territory.",
+    "Supply lines are disrupted.",
+    "Deserters tell tales of enemy weakness.",
+    "Religious figures bless the troops.",
+    "A famous commander takes the field.",
+    "Siege engines are brought forward.",
+    "Naval blockades are established.",
+    "Refugees flee the war zone.",
+    "Neutral territories are invaded.",
+    "Peace negotiations are attempted and fail."
+  ],
+  siege: [
+    "Supplies inside the walls dwindle.",
+    "A sortie attempts to break the ring.",
+    "Disease spreads among the besieged.",
+    "Siege engines are brought into position.",
+    "Miners tunnel under the walls.",
+    "Catapults hurl flaming projectiles.",
+    "Defenders sally forth at night.",
+    "Psychological warfare begins.",
+    "Reinforcements arrive for the attackers.",
+    "The besieged attempt to smuggle messages out.",
+    "Water sources are poisoned or diverted.",
+    "Religious ceremonies bolster morale.",
+    "A famous hero leads the defense.",
+    "Weather hampers siege operations.",
+    "Negotiations occur under a flag of truce."
+  ],
+  rebellion: [
+    "Another village joins the uprising.",
+    "The authorities respond with force.",
+    "A charismatic leader emerges.",
+    "Nobles flee the region.",
+    "Secret meetings are held in hidden places.",
+    "Propaganda leaflets circulate.",
+    "Taxes are refused, leading to conflict.",
+    "Armories are raided for weapons.",
+    "Foreign powers offer support.",
+    "The rebels establish their own courts.",
+    "Loyalists organize counter-rebellions.",
+    "Religious leaders take sides.",
+    "Trade is disrupted by blockades.",
+    "Prisoners are taken and ransomed.",
+    "The rebellion spreads to neighboring regions."
+  ],
+  duel: [
+    "Seconds negotiate the terms.",
+    "One party attempts reconciliation.",
+    "Rumors spread about the coming fight.",
+    "Spectators gather to witness.",
+    "The chosen weapons are prepared.",
+    "The location is scouted and agreed upon.",
+    "Wagers are placed on the outcome.",
+    "Family members attempt intervention.",
+    "Medical aid is arranged.",
+    "The duel is delayed by weather or omens.",
+    "One combatant trains intensely.",
+    "Honor codes are debated.",
+    "A poet composes verses about the duel.",
+    "Political implications are discussed.",
+    "The duel becomes a matter of public interest."
+  ],
+  raid: [
+    "Scouts report enemy movements.",
+    "Defenses are hastily reinforced.",
+    "Fires on the horizon approach.",
+    "Refugees flee ahead of the raiders.",
+    "Livestock is driven off in the night.",
+    "Ambushes are set along expected routes.",
+    "Raiders demand tribute to spare settlements.",
+    "Prisoners are taken for ransom.",
+    "War cries echo through the valleys.",
+    "Smoke signals warn of the advance.",
+    "Villagers hide their valuables.",
+    "The raiders employ guerrilla tactics.",
+    "Local heroes organize resistance.",
+    "The raid escalates into open warfare.",
+    "Survivors tell tales of the attackers."
+  ],
+  mystery: [
+    "A new clue surfaces.",
+    "Someone who knew too much falls silent.",
+    "The pattern becomes clearer—and more disturbing.",
+    "An old document reveals a connection.",
+    "Witnesses contradict each other.",
+    "Strange symbols appear in unexpected places.",
+    "Dreams plague those investigating.",
+    "Ancient ruins yield cryptic messages.",
+    "A suspect is cleared, pointing elsewhere.",
+    "The mystery seems connected to ancient legends.",
+    "False leads waste valuable time.",
+    "A trusted ally is revealed as unreliable.",
+    "The investigators receive anonymous warnings.",
+    "The mystery touches personal lives.",
+    "Time pressure mounts as events accelerate."
+  ],
+  treasure: [
+    "A rival expedition sets out.",
+    "The map proves partially false.",
+    "Greed begins to poison the company.",
+    "Guardians of the treasure awaken.",
+    "Supplies are lost to bandits or weather.",
+    "Team members desert with portions of the map.",
+    "Ancient traps claim lives.",
+    "The treasure proves to be cursed.",
+    "Local legends prove partially true.",
+    "The expedition splits over strategy.",
+    "A guide betrays the group.",
+    "The treasure hoard proves disappointingly small.",
+    "Magical wards must be overcome.",
+    "The treasure attracts monstrous attention.",
+    "Political complications arise."
+  ],
+  prophecy: [
+    "Another sign manifests.",
+    "Believers grow in number.",
+    "The skeptics fall silent.",
+    "Those who would prevent the prophecy act.",
+    "Interpretations of the prophecy conflict.",
+    "A false prophet emerges.",
+    "Sacred texts are rediscovered.",
+    "Miracles are attributed to the prophecy.",
+    "Skeptics are converted by events.",
+    "The prophesied figure remains hidden.",
+    "Political factions align around interpretations.",
+    "Ancient artifacts confirm the prophecy.",
+    "The prophesied events begin small.",
+    "Opponents attempt to forge counter-prophecies.",
+    "The prophecy affects daily life."
+  ],
+  expedition: [
+    "The terrain becomes impassable.",
+    "Strange landmarks appear as described.",
+    "Supplies run dangerously low.",
+    "Contact with home is lost.",
+    "The expedition encounters hostile natives.",
+    "Disease strikes the explorers.",
+    "Weather turns against the group.",
+    "Internal conflicts emerge.",
+    "Amazing discoveries are made.",
+    "The expedition must turn back.",
+    "A mutiny threatens the leadership.",
+    "The goal proves farther than expected.",
+    "Valuable trade opportunities appear.",
+    "The expedition inspires future explorers.",
+    "Tragedy strikes the group."
+  ],
+  artifact: [
+    "A fragment of the artifact is found.",
+    "Another seeker enters the race.",
+    "The artifact's location is narrowed down.",
+    "Visions reveal the artifact's power.",
+    "The artifact begins to influence seekers.",
+    "Ancient guardians oppose the search.",
+    "False artifacts mislead seekers.",
+    "The artifact chooses its own path.",
+    "Political powers become involved.",
+    "The artifact proves sentient.",
+    "Time pressure mounts.",
+    "The search reveals other secrets.",
+    "Betrayals occur among seekers.",
+    "The artifact's true nature emerges.",
+    "Unintended consequences appear."
+  ],
+  "lost-heir": [
+    "Evidence of the bloodline surfaces.",
+    "Enemies of the heir move to suppress the claim.",
+    "The heir learns fragments of their history.",
+    "Old servants remember the true lineage.",
+    "The heir proves their claim.",
+    "Imposters emerge to challenge the claim.",
+    "The heir must prove their worth.",
+    "Ancient secrets are revealed.",
+    "Political alliances shift.",
+    "The heir faces assassination attempts.",
+    "Family members have divided loyalties.",
+    "The throne proves contested.",
+    "The heir discovers hidden talents.",
+    "The past catches up with the family.",
+    "Loyal supporters rally to the cause."
+  ],
+  "ancient-evil": [
+    "Tremors shake the earth.",
+    "Animals flee the area.",
+    "The seals show signs of weakening.",
+    "Dreams of darkness plague the populace.",
+    "Strange creatures appear at night.",
+    "Ancient runes glow with power.",
+    "The ground becomes unstable.",
+    "Local wildlife behaves erratically.",
+    "Old artifacts reactivate.",
+    "Scholars debate the signs.",
+    "The evil sends visions to the weak.",
+    "Guardians of the seal grow restless.",
+    "Time seems to distort near the site.",
+    "The evil influences local politics.",
+    "Heroes are drawn to confront it."
+  ],
+  portal: [
+    "Strange creatures emerge.",
+    "The portal fluctuates in stability.",
+    "Communication across the threshold begins.",
+    "The other side sends an emissary.",
+    "Energy signatures change.",
+    "Local magic becomes unreliable.",
+    "Time flows differently near the portal.",
+    "Strange materials appear.",
+    "The portal attracts scholars.",
+    "Monsters from beyond appear.",
+    "The portal begins to expand.",
+    "Communication becomes clearer.",
+    "Trade through the portal begins.",
+    "The other side requests aid.",
+    "The portal threatens to become permanent."
+  ],
+  romance: [
+    "A secret meeting is arranged.",
+    "Jealousy rears its head.",
+    "Families object to the union.",
+    "A rival for affection appears.",
+    "Love letters are exchanged.",
+    "A romantic gesture goes wrong.",
+    "Family secrets complicate matters.",
+    "Social expectations create tension.",
+    "A scandal threatens the relationship.",
+    "Long separations test their bond.",
+    "Cultural differences emerge.",
+    "Friends offer conflicting advice.",
+    "A grand romantic gesture is planned.",
+    "Misunderstandings create drama.",
+    "True feelings are finally revealed."
+  ],
+  rise: [
+    "Another triumph adds to the legend.",
+    "Enemies begin to take notice.",
+    "The price of success becomes apparent.",
+    "Old allies are left behind.",
+    "New opportunities present themselves.",
+    "Rivals attempt to undermine success.",
+    "The rising figure inspires others.",
+    "Power brings unexpected responsibilities.",
+    "Jealousy affects old relationships.",
+    "Success attracts dangerous attention.",
+    "The figure questions their ambitions.",
+    "Mentors offer guidance.",
+    "New allies seek association.",
+    "The path becomes more dangerous.",
+    "Success brings moral dilemmas."
+  ],
+  fall: [
+    "Another supporter abandons ship.",
+    "Debts come due.",
+    "The vultures circle lower.",
+    "Former rivals offer hollow sympathy.",
+    "Mistakes from the past resurface.",
+    "Allies prove unreliable.",
+    "The fall happens gradually.",
+    "Public opinion turns.",
+    "Internal conflicts weaken resolve.",
+    "Opportunities for redemption appear.",
+    "The fallen figure loses confidence.",
+    "Old enemies take advantage.",
+    "Supporters dwindle.",
+    "The fall becomes inevitable.",
+    "Rock bottom offers new perspective."
+  ],
+  scandal: [
+    "Whispers become open conversation.",
+    "Evidence surfaces—real or fabricated.",
+    "Allies distance themselves.",
+    "Public condemnation begins.",
+    "The accused denies everything.",
+    "Investigations are launched.",
+    "Media attention grows.",
+    "Friends are forced to choose sides.",
+    "The scandal affects innocent bystanders.",
+    "Damage control efforts begin.",
+    "The truth becomes obscured.",
+    "Political implications emerge.",
+    "Legal battles ensue.",
+    "The scandal spreads to others.",
+    "Time reveals the full story."
+  ],
+  betrayal: [
+    "Small inconsistencies are noticed.",
+    "The betrayer grows bolder.",
+    "Suspicion falls on the wrong person.",
+    "The moment of truth approaches.",
+    "Evidence begins to accumulate.",
+    "The betrayed feels growing unease.",
+    "Allies offer conflicting information.",
+    "The betrayal affects multiple people.",
+    "Confrontation becomes inevitable.",
+    "The betrayer's motives emerge.",
+    "Collateral damage occurs.",
+    "Trust is shattered.",
+    "Reconciliation seems impossible.",
+    "The betrayal changes everything.",
+    "Lessons are learned too late."
+  ],
+  succession: [
+    "Alliances form behind each claimant.",
+    "Legal scholars debate legitimacy.",
+    "Gold changes hands to buy support.",
+    "Assassination attempts multiply.",
+    "Public opinion sways.",
+    "Ancient laws are consulted.",
+    "Foreign powers become involved.",
+    "The claimants campaign actively.",
+    "Scandals affect various candidates.",
+    "Military support is courted.",
+    "Religious approval is sought.",
+    "The succession becomes contested.",
+    "Compromises are proposed.",
+    "Violence breaks out.",
+    "A winner finally emerges."
+  ],
+  exile: [
+    "The exile finds temporary shelter.",
+    "Messages from home bring mixed news.",
+    "The exile's skills prove valuable abroad.",
+    "Plots to return home form.",
+    "The exile adapts to new surroundings.",
+    "Old enemies pursue relentlessly.",
+    "New allies are found.",
+    "The exile learns valuable lessons.",
+    "Home seems both distant and alluring.",
+    "Time softens the pain of exile.",
+    "The exile builds a new life.",
+    "Calls for return grow louder.",
+    "The exile faces temptation.",
+    "Old wounds are reopened.",
+    "The exile finds inner peace."
+  ],
+  redemption: [
+    "A small act of kindness is noted.",
+    "Old victims are confronted.",
+    "The path proves harder than expected.",
+    "A test of true change arrives.",
+    "Progress is made slowly.",
+    "Skeptics remain unconvinced.",
+    "New opportunities emerge.",
+    "The redeemed faces temptation.",
+    "Allies offer support.",
+    "Old habits prove hard to break.",
+    "Public opinion shifts gradually.",
+    "The redeemed proves their sincerity.",
+    "Forgiveness is granted.",
+    "A new chapter begins.",
+    "True redemption is achieved."
+  ],
+  rescue: [
+    "A ransom demand arrives.",
+    "A rescue attempt fails.",
+    "Hope dwindles with each passing day.",
+    "The captive sends a secret message.",
+    "Rescuers gather resources.",
+    "The captors grow impatient.",
+    "Negotiations begin.",
+    "Time runs short.",
+    "A rescue plan is formulated.",
+    "Unexpected complications arise.",
+    "The captive's condition deteriorates.",
+    "Allies provide crucial aid.",
+    "The rescue becomes desperate.",
+    "Success seems within reach.",
+    "The outcome hangs in balance."
+  ],
+  plague: [
+    "The sickness spreads.",
+    "A cure is rumored.",
+    "Quarantines prove inadequate.",
+    "The source of the plague is suspected.",
+    "Symptoms become more severe.",
+    "Healers work tirelessly.",
+    "Fear grips the population.",
+    "Quack cures proliferate.",
+    "The plague affects the powerful.",
+    "Scientific investigation begins.",
+    "Traditional remedies are tried.",
+    "The plague changes society.",
+    "Heroes emerge.",
+    "The source is finally identified.",
+    "Recovery begins."
+  ],
+  famine: [
+    "Rations are cut again.",
+    "Hoarding is punished severely.",
+    "The desperate turn to crime.",
+    "Relief supplies are diverted.",
+    "The famine affects the powerful.",
+    "Migration begins.",
+    "Social order breaks down.",
+    "Aid arrives from unexpected sources.",
+    "The famine changes society.",
+    "Innovation solves problems.",
+    "The famine ends gradually.",
+    "Scars remain.",
+    "Lessons are learned.",
+    "Society rebuilds stronger.",
+    "Memory fades with time."
+  ],
+  migration: [
+    "The column stretches for miles.",
+    "Local populations react with fear.",
+    "Resources along the route are exhausted.",
+    "Splinter groups break away.",
+    "The migrants face hostility.",
+    "New lands prove challenging.",
+    "Cultural clashes occur.",
+    "The migration changes everyone.",
+    "Adaptation proves difficult.",
+    "New communities form.",
+    "The journey tests resolve.",
+    "Unexpected allies appear.",
+    "The migrants reach their goal.",
+    "Integration begins.",
+    "A new chapter opens."
+  ],
+  sanctuary: [
+    "The defenses are tested.",
+    "Supplies begin to run low.",
+    "Tension rises between refugees.",
+    "A spy is suspected within.",
+    "The sanctuary proves inadequate.",
+    "External threats grow.",
+    "Internal conflicts emerge.",
+    "Resources are rationed.",
+    "The sanctuary becomes overcrowded.",
+    "Leadership is challenged.",
+    "Allies provide support.",
+    "The sanctuary holds.",
+    "Compromises are made.",
+    "Growth occurs.",
+    "The sanctuary evolves."
+  ],
+  curse: [
+    "The curse begins to manifest.",
+    "Victims seek relief.",
+    "The curse affects the innocent.",
+    "Ancient knowledge is consulted.",
+    "The curse spreads.",
+    "Heroes investigate.",
+    "The source is revealed.",
+    "Breaking the curse proves difficult.",
+    "Sacrifices are made.",
+    "The curse changes everything.",
+    "Hope emerges.",
+    "The curse is broken.",
+    "Consequences remain.",
+    "Lessons are learned.",
+    "Healing begins."
+  ],
+  "hunt-survival": [
+    "The hunted evades capture.",
+    "Pursuers close in.",
+    "The hunted finds temporary refuge.",
+    "The chase becomes personal.",
+    "Allies aid the hunted.",
+    "The hunted turns the tables.",
+    "Time runs short.",
+    "The hunted faces despair.",
+    "Unexpected help arrives.",
+    "The hunted proves resourceful.",
+    "The chase ends.",
+    "Consequences follow.",
+    "The hunted survives.",
+    "New threats emerge.",
+    "The story continues."
+  ],
+  conspiracy: [
+    "Whispers spread in dark corners.",
+    "Allies prove unreliable.",
+    "The conspiracy grows.",
+    "Evidence is planted.",
+    "Doubts emerge.",
+    "The conspiracy succeeds.",
+    "Exposure threatens.",
+    "Internal conflicts arise.",
+    "The conspiracy evolves.",
+    "Truth emerges.",
+    "Consequences follow.",
+    "Justice is served.",
+    "The conspiracy ends.",
+    "Lessons are learned.",
+    "Society changes."
+  ],
+  heist: [
+    "Planning intensifies.",
+    "Team members are recruited.",
+    "Security is studied.",
+    "Complications arise.",
+    "The plan changes.",
+    "Execution begins.",
+    "Unexpected obstacles appear.",
+    "Tension builds.",
+    "Success seems possible.",
+    "Betrayal threatens.",
+    "The heist proceeds.",
+    "Consequences emerge.",
+    "The outcome is decided.",
+    "Aftermath follows.",
+    "New opportunities arise."
+  ],
+  infiltration: [
+    "The infiltrator gains access.",
+    "Trust is established.",
+    "Information is gathered.",
+    "Suspicion grows.",
+    "The infiltrator acts.",
+    "Discovery threatens.",
+    "The mission succeeds.",
+    "Escape becomes necessary.",
+    "Consequences follow.",
+    "The infiltrator reflects.",
+    "New missions await.",
+    "The story evolves.",
+    "Allies emerge.",
+    "The infiltration ends.",
+    "Lessons are learned."
+  ],
+  blackmail: [
+    "Secrets are discovered.",
+    "Demands are made.",
+    "Victims react.",
+    "The blackmailer acts.",
+    "Resistance grows.",
+    "Consequences emerge.",
+    "The blackmail succeeds.",
+    "Exposure threatens.",
+    "The blackmailer reflects.",
+    "New opportunities arise.",
+    "The story continues.",
+    "Allies emerge.",
+    "The blackmail ends.",
+    "Lessons are learned.",
+    "Society changes."
+  ],
+  imposter: [
+    "The deception begins.",
+    "Trust is gained.",
+    "The imposter acts.",
+    "Suspicion emerges.",
+    "The deception deepens.",
+    "Discovery threatens.",
+    "The imposter succeeds.",
+    "Exposure occurs.",
+    "Consequences follow.",
+    "The imposter reflects.",
+    "New identities await.",
+    "The story evolves.",
+    "Allies emerge.",
+    "The deception ends.",
+    "Lessons are learned."
+  ],
+  cult: [
+    "The cult grows.",
+    "Rituals are performed.",
+    "Converts join.",
+    "Opposition emerges.",
+    "The cult acts.",
+    "Internal conflicts arise.",
+    "The cult succeeds.",
+    "Exposure threatens.",
+    "The cult reflects.",
+    "New followers await.",
+    "The story evolves.",
+    "Allies emerge.",
+    "The cult ends.",
+    "Lessons are learned.",
+    "Society changes."
+  ],
+  haunting: [
+    "Manifestations increase.",
+    "The haunted seek help.",
+    "The haunting affects the living.",
+    "Investigations begin.",
+    "The source is revealed.",
+    "The haunting intensifies.",
+    "Resolution approaches.",
+    "The haunting ends.",
+    "Consequences remain.",
+    "Lessons are learned.",
+    "The story continues.",
+    "New hauntings begin.",
+    "The haunted reflect.",
+    "Allies emerge.",
+    "Peace returns."
+  ],
+  possession: [
+    "Changes become noticeable.",
+    "The possessed acts strangely.",
+    "Loved ones react.",
+    "Exorcism is attempted.",
+    "The possession deepens.",
+    "Control slips.",
+    "Resolution approaches.",
+    "The possession ends.",
+    "Consequences remain.",
+    "Lessons are learned.",
+    "The possessed reflects.",
+    "Allies emerge.",
+    "New possessions begin.",
+    "The story evolves.",
+    "Recovery occurs."
+  ],
+  transformation: [
+    "Changes begin.",
+    "The transformed adapts.",
+    "Others react with fear.",
+    "The transformation progresses.",
+    "Control becomes difficult.",
+    "Benefits emerge.",
+    "The transformation completes.",
+    "Consequences follow.",
+    "The transformed reflects.",
+    "Allies emerge.",
+    "New transformations begin.",
+    "The story evolves.",
+    "Acceptance occurs.",
+    "Lessons are learned."
+  ],
+  pact: [
+    "The pact is made.",
+    "Terms are tested.",
+    "Benefits emerge.",
+    "Costs become apparent.",
+    "The pact deepens.",
+    "Regret grows.",
+    "Breaking the pact proves difficult.",
+    "Consequences follow.",
+    "The pact-maker reflects.",
+    "Allies emerge.",
+    "New pacts are made.",
+    "The story evolves.",
+    "Redemption occurs.",
+    "Lessons are learned."
+  ],
+  rift: [
+    "The rift opens.",
+    "Reality warps.",
+    "Creatures emerge.",
+    "The rift expands.",
+    "Control becomes difficult.",
+    "Closing the rift proves hard.",
+    "Consequences follow.",
+    "The rift closes.",
+    "Reality stabilizes.",
+    "Lessons are learned.",
+    "The story continues.",
+    "New rifts open.",
+    "Survivors reflect.",
+    "Allies emerge."
+  ],
+  awakening: [
+    "Power manifests.",
+    "The awakened adapts.",
+    "Others sense the change.",
+    "Control becomes difficult.",
+    "The awakening progresses.",
+    "Responsibilities emerge.",
+    "The full awakening occurs.",
+    "Consequences follow.",
+    "The awakened reflects.",
+    "Allies emerge.",
+    "New awakenings begin.",
+    "The story evolves.",
+    "Mastery occurs.",
+    "Lessons are learned."
+  ]
+};
 var STORY_TEMPLATES = [
   {
     type: "hunt",
@@ -18826,11 +21144,26 @@ var STORY_TEMPLATES = [
 function generateStoryThread(rng, type, actors, location, worldTime, triggeringSummary) {
   const template = STORY_TEMPLATES.find((t) => t.type === type) ?? STORY_TEMPLATES[0];
   let title = rng.pick(template.titles);
-  title = title.replace("%ACTOR%", actors[0] ?? "Someone");
-  title = title.replace("%ACTOR%", actors[1] ?? actors[0] ?? "Someone");
+  if (actors[0]) {
+    let actorName = actors[0];
+    title = title.replace("%ACTOR%", actorName);
+  } else {
+    title = title.replace("%ACTOR%", "Someone");
+  }
+  if (actors[1]) {
+    let actorName = actors[1];
+    title = title.replace("%ACTOR%", actorName);
+  } else if (actors[0]) {
+    title = title.replace("%ACTOR%", actors[0]);
+  } else {
+    title = title.replace("%ACTOR%", "Someone");
+  }
   title = title.replace("%LOCATION%", location);
+  title = title.replace(/\bThe The\b/g, "The");
   const summaryOptions = template.summaries(actors, location);
   const summary = rng.pick(summaryOptions);
+  const context = buildStoryContext(rng, type, actors, location, worldTime);
+  const branchingState = initializeBranchingState(rng, type);
   return {
     id: `story-${Date.now()}-${rng.int(1e4)}`,
     type,
@@ -18850,8 +21183,175 @@ function generateStoryThread(rng, type, actors, location, worldTime, triggeringS
       }
     ],
     potentialOutcomes: template.outcomes,
-    resolved: false
+    resolved: false,
+    context,
+    branchingState
   };
+}
+function buildStoryContext(rng, type, actors, location, worldTime) {
+  const context = {
+    actorRelationships: [],
+    keyLocations: [],
+    themes: [],
+    motivations: {}
+  };
+  const themeMap = {
+    hunt: ["pursuit", "survival", "justice"],
+    feud: ["conflict", "honor", "rivalry"],
+    revenge: ["vengeance", "justice", "obsession"],
+    war: ["conquest", "survival", "glory"],
+    siege: ["endurance", "strategy", "desperation"],
+    rebellion: ["freedom", "justice", "change"],
+    duel: ["honor", "skill", "resolution"],
+    raid: ["greed", "surprise", "destruction"],
+    mystery: ["discovery", "truth", "danger"],
+    treasure: ["wealth", "adventure", "greed"],
+    prophecy: ["fate", "belief", "destiny"],
+    expedition: ["exploration", "discovery", "courage"],
+    artifact: ["power", "knowledge", "danger"],
+    "lost-heir": ["identity", "inheritance", "legitimacy"],
+    "ancient-evil": ["corruption", "salvation", "doom"],
+    romance: ["love", "passion", "heartbreak"],
+    rise: ["ambition", "success", "power"],
+    fall: ["hubris", "failure", "redemption"],
+    scandal: ["shame", "reputation", "deception"],
+    betrayal: ["trust", "treachery", "revenge"],
+    succession: ["power", "legitimacy", "ambition"],
+    exile: ["banishment", "redemption", "survival"],
+    redemption: ["forgiveness", "atonement", "change"],
+    rescue: ["heroism", "urgency", "sacrifice"],
+    plague: ["suffering", "healing", "fear"],
+    famine: ["scarcity", "survival", "community"],
+    migration: ["journey", "hope", "adaptation"],
+    sanctuary: ["protection", "refuge", "threat"],
+    curse: ["affliction", "breaking", "suffering"],
+    "hunt-survival": ["pursuit", "evasion", "survival"],
+    conspiracy: ["deception", "plot", "exposure"],
+    heist: ["theft", "skill", "risk"],
+    infiltration: ["deception", "espionage", "discovery"],
+    blackmail: ["secrets", "power", "extortion"],
+    imposter: ["deception", "identity", "exposure"],
+    cult: ["belief", "devotion", "manipulation"],
+    haunting: ["supernatural", "torment", "release"],
+    possession: ["control", "struggle", "exorcism"],
+    transformation: ["change", "identity", "acceptance"],
+    pact: ["bargain", "power", "consequences"],
+    rift: ["reality", "chaos", "closure"],
+    awakening: ["power", "responsibility", "control"]
+  };
+  const availableThemes = themeMap[type] || ["conflict"];
+  const numThemes = Math.min(rng.int(3) + 1, availableThemes.length);
+  context.themes = [];
+  const shuffledThemes = rng.shuffle(availableThemes);
+  for (let i = 0;i < numThemes; i++) {
+    context.themes.push(shuffledThemes[i]);
+  }
+  for (const actor of actors) {
+    const motivationTemplates = [
+      "seeks power and influence",
+      "driven by personal vendetta",
+      "motivated by duty and honor",
+      "seeks wealth and riches",
+      "driven by curiosity and discovery",
+      "motivated by love and protection",
+      "seeks justice and righteousness",
+      "driven by ambition and status",
+      "motivated by fear and survival",
+      "seeks knowledge and wisdom"
+    ];
+    context.motivations[actor] = rng.pick(motivationTemplates);
+  }
+  context.keyLocations = [location];
+  if (rng.chance(0.3))
+    context.keyLocations.push(rng.pick(["ancient ruins", "hidden grove", "abandoned tower", "sacred temple", "forgotten crypt"]));
+  if (actors.length >= 2 && actors[0] && actors[1]) {
+    const relationshipTemplates = [
+      `${actors[0]} and ${actors[1]} were once allies`,
+      `${actors[0]} betrayed ${actors[1]} in the past`,
+      `${actors[0]} is ${actors[1]}'s rival`,
+      `${actors[0]} owes ${actors[1]} a debt`,
+      `${actors[0]} and ${actors[1]} share a common enemy`,
+      `${actors[0]} is jealous of ${actors[1]}`,
+      `${actors[0]} mentors ${actors[1]}`,
+      `${actors[0]} and ${actors[1]} are family`
+    ];
+    if (rng.chance(0.6)) {
+      context.actorRelationships.push(rng.pick(relationshipTemplates));
+    }
+  }
+  return context;
+}
+function initializeBranchingState(rng, type) {
+  const choices = [];
+  if (type === "revenge") {
+    choices.push("pursue direct confrontation", "use deception and allies", "seek magical aid");
+  } else if (type === "mystery") {
+    choices.push("follow the evidence trail", "consult local experts", "risk dangerous shortcuts");
+  } else if (type === "war") {
+    choices.push("focus on defense", "launch preemptive strikes", "seek diplomatic solutions");
+  }
+  return {
+    path: "main",
+    choices: choices.length > 0 ? choices : undefined,
+    variables: {}
+  };
+}
+function generateContextualBeat(rng, story, worldTime) {
+  const context = story.context;
+  const actors = story.actors;
+  const location = story.location;
+  const type = story.type;
+  let beat = rng.pick(PROGRESSION_BEATS[story.type] ?? PROGRESSION_BEATS.mystery);
+  if (context) {
+    if (actors.length > 0) {
+      beat = beat.replace(/\bhunter\b|\bhunters\b|\bavenger\b|\bpursuer\b/gi, actors[0]);
+      beat = beat.replace(/\bseeker\b|\bseekers\b|\bexplorer\b|\bexplorers\b/gi, actors[0]);
+      if (actors.length > 1) {
+        beat = beat.replace(/\btarget\b|\benemy\b|\bfoe\b|\bquarry\b/gi, actors[1]);
+        beat = beat.replace(/\brival\b|\brivals\b|\bcompetitor\b|\bcompetitors\b/gi, actors[1]);
+      }
+    }
+    if (context.keyLocations && context.keyLocations.length > 1) {
+      const secondaryLocation = context.keyLocations.find((loc) => loc !== location);
+      if (secondaryLocation && rng.chance(0.3)) {
+        beat = beat.replace(/area|region|territory/gi, secondaryLocation);
+      }
+    }
+    if (context.motivations && Object.keys(context.motivations).length > 0) {
+      const motivations = Object.values(context.motivations);
+      if (rng.chance(0.2)) {
+        const motivation = rng.pick(motivations);
+        if (actors[0]) {
+          beat += ` ${actors[0]} remains ${motivation}.`;
+        }
+      }
+    }
+    if (context.themes && context.themes.length > 0) {
+      const theme = rng.pick(context.themes);
+      if (rng.chance(0.15)) {
+        const embellishments = {
+          revenge: "The cycle of vengeance continues.",
+          justice: "Justice demands its due.",
+          power: "Power shifts in subtle ways.",
+          discovery: "Secrets begin to surface.",
+          betrayal: "Trust proves fragile.",
+          redemption: "Paths to redemption emerge.",
+          corruption: "Darkness spreads its influence.",
+          salvation: "Hope flickers in the darkness."
+        };
+        if (embellishments[theme]) {
+          beat += ` ${embellishments[theme]}`;
+        }
+      }
+    }
+    if (context.actorRelationships && context.actorRelationships.length > 0 && rng.chance(0.1)) {
+      const relationship = rng.pick(context.actorRelationships);
+      if (relationship && relationship.trim()) {
+        beat += ` ${relationship}, complicating matters.`;
+      }
+    }
+  }
+  return beat;
 }
 function addStoryBeat(story, summary, tensionChange, worldTime) {
   story.beats.push({
@@ -19075,267 +21575,7 @@ function tickStories(rng, stories, world, worldTime) {
     const lastUpdated = ensureDate(story.lastUpdated);
     const daysSinceUpdate = (worldTime.getTime() - lastUpdated.getTime()) / (24 * 60 * 60 * 1000);
     if (daysSinceUpdate >= 1 && rng.chance(0.2)) {
-      const PROGRESSION_BEATS = {
-        hunt: [
-          "Tracks are found. The quarry draws near.",
-          "A witness points the way.",
-          "The hunter's patience wears thin.",
-          "The quarry leaves a taunt. It's personal now."
-        ],
-        feud: [
-          "Harsh words are exchanged publicly.",
-          "An ally is subverted.",
-          "Blood is spilled in a back alley.",
-          "Neutral parties are forced to choose sides."
-        ],
-        revenge: [
-          "The avenger moves closer.",
-          "Old alliances are tested.",
-          "The weight of vengeance grows heavier.",
-          "The target learns they are being hunted."
-        ],
-        war: [
-          "Skirmishes break out along the border.",
-          "Diplomatic options narrow.",
-          "The drums beat louder.",
-          "Mercenaries arrive, choosing sides."
-        ],
-        siege: [
-          "Supplies inside the walls dwindle.",
-          "A sortie attempts to break the ring.",
-          "Disease spreads among the besieged.",
-          "Siege engines are brought into position."
-        ],
-        rebellion: [
-          "Another village joins the uprising.",
-          "The authorities respond with force.",
-          "A charismatic leader emerges.",
-          "Nobles flee the region."
-        ],
-        duel: [
-          "Seconds negotiate the terms.",
-          "One party attempts reconciliation.",
-          "Rumors spread about the coming fight.",
-          "Spectators gather to witness."
-        ],
-        raid: [
-          "Scouts report enemy movements.",
-          "Defenses are hastily reinforced.",
-          "Fires on the horizon approach.",
-          "Refugees flee ahead of the raiders."
-        ],
-        mystery: [
-          "A new clue surfaces.",
-          "Someone who knew too much falls silent.",
-          "The pattern becomes clearer—and more disturbing.",
-          "An old document reveals a connection."
-        ],
-        treasure: [
-          "A rival expedition sets out.",
-          "The map proves partially false.",
-          "Greed begins to poison the company.",
-          "Guardians of the treasure awaken."
-        ],
-        prophecy: [
-          "Another sign manifests.",
-          "Believers grow in number.",
-          "The skeptics fall silent.",
-          "Those who would prevent the prophecy act."
-        ],
-        expedition: [
-          "The terrain becomes impassable.",
-          "Strange landmarks appear as described.",
-          "Supplies run dangerously low.",
-          "Contact with home is lost."
-        ],
-        artifact: [
-          "A fragment of the artifact is found.",
-          "Another seeker enters the race.",
-          "The artifact's location is narrowed down.",
-          "Visions reveal the artifact's power."
-        ],
-        "lost-heir": [
-          "Evidence of the bloodline surfaces.",
-          "Enemies of the heir move to suppress the claim.",
-          "The heir learns fragments of their history.",
-          "Old servants remember the true lineage."
-        ],
-        "ancient-evil": [
-          "Tremors shake the earth.",
-          "Animals flee the area.",
-          "The seals show signs of weakening.",
-          "Dreams of darkness plague the populace."
-        ],
-        portal: [
-          "Strange creatures emerge.",
-          "The portal fluctuates in stability.",
-          "Communication across the threshold begins.",
-          "The other side sends an emissary."
-        ],
-        romance: [
-          "A secret meeting is arranged.",
-          "Jealousy rears its head.",
-          "Families object to the union.",
-          "A rival for affection appears."
-        ],
-        rise: [
-          "Another triumph adds to the legend.",
-          "Enemies begin to take notice.",
-          "The price of success becomes apparent.",
-          "Old allies are left behind."
-        ],
-        fall: [
-          "Another supporter abandons ship.",
-          "Debts come due.",
-          "The vultures circle lower.",
-          "Former rivals offer hollow sympathy."
-        ],
-        scandal: [
-          "Whispers become open conversation.",
-          "Evidence surfaces—real or fabricated.",
-          "Allies distance themselves.",
-          "Public condemnation begins."
-        ],
-        betrayal: [
-          "Small inconsistencies are noticed.",
-          "The betrayer grows bolder.",
-          "Suspicion falls on the wrong person.",
-          "The moment of truth approaches."
-        ],
-        succession: [
-          "Alliances form behind each claimant.",
-          "Legal scholars debate legitimacy.",
-          "Gold changes hands to buy support.",
-          "Assassination attempts multiply."
-        ],
-        exile: [
-          "The exile finds temporary shelter.",
-          "Messages from home bring mixed news.",
-          "The exile's skills prove valuable abroad.",
-          "Plots to return home form."
-        ],
-        redemption: [
-          "A small act of kindness is noted.",
-          "Old victims are confronted.",
-          "The path proves harder than expected.",
-          "A test of true change arrives."
-        ],
-        rescue: [
-          "A ransom demand arrives.",
-          "A rescue attempt fails.",
-          "Hope dwindles with each passing day.",
-          "The captive sends a secret message."
-        ],
-        plague: [
-          "The sickness spreads.",
-          "A cure is rumored.",
-          "Quarantines prove inadequate.",
-          "The source of the plague is suspected."
-        ],
-        famine: [
-          "Rations are cut again.",
-          "Hoarding is punished severely.",
-          "The desperate turn to crime.",
-          "Relief supplies are diverted."
-        ],
-        migration: [
-          "The column stretches for miles.",
-          "Local populations react with fear.",
-          "Resources along the route are exhausted.",
-          "Splinter groups break away."
-        ],
-        sanctuary: [
-          "The defenses are tested.",
-          "Supplies begin to run low.",
-          "Tension rises between refugees.",
-          "A spy is suspected within."
-        ],
-        curse: [
-          "The symptoms worsen.",
-          "Potential cures prove false.",
-          "The origin of the curse is revealed.",
-          "The price of lifting the curse becomes clear."
-        ],
-        "hunt-survival": [
-          "Another narrow escape.",
-          "Pursuers gain ground.",
-          "A potential ally proves false.",
-          "Exhaustion takes its toll."
-        ],
-        conspiracy: [
-          "Another connection is discovered.",
-          "A conspirator is identified.",
-          "The scope proves larger than imagined.",
-          "Counter-surveillance is detected."
-        ],
-        heist: [
-          "The plan hits an unexpected snag.",
-          "A crew member gets cold feet.",
-          "Security is tighter than expected.",
-          "The inside contact proves unreliable."
-        ],
-        infiltration: [
-          "The spy narrows the suspects.",
-          "False accusations fly.",
-          "Trust erodes among allies.",
-          "The spy grows careless."
-        ],
-        blackmail: [
-          "Another payment is demanded.",
-          "Evidence of the threat surfaces.",
-          "The victim considers confession.",
-          "A third party learns the secret."
-        ],
-        imposter: [
-          "A small detail doesn't match.",
-          "Someone who knew the real person arrives.",
-          "The imposter makes a critical error.",
-          "The truth becomes impossible to ignore."
-        ],
-        cult: [
-          "New converts are recruited.",
-          "Disturbing rituals are witnessed.",
-          "The cult's true goal becomes clearer.",
-          "Members in high places are revealed."
-        ],
-        haunting: [
-          "The manifestations intensify.",
-          "The ghost's identity is learned.",
-          "Physical harm begins to occur.",
-          "The unfinished business is understood."
-        ],
-        possession: [
-          "The changes become more obvious.",
-          "Loved ones notice something wrong.",
-          "The possessor's goal becomes clear.",
-          "Control slips in moments of stress."
-        ],
-        transformation: [
-          "The changes spread.",
-          "Control becomes more difficult.",
-          "Others react with fear.",
-          "The transformation offers unexpected benefits."
-        ],
-        pact: [
-          "The terms are tested.",
-          "The other party demands more.",
-          "Escape clauses prove illusory.",
-          "The final payment approaches."
-        ],
-        rift: [
-          "The rift widens.",
-          "Strange laws of physics apply near the tear.",
-          "Something on the other side notices.",
-          "Reality warps in unpredictable ways."
-        ],
-        awakening: [
-          "The power manifests unexpectedly.",
-          "Others sense the awakening.",
-          "Control proves difficult.",
-          "The source of the power is revealed."
-        ]
-      };
-      const beat = rng.pick(PROGRESSION_BEATS[story.type] ?? PROGRESSION_BEATS.mystery);
+      const beat = generateContextualBeat(rng, story, worldTime);
       addStoryBeat(story, beat, 1, worldTime);
       logs.push({
         category: "faction",
@@ -21943,7 +24183,7 @@ function tickDiplomacy(world, rng, worldTime) {
 }
 
 // src/legendary.ts
-var WEAPON_NAMES = {
+var WEAPON_NAMES2 = {
   sword: ["Dawnbringer", "Nightfall", "Oathkeeper", "Widowmaker", "Soulreaver", "Frostbite", "Hellfire", "Starfall", "Griefbringer", "Peacemaker"],
   axe: ["Skullsplitter", "Worldbreaker", "Headswoman", "Thunderclap", "Blooddrinker", "Giantsbane", "Treefeller", "Bonecruncher"],
   spear: ["Godspear", "Serpent-Tongue", "Skypierce", "Heartseeker", "Stormcaller", "Orc-Prod", "Dragonlance", "Soulspear"],
@@ -22169,7 +24409,7 @@ var TREASURE_TEMPLATES = [
 ];
 function generateLegendaryWeapon(rng, world) {
   const type = rng.pick(["sword", "axe", "spear", "bow", "mace", "dagger", "staff", "hammer"]);
-  const name = rng.pick(WEAPON_NAMES[type]);
+  const name = rng.pick(WEAPON_NAMES2[type]);
   return {
     id: `weapon-${Date.now()}-${rng.int(1000)}`,
     name,
@@ -22218,7 +24458,7 @@ function generateProphecy(rng, world, actors) {
   const actor1 = actors.length > 0 ? rng.pick(actors) : randomName(rng);
   const actor2 = actors.length > 1 ? rng.pick(actors.filter((a) => a !== actor1)) : randomName(rng);
   const location = rng.pick(world.settlements).name;
-  let text = template.template.replace("%ACTOR%", actor1).replace("%ACTOR2%", actor2).replace("%LOCATION%", location).replace("%WEAPON%", rng.pick(WEAPON_NAMES.sword)).replace("%MONSTER%", rng.pick(UNIQUE_MONSTER_TEMPLATES).names[0]).replace("%SIGN1%", rng.pick(OMEN_SIGNS)).replace("%SIGN2%", rng.pick(OMEN_SIGNS)).replace("%SIGN3%", rng.pick(OMEN_SIGNS));
+  let text = template.template.replace("%ACTOR%", actor1).replace("%ACTOR2%", actor2).replace("%LOCATION%", location).replace("%WEAPON%", rng.pick(WEAPON_NAMES2.sword)).replace("%MONSTER%", rng.pick(UNIQUE_MONSTER_TEMPLATES).names[0]).replace("%SIGN1%", rng.pick(OMEN_SIGNS)).replace("%SIGN2%", rng.pick(OMEN_SIGNS)).replace("%SIGN3%", rng.pick(OMEN_SIGNS));
   return {
     id: `prophecy-${Date.now()}`,
     text,
@@ -26490,6 +28730,19 @@ function onHourTick(event) {
   if (!initialized)
     return;
   (async () => {
+    const hour = event.worldTime.getUTCHours();
+    if (hour % 6 === 0) {
+      const activeParties = world.parties.filter((p) => p.status === "travel").length;
+      const idleParties = world.parties.filter((p) => p.status === "idle").length;
+      await logger.log({
+        category: "system",
+        summary: `The world turns (${formatDate(calendar)})`,
+        details: `${activeParties} parties traveling, ${idleParties} resting. ${antagonists.filter((a) => a.alive).length} threats lurk.`,
+        worldTime: event.worldTime,
+        realTime: new Date,
+        seed: config.seed
+      });
+    }
     for (const party of world.parties) {
       if (party.status === "travel" && party.travel) {
         const sign = encounterSign(rng, party.travel.terrain, event.worldTime, party.location, party.name, world.seed);
@@ -26774,11 +29027,229 @@ async function catchUpMissedTime() {
   world.lastTickAt = now;
   await saveWorld(world);
 }
+async function runBatchMode(days) {
+  const TICKS_PER_DAY = config.hourTurns * config.dayHours;
+  const TOTAL_TICKS = days * TICKS_PER_DAY;
+  console.log(`
+═══════════════════════════════════════════`);
+  console.log(`  BATCH MODE: ${days} days (${TOTAL_TICKS} turns)`);
+  console.log(`  Seed: ${config.seed}`);
+  console.log(`═══════════════════════════════════════════
+`);
+  let eventCount = 0;
+  let lastDayPrinted = 0;
+  const originalLog = log;
+  const countingLog = async (entry) => {
+    await originalLog(entry);
+    eventCount++;
+  };
+  const startTime = Date.now();
+  for (let t = 0;t <= TOTAL_TICKS; t++) {
+    const worldTime = new Date(config.startWorldTime.getTime() + t * config.turnMinutes * 60000);
+    const tick = { kind: "turn", worldTime, turnIndex: t };
+    for (const party of world.parties) {
+      if (party.status === "idle") {
+        const dungeon = world.dungeons.find((d) => d.name === party.location);
+        if (dungeon && dungeon.rooms && dungeon.rooms.length > 0) {
+          const delveLogs = exploreDungeonTick(rng, dungeon, [party.name], worldTime, world.seed, world, treasureState);
+          for (const entry of delveLogs)
+            await countingLog(entry);
+        }
+      }
+    }
+    if (t % config.hourTurns === 0) {
+      for (const party of world.parties) {
+        if (party.status === "travel" && party.travel) {
+          const sign = encounterSign(rng, party.travel.terrain, worldTime, party.location, party.name, world.seed);
+          if (sign)
+            await countingLog(sign);
+          const enc = enhancedEncounter(rng, party.travel.terrain, worldTime, party.location, party, world, calendar);
+          if (enc) {
+            if (enc.delayMiles)
+              party.travel.milesRemaining += enc.delayMiles;
+            if (enc.fatigueDelta)
+              party.fatigue = (party.fatigue ?? 0) + enc.fatigueDelta;
+            if (enc.injured) {
+              party.wounded = true;
+              party.restHoursRemaining = Math.max(party.restHoursRemaining ?? 0, 24);
+            }
+            if (enc.death) {
+              party.fame = Math.max(0, (party.fame ?? 0) - 1);
+            } else if (enc.category === "road") {
+              party.fame = (party.fame ?? 0) + 1;
+            }
+            await countingLog(enc);
+          }
+          const legendaryEncs = checkLegendaryEncounter(rng, party, party.location, legendaryState, worldTime, world.seed, world, antagonists, storyThreads);
+          for (const lEnc of legendaryEncs) {
+            await countingLog(lEnc);
+            party.fame = (party.fame ?? 0) + 5;
+          }
+        }
+      }
+      const travelLogs = updateTravel(world, rng, worldTime);
+      for (const entry of travelLogs)
+        await countingLog(entry);
+      const caravanLogs = advanceCaravans(world, rng, worldTime);
+      for (const entry of caravanLogs)
+        await countingLog(entry);
+      const conseqLogs = processConsequences(world, rng, worldTime);
+      for (const entry of conseqLogs)
+        await countingLog(entry);
+      if (rng.chance(0.05)) {
+        const npc = rng.pick(world.npcs);
+        if (npc.depth && npc.alive !== false) {
+          const relEvent = relationshipEvent(rng, npc, world, worldTime);
+          if (relEvent)
+            await countingLog(relEvent);
+        }
+      }
+      if (rng.chance(0.03)) {
+        const activeAntagonists = antagonists.filter((a) => a.alive);
+        if (activeAntagonists.length) {
+          const ant = rng.pick(activeAntagonists);
+          const antLogs = antagonistAct(ant, world, rng, worldTime);
+          for (const l of antLogs)
+            await countingLog(l);
+        }
+      }
+      if (rng.chance(0.1)) {
+        const storyLogs = tickStories(rng, storyThreads, world, worldTime);
+        for (const l of storyLogs)
+          await countingLog(l);
+      }
+      const npcAgencyLogs = tickNPCAgency(world, rng, worldTime, antagonists, storyThreads);
+      for (const l of npcAgencyLogs)
+        await countingLog(l);
+      const partyAgencyLogs = tickPartyAgency(world, rng, worldTime, antagonists, storyThreads);
+      for (const l of partyAgencyLogs)
+        await countingLog(l);
+      const factionOpLogs = tickFactionOperations(world, rng, worldTime, antagonists, storyThreads);
+      for (const l of factionOpLogs)
+        await countingLog(l);
+      const spellLogs = tickSpellcasting(world, rng, worldTime);
+      for (const l of spellLogs)
+        await countingLog(l);
+      const nexusLogs = tickNexuses(world, rng, worldTime);
+      for (const l of nexusLogs)
+        await countingLog(l);
+      const levelLogs = tickLevelUps(world, rng, worldTime);
+      for (const l of levelLogs)
+        await countingLog(l);
+      const raisingLogs = tickArmyRaising(world, rng, worldTime);
+      for (const l of raisingLogs)
+        await countingLog(l);
+      const ruinLogs = tickRuins(world, rng, worldTime);
+      for (const entry of ruinLogs)
+        await countingLog(entry);
+      const armyLogs = tickArmies(world, rng, worldTime);
+      for (const l of armyLogs)
+        await countingLog(l);
+      const diseaseLogs = tickDisease(world, rng, worldTime);
+      for (const l of diseaseLogs)
+        await countingLog(l);
+      const mercLogs = tickMercenaries(world, rng, worldTime);
+      for (const l of mercLogs)
+        await countingLog(l);
+      const diplomacyLogs = tickDiplomacy(world, rng, worldTime);
+      for (const l of diplomacyLogs)
+        await countingLog(l);
+      const retainerLogs = tickRetainers(rng, retainerRoster, world, worldTime);
+      for (const l of retainerLogs)
+        await countingLog(l);
+      const guildLogs = tickGuilds(rng, guildState, world, worldTime);
+      for (const l of guildLogs)
+        await countingLog(l);
+      const ecologyLogs = tickEcology(rng, ecologyState, world, antagonists, worldTime);
+      for (const l of ecologyLogs)
+        await countingLog(l);
+      const dynastyLogs = tickDynasty(rng, dynastyState, world, worldTime);
+      for (const l of dynastyLogs)
+        await countingLog(l);
+      const treasureLogs = tickTreasure(rng, treasureState, world, worldTime);
+      for (const l of treasureLogs)
+        await countingLog(l);
+      const navalHourlyLogs = tickNavalHourly(navalState, world, rng, worldTime, calendar.weather);
+      for (const l of navalHourlyLogs)
+        await countingLog(l);
+    }
+    if (t % TICKS_PER_DAY === 0) {
+      const dayNum = t / TICKS_PER_DAY;
+      pruneOldData(worldTime);
+      const { logs: calendarLogs, newCalendar } = dailyCalendarTick(world, rng, worldTime, calendar);
+      calendar = newCalendar;
+      for (const entry of calendarLogs)
+        await countingLog(entry);
+      const startLogs = maybeStartTravel(world, rng, worldTime);
+      for (const entry of startLogs)
+        await countingLog(entry);
+      for (const settlement of world.settlements) {
+        const npcsHere = world.npcs.filter((n) => n.location === settlement.name && n.alive !== false);
+        const partiesHere = world.parties.filter((p) => p.location === settlement.name);
+        const beat = marketBeat(rng, settlement, worldTime, {
+          npcs: npcsHere,
+          parties: partiesHere,
+          tension: settlement.mood
+        });
+        if (beat) {
+          await countingLog({
+            category: "town",
+            summary: beat.summary,
+            details: beat.details,
+            location: settlement.name,
+            worldTime,
+            seed: config.seed
+          });
+        }
+      }
+      const townLogs = dailyTownTick(world, rng, worldTime);
+      for (const entry of townLogs)
+        await countingLog(entry);
+      const domainLogs = tickDomains(world, rng, worldTime);
+      for (const entry of domainLogs)
+        await countingLog(entry);
+      const legendaryLogs = maybeLegendarySpike(rng, world, worldTime, legendaryState);
+      for (const entry of legendaryLogs)
+        await countingLog(entry);
+      const navalDailyLogs = tickNavalDaily(navalState, world, rng, worldTime, calendar.weather, getSeason(calendar.month));
+      for (const l of navalDailyLogs)
+        await countingLog(l);
+      if (dayNum > lastDayPrinted + 30) {
+        const elapsed2 = ((Date.now() - startTime) / 1000).toFixed(1);
+        console.log(`  Day ${dayNum}/${days}: ${eventCount} events (${elapsed2}s elapsed)`);
+        lastDayPrinted = dayNum;
+      }
+    }
+  }
+  const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+  console.log(`
+═══════════════════════════════════════════`);
+  console.log(`  BATCH COMPLETE in ${elapsed}s`);
+  console.log(`═══════════════════════════════════════════`);
+  console.log(`  Total events: ${eventCount}`);
+  console.log(`  Final parties: ${world.parties.length}`);
+  console.log(`  Living NPCs: ${world.npcs.filter((n) => n.alive !== false).length}`);
+  console.log(`  Active antagonists: ${antagonists.filter((a) => a.alive).length}`);
+  console.log(`  Resolved stories: ${storyThreads.filter((s) => s.resolved).length}`);
+  console.log(`  Active stories: ${storyThreads.filter((s) => !s.resolved).length}`);
+  console.log(`
+Output: ${config.logDir}/events.log
+`);
+  world.lastTickAt = new Date(config.startWorldTime.getTime() + days * 24 * 60 * 60 * 1000);
+  world.storyThreads = storyThreads;
+  world.antagonists = antagonists;
+  await saveWorld(world);
+  process.exit(0);
+}
 async function main() {
   await initWorld();
   bus.subscribe("turn", onTurnTick);
   bus.subscribe("hour", onHourTick);
   bus.subscribe("day", onDayTick);
+  if (config.batchDays !== null && config.batchDays > 0) {
+    await runBatchMode(config.batchDays);
+    return;
+  }
   await catchUpMissedTime();
   const initialTravel = maybeStartTravel(world, rng, config.startWorldTime);
   for (const entry of initialTravel)

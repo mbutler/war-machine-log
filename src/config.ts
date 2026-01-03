@@ -18,6 +18,7 @@ export interface SimConfig extends SimContext {
   logDir: string;
   catchUp: boolean; // Whether to catch up missed time on restart
   catchUpSpeed: number; // How fast to catch up (turns per second)
+  batchDays: number | null; // If set, run this many days at max speed then exit (for testing)
 }
 
 export function loadConfig(): SimConfig {
@@ -32,6 +33,10 @@ export function loadConfig(): SimConfig {
       ? new Date(process.env.SIM_START_WORLD_TIME)
       : new Date();
 
+  // Batch mode: run N days at max speed then exit
+  const batchDaysEnv = process.env.SIM_BATCH_DAYS;
+  const batchDays = batchDaysEnv ? parseNumber(batchDaysEnv, 0) : null;
+
   return {
     timeScale,
     msPerWorldMinute,
@@ -43,6 +48,7 @@ export function loadConfig(): SimConfig {
     startWorldTime,
     catchUp: process.env.SIM_CATCH_UP !== 'false', // Default: true
     catchUpSpeed: parseNumber(process.env.SIM_CATCH_UP_SPEED, 10), // Turns per second during catch-up
+    batchDays,
   };
 }
 

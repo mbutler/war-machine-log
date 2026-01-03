@@ -45,6 +45,7 @@ import { EcologyState, createEcologyState, seedEcology, tickEcology } from './ec
 import { DynastyState, createDynastyState, seedDynasty, tickDynasty } from './dynasty.ts';
 import { TreasureState, createTreasureState, tickTreasure } from './treasure.ts';
 import { NavalState, seedNavalState, tickNavalHourly, tickNavalDaily, markSettlementAsPort } from './naval.ts';
+import { exploreDungeonTick } from './dungeon.ts';
 
 const bus = new EventBus();
 const rng = makeRandom(config.seed);
@@ -200,6 +201,22 @@ function onHourTick(event: TickEvent): void {
   if (!initialized) return;
 
   void (async () => {
+    // Heartbeat - ensures at least one log per hour for health monitoring
+    // Only log every 6 hours to avoid spam (at 00:00, 06:00, 12:00, 18:00)
+    const hour = event.worldTime.getUTCHours();
+    if (hour % 6 === 0) {
+      const activeParties = world.parties.filter(p => p.status === 'travel').length;
+      const idleParties = world.parties.filter(p => p.status === 'idle').length;
+      await logger.log({
+        category: 'system',
+        summary: `The world turns (${formatDate(calendar)})`,
+        details: `${activeParties} parties traveling, ${idleParties} resting. ${antagonists.filter(a => a.alive).length} threats lurk.`,
+        worldTime: event.worldTime,
+        realTime: new Date(),
+        seed: config.seed,
+      });
+    }
+
     // Update travel with enhanced encounters
     for (const party of world.parties) {
       if (party.status === 'travel' && party.travel) {
@@ -570,6 +587,238 @@ async function catchUpMissedTime(): Promise<void> {
   await saveWorld(world);
 }
 
+// Batch mode: run N days at max speed then exit
+async function runBatchMode(days: number): Promise<void> {
+  const TICKS_PER_DAY = config.hourTurns * config.dayHours; // 144 turns per day
+  const TOTAL_TICKS = days * TICKS_PER_DAY;
+  
+  console.log(`\n═══════════════════════════════════════════`);
+  console.log(`  BATCH MODE: ${days} days (${TOTAL_TICKS} turns)`);
+  console.log(`  Seed: ${config.seed}`);
+  console.log(`═══════════════════════════════════════════\n`);
+  
+  let eventCount = 0;
+  let lastDayPrinted = 0;
+  const originalLog = log;
+  
+  // Wrap log to count events
+  const countingLog = async (entry: Omit<LogEntry, 'realTime'>) => {
+    await originalLog(entry);
+    eventCount++;
+  };
+  
+  // Temporarily replace global log for counting
+  const startTime = Date.now();
+  
+  for (let t = 0; t <= TOTAL_TICKS; t++) {
+    const worldTime = new Date(config.startWorldTime.getTime() + t * config.turnMinutes * 60_000);
+    const tick: TickEvent = { kind: 'turn', worldTime, turnIndex: t };
+    
+    // TURN TICK - dungeon exploration
+    for (const party of world.parties) {
+      if (party.status === 'idle') {
+        const dungeon = world.dungeons.find((d) => d.name === party.location);
+        if (dungeon && dungeon.rooms && dungeon.rooms.length > 0) {
+          const delveLogs = exploreDungeonTick(rng, dungeon, [party.name], worldTime, world.seed, world, treasureState);
+          for (const entry of delveLogs) await countingLog(entry);
+        }
+      }
+    }
+    
+    // HOURLY TICK
+    if (t % config.hourTurns === 0) {
+      // Travel encounters
+      for (const party of world.parties) {
+        if (party.status === 'travel' && party.travel) {
+          const sign = encounterSign(rng, party.travel.terrain, worldTime, party.location, party.name, world.seed);
+          if (sign) await countingLog(sign);
+          
+          const enc = enhancedEncounter(rng, party.travel.terrain, worldTime, party.location, party, world, calendar);
+          if (enc) {
+            if (enc.delayMiles) party.travel.milesRemaining += enc.delayMiles;
+            if (enc.fatigueDelta) party.fatigue = (party.fatigue ?? 0) + enc.fatigueDelta;
+            if (enc.injured) {
+              party.wounded = true;
+              party.restHoursRemaining = Math.max(party.restHoursRemaining ?? 0, 24);
+            }
+            if (enc.death) {
+              party.fame = Math.max(0, (party.fame ?? 0) - 1);
+            } else if (enc.category === 'road') {
+              party.fame = (party.fame ?? 0) + 1;
+            }
+            await countingLog(enc);
+          }
+          
+          const legendaryEncs = checkLegendaryEncounter(rng, party, party.location, legendaryState, worldTime, world.seed, world, antagonists, storyThreads);
+          for (const lEnc of legendaryEncs) {
+            await countingLog(lEnc);
+            party.fame = (party.fame ?? 0) + 5;
+          }
+        }
+      }
+      
+      const travelLogs = updateTravel(world, rng, worldTime);
+      for (const entry of travelLogs) await countingLog(entry);
+      
+      const caravanLogs = advanceCaravans(world, rng, worldTime);
+      for (const entry of caravanLogs) await countingLog(entry);
+      
+      const conseqLogs = processConsequences(world, rng, worldTime);
+      for (const entry of conseqLogs) await countingLog(entry);
+      
+      if (rng.chance(0.05)) {
+        const npc = rng.pick(world.npcs) as DeepNPC;
+        if (npc.depth && npc.alive !== false) {
+          const relEvent = relationshipEvent(rng, npc, world, worldTime);
+          if (relEvent) await countingLog(relEvent);
+        }
+      }
+      
+      if (rng.chance(0.03)) {
+        const activeAntagonists = antagonists.filter((a) => a.alive);
+        if (activeAntagonists.length) {
+          const ant = rng.pick(activeAntagonists);
+          const antLogs = antagonistAct(ant, world, rng, worldTime);
+          for (const l of antLogs) await countingLog(l);
+        }
+      }
+      
+      if (rng.chance(0.1)) {
+        const storyLogs = tickStories(rng, storyThreads, world, worldTime);
+        for (const l of storyLogs) await countingLog(l);
+      }
+      
+      const npcAgencyLogs = tickNPCAgency(world, rng, worldTime, antagonists, storyThreads);
+      for (const l of npcAgencyLogs) await countingLog(l);
+      
+      const partyAgencyLogs = tickPartyAgency(world, rng, worldTime, antagonists, storyThreads);
+      for (const l of partyAgencyLogs) await countingLog(l);
+      
+      const factionOpLogs = tickFactionOperations(world, rng, worldTime, antagonists, storyThreads);
+      for (const l of factionOpLogs) await countingLog(l);
+      
+      const spellLogs = tickSpellcasting(world, rng, worldTime);
+      for (const l of spellLogs) await countingLog(l);
+      
+      const nexusLogs = tickNexuses(world, rng, worldTime);
+      for (const l of nexusLogs) await countingLog(l);
+      
+      const levelLogs = tickLevelUps(world, rng, worldTime);
+      for (const l of levelLogs) await countingLog(l);
+      
+      const raisingLogs = tickArmyRaising(world, rng, worldTime);
+      for (const l of raisingLogs) await countingLog(l);
+      
+      const ruinLogs = tickRuins(world, rng, worldTime);
+      for (const entry of ruinLogs) await countingLog(entry);
+      
+      const armyLogs = tickArmies(world, rng, worldTime);
+      for (const l of armyLogs) await countingLog(l);
+      
+      const diseaseLogs = tickDisease(world, rng, worldTime);
+      for (const l of diseaseLogs) await countingLog(l);
+      
+      const mercLogs = tickMercenaries(world, rng, worldTime);
+      for (const l of mercLogs) await countingLog(l);
+      
+      const diplomacyLogs = tickDiplomacy(world, rng, worldTime);
+      for (const l of diplomacyLogs) await countingLog(l);
+      
+      const retainerLogs = tickRetainers(rng, retainerRoster, world, worldTime);
+      for (const l of retainerLogs) await countingLog(l);
+      
+      const guildLogs = tickGuilds(rng, guildState, world, worldTime);
+      for (const l of guildLogs) await countingLog(l);
+      
+      const ecologyLogs = tickEcology(rng, ecologyState, world, antagonists, worldTime);
+      for (const l of ecologyLogs) await countingLog(l);
+      
+      const dynastyLogs = tickDynasty(rng, dynastyState, world, worldTime);
+      for (const l of dynastyLogs) await countingLog(l);
+      
+      const treasureLogs = tickTreasure(rng, treasureState, world, worldTime);
+      for (const l of treasureLogs) await countingLog(l);
+      
+      const navalHourlyLogs = tickNavalHourly(navalState, world, rng, worldTime, calendar.weather);
+      for (const l of navalHourlyLogs) await countingLog(l);
+    }
+    
+    // DAILY TICK
+    if (t % TICKS_PER_DAY === 0) {
+      const dayNum = t / TICKS_PER_DAY;
+      
+      pruneOldData(worldTime);
+      
+      const { logs: calendarLogs, newCalendar } = dailyCalendarTick(world, rng, worldTime, calendar);
+      calendar = newCalendar;
+      for (const entry of calendarLogs) await countingLog(entry);
+      
+      const startLogs = maybeStartTravel(world, rng, worldTime);
+      for (const entry of startLogs) await countingLog(entry);
+      
+      for (const settlement of world.settlements) {
+        const npcsHere = world.npcs.filter((n) => n.location === settlement.name && n.alive !== false);
+        const partiesHere = world.parties.filter((p) => p.location === settlement.name);
+        const beat = marketBeat(rng, settlement, worldTime, {
+          npcs: npcsHere,
+          parties: partiesHere,
+          tension: settlement.mood,
+        });
+        if (beat) {
+          await countingLog({
+            category: 'town',
+            summary: beat.summary,
+            details: beat.details,
+            location: settlement.name,
+            worldTime,
+            seed: config.seed,
+          });
+        }
+      }
+      
+      const townLogs = dailyTownTick(world, rng, worldTime);
+      for (const entry of townLogs) await countingLog(entry);
+      
+      const domainLogs = tickDomains(world, rng, worldTime);
+      for (const entry of domainLogs) await countingLog(entry);
+      
+      const legendaryLogs = maybeLegendarySpike(rng, world, worldTime, legendaryState);
+      for (const entry of legendaryLogs) await countingLog(entry);
+      
+      const navalDailyLogs = tickNavalDaily(navalState, world, rng, worldTime, calendar.weather, getSeason(calendar.month));
+      for (const l of navalDailyLogs) await countingLog(l);
+      
+      // Progress indicator every 30 days
+      if (dayNum > lastDayPrinted + 30) {
+        const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+        console.log(`  Day ${dayNum}/${days}: ${eventCount} events (${elapsed}s elapsed)`);
+        lastDayPrinted = dayNum;
+      }
+    }
+  }
+  
+  const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+  
+  console.log(`\n═══════════════════════════════════════════`);
+  console.log(`  BATCH COMPLETE in ${elapsed}s`);
+  console.log(`═══════════════════════════════════════════`);
+  console.log(`  Total events: ${eventCount}`);
+  console.log(`  Final parties: ${world.parties.length}`);
+  console.log(`  Living NPCs: ${world.npcs.filter(n => n.alive !== false).length}`);
+  console.log(`  Active antagonists: ${antagonists.filter(a => a.alive).length}`);
+  console.log(`  Resolved stories: ${storyThreads.filter(s => s.resolved).length}`);
+  console.log(`  Active stories: ${storyThreads.filter(s => !s.resolved).length}`);
+  console.log(`\nOutput: ${config.logDir}/events.log\n`);
+  
+  // Save final state
+  world.lastTickAt = new Date(config.startWorldTime.getTime() + days * 24 * 60 * 60 * 1000);
+  world.storyThreads = storyThreads as EnhancedWorldState['storyThreads'];
+  world.antagonists = antagonists as EnhancedWorldState['antagonists'];
+  await saveWorld(world);
+  
+  process.exit(0);
+}
+
 async function main() {
   // Initialize world before starting scheduler
   await initWorld();
@@ -578,6 +827,12 @@ async function main() {
   bus.subscribe('turn', onTurnTick);
   bus.subscribe('hour', onHourTick);
   bus.subscribe('day', onDayTick);
+
+  // Check for batch mode
+  if (config.batchDays !== null && config.batchDays > 0) {
+    await runBatchMode(config.batchDays);
+    return;
+  }
 
   // Catch up any missed time from previous session
   await catchUpMissedTime();

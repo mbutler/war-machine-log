@@ -62,6 +62,39 @@ if (file_exists($worldPath)) {
     }
 }
 
+// Check simulation health - is it still running?
+$simStatus = 'unknown';
+$simLastUpdate = null;
+$simStaleMinutes = 0;
+
+if (!empty($events)) {
+    // Get the most recent event's real time (when it was actually logged)
+    $lastEvent = $events[0]; // Already sorted newest first
+    $lastRealTime = $lastEvent['realTime'] ?? null;
+    
+    if ($lastRealTime) {
+        $lastTimestamp = strtotime($lastRealTime);
+        $now = time();
+        $simStaleMinutes = floor(($now - $lastTimestamp) / 60);
+        $simLastUpdate = $lastRealTime;
+        
+        // At 1:1 real-time, hourly tick fires every 60 real minutes
+        // Daily tick fires every 24 real hours - that ALWAYS logs events
+        // Use generous thresholds to avoid false alarms
+        if ($simStaleMinutes < 90) {
+            $simStatus = 'running';  // Within ~1.5 hours - probably fine
+        } elseif ($simStaleMinutes < 360) {
+            $simStatus = 'stale';    // 1.5-6 hours - might be slow or paused
+        } else {
+            $simStatus = 'stopped';  // 6+ hours - definitely crashed or stopped
+        }
+    }
+}
+
+// Also check world.json modification time as backup
+$worldModTime = file_exists($worldPath) ? filemtime($worldPath) : 0;
+$worldStaleMinutes = $worldModTime ? floor((time() - $worldModTime) / 60) : 999;
+
 // Deep context lookups - NPC backstory and relationships
 function getNPCByName($world, $name) {
     if (!$world || empty($world['npcs'])) return null;
@@ -136,13 +169,13 @@ function getNPCById($world, $id) {
     return null;
 }
 
-// Find active story threads involving this actor or location
-function getActiveStories($world, $actors, $location) {
+// Find active story threads involving this actor or location (enhanced version)
+function getActiveStoriesEnhanced($world, $actors, $location) {
     if (!$world || empty($world['storyThreads'])) return [];
     $stories = [];
     foreach ($world['storyThreads'] as $story) {
         if ($story['resolved'] ?? false) continue;
-        
+
         $match = false;
         if ($location && ($story['location'] ?? '') === $location) $match = true;
         if (!empty($actors) && !empty($story['actors'])) {
@@ -150,20 +183,118 @@ function getActiveStories($world, $actors, $location) {
                 if (in_array($actor, $story['actors'])) $match = true;
             }
         }
-        
+
         if ($match) {
             $title = $story['title'] ?? 'Unknown tale';
             $phase = $story['phase'] ?? 'unfolding';
             $tension = $story['tension'] ?? 0;
+            $type = $story['type'] ?? 'unknown';
             $outcomes = $story['potentialOutcomes'] ?? [];
-            $outcome = !empty($outcomes) ? $outcomes[0] : '';
-            
-            $storyLine = "\"$title\" ($phase, tension $tension)";
-            if ($outcome) $storyLine .= "\nPossible end: $outcome";
+
+            // Build enhanced story description
+            $storyLine = "\"$title\" ($type story, $phase phase)";
+            $storyLine .= "\nTension: $tension/10";
+
+            // Add context if available
+            $context = $story['context'] ?? [];
+            if (!empty($context['themes'])) {
+                $themes = implode(', ', $context['themes']);
+                $storyLine .= "\nThemes: $themes";
+            }
+
+            // Add potential outcomes (first 2)
+            if (!empty($outcomes)) {
+                $outcome1 = $outcomes[0];
+                $storyLine .= "\nPossible ending: \"$outcome1\"";
+                if (count($outcomes) > 1) {
+                    $outcome2 = $outcomes[1];
+                    $storyLine .= "\nAlternative: \"$outcome2\"";
+                }
+            }
+
             $stories[] = $storyLine;
         }
     }
     return $stories;
+}
+
+// Get story context (motivations, relationships, themes) for actors/location in this event
+function getStoryContextForEvent($world, $actors, $location) {
+    if (!$world || empty($world['storyThreads'])) return [];
+    $contexts = [];
+
+    foreach ($world['storyThreads'] as $story) {
+        if ($story['resolved'] ?? false) continue;
+
+        $match = false;
+        $relevantActors = [];
+
+        if ($location && ($story['location'] ?? '') === $location) $match = true;
+        if (!empty($actors) && !empty($story['actors'])) {
+            foreach ($actors as $actor) {
+                if (in_array($actor, $story['actors'])) {
+                    $match = true;
+                    $relevantActors[] = $actor;
+                }
+            }
+        }
+
+        if ($match) {
+            $contextParts = [];
+            $context = $story['context'] ?? [];
+
+            // Actor motivations from story context
+            if (!empty($context['motivations']) && !empty($relevantActors)) {
+                foreach ($relevantActors as $actor) {
+                    if (isset($context['motivations'][$actor])) {
+                        $motivation = $context['motivations'][$actor];
+                        $contextParts[] = "$actor: $motivation";
+                    }
+                }
+            }
+
+            // Story actor relationships
+            if (!empty($context['actorRelationships'])) {
+                $relationships = $context['actorRelationships'];
+                if (count($relationships) <= 3) { // Limit to avoid huge tooltips
+                    $contextParts = array_merge($contextParts, $relationships);
+                } else {
+                    $contextParts[] = implode('; ', array_slice($relationships, 0, 2)) . "...";
+                }
+            }
+
+            // Story themes
+            if (!empty($context['themes'])) {
+                $themes = $context['themes'];
+                $contextParts[] = "Story themes: " . implode(', ', $themes);
+            }
+
+            // Key locations from story
+            if (!empty($context['keyLocations'])) {
+                $keyLocs = $context['keyLocations'];
+                if ($location && !in_array($location, $keyLocs)) {
+                    $keyLocs = array_diff($keyLocs, [$location]); // Don't duplicate current location
+                }
+                if (!empty($keyLocs)) {
+                    $contextParts[] = "Key locations: " . implode(', ', array_slice($keyLocs, 0, 3));
+                }
+            }
+
+            // Branching state (future possibilities)
+            $branching = $story['branchingState'] ?? [];
+            if (!empty($branching['choices'])) {
+                $choices = $branching['choices'];
+                $contextParts[] = "Future possibilities: " . implode('; ', array_slice($choices, 0, 2));
+            }
+
+            if (!empty($contextParts)) {
+                $title = $story['title'] ?? 'Unknown tale';
+                $contexts[] = "From \"$title\":\n" . implode("\n", $contextParts);
+            }
+        }
+    }
+
+    return $contexts;
 }
 
 // Find relationships between actors in this event
@@ -275,6 +406,54 @@ function formatWorldDate($iso) {
             margin-bottom: 20px;
         }
         
+        .warning {
+            background: #2d2a1f;
+            border: 1px solid #5c4f27;
+            color: #fbbf24;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+        
+        .warning-minor {
+            background: #1f2d2a;
+            border: 1px solid #275c4f;
+            color: #4ade80;
+        }
+        
+        .warning small {
+            color: #9ca3af;
+        }
+        
+        .status {
+            font-weight: 600;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .status-running {
+            color: #4ade80;
+            background: #1a2d1f;
+        }
+        
+        .status-stale {
+            color: #fbbf24;
+            background: #2d2a1f;
+        }
+        
+        .status-stopped {
+            color: #f87171;
+            background: #2d1f1f;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
         .events {
             display: flex;
             flex-direction: column;
@@ -283,7 +462,7 @@ function formatWorldDate($iso) {
         
         .event {
             display: grid;
-            grid-template-columns: 130px 65px 1fr;
+            grid-template-columns: auto 1fr;
             gap: 16px;
             padding: 8px 12px;
             background: #16161d;
@@ -295,11 +474,17 @@ function formatWorldDate($iso) {
             background: #1e1e28;
         }
         
+        .event-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 130px;
+        }
+        
         .time {
             color: #6b6b7a;
             font-size: 11px;
             white-space: nowrap;
-            min-width: 130px;
         }
         
         .category {
@@ -311,8 +496,7 @@ function formatWorldDate($iso) {
             border-radius: 3px;
             background: #2a2a35;
             text-align: center;
-            min-width: 65px;
-            max-width: 65px;
+            width: fit-content;
         }
         
         .content {
@@ -351,6 +535,85 @@ function formatWorldDate($iso) {
         
         a { color: #c084fc; text-decoration: none; }
         a:hover { text-decoration: underline; }
+        
+        /* Mobile responsive */
+        @media (max-width: 640px) {
+            body {
+                font-size: 14px;
+            }
+            
+            .container {
+                padding: 12px;
+            }
+            
+            header {
+                padding-bottom: 12px;
+                margin-bottom: 16px;
+            }
+            
+            h1 {
+                font-size: 14px;
+            }
+            
+            .meta {
+                flex-wrap: wrap;
+                gap: 8px 16px;
+            }
+            
+            .event {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                padding: 12px;
+            }
+            
+            .event-meta {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                min-width: auto;
+            }
+            
+            .time {
+                font-size: 12px;
+            }
+            
+            .category {
+                font-size: 9px;
+            }
+            
+            .summary {
+                font-size: 14px;
+                line-height: 1.5;
+            }
+            
+            .details {
+                font-size: 13px;
+            }
+            
+            .actors {
+                font-size: 12px;
+            }
+            
+            footer {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+            
+            /* Tooltip on mobile - fixed at bottom */
+            .custom-tooltip {
+                max-width: none;
+                width: calc(100vw - 24px);
+                left: 12px !important;
+                right: 12px !important;
+                bottom: 12px !important;
+                top: auto !important;
+                font-size: 12px;
+                max-height: 40vh;
+                overflow-y: auto;
+            }
+        }
         
         /* Custom styled tooltip */
         .has-tooltip {
@@ -414,7 +677,7 @@ function formatWorldDate($iso) {
 <body>
     <div class="container">
         <header>
-            <h1>⚔ WORLD WITHOUT PLAYERS</h1>
+            <h1>WORLD WITHOUT PLAYERS</h1>
             <h2>A BECMI event log</h2>
             <div class="meta">
                 <?php if ($world): ?>
@@ -423,8 +686,29 @@ function formatWorldDate($iso) {
                 <span><?= count($world['parties'] ?? []) ?> parties</span>
                 <span>Seed: <?= htmlspecialchars($world['seed'] ?? '?') ?></span>
                 <?php endif; ?>
+                
+                <?php if ($simStatus === 'running'): ?>
+                <span class="status status-running" title="Last activity <?= $simStaleMinutes ?> min ago">● Live</span>
+                <?php elseif ($simStatus === 'stale'): ?>
+                <span class="status status-stale" title="Last activity <?= $simStaleMinutes ?> min ago">● Stale (<?= $simStaleMinutes ?>m)</span>
+                <?php elseif ($simStatus === 'stopped'): ?>
+                <span class="status status-stopped" title="Last activity <?= $simStaleMinutes ?> min ago">● Stopped</span>
+                <?php endif; ?>
             </div>
         </header>
+        
+        <?php if ($simStatus === 'stopped'): ?>
+        <div class="warning">
+            ⚠️ Simulation appears to have stopped. Last event was <?= floor($simStaleMinutes / 60) ?>h <?= $simStaleMinutes % 60 ?>m ago.
+            <?php if ($simLastUpdate): ?>
+            <br><small>Last logged: <?= htmlspecialchars($simLastUpdate) ?></small>
+            <?php endif; ?>
+        </div>
+        <?php elseif ($simStatus === 'stale'): ?>
+        <div class="warning warning-minor">
+            ⏳ No new events in <?= $simStaleMinutes ?> minutes. Simulation may be paused or slow.
+        </div>
+        <?php endif; ?>
         
         <?php if ($error): ?>
         <div class="error"><?= htmlspecialchars($error) ?></div>
@@ -436,28 +720,36 @@ function formatWorldDate($iso) {
                 $color = $categoryColors[$cat] ?? '#94a3b8';
             ?>
             <div class="event">
-                <div class="time" title="<?= htmlspecialchars($e['worldTime'] ?? '') ?>"><?= formatWorldDate($e['worldTime'] ?? '') ?></div>
-                <div class="category" style="color: <?= $color ?>"><?= htmlspecialchars($cat) ?></div>
+                <div class="event-meta">
+                    <div class="time" title="<?= htmlspecialchars($e['worldTime'] ?? '') ?>"><?= formatWorldDate($e['worldTime'] ?? '') ?></div>
+                    <div class="category" style="color: <?= $color ?>"><?= htmlspecialchars($cat) ?></div>
+                </div>
                 <div class="content">
                     <?php
-                    // Build contextual tooltip with DEEP backstory from world.json
+                    // Build ENHANCED contextual tooltip with deep backstory and story context
                     $tooltipParts = [];
                     $actors = $e['actors'] ?? [];
                     $location = $e['location'] ?? '';
-                    
-                    // 1. RELATIONSHIPS BETWEEN ACTORS IN THIS EVENT
-                    $relationships = getRelationshipsBetween($world, $actors);
-                    if ($relationships) {
-                        $tooltipParts[] = "═══ HISTORY ═══\n" . implode("\n", $relationships);
-                    }
-                    
-                    // 2. ACTIVE STORY THREADS involving these actors/location
-                    $stories = getActiveStories($world, $actors, $location);
+
+                    // 1. ACTIVE STORY THREADS with enhanced context
+                    $stories = getActiveStoriesEnhanced($world, $actors, $location);
                     if ($stories) {
                         $tooltipParts[] = "═══ ACTIVE PLOTS ═══\n" . implode("\n\n", $stories);
                     }
-                    
-                    // 3. NPC BACKSTORIES for actors (limit to first 2 to avoid huge tooltip)
+
+                    // 2. STORY CONTEXT - motivations, themes, relationships from active stories
+                    $storyContexts = getStoryContextForEvent($world, $actors, $location);
+                    if ($storyContexts) {
+                        $tooltipParts[] = "═══ STORY CONTEXT ═══\n" . implode("\n\n", $storyContexts);
+                    }
+
+                    // 3. RELATIONSHIPS BETWEEN ACTORS IN THIS EVENT
+                    $relationships = getRelationshipsBetween($world, $actors);
+                    if ($relationships) {
+                        $tooltipParts[] = "═══ RELATIONSHIPS ═══\n" . implode("\n", $relationships);
+                    }
+
+                    // 4. NPC BACKSTORIES for actors (limit to first 2 to avoid huge tooltip)
                     $npcCount = 0;
                     foreach ($actors as $actor) {
                         if ($npcCount >= 2) break;
@@ -488,8 +780,10 @@ function formatWorldDate($iso) {
             
             <?php if (empty($events) && !$error): ?>
             <div class="event">
-                <div class="time">—</div>
-                <div class="category">system</div>
+                <div class="event-meta">
+                    <div class="time">—</div>
+                    <div class="category">system</div>
+                </div>
                 <div class="content">
                     <div class="summary">No events yet. Start the simulation!</div>
                 </div>
@@ -514,6 +808,8 @@ function formatWorldDate($iso) {
     (function() {
         const tooltip = document.getElementById('tooltip');
         let showTimeout;
+        let activeEl = null;
+        const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         
         // Helper to escape HTML for safe display
         function escapeHtml(text) {
@@ -524,72 +820,133 @@ function formatWorldDate($iso) {
         
         // Format tooltip with styled sections
         function formatTooltip(raw) {
-            // Split into lines and process each
             const lines = raw.split('\n');
             let html = '';
-            
+
             for (const line of lines) {
-                // Section headers
                 const headerMatch = line.match(/^═══ (.+) ═══$/);
                 if (headerMatch) {
-                    html += '<div class="tt-label">' + escapeHtml(headerMatch[1]) + '</div>';
+                    const header = headerMatch[1];
+                    if (header === 'STORY CONTEXT') {
+                        html += '<div class="tt-header">📖 ' + escapeHtml(header) + '</div>';
+                    } else if (header === 'ACTIVE PLOTS') {
+                        html += '<div class="tt-header">🎭 ' + escapeHtml(header) + '</div>';
+                    } else if (header === 'RELATIONSHIPS') {
+                        html += '<div class="tt-header">🤝 ' + escapeHtml(header) + '</div>';
+                    } else {
+                        html += '<div class="tt-header">' + escapeHtml(header) + '</div>';
+                    }
                     continue;
                 }
-                
-                // Lines with quotes - style the quoted part
+
+                // Handle story context lines specially
+                if (line.startsWith('From "') && line.includes('":')) {
+                    const storyMatch = line.match(/From "([^"]+)":/);
+                    if (storyMatch) {
+                        const storyTitle = storyMatch[1];
+                        html += '<div style="font-weight: 600; color: #fbbf24; margin-top: 4px;">From "' + escapeHtml(storyTitle) + '":</div>';
+                        continue;
+                    }
+                }
+
+                // Handle actor motivations (Name: motivation)
+                const motivationMatch = line.match(/^([^:]+): (.+)$/);
+                if (motivationMatch && !line.includes('"')) {
+                    const [, actor, motivation] = motivationMatch;
+                    html += '<div style="margin-left: 8px;"><strong style="color: #60a5fa;">' + escapeHtml(actor) + '</strong>: ' + escapeHtml(motivation) + '</div>';
+                    continue;
+                }
+
                 let processedLine = escapeHtml(line);
                 processedLine = processedLine.replace(/&quot;([^&]+)&quot;/g, '<span class="tt-quote">"$1"</span>');
                 processedLine = processedLine.replace(/"([^"]+)"/g, '<span class="tt-quote">"$1"</span>');
-                
+
                 if (line.trim()) {
                     html += '<div>' + processedLine + '</div>';
                 }
             }
-            
+
             return html;
         }
         
+        function showTooltip(el, x, y) {
+            const text = el.getAttribute('data-tooltip');
+            if (!text) return;
+            
+            tooltip.innerHTML = formatTooltip(text);
+            activeEl = el;
+            
+            if (isMobile) {
+                // Mobile: fixed at bottom
+                tooltip.style.left = '';
+                tooltip.style.top = '';
+            } else {
+                // Desktop: near cursor
+                tooltip.style.left = x + 15 + 'px';
+                tooltip.style.top = y + 15 + 'px';
+            }
+            
+            tooltip.classList.add('visible');
+            
+            // Desktop: adjust if off-screen
+            if (!isMobile) {
+                const ttRect = tooltip.getBoundingClientRect();
+                if (ttRect.right > window.innerWidth - 20) {
+                    tooltip.style.left = (window.innerWidth - ttRect.width - 20) + 'px';
+                }
+                if (ttRect.bottom > window.innerHeight - 20) {
+                    tooltip.style.top = (y - ttRect.height - 30) + 'px';
+                }
+            }
+        }
+        
+        function hideTooltip() {
+            clearTimeout(showTimeout);
+            tooltip.classList.remove('visible');
+            activeEl = null;
+        }
+        
         document.querySelectorAll('.has-tooltip').forEach(el => {
+            // Desktop: hover events
             el.addEventListener('mouseenter', function(e) {
-                const text = this.getAttribute('data-tooltip');
-                if (!text) return;
-                
+                if (isMobile) return;
                 clearTimeout(showTimeout);
-                showTimeout = setTimeout(() => {
-                    tooltip.innerHTML = formatTooltip(text);
-                    
-                    // Position near cursor
-                    let x = e.clientX + 15;
-                    let y = e.clientY + 15;
-                    
-                    tooltip.style.left = x + 'px';
-                    tooltip.style.top = y + 'px';
-                    tooltip.classList.add('visible');
-                    
-                    // Adjust if off-screen
-                    const ttRect = tooltip.getBoundingClientRect();
-                    if (ttRect.right > window.innerWidth - 20) {
-                        tooltip.style.left = (window.innerWidth - ttRect.width - 20) + 'px';
-                    }
-                    if (ttRect.bottom > window.innerHeight - 20) {
-                        tooltip.style.top = (y - ttRect.height - 30) + 'px';
-                    }
-                }, 300);
+                showTimeout = setTimeout(() => showTooltip(this, e.clientX, e.clientY), 300);
             });
             
             el.addEventListener('mouseleave', function() {
-                clearTimeout(showTimeout);
-                tooltip.classList.remove('visible');
+                if (isMobile) return;
+                hideTooltip();
             });
             
             el.addEventListener('mousemove', function(e) {
+                if (isMobile) return;
                 if (tooltip.classList.contains('visible')) {
                     tooltip.style.left = (e.clientX + 15) + 'px';
                     tooltip.style.top = (e.clientY + 15) + 'px';
                 }
             });
+            
+            // Mobile: tap to toggle
+            el.addEventListener('click', function(e) {
+                if (!isMobile) return;
+                e.preventDefault();
+                if (activeEl === this) {
+                    hideTooltip();
+                } else {
+                    showTooltip(this, 0, 0);
+                }
+            });
+        });
+        
+        // Tap outside to close on mobile
+        document.addEventListener('click', function(e) {
+            if (isMobile && activeEl && !e.target.closest('.has-tooltip') && !e.target.closest('.custom-tooltip')) {
+                hideTooltip();
+            }
         });
     })();
     </script>
 </body>
 </html>
+
