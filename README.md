@@ -8,14 +8,15 @@ A living fantasy world simulation that generates emergent narratives in real-tim
 # Install dependencies
 bun install
 
-# Run the simulator
-bun run start
+# Build the simulator
+bun run build
 
-# Or with hot-reload (development)
-bun run dev
+# Start the simulation (runs in background)
+nohup ./restart-wrapper.sh > simulation.log 2>&1 &
 
-# Run the bundled version
-bun run dist/fantasy-log.js
+# View the live event log
+# Open http://localhost/index.php in your browser
+# (or your server URL if deployed remotely)
 ```
 
 ## What It Does
@@ -34,7 +35,14 @@ Watch as:
 
 ## Output
 
-### Console
+### Web Interface
+**Primary way to view the simulation:**
+- Open `index.php` in your browser for a live event feed
+- Hover over events for mysterious "glimpses" behind the simulation
+- Auto-refreshes every 60 seconds
+- Shows the last 50 events (configurable via URL: `?limit=100`)
+
+### Console Output (when running manually)
 ```
 ╔════════════════════════════════════════════════════════════════╗
 ║  BECMI Real-Time Simulator                                     ║
@@ -48,8 +56,8 @@ Watch as:
 ```
 
 ### Log Files
-- `logs/events.log` — Human-readable narrative log
-- `logs/events.jsonl` — Machine-readable JSON Lines format
+- `logs/events.jsonl` — Machine-readable JSON Lines format (feeds the web interface)
+- `simulation.log` — Background process output and errors
 
 ### World State
 - `world.json` — Complete world state, persists between runs
@@ -69,6 +77,63 @@ Environment variables:
 Example:
 ```bash
 SIM_SEED=my-world SIM_TIME_SCALE=60 bun run start
+```
+
+## Process Management
+
+The simulator runs as a background process using a custom restart wrapper for reliability:
+
+### Starting
+```bash
+# Build first
+bun run build
+
+# Start in background (recommended)
+nohup ./restart-wrapper.sh > simulation.log 2>&1 &
+
+# Check it's running
+ps aux | grep -E '(bun|fantasy-log)' | grep -v grep
+```
+
+### Stopping
+```bash
+# Find and kill the process
+ps aux | grep -E '(bun|fantasy-log)' | grep -v grep
+kill -9 <PID>
+
+# Or kill all at once
+pkill -f 'restart-wrapper'
+pkill -f 'fantasy-log'
+```
+
+### Restarting
+```bash
+# Stop first, then restart
+pkill -f 'restart-wrapper'
+nohup ./restart-wrapper.sh > simulation.log 2>&1 &
+```
+
+### Monitoring
+```bash
+# View process status
+ps aux | grep -E '(bun|fantasy-log)' | grep -v grep
+
+# View recent logs
+tail -f simulation.log
+
+# Check web interface status (green = running, red = stopped)
+# Visit index.php in browser
+```
+
+### Troubleshooting
+```bash
+# If process keeps dying, check the log
+tail -50 simulation.log
+
+# Restart with fresh build
+bun run build
+pkill -f 'restart-wrapper'
+nohup ./restart-wrapper.sh > simulation.log 2>&1 &
 ```
 
 ## Persistence & Catch-Up
@@ -98,8 +163,15 @@ SIM_CATCH_UP=false bun run start
 ### Fresh Start
 To reset the world completely:
 ```bash
-rm world.json logs/events.*
-bun run start
+# Kill any running processes first
+pkill -f 'restart-wrapper'
+
+# Remove all persistent data
+rm world.json logs/events.* simulation.log
+
+# Start fresh
+bun run build
+nohup ./restart-wrapper.sh > simulation.log 2>&1 &
 ```
 
 ### New World with Different Names
@@ -107,12 +179,16 @@ The seed controls procedural generation. Same seed = same towns, NPCs, and facti
 
 ```bash
 # Delete old world and use a new seed
-rm world.json logs/events.*
-SIM_SEED=my-unique-world bun run start
+pkill -f 'restart-wrapper'
+rm world.json logs/events.* simulation.log
+SIM_SEED=my-unique-world bun run build
+nohup ./restart-wrapper.sh > simulation.log 2>&1 &
 
 # Or use a random seed (timestamp)
-rm world.json logs/events.*
-SIM_SEED=$(date +%s) bun run start
+pkill -f 'restart-wrapper'
+rm world.json logs/events.* simulation.log
+SIM_SEED=$(date +%s) bun run build
+nohup ./restart-wrapper.sh > simulation.log 2>&1 &
 ```
 
 | Scenario | Result |
@@ -156,21 +232,25 @@ The world file includes a `schemaVersion` field. When loading an older version:
 ### Best Practices for Long-Running Simulations
 
 1. **Test changes with stress tests first**: `bun run src/stress-test.ts`
-2. **Back up your world**: `cp world.json world.backup.json`
+2. **Back up your world**: `cp world.json world.backup.json && cp simulation.log simulation.backup.log`
 3. **Add new features with defaults**: `newField ?? defaultValue`
 4. **Don't delete old fields** — mark them deprecated instead
+5. **Monitor the process**: Check `simulation.log` regularly for errors
 
 ## Building
 
 ```bash
-# Bundle for Bun runtime
+# Bundle for Bun runtime (recommended)
 bun run build
 
-# Bundle for Node.js
+# Bundle for Node.js (alternative)
 bun run build:node
 
 # Output: dist/fantasy-log.js
+# Web interface: index.php (serves logs/events.jsonl)
 ```
+
+**Note:** The web interface (`index.php`) automatically serves the latest events from `logs/events.jsonl`. No additional setup required.
 
 ## Stress Testing
 
@@ -206,6 +286,46 @@ Events in one system ripple through others:
 - Ship arrivals bring rumors from procedurally-generated distant lands
 - Treasure discoveries spawn rumors that attract rivals
 - Weather affects travel time, naval voyages, and encounter rates
+
+## Deployment
+
+### Server Setup
+```bash
+# Upload these files to your web server:
+# - dist/fantasy-log.js (built simulator)
+# - restart-wrapper.sh (process manager)
+# - index.php (web interface)
+# - world.json (will be created)
+# - logs/ directory (will be created)
+
+# Set permissions
+chmod +x restart-wrapper.sh
+chmod 755 index.php
+
+# Start the simulation
+nohup ./restart-wrapper.sh > simulation.log 2>&1 &
+```
+
+### Remote Monitoring
+- **Web Interface**: Visit `https://your-server.com/index.php`
+- **Status Check**: Green dot = running, red dot = stopped
+- **Process Check**: `ps aux | grep fantasy-log`
+- **Log Check**: `tail -f simulation.log`
+
+### Server Management
+```bash
+# Kill all processes
+pkill -f 'restart-wrapper'
+pkill -f 'fantasy-log'
+
+# Restart after updates
+bun run build  # if making code changes
+nohup ./restart-wrapper.sh > simulation.log 2>&1 &
+
+# Backup important files
+cp world.json world.backup.json
+cp simulation.log simulation.backup.log
+```
 
 ## License
 

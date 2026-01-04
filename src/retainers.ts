@@ -317,7 +317,22 @@ export function hireRetainer(
   world: WorldState,
 ): LogEntry[] {
   const logs: LogEntry[] = [];
-  
+
+  // Prevent double-hiring - check if retainer is already employed
+  if (retainer.employerId) {
+    logs.push({
+      category: 'town',
+      summary: `${retainer.name} is already employed`,
+      details: `Cannot hire ${retainer.name} as they already serve another master.`,
+      location: retainer.location,
+      actors: [retainer.name],
+      worldTime,
+      realTime: new Date(),
+      seed: world.seed,
+    });
+    return logs;
+  }
+
   retainer.employerId = employerId;
   retainer.hiredAt = worldTime;
   retainer.lastPaid = worldTime;

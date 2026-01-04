@@ -44,9 +44,21 @@ if (!file_exists($eventsPath)) {
     } else {
         $lines = array_slice($lines, -$limit);
         $lines = array_reverse($lines); // Newest first
+        $seenIds = [];
         foreach ($lines as $line) {
             $decoded = json_decode($line, true);
             if ($decoded) {
+                // Deduplicate by event ID if present, otherwise by timestamp + summary
+                $eventId = $decoded['id'] ?? null;
+                if ($eventId) {
+                    if (isset($seenIds[$eventId])) continue;
+                    $seenIds[$eventId] = true;
+                } else {
+                    // Fallback: dedupe by timestamp + summary
+                    $key = ($decoded['timestamp'] ?? '') . '|' . ($decoded['summary'] ?? '');
+                    if (isset($seenIds[$key])) continue;
+                    $seenIds[$key] = true;
+                }
                 $events[] = $decoded;
             }
         }
@@ -120,6 +132,488 @@ function getNPCByName($world, $name) {
         if ($npc['name'] === $name) return $npc;
     }
     return null;
+}
+
+// NEW GLIMPSE FUNCTIONS - Hints of deep simulation without spoilers
+
+function getStoryGlimpse($world, $actors, $location) {
+    if (!$world || empty($world['storyThreads'])) return '';
+
+    $activeStories = array_filter($world['storyThreads'], function($s) {
+        return !($s['resolved'] ?? false);
+    });
+    if (empty($activeStories)) return '';
+
+    // Find stories relevant to this event
+    $relevantStories = [];
+    foreach ($activeStories as $story) {
+        $matches = false;
+        if ($location && ($story['location'] ?? '') === $location) $matches = true;
+        if (!empty($actors) && !empty($story['actors'])) {
+            if (!empty(array_intersect($actors, $story['actors']))) $matches = true;
+        }
+        if ($matches) {
+            $relevantStories[] = $story;
+        }
+    }
+
+    // If no relevant stories, use top global story as fallback (show glimpses more often)
+    $storiesToUse = $relevantStories;
+    if (empty($storiesToUse)) {
+        usort($activeStories, function($a, $b) {
+            return ($b['tension'] ?? 0) <=> ($a['tension'] ?? 0);
+        });
+        $topStory = $activeStories[0] ?? null;
+        if ($topStory && ($topStory['tension'] ?? 0) >= 2) {
+            $storiesToUse = [$topStory];
+        }
+    }
+    
+    if (empty($storiesToUse)) return '';
+
+    // Sort by tension, show most interesting
+    usort($storiesToUse, function($a, $b) {
+        return ($b['tension'] ?? 0) <=> ($a['tension'] ?? 0);
+    });
+    
+    $story = $storiesToUse[0];
+    $type = $story['type'] ?? 'story';
+    $phase = $story['phase'] ?? 'unfolding';
+    $tension = $story['tension'] ?? 0;
+    $context = $story['context'] ?? [];
+    $title = $story['title'] ?? null;
+    $location = $story['location'] ?? null;
+    $actors = $story['actors'] ?? [];
+    
+    $typeName = ucfirst($type);
+    
+    // Extract rich context data
+    $motivations = $context['motivations'] ?? [];
+    $themes = $context['themes'] ?? [];
+    $actorRelationships = $context['actorRelationships'] ?? [];
+    
+    // Build detailed glimpse showing the simulation depth
+    $parts = [];
+    
+    // Phase/tension state
+    if ($phase === 'climax' && $tension >= 8) {
+        $parts[] = "reaches its breaking point";
+    } elseif ($phase === 'climax') {
+        $parts[] = "approaches its climax";
+    } elseif ($phase === 'rising' && $tension >= 7) {
+        $parts[] = "builds toward confrontation";
+    } elseif ($tension >= 7) {
+        $parts[] = "high-stakes escalation";
+    } elseif ($phase === 'rising' && $tension >= 4) {
+        $parts[] = "gains momentum";
+    } elseif ($phase === 'inciting' && $tension >= 3) {
+        $parts[] = "begins to unfold";
+    } elseif ($phase === 'inciting') {
+        $parts[] = "begins";
+    } elseif ($tension >= 2) {
+        $parts[] = "develops";
+    }
+    
+    // Add motivations - show what's driving this (always add if available, not just when parts < 3)
+    if (!empty($motivations)) {
+        $motParts = [];
+        $count = 0;
+        foreach ($motivations as $actor => $motivation) {
+            if ($count >= 2) break;
+            if (is_string($motivation) && strlen($motivation) < 50) {
+                // Remove "motivated by" prefix if present to avoid redundancy
+                $cleanMot = preg_replace('/^motivated by\s+/i', '', $motivation);
+                $motParts[] = strtolower($cleanMot);
+                $count++;
+            }
+        }
+        if (!empty($motParts)) {
+            $parts[] = "driven by " . implode(" and ", $motParts);
+        }
+    }
+    
+    // Add themes (add early - themes are important context)
+    if (!empty($themes) && count($parts) < 4) {
+        $themeStr = implode(", ", array_slice($themes, 0, 2));
+        if (strlen($themeStr) < 40) {
+            $parts[] = "themes: " . strtolower($themeStr);
+        }
+    }
+    
+    // Add relationship context - show the connections
+    if (!empty($actorRelationships) && count($parts) < 4) {
+        $rel = $actorRelationships[0];
+        // Extract relationship type and history
+        if (preg_match('/\((\w+)\):\s*"([^"]+)"/', $rel, $matches)) {
+            $relType = $matches[1];
+            $history = $matches[2];
+            if (strlen($history) < 45) {
+                $parts[] = "$relType: " . strtolower($history);
+            } else {
+                $parts[] = "$relType involved";
+            }
+        } elseif (preg_match('/\((\w+)\):/', $rel, $matches)) {
+            $parts[] = $matches[1] . "s involved";
+        }
+    }
+    
+    // If we only have phase/tension info but no context, add story metadata
+    // Check if parts only contain generic phase descriptions (not motivations/themes/relationships)
+    $hasContext = !empty($motivations) || !empty($themes) || !empty($actorRelationships);
+    
+    // Combine into rich glimpse - use more natural formatting
+    if (count($parts) > 0) {
+        $baseText = "";
+        
+        // If we have a title, use it as the main descriptor instead of generic type
+        if ($title && strlen($title) < 50 && !$hasContext) {
+            $baseText = '"' . $title . '"';
+        } else {
+            $baseText = "A $typeName";
+            if (count($parts) > 0) {
+                $baseText .= " " . $parts[0];
+            }
+        }
+        
+        // Add additional context parts more naturally
+        $additionalParts = [];
+        
+        // If we used title, add location/actors as context
+        if ($title && strlen($title) < 50 && !$hasContext) {
+            if ($location) {
+                $additionalParts[] = "near " . $location;
+            }
+            if (!empty($actors) && count($actors) > 0 && count($additionalParts) < 2) {
+                $actorCount = count($actors);
+                if ($actorCount <= 2) {
+                    $additionalParts[] = "involves " . implode(" and ", array_slice($actors, 0, 2));
+                } elseif ($actorCount <= 3) {
+                    $additionalParts[] = "involves " . implode(", ", array_slice($actors, 0, 3));
+                } else {
+                    $additionalParts[] = "involves " . $actorCount . " characters";
+                }
+            }
+            // Skip the first part (phase description) since we used title instead
+            if (count($parts) > 1) {
+                $additionalParts = array_merge($additionalParts, array_slice($parts, 1));
+            }
+        } else {
+            // Use remaining parts
+            if (count($parts) > 1) {
+                $additionalParts = array_slice($parts, 1);
+            }
+            // Add location/actors if no context
+            if (!$hasContext) {
+                if ($location && count($additionalParts) < 3) {
+                    $additionalParts[] = "near " . $location;
+                }
+                if (!empty($actors) && count($actors) > 0 && count($additionalParts) < 3) {
+                    $actorCount = count($actors);
+                    if ($actorCount <= 2) {
+                        $additionalParts[] = "involves " . implode(" and ", array_slice($actors, 0, 2));
+                    } elseif ($actorCount <= 3) {
+                        $additionalParts[] = "involves " . implode(", ", array_slice($actors, 0, 3));
+                    }
+                }
+            }
+        }
+        
+        // Combine with more natural connectors
+        if (!empty($additionalParts)) {
+            if (count($additionalParts) === 1) {
+                return $baseText . " · " . $additionalParts[0];
+            } elseif (count($additionalParts) === 2) {
+                // For two items, use comma
+                return $baseText . " · " . implode(", ", $additionalParts);
+            } else {
+                // For three or more, use "and" for the last two, commas for earlier ones
+                $last = array_pop($additionalParts);
+                return $baseText . " · " . implode(", ", $additionalParts) . " and " . $last;
+            }
+        }
+        
+        return $baseText;
+    }
+    
+    // Fallback: use story metadata when context is completely empty
+    $fallbackParts = [];
+    
+    // Add story title if available (more descriptive than type)
+    if ($title && strlen($title) < 50) {
+        $fallbackParts[] = '"' . $title . '"';
+    }
+    
+    // Add location context
+    if ($location) {
+        $fallbackParts[] = "near " . $location;
+    }
+    
+    // Add actor count context
+    if (!empty($actors) && count($actors) > 0) {
+        $actorCount = count($actors);
+        if ($actorCount <= 3) {
+            $fallbackParts[] = "involves " . implode(", ", array_slice($actors, 0, 3));
+        } else {
+            $fallbackParts[] = "involves " . $actorCount . " characters";
+        }
+    }
+    
+    // Add tension/phase context even if basic
+    if ($tension >= 7) {
+        $fallbackParts[] = "high tension";
+    } elseif ($phase === 'climax') {
+        $fallbackParts[] = "approaching climax";
+    } elseif ($phase === 'rising') {
+        $fallbackParts[] = "building";
+    }
+    
+    if (!empty($fallbackParts)) {
+        return "A $typeName " . implode("; ", $fallbackParts);
+    }
+    
+    // Fallback with intersection
+    if (count($storiesToUse) >= 2) {
+        $types = array_unique(array_map(function($s) {
+            return $s['type'] ?? 'story';
+        }, array_slice($storiesToUse, 0, 2)));
+        if (count($types) >= 2) {
+            $typeNames = array_map('ucfirst', $types);
+            return implode(' and ', $typeNames) . ' converge';
+        }
+    }
+    
+    // Last resort: at least mention the type
+    return "A $typeName unfolds";
+}
+
+function getMotivationGlimpse($world, $actors) {
+    if (empty($actors)) return '';
+    if (count($actors) < 2) return '';
+
+    // Get actual relationships between actors
+    $relationships = getRelationshipsBetween($world, $actors);
+
+    // Check for secret motivations
+    $hasSecret = false;
+    $secretMotivation = null;
+    foreach ($actors as $actor) {
+        $npc = getNPCByName($world, $actor);
+        if ($npc && !empty($npc['depth']['secretMotivation'])) {
+            $hasSecret = true;
+            $secretMotivation = $npc['depth']['secretMotivation'];
+            break; // Just need one secret
+        }
+    }
+    
+    // Get backgrounds and motivations
+    $backgrounds = [];
+    $motivations = [];
+    foreach ($actors as $actor) {
+        $npc = getNPCByName($world, $actor);
+        if ($npc) {
+            $depth = $npc['depth'] ?? [];
+            if (!empty($depth['background'])) {
+                $bg = str_replace('-', ' ', $depth['background']);
+                $backgrounds[] = $bg;
+            }
+            if (!empty($depth['motivation'])) {
+                $motivations[] = $depth['motivation'];
+            }
+        }
+    }
+    
+    // Build rich glimpse with multiple details
+    $parts = [];
+    
+    if ($hasSecret && $secretMotivation) {
+        $parts[] = "hidden agenda: " . strtolower($secretMotivation);
+    }
+    
+    if (empty($relationships)) {
+        // Show backgrounds/motivations even without relationships
+        if (!empty($backgrounds)) {
+            $parts[] = str_replace('-', ' ', $backgrounds[0]) . " background";
+        }
+        if (!empty($motivations) && count($parts) < 2) {
+            $parts[] = "driven by " . strtolower($motivations[0]);
+        }
+        if (!empty($parts)) {
+            return ucfirst(implode("; ", $parts));
+        }
+        return '';
+    }
+
+    // Extract relationship types and history
+    $relTypes = [];
+    $relHistories = [];
+    foreach ($relationships as $rel) {
+        if (preg_match('/\((\w+)\):\s*"([^"]+)"/', $rel, $matches)) {
+            $relTypes[] = $matches[1];
+            $relHistories[] = $matches[2];
+        } elseif (preg_match('/\((\w+)\):/', $rel, $matches)) {
+            $relTypes[] = $matches[1];
+        }
+    }
+    
+    // Get loyalties
+    $loyalties = [];
+    foreach ($actors as $actor) {
+        $npc = getNPCByName($world, $actor);
+        if ($npc && !empty($npc['loyalty'])) {
+            $loyalties[] = $npc['loyalty'];
+        }
+    }
+    $uniqueLoyalties = array_unique($loyalties);
+
+    // Build relationship glimpse with context
+    $enemyTypes = array_intersect($relTypes, ['enemy', 'rival', 'betrayer', 'betrayed']);
+    $friendlyTypes = array_intersect($relTypes, ['ally', 'lover', 'mentor', 'student', 'kin']);
+    $conflictTypes = array_intersect($relTypes, ['debtor', 'creditor']);
+    
+    // Add relationship history
+    $historyText = '';
+    if (!empty($relHistories)) {
+        $history = $relHistories[0];
+        if (strlen($history) < 50) {
+            $historyText = ": " . strtolower($history);
+        }
+    }
+    
+    if (!empty($enemyTypes) && !empty($friendlyTypes)) {
+        $parts[] = "old enemies and allies forced together" . $historyText;
+    } elseif (!empty($enemyTypes)) {
+        $enemyType = $enemyTypes[0];
+        $typeName = $enemyType === 'rival' ? 'rivals' : ($enemyType === 'betrayer' || $enemyType === 'betrayed' ? 'former friends' : 'enemies');
+        $parts[] = "old $typeName cross paths" . $historyText;
+    } elseif (in_array('betrayer', $relTypes) || in_array('betrayed', $relTypes)) {
+        $parts[] = "betrayed friendship haunts this" . $historyText;
+    } elseif (!empty($friendlyTypes)) {
+        if (count($uniqueLoyalties) > 1) {
+            $parts[] = "allies divided by conflicting loyalties";
+        } else {
+            $parts[] = "old bonds bind them" . $historyText;
+        }
+    } elseif (!empty($conflictTypes)) {
+        $parts[] = "past debts come due" . $historyText;
+    }
+    
+    // Add background context
+    if (!empty($backgrounds) && count($parts) < 2) {
+        $parts[] = str_replace('-', ' ', $backgrounds[0]) . " background";
+    }
+    
+    // Add motivations
+    if (!empty($motivations) && count($parts) < 2) {
+        $parts[] = "driven by " . strtolower($motivations[0]);
+    }
+    
+    if (!empty($parts)) {
+        return ucfirst(implode("; ", $parts));
+    }
+    
+    if (count($uniqueLoyalties) > 1) {
+        return "Competing loyalties create tension";
+    }
+    
+    return "Personal histories intertwine";
+}
+
+function getFutureGlimpse($events, $currentEvent, $world) {
+    // This glimpse shows what's happening globally, but should be very selective
+    // Only show when there's something truly interesting happening elsewhere
+    
+    $activeStories = array_filter($world['storyThreads'] ?? [], function($s) {
+            return !($s['resolved'] ?? false);
+        });
+
+    // Only show if there are HIGH-TENSION or CLIMAX stories
+    if (!empty($activeStories)) {
+        $interestingStories = array_filter($activeStories, function($s) {
+            $tension = $s['tension'] ?? 0;
+            $phase = $s['phase'] ?? 'unfolding';
+            return $tension >= 8 || $phase === 'climax';
+        });
+        
+        if (!empty($interestingStories)) {
+            // Sort by tension
+            usort($interestingStories, function($a, $b) {
+                return ($b['tension'] ?? 0) <=> ($a['tension'] ?? 0);
+            });
+            
+            // Show only the top 1-2 most interesting
+            $topStories = array_slice($interestingStories, 0, 2);
+            $parts = [];
+            
+            foreach ($topStories as $story) {
+                $type = $story['type'] ?? 'story';
+                $phase = $story['phase'] ?? 'unfolding';
+                $tension = $story['tension'] ?? 0;
+                $typeName = ucfirst($type);
+                
+                if ($phase === 'climax' && $tension >= 8) {
+                    $parts[] = "a $typeName reaches its breaking point";
+                } elseif ($phase === 'climax') {
+                    $parts[] = "a $typeName approaches its climax";
+                } elseif ($tension >= 8) {
+                    $parts[] = "a high-stakes $typeName escalates";
+                }
+            }
+            
+            if (!empty($parts)) {
+                if (count($parts) === 1) {
+                    return ucfirst($parts[0]) . " elsewhere";
+                } else {
+                    return ucfirst(implode(' and ', $parts)) . " elsewhere";
+                }
+            }
+        }
+    }
+
+    // Very selective fallback - only for exceptional situations
+    $travelingParties = count(array_filter($world['parties'] ?? [], function($p) {
+        return ($p['status'] ?? '') === 'travel';
+    }));
+    $activeArmies = count(array_filter($world['armies'] ?? [], function($a) {
+        return ($a['status'] ?? 'idle') !== 'defeated';
+    }));
+
+    if ($travelingParties >= 10 && $activeArmies >= 3) {
+        return "$travelingParties travelers and $activeArmies armies move across the land";
+    } else {
+        return '';
+    }
+}
+
+function getCharacterGlimpse($world, $actors) {
+    if (empty($actors)) return '';
+
+    $actorCount = count($actors);
+    $totalNPCs = count($world['npcs'] ?? []);
+    $deepNPCs = count(array_filter($world['npcs'] ?? [], function($npc) {
+        return !empty($npc['depth']);
+    }));
+
+    $totalRelationships = 0;
+    foreach ($world['npcs'] ?? [] as $npc) {
+        if (!empty($npc['depth']['relationships'])) {
+            $totalRelationships += count($npc['depth']['relationships']);
+        }
+    }
+
+    // Show actual character depth data
+    if ($actorCount >= 4) {
+        return "$actorCount characters bring their histories together";
+    } elseif ($actorCount === 3) {
+        return "Three individuals with layered backstories";
+    } elseif ($actorCount === 2) {
+        return "Two characters shaped by $totalRelationships total relationships";
+    } elseif ($deepNPCs > $totalNPCs * 0.7) {
+        return "World of $totalNPCs richly detailed characters";
+    } elseif ($totalRelationships > 30) {
+        return "$totalRelationships relationship threads weave through lives";
+    } else {
+        return "$deepNPCs characters carry depth beyond their roles";
+    }
 }
 
 function getEmergentConnections($events, $currentEvent, $world, $maxConnections = 3) {
@@ -219,14 +713,83 @@ function getEmergentConnections($events, $currentEvent, $world, $maxConnections 
     return $formatted;
 }
 
-function formatTimeDifference($seconds) {
-    if ($seconds < 3600) {
-        return floor($seconds / 60) . 'm';
-    } elseif ($seconds < 86400) {
-        return floor($seconds / 3600) . 'h';
+// Find active story threads involving this actor or location (enhanced version)
+function getActiveStoriesEnhanced($world, $actors, $location) {
+    if (!$world || empty($world['storyThreads'])) return [];
+    $contexts = [];
+
+    foreach ($world['storyThreads'] as $story) {
+        if ($story['resolved'] ?? false) continue;
+
+        $match = false;
+        $relevantActors = [];
+
+        if ($location && ($story['location'] ?? '') === $location) $match = true;
+        if (!empty($actors) && !empty($story['actors'])) {
+            foreach ($actors as $actor) {
+                if (in_array($actor, $story['actors'])) {
+                    $match = true;
+                    $relevantActors[] = $actor;
+                }
+            }
+        }
+
+        if ($match) {
+            $contextParts = [];
+            $context = $story['context'] ?? [];
+
+            // Actor motivations from story context
+            if (!empty($context['motivations']) && !empty($relevantActors)) {
+                foreach ($relevantActors as $actor) {
+                    if (isset($context['motivations'][$actor])) {
+                        $motivation = $context['motivations'][$actor];
+                        $contextParts[] = "$actor: $motivation";
+                    }
+                }
+            }
+
+            // Story actor relationships
+            if (!empty($context['actorRelationships'])) {
+                $relationships = $context['actorRelationships'];
+                if (count($relationships) <= 3) { // Limit to avoid huge tooltips
+                    $contextParts = array_merge($contextParts, $relationships);
     } else {
-        return floor($seconds / 86400) . 'd';
+                    $contextParts[] = implode('; ', array_slice($relationships, 0, 2)) . "...";
+                }
+            }
+
+            // Story themes
+            if (!empty($context['themes'])) {
+                $themes = $context['themes'];
+                $contextParts[] = "Story themes: " . implode(', ', $themes);
+            }
+
+            // Key locations from story
+            if (!empty($context['keyLocations'])) {
+                $keyLocs = $context['keyLocations'];
+                if ($location && !in_array($location, $keyLocs)) {
+                    $keyLocs = array_diff($keyLocs, [$location]); // Don't duplicate current location
+                }
+                if (!empty($keyLocs)) {
+                    $contextParts[] = "Key locations: " . implode(', ', array_slice($keyLocs, 0, 3));
+                }
+            }
+
+            // Branching state (future possibilities)
+            $branching = $story['branchingState'] ?? [];
+            if (!empty($branching['choices'])) {
+                $choices = $branching['choices'];
+                $contextParts[] = "Future possibilities: " . implode('; ', array_slice($choices, 0, 2));
+            }
+
+            if (!empty($contextParts)) {
+                $title = $story['title'] ?? 'Unknown tale';
+                $contexts[] = "From \"$title\":\n" . implode("\n", $contextParts);
+            }
+        }
     }
+
+    return $contexts;
 }
 
 function getNPCDeepContext($world, $name) {
@@ -292,55 +855,6 @@ function getNPCById($world, $id) {
         if ($npc['id'] === $id) return $npc;
     }
     return null;
-}
-
-// Find active story threads involving this actor or location (enhanced version)
-function getActiveStoriesEnhanced($world, $actors, $location) {
-    if (!$world || empty($world['storyThreads'])) return [];
-    $stories = [];
-    foreach ($world['storyThreads'] as $story) {
-        if ($story['resolved'] ?? false) continue;
-
-        $match = false;
-        if ($location && ($story['location'] ?? '') === $location) $match = true;
-        if (!empty($actors) && !empty($story['actors'])) {
-            foreach ($actors as $actor) {
-                if (in_array($actor, $story['actors'])) $match = true;
-            }
-        }
-
-        if ($match) {
-            $title = $story['title'] ?? 'Unknown tale';
-            $phase = $story['phase'] ?? 'unfolding';
-            $tension = $story['tension'] ?? 0;
-            $type = $story['type'] ?? 'unknown';
-            $outcomes = $story['potentialOutcomes'] ?? [];
-
-            // Build enhanced story description
-            $storyLine = "\"$title\" ($type story, $phase phase)";
-            $storyLine .= "\nTension: $tension/10";
-
-            // Add context if available
-            $context = $story['context'] ?? [];
-            if (!empty($context['themes'])) {
-                $themes = implode(', ', $context['themes']);
-                $storyLine .= "\nThemes: $themes";
-            }
-
-            // Add potential outcomes (first 2)
-            if (!empty($outcomes)) {
-                $outcome1 = $outcomes[0];
-                $storyLine .= "\nPossible ending: \"$outcome1\"";
-                if (count($outcomes) > 1) {
-                    $outcome2 = $outcomes[1];
-                    $storyLine .= "\nAlternative: \"$outcome2\"";
-                }
-            }
-
-            $stories[] = $storyLine;
-        }
-    }
-    return $stories;
 }
 
 // Get story context (motivations, relationships, themes) for actors/location in this event
@@ -749,19 +1263,20 @@ function formatWorldDate($iso) {
         .custom-tooltip {
             position: fixed;
             z-index: 1000;
-            max-width: 400px;
-            padding: 12px 16px;
-            background: #1a1a24;
-            border: 1px solid #3a3a4a;
-            border-radius: 6px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-            font-size: 11px;
-            line-height: 1.5;
-            color: #b8b8c8;
-            white-space: pre-wrap;
+            max-width: 500px;
+            padding: 10px 14px;
+            background: linear-gradient(135deg, #1a1a24 0%, #1e1e2a 100%);
+            border: 1px solid #4a4a5a;
+            border-radius: 8px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 20px rgba(138, 43, 226, 0.1);
+            font-size: 12px;
+            line-height: 1.4;
+            color: #d4d4e0;
+            font-style: italic;
+            text-align: center;
             pointer-events: none;
             opacity: 0;
-            transition: opacity 0.15s ease;
+            transition: opacity 0.2s ease;
         }
         
         .custom-tooltip.visible {
@@ -769,13 +1284,12 @@ function formatWorldDate($iso) {
         }
         
         .custom-tooltip .tt-header {
-            color: #c084fc;
-            font-weight: 600;
-            font-size: 10px;
+            color: #a78bfa;
+            font-weight: 500;
+            font-size: 11px;
             letter-spacing: 0.5px;
             margin-bottom: 6px;
-            border-bottom: 1px solid #2a2a35;
-            padding-bottom: 4px;
+            opacity: 0.8;
         }
         
         .custom-tooltip .tt-section {
@@ -856,47 +1370,36 @@ function formatWorldDate($iso) {
                 </div>
                 <div class="content">
                     <?php
-                    // Build ENHANCED contextual tooltip with deep backstory and story context
-                    $tooltipParts = [];
+                    // Build SUBTLE contextual glimpses - hints of deeper simulation currents
+                    $glimpses = [];
                     $actors = $e['actors'] ?? [];
                     $location = $e['location'] ?? '';
 
-                    // 1. ACTIVE STORY THREADS with enhanced context
-                    $stories = getActiveStoriesEnhanced($world, $actors, $location);
-                    if ($stories) {
-                        $tooltipParts[] = "═══ ACTIVE PLOTS ═══\n" . implode("\n\n", $stories);
+                    // GLIMPSE 1: One intriguing story thread (not all of them)
+                    $storyGlimpse = getStoryGlimpse($world, $actors, $location);
+                    if ($storyGlimpse) {
+                        $glimpses[] = $storyGlimpse;
                     }
 
-                    // 2. STORY CONTEXT - motivations, themes, relationships from active stories
-                    $storyContexts = getStoryContextForEvent($world, $actors, $location);
-                    if ($storyContexts) {
-                        $tooltipParts[] = "═══ STORY CONTEXT ═══\n" . implode("\n\n", $storyContexts);
+                    // GLIMPSE 2: One hidden motivation or relationship (not all relationships)
+                    $motivationGlimpse = getMotivationGlimpse($world, $actors);
+                    if ($motivationGlimpse) {
+                        $glimpses[] = $motivationGlimpse;
                     }
 
-                    // 3. RELATIONSHIPS BETWEEN ACTORS IN THIS EVENT
-                    $relationships = getRelationshipsBetween($world, $actors);
-                    if ($relationships) {
-                        $tooltipParts[] = "═══ RELATIONSHIPS ═══\n" . implode("\n", $relationships);
+                    // GLIMPSE 3: One intriguing future connection (not all emergent links)
+                    $futureGlimpse = getFutureGlimpse($events, $e, $world);
+                    if ($futureGlimpse) {
+                        $glimpses[] = $futureGlimpse;
                     }
 
-                    // 4. EMERGENT CONNECTIONS - how this event connects to others
-                    $emergentConnections = getEmergentConnections($events, $e, $world);
-                    if ($emergentConnections) {
-                        $tooltipParts[] = "═══ EMERGENT LINKS ═══\n" . implode("\n", $emergentConnections);
+                    // GLIMPSE 4: One subtle character insight (not full backstory)
+                    $characterGlimpse = getCharacterGlimpse($world, $actors);
+                    if ($characterGlimpse) {
+                        $glimpses[] = $characterGlimpse;
                     }
 
-                    // 5. NPC BACKSTORIES for actors (limit to first 2 to avoid huge tooltip)
-                    $npcCount = 0;
-                    foreach ($actors as $actor) {
-                        if ($npcCount >= 2) break;
-                        $npcCtx = getNPCDeepContext($world, $actor);
-                        if ($npcCtx) {
-                            $tooltipParts[] = "═══ $actor ═══\n$npcCtx";
-                            $npcCount++;
-                        }
-                    }
-                    
-                    $tooltip = implode("\n\n", $tooltipParts);
+                    $tooltip = !empty($glimpses) ? "💫 " . implode(" · ", $glimpses) : "";
                     ?>
                     <div class="summary<?= $tooltip ? ' has-tooltip' : '' ?>"<?= $tooltip ? ' data-tooltip="' . htmlspecialchars($tooltip) . '"' : '' ?>>
                         <?php if (!empty($e['location'])): ?>
@@ -943,6 +1446,10 @@ function formatWorldDate($iso) {
     <script>
     (function() {
         const tooltip = document.getElementById('tooltip');
+        if (!tooltip) {
+            console.error('Tooltip element not found!');
+            return;
+        }
         let showTimeout;
         let activeEl = null;
         const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
