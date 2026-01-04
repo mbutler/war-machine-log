@@ -1,4 +1,4 @@
-import fs from 'fs/promises';
+import { readFile, writeFile } from 'fs/promises';
 import { WorldState, Good, Terrain } from './types.ts';
 
 const WORLD_PATH = 'world.json';
@@ -72,7 +72,7 @@ function normalize(world: WorldState): WorldState {
 
 export async function loadWorld(): Promise<WorldState | null> {
   try {
-    const raw = await fs.readFile(WORLD_PATH, 'utf8');
+    const raw = await readFile(WORLD_PATH, 'utf8');
     const parsed = JSON.parse(raw);
     
     // Check schema version and log migration
@@ -140,7 +140,7 @@ export async function loadWorld(): Promise<WorldState | null> {
 
 export async function saveWorld(world: WorldState): Promise<void> {
   const data = JSON.stringify(world, null, 2);
-  await fs.writeFile(WORLD_PATH, data, 'utf8');
+  await writeFile(WORLD_PATH, data, 'utf8');
 }
 
 export const worldPath = WORLD_PATH;

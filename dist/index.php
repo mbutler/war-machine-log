@@ -67,26 +67,44 @@ $simStatus = 'unknown';
 $simLastUpdate = null;
 $simStaleMinutes = 0;
 
-if (!empty($events)) {
-    // Get the most recent event's real time (when it was actually logged)
-    $lastEvent = $events[0]; // Already sorted newest first
-    $lastRealTime = $lastEvent['realTime'] ?? null;
-    
-    if ($lastRealTime) {
-        $lastTimestamp = strtotime($lastRealTime);
-        $now = time();
-        $simStaleMinutes = floor(($now - $lastTimestamp) / 60);
-        $simLastUpdate = $lastRealTime;
-        
-        // At 1:1 real-time, hourly tick fires every 60 real minutes
-        // Daily tick fires every 24 real hours - that ALWAYS logs events
-        // Use generous thresholds to avoid false alarms
-        if ($simStaleMinutes < 90) {
-            $simStatus = 'running';  // Within ~1.5 hours - probably fine
-        } elseif ($simStaleMinutes < 360) {
-            $simStatus = 'stale';    // 1.5-6 hours - might be slow or paused
-        } else {
-            $simStatus = 'stopped';  // 6+ hours - definitely crashed or stopped
+// First, check if the fantasy-log process is actually running (most reliable)
+$psOutput = shell_exec('ps aux | grep "bun" | grep -v grep');
+// Debug: uncomment next line to see what ps finds
+// echo "<!-- DEBUG psOutput: " . htmlspecialchars($psOutput) . " -->";
+
+if ($psOutput && (strpos($psOutput, 'bun') !== false || strpos($psOutput, 'fantasy-log') !== false)) {
+    // Process is running
+    $simStatus = 'running';
+    $simLastUpdate = date('c');
+    $simStaleMinutes = 0;
+} else {
+    // Process not found
+    $simStatus = 'stopped';
+}
+
+// Fallback: Event log timestamps
+if ($simStatus === 'unknown') {
+    if (!empty($events)) {
+        // Get the most recent event's real time (when it was actually logged)
+        $lastEvent = $events[0]; // Already sorted newest first
+        $lastRealTime = $lastEvent['realTime'] ?? null;
+
+        if ($lastRealTime) {
+            $lastTimestamp = strtotime($lastRealTime);
+            $now = time();
+            $simStaleMinutes = floor(($now - $lastTimestamp) / 60);
+            $simLastUpdate = $lastRealTime;
+
+            // At 1:1 real-time, hourly tick fires every 60 real minutes
+            // Daily tick fires every 24 real hours - that ALWAYS logs events
+            // Use generous thresholds to avoid false alarms
+            if ($simStaleMinutes < 90) {
+                $simStatus = 'running';  // Within ~1.5 hours - probably fine
+            } elseif ($simStaleMinutes < 360) {
+                $simStatus = 'stale';    // 1.5-6 hours - might be slow or paused
+            } else {
+                $simStatus = 'stopped';  // 6+ hours - definitely crashed or stopped
+            }
         }
     }
 }
@@ -104,13 +122,120 @@ function getNPCByName($world, $name) {
     return null;
 }
 
+function getEmergentConnections($events, $currentEvent, $world, $maxConnections = 3) {
+    $connections = [];
+    $currentIndex = null;
+
+    // Find current event index
+    foreach ($events as $i => $event) {
+        if ($event === $currentEvent) {
+            $currentIndex = $i;
+            break;
+        }
+    }
+
+    if ($currentIndex === null) return $connections;
+
+    $actors = $currentEvent['actors'] ?? [];
+    $location = $currentEvent['location'] ?? '';
+    $category = $currentEvent['category'] ?? '';
+
+    // Look at recent events (within last 10 events) for connections
+    $searchRange = min(10, count($events) - $currentIndex - 1);
+    for ($i = $currentIndex + 1; $i < $currentIndex + 1 + $searchRange && $i < count($events); $i++) {
+        $event = $events[$i];
+        $relevance = 0;
+        $connectionType = '';
+
+        // Same location = highly relevant
+        if ($location && ($event['location'] ?? '') === $location) {
+            $relevance += 3;
+            $connectionType = 'location';
+        }
+
+        // Shared actors = very relevant
+        if (!empty($actors) && !empty($event['actors'])) {
+            $sharedActors = array_intersect($actors, $event['actors']);
+            if (!empty($sharedActors)) {
+                $relevance += 4;
+                $connectionType = 'character';
+            }
+        }
+
+        // Related categories (e.g., faction -> war, trade -> town)
+        $relatedCategories = [
+            'faction' => ['war', 'town'],
+            'war' => ['faction', 'town', 'road'],
+            'trade' => ['town', 'road', 'naval'],
+            'town' => ['faction', 'war', 'trade', 'road'],
+            'road' => ['town', 'trade', 'war'],
+            'naval' => ['trade', 'war']
+        ];
+
+        if (isset($relatedCategories[$category]) && in_array($event['category'], $relatedCategories[$category])) {
+            $relevance += 2;
+            $connectionType = 'category';
+        }
+
+        if ($relevance >= 2) {
+            $timeDiff = strtotime($event['worldTime']) - strtotime($currentEvent['worldTime']);
+            $timeStr = $timeDiff > 0 ? '+' . formatTimeDifference($timeDiff) : formatTimeDifference($timeDiff);
+
+            $connections[] = [
+                'event' => $event,
+                'relevance' => $relevance,
+                'type' => $connectionType,
+                'timeDiff' => $timeStr,
+                'direction' => 'future'
+            ];
+        }
+    }
+
+    // Sort by relevance and limit
+    usort($connections, function($a, $b) {
+        return $b['relevance'] <=> $a['relevance'];
+    });
+
+    $connections = array_slice($connections, 0, $maxConnections);
+
+    // Format for display
+    $formatted = [];
+    foreach ($connections as $conn) {
+        $event = $conn['event'];
+        $typeIcon = [
+            'location' => '📍',
+            'character' => '👥',
+            'category' => '🔗'
+        ][$conn['type']] ?? '➡️';
+
+        $formatted[] = sprintf(
+            "%s %s %s",
+            $typeIcon,
+            $conn['timeDiff'],
+            htmlspecialchars($event['summary'])
+        );
+    }
+
+    return $formatted;
+}
+
+function formatTimeDifference($seconds) {
+    if ($seconds < 3600) {
+        return floor($seconds / 60) . 'm';
+    } elseif ($seconds < 86400) {
+        return floor($seconds / 3600) . 'h';
+    } else {
+        return floor($seconds / 86400) . 'd';
+    }
+}
+
 function getNPCDeepContext($world, $name) {
     $npc = getNPCByName($world, $name);
     if (!$npc) return null;
-    
+
     $lines = [];
     $depth = $npc['depth'] ?? [];
-    
+
     // Background and motivation
     if (!empty($depth['background'])) {
         $bg = str_replace('-', ' ', $depth['background']);
@@ -672,6 +797,11 @@ function formatWorldDate($iso) {
             color: #a8a878;
             font-style: italic;
         }
+
+        .custom-tooltip .emergent-connection {
+            color: #60a5fa;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -749,7 +879,13 @@ function formatWorldDate($iso) {
                         $tooltipParts[] = "═══ RELATIONSHIPS ═══\n" . implode("\n", $relationships);
                     }
 
-                    // 4. NPC BACKSTORIES for actors (limit to first 2 to avoid huge tooltip)
+                    // 4. EMERGENT CONNECTIONS - how this event connects to others
+                    $emergentConnections = getEmergentConnections($events, $e, $world);
+                    if ($emergentConnections) {
+                        $tooltipParts[] = "═══ EMERGENT LINKS ═══\n" . implode("\n", $emergentConnections);
+                    }
+
+                    // 5. NPC BACKSTORIES for actors (limit to first 2 to avoid huge tooltip)
                     $npcCount = 0;
                     foreach ($actors as $actor) {
                         if ($npcCount >= 2) break;
@@ -822,6 +958,7 @@ function formatWorldDate($iso) {
         function formatTooltip(raw) {
             const lines = raw.split('\n');
             let html = '';
+            let inEmergentSection = false;
 
             for (const line of lines) {
                 const headerMatch = line.match(/^═══ (.+) ═══$/);
@@ -833,8 +970,12 @@ function formatWorldDate($iso) {
                         html += '<div class="tt-header">🎭 ' + escapeHtml(header) + '</div>';
                     } else if (header === 'RELATIONSHIPS') {
                         html += '<div class="tt-header">🤝 ' + escapeHtml(header) + '</div>';
+                    } else if (header === 'EMERGENT LINKS') {
+                        html += '<div class="tt-header">🔗 ' + escapeHtml(header) + '</div>';
+                        inEmergentSection = true;
                     } else {
                         html += '<div class="tt-header">' + escapeHtml(header) + '</div>';
+                        inEmergentSection = false;
                     }
                     continue;
                 }
@@ -862,7 +1003,8 @@ function formatWorldDate($iso) {
                 processedLine = processedLine.replace(/"([^"]+)"/g, '<span class="tt-quote">"$1"</span>');
 
                 if (line.trim()) {
-                    html += '<div>' + processedLine + '</div>';
+                    const classes = inEmergentSection ? 'emergent-connection' : '';
+                    html += '<div class="' + classes + '">' + processedLine + '</div>';
                 }
             }
 
