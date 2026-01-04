@@ -229,7 +229,8 @@ export interface WorldState {
   nexuses: Nexus[];
   mercenaries: MercenaryCompany[];
   startedAt: Date;
-  lastTickAt?: Date; // When the simulation last ran (for catch-up)
+  lastTickAt?: Date; // World time of last tick (for catch-up)
+  lastRealTickAt?: Date; // Real time when last tick occurred (for 1:1 catch-up calculation)
 }
 
 export interface StockedRoom {

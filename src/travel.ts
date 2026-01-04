@@ -193,9 +193,9 @@ export function updateTravel(world: WorldState, rng: Random, worldTime: Date): L
     });
     logs.push({
       category: 'faction',
-      summary: `A new band appears near ${world.parties.at(-1)?.location ?? 'the road'}`,
+      summary: `A new band appears near ${world.parties.length > 0 ? world.parties[world.parties.length - 1]?.location ?? 'the road' : 'the road'}`,
       details: `${name} takes to the byways.`,
-      location: world.parties.at(-1)?.location,
+      location: world.parties.length > 0 ? world.parties[world.parties.length - 1]?.location : undefined,
       worldTime,
       realTime: new Date(),
       seed: world.seed,

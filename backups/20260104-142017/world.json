@@ -1,0 +1,6456 @@
+{
+  "seed": "active-stories-test",
+  "archetype": "Golden Age",
+  "hexes": [
+    {
+      "coord": {
+        "q": 0,
+        "r": 0
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 1
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 2
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 3
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 4
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 5
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 8
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 9
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 0
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 1
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 2
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 3
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 4
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 5
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 7
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 8
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 9
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 0
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 2
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 3
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 4
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 5
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 8
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 9
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 0
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 1
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 2
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 3
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 4
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 8
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 9
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 0
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 1
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 2
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 3
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 4
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 6
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 8
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 9
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 0
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 1
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 4
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 8
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 9
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 0
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 1
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 3
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 4
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 5
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 6
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 7
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 8
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 9
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 0
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 1
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 3
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 4
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 5
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 6
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 7
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 8
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 9
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 0
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 2
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 3
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 4
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 5
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 6
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 7
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 8
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 9
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 0
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 1
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 2
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 3
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 4
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 5
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 6
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 7
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 8
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 9
+      },
+      "terrain": "ocean"
+    }
+  ],
+  "width": 10,
+  "height": 10,
+  "settlements": [
+    {
+      "id": "settlement-0",
+      "name": "Guiltycrack",
+      "population": 1137,
+      "type": "town",
+      "coord": {
+        "q": 5,
+        "r": 0
+      },
+      "supply": {
+        "grain": 4,
+        "timber": -1,
+        "ore": -1,
+        "textiles": 1,
+        "salt": 4,
+        "fish": 4,
+        "livestock": 3
+      },
+      "mood": -3,
+      "priceTrends": {
+        "grain": "low",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "low",
+        "fish": "low",
+        "livestock": "low"
+      },
+      "lastTownLogDay": "2026-01-18"
+    },
+    {
+      "id": "settlement-1",
+      "name": "Ponybottom",
+      "population": 1835,
+      "type": "village",
+      "coord": {
+        "q": 0,
+        "r": 6
+      },
+      "supply": {
+        "grain": 3,
+        "timber": 2,
+        "ore": 3,
+        "textiles": 2,
+        "salt": -2,
+        "fish": 1,
+        "livestock": 2
+      },
+      "mood": -2,
+      "priceTrends": {
+        "grain": "low",
+        "timber": "low",
+        "ore": "low",
+        "textiles": "low",
+        "salt": "high",
+        "fish": "normal",
+        "livestock": "low"
+      },
+      "lastTownLogDay": "2026-01-18"
+    },
+    {
+      "id": "settlement-2",
+      "name": "Belyscester",
+      "population": 1438,
+      "type": "village",
+      "coord": {
+        "q": 6,
+        "r": 0
+      },
+      "supply": {
+        "grain": 3,
+        "timber": 1,
+        "ore": 3,
+        "textiles": 1,
+        "salt": 3,
+        "fish": 3,
+        "livestock": -2
+      },
+      "mood": -3,
+      "priceTrends": {
+        "grain": "low",
+        "timber": "normal",
+        "ore": "low",
+        "textiles": "normal",
+        "salt": "low",
+        "fish": "low",
+        "livestock": "high"
+      },
+      "lastTownLogDay": "2026-01-18"
+    },
+    {
+      "id": "settlement-3",
+      "name": "Blazedump",
+      "population": 2215,
+      "type": "village",
+      "coord": {
+        "q": 4,
+        "r": 8
+      },
+      "supply": {
+        "grain": 1,
+        "timber": 2,
+        "ore": -1,
+        "textiles": 1,
+        "salt": 1,
+        "fish": -1,
+        "livestock": 1
+      },
+      "mood": -2,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "low",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "normal"
+      },
+      "lastTownLogDay": "2026-01-18"
+    },
+    {
+      "id": "settlement-4",
+      "name": "Haling Cove",
+      "population": 1094,
+      "type": "town",
+      "coord": {
+        "q": 0,
+        "r": 2
+      },
+      "supply": {
+        "grain": 3,
+        "timber": 2,
+        "ore": 1,
+        "textiles": 4,
+        "salt": 0,
+        "fish": -3,
+        "livestock": -3
+      },
+      "mood": -3,
+      "priceTrends": {
+        "grain": "low",
+        "timber": "low",
+        "ore": "normal",
+        "textiles": "low",
+        "salt": "normal",
+        "fish": "high",
+        "livestock": "high"
+      },
+      "lastTownLogDay": "2026-01-18"
+    },
+    {
+      "id": "settlement-5",
+      "name": "Mortbane Barrow",
+      "population": 1406,
+      "type": "village",
+      "coord": {
+        "q": 5,
+        "r": 5
+      },
+      "supply": {
+        "grain": 2,
+        "timber": 1,
+        "ore": -1,
+        "textiles": -1,
+        "salt": 3,
+        "fish": 0,
+        "livestock": 0
+      },
+      "mood": -2,
+      "priceTrends": {
+        "grain": "low",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "low",
+        "fish": "normal",
+        "livestock": "normal"
+      },
+      "lastTownLogDay": "2026-01-18"
+    },
+    {
+      "id": "settlement-6",
+      "name": "Wellston",
+      "population": 1949,
+      "type": "village",
+      "coord": {
+        "q": 1,
+        "r": 7
+      },
+      "supply": {
+        "grain": 0,
+        "timber": -2,
+        "ore": 2,
+        "textiles": 2,
+        "salt": 2,
+        "fish": 0,
+        "livestock": 1
+      },
+      "mood": -2,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "high",
+        "ore": "low",
+        "textiles": "low",
+        "salt": "low",
+        "fish": "normal",
+        "livestock": "normal"
+      },
+      "lastTownLogDay": "2026-01-18"
+    },
+    {
+      "id": "settlement-7",
+      "name": "Breington",
+      "population": 1350,
+      "type": "village",
+      "coord": {
+        "q": 2,
+        "r": 6
+      },
+      "supply": {
+        "grain": 0,
+        "timber": -2,
+        "ore": 2,
+        "textiles": 0,
+        "salt": 4,
+        "fish": 1,
+        "livestock": 2
+      },
+      "mood": -3,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "high",
+        "ore": "low",
+        "textiles": "normal",
+        "salt": "low",
+        "fish": "normal",
+        "livestock": "low"
+      },
+      "lastTownLogDay": "2026-01-18"
+    }
+  ],
+  "parties": [
+    {
+      "id": "party-0",
+      "name": "Democedes's Wolves",
+      "members": [
+        {
+          "name": "Claribel",
+          "class": "Fighter",
+          "level": 4,
+          "hp": 34,
+          "maxHp": 34
+        },
+        {
+          "name": "Lefquenn",
+          "class": "Cleric",
+          "level": 4,
+          "hp": 21,
+          "maxHp": 21
+        },
+        {
+          "name": "Auberée",
+          "class": "Magic-User",
+          "level": 4,
+          "hp": 22,
+          "maxHp": 22
+        }
+      ],
+      "location": "Wellston",
+      "status": "travel",
+      "xp": 6832,
+      "goal": {
+        "kind": "travel-to",
+        "target": "Blazedump",
+        "sourceRumorId": "rumor-1767418990158-520403"
+      },
+      "travel": {
+        "destination": "Blazedump",
+        "terrain": "mountains",
+        "milesRemaining": 18.461538461538655,
+        "milesPerHour": 0.3846153846153846
+      },
+      "fatigue": 5,
+      "wounded": true,
+      "restHoursRemaining": 15,
+      "fame": 112
+    },
+    {
+      "id": "band-0",
+      "name": "Gimmo's Blades",
+      "members": [
+        {
+          "name": "Emoni",
+          "class": "Thief",
+          "level": 8,
+          "hp": 31,
+          "maxHp": 31
+        },
+        {
+          "name": "Eded",
+          "class": "Elf",
+          "level": 7,
+          "hp": 47,
+          "maxHp": 47
+        }
+      ],
+      "location": "Belyscester",
+      "status": "travel",
+      "xp": 12427,
+      "goal": {
+        "kind": "travel-to",
+        "target": "Wellston",
+        "sourceRumorId": "rumor-1767418990435-838557"
+      },
+      "travel": {
+        "destination": "Wellston",
+        "terrain": "mountains",
+        "milesRemaining": 68.181818181818,
+        "milesPerHour": 0.22727272727272727
+      },
+      "fame": 138,
+      "fatigue": 8,
+      "wounded": true,
+      "restHoursRemaining": 14
+    },
+    {
+      "id": "band-2",
+      "name": "Gidie's Band",
+      "members": [
+        "Huget",
+        "Mnesiphilos"
+      ],
+      "location": "Haling Cove",
+      "status": "travel",
+      "goal": {
+        "kind": "travel-to",
+        "target": "Breington",
+        "sourceRumorId": "rumor-1767418990279-511148"
+      },
+      "travel": {
+        "destination": "Breington",
+        "terrain": "forest",
+        "milesRemaining": 35.00000000000008,
+        "milesPerHour": 0.6666666666666666
+      },
+      "fatigue": 6,
+      "fame": 26,
+      "wounded": true,
+      "restHoursRemaining": 18
+    }
+  ],
+  "roads": [
+    [
+      "settlement-0",
+      "settlement-1"
+    ],
+    [
+      "settlement-0",
+      "settlement-2"
+    ],
+    [
+      "settlement-0",
+      "settlement-3"
+    ],
+    [
+      "settlement-0",
+      "settlement-4"
+    ],
+    [
+      "settlement-0",
+      "settlement-5"
+    ],
+    [
+      "settlement-0",
+      "settlement-6"
+    ],
+    [
+      "settlement-0",
+      "settlement-7"
+    ],
+    [
+      "settlement-6",
+      "settlement-7"
+    ]
+  ],
+  "dungeons": [
+    {
+      "id": "dungeon-0",
+      "name": "Holger's Halls",
+      "coord": {
+        "q": 0,
+        "r": 5
+      },
+      "depth": 6,
+      "danger": 3,
+      "rooms": [
+        {
+          "type": "trap",
+          "threat": 2,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "laboratory",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 2,
+          "loot": true
+        },
+        {
+          "type": "empty",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "empty",
+          "threat": 2,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 2,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "shrine",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "empty",
+          "threat": 2,
+          "loot": false
+        },
+        {
+          "type": "trap",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 4,
+          "loot": true
+        }
+      ],
+      "explored": 0
+    },
+    {
+      "id": "dungeon-1",
+      "name": "The Forsaken Catacombs",
+      "coord": {
+        "q": 2,
+        "r": 9
+      },
+      "depth": 5,
+      "danger": 2,
+      "rooms": [
+        {
+          "type": "trap",
+          "threat": 2,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 2,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 1,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 2,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 1,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 2,
+          "loot": true
+        },
+        {
+          "type": "shrine",
+          "threat": 2,
+          "loot": true
+        },
+        {
+          "type": "treasure",
+          "threat": 1,
+          "loot": true
+        },
+        {
+          "type": "shrine",
+          "threat": 1,
+          "loot": true
+        },
+        {
+          "type": "empty",
+          "threat": 1,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 3,
+          "loot": false
+        }
+      ],
+      "explored": 0
+    }
+  ],
+  "activeRumors": [
+    {
+      "id": "rumor-1767418990400-190062",
+      "kind": "mystery",
+      "text": "Levies rumored to secure timber; officials say caravans delayed.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990400-388054",
+      "kind": "feud",
+      "text": "The Watchful Syndicate offers protection for caravans.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990400-524847",
+      "kind": "feud",
+      "text": "House of the Wyrm watches the markets quietly.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990400-27593",
+      "kind": "mystery",
+      "text": "Levies rumored to secure livestock; officials say caravans delayed.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990401-924268",
+      "kind": "feud",
+      "text": "Watchful Company of Freymead watches the markets quietly.",
+      "target": "Blazedump",
+      "origin": "Blazedump",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990401-478472",
+      "kind": "feud",
+      "text": "The Dawn Sisterhood watches the markets quietly.",
+      "target": "Mortbane Barrow",
+      "origin": "Mortbane Barrow",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990401-303802",
+      "kind": "feud",
+      "text": "Watchful Company of Freymead watches the markets quietly.",
+      "target": "Mortbane Barrow",
+      "origin": "Mortbane Barrow",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990413-250326",
+      "kind": "mystery",
+      "text": "Judo tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990413-124718",
+      "kind": "mystery",
+      "text": "Mirentxu tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990423-124880",
+      "kind": "mystery",
+      "text": "Explorers speak of a strange discovery near Wellston.",
+      "target": "Wellston",
+      "origin": "Wellston",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990423-339914",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Breington.",
+      "target": "Breington",
+      "origin": "Wellston",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990423-887760",
+      "kind": "mystery",
+      "text": "Mirentxu tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990427-202097",
+      "kind": "mystery",
+      "text": "Ingelwara tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990431-660220",
+      "kind": "mystery",
+      "text": "Judo tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990438-902060",
+      "kind": "feud",
+      "text": "Watchful Company of Freymead offers protection for caravans.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990438-177238",
+      "kind": "feud",
+      "text": "urgent treasure: a border scout says Aleire heard of missing heirlooms traced toward Mortbane Barrow (from Ponybottom).",
+      "target": "Mortbane Barrow",
+      "origin": "Ponybottom",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990438-555156",
+      "kind": "feud",
+      "text": "The Dawn Sisterhood watches the markets quietly.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990438-726877",
+      "kind": "feud",
+      "text": "The Watchful Syndicate watches the markets quietly.",
+      "target": "Blazedump",
+      "origin": "Blazedump",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990438-389710",
+      "kind": "mystery",
+      "text": "Levies rumored to secure fish; officials say caravans delayed.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990438-940475",
+      "kind": "feud",
+      "text": "House of the Wyrm offers protection for caravans.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990440-445610",
+      "kind": "mystery",
+      "text": "Judo tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Wellston",
+      "origin": "Wellston",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990473-497269",
+      "kind": "feud",
+      "text": "Word spreads that The Scroll Trading Company of Watchful Company of Freymead reached Belyscester with salt/fish.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990487-639092",
+      "kind": "mystery",
+      "text": "Bargain prices on grain; traders racing to Ponybottom.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990487-106017",
+      "kind": "feud",
+      "text": "Storm Guild of Filthtupp Farm watches the markets quietly.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990487-559393",
+      "kind": "feud",
+      "text": "House of the Wyrm watches the markets quietly.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990487-776571",
+      "kind": "feud",
+      "text": "The Midnight Order watches the markets quietly.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990487-645461",
+      "kind": "feud",
+      "text": "The Dawn Sisterhood watches the markets quietly.",
+      "target": "Blazedump",
+      "origin": "Blazedump",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990487-807895",
+      "kind": "mystery",
+      "text": "Levies rumored to secure fish; officials say caravans delayed.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990487-162558",
+      "kind": "feud",
+      "text": "The Midnight Order offers protection for caravans.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990487-629509",
+      "kind": "caravan",
+      "text": "official missing: a frightened child says Sunngifu heard of beasts refusing to cross the old road (from Mortbane Barrow).",
+      "target": "Mortbane Barrow",
+      "origin": "Mortbane Barrow",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990487-880004",
+      "kind": "mystery",
+      "text": "Bargain prices on textiles; traders racing to Wellston.",
+      "target": "Wellston",
+      "origin": "Wellston",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990487-696557",
+      "kind": "feud",
+      "text": "Storm Guild of Filthtupp Farm watches the markets quietly.",
+      "target": "Wellston",
+      "origin": "Wellston",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990487-463332",
+      "kind": "feud",
+      "text": "The Dawn Sisterhood watches the markets quietly.",
+      "target": "Wellston",
+      "origin": "Wellston",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990498-829506",
+      "kind": "mystery",
+      "text": "Judo tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Blazedump",
+      "origin": "Blazedump",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990502-646024",
+      "kind": "mystery",
+      "text": "Godafre tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990514-670505",
+      "kind": "mystery",
+      "text": "Mirentxu tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990528-143157",
+      "kind": "mystery",
+      "text": "Bargain prices on fish; traders racing to Guiltycrack.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990528-648071",
+      "kind": "feud",
+      "text": "Storm Guild of Filthtupp Farm offers protection for caravans.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990528-224084",
+      "kind": "feud",
+      "text": "Watchful Company of Freymead offers protection for caravans.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990528-155214",
+      "kind": "mystery",
+      "text": "Bargain prices on grain; traders racing to Ponybottom.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990528-341674",
+      "kind": "feud",
+      "text": "Storm Guild of Filthtupp Farm watches the markets quietly.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990528-131554",
+      "kind": "mystery",
+      "text": "Levies rumored to secure livestock; officials say caravans delayed.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990528-161965",
+      "kind": "feud",
+      "text": "House of the Wyrm watches the markets quietly.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990528-758074",
+      "kind": "feud",
+      "text": "Watchful Company of Freymead offers protection for caravans.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990528-859459",
+      "kind": "dungeon",
+      "text": "urgent threat: an old map fragment says Stanild heard of beasts refusing to cross the old road (from Blazedump).",
+      "target": "The Forsaken Catacombs",
+      "origin": "Blazedump",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990528-858344",
+      "kind": "feud",
+      "text": "The Watchful Syndicate watches the markets quietly.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990528-236799",
+      "kind": "feud",
+      "text": "Watchful Company of Freymead watches the markets quietly.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990528-154587",
+      "kind": "feud",
+      "text": "Watchful Company of Freymead watches the markets quietly.",
+      "target": "Mortbane Barrow",
+      "origin": "Mortbane Barrow",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990528-405792",
+      "kind": "feud",
+      "text": "urgent threat: an old map fragment says Lothar heard of missing heirlooms traced toward Belyscester (from Wellston).",
+      "target": "Belyscester",
+      "origin": "Wellston",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990528-341479",
+      "kind": "feud",
+      "text": "The Watchful Syndicate offers protection for caravans.",
+      "target": "Wellston",
+      "origin": "Wellston",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990528-60711",
+      "kind": "feud",
+      "text": "Storm Guild of Filthtupp Farm offers protection for caravans.",
+      "target": "Breington",
+      "origin": "Breington",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990528-813349",
+      "kind": "feud",
+      "text": "Watchful Company of Freymead watches the markets quietly.",
+      "target": "Breington",
+      "origin": "Breington",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990535-741739",
+      "kind": "mystery",
+      "text": "Mirentxu tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990537-723970",
+      "kind": "mystery",
+      "text": "Ingelwara tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990538-937670",
+      "kind": "mystery",
+      "text": "Ingelwara tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990541-525439",
+      "kind": "mystery",
+      "text": "Ingelwara tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990543-550887",
+      "kind": "mystery",
+      "text": "Mirentxu tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990546-842035",
+      "kind": "mystery",
+      "text": "Thieves struck near Belyscester. The roads grow dangerous.",
+      "target": "Belyscester",
+      "origin": "Blazedump",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990546-640365",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Belyscester.",
+      "target": "Belyscester",
+      "origin": "Breington",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990546-76629",
+      "kind": "monster-sign",
+      "text": "Travelers speak of Dreues the Grinning. The roads grow dangerous.",
+      "target": "Breington",
+      "origin": "Blazedump",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990553-778122",
+      "kind": "mystery",
+      "text": "Ingelwara tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990557-20681",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Belyscester.",
+      "target": "Belyscester",
+      "origin": "Wellston",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990557-93653",
+      "kind": "mystery",
+      "text": "Ingelwara tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990564-262914",
+      "kind": "feud",
+      "text": "The Scroll Trading Company of Watchful Company of Freymead lost goods on the road; prices may shift.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767418990566-546253",
+      "kind": "feud",
+      "text": "House of the Wyrm offers protection for caravans.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990566-835057",
+      "kind": "mystery",
+      "text": "Levies rumored to secure salt; officials say caravans delayed.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990566-29250",
+      "kind": "feud",
+      "text": "Watchful Company of Freymead watches the markets quietly.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990566-642871",
+      "kind": "mystery",
+      "text": "Levies rumored to secure livestock; officials say caravans delayed.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990566-54556",
+      "kind": "feud",
+      "text": "The Watchful Syndicate watches the markets quietly.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990566-106388",
+      "kind": "feud",
+      "text": "The Dawn Sisterhood watches the markets quietly.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990566-227777",
+      "kind": "feud",
+      "text": "The Midnight Order watches the markets quietly.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990566-278989",
+      "kind": "dungeon",
+      "text": "whispered plot: a border scout says Honnor heard of a sealed door that hums at night (from Blazedump).",
+      "target": "Holger's Halls",
+      "origin": "Blazedump",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990566-847252",
+      "kind": "feud",
+      "text": "House of the Wyrm offers protection for caravans.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990566-231448",
+      "kind": "mystery",
+      "text": "Bargain prices on grain; traders racing to Mortbane Barrow.",
+      "target": "Mortbane Barrow",
+      "origin": "Mortbane Barrow",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990566-213844",
+      "kind": "feud",
+      "text": "Watchful Company of Freymead watches the markets quietly.",
+      "target": "Mortbane Barrow",
+      "origin": "Mortbane Barrow",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990566-521346",
+      "kind": "mystery",
+      "text": "Levies rumored to secure timber; officials say caravans delayed.",
+      "target": "Breington",
+      "origin": "Breington",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990569-753021",
+      "kind": "mystery",
+      "text": "Ingelwara tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990571-497437",
+      "kind": "mystery",
+      "text": "Judo tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Wellston",
+      "origin": "Wellston",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990573-537468",
+      "kind": "mystery",
+      "text": "Judo tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Wellston",
+      "origin": "Wellston",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990579-289235",
+      "kind": "mystery",
+      "text": "Raisa tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990583-521982",
+      "kind": "mystery",
+      "text": "Godafre tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990591-662663",
+      "kind": "mystery",
+      "text": "Godafre tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990595-906355",
+      "kind": "omen",
+      "text": "Explorers speak of a strange discovery near Belyscester.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990595-538266",
+      "kind": "mystery",
+      "text": "Ingelwara tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Blazedump",
+      "origin": "Blazedump",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990597-294922",
+      "kind": "mystery",
+      "text": "Raisa tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Mortbane Barrow",
+      "origin": "Mortbane Barrow",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990599-262788",
+      "kind": "mystery",
+      "text": "Ingelwara tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Blazedump",
+      "origin": "Blazedump",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990603-947864",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Haling Cove.",
+      "target": "Haling Cove",
+      "origin": "Blazedump",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767418990603-870216",
+      "kind": "mystery",
+      "text": "Judo tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990605-272021",
+      "kind": "mystery",
+      "text": "Thieves struck near Haling Cove. The roads grow dangerous.",
+      "target": "Haling Cove",
+      "origin": "Blazedump",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990607-465326",
+      "kind": "mystery",
+      "text": "Raisa tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990608-122634",
+      "kind": "mystery",
+      "text": "Thieves struck near Haling Cove. The roads grow dangerous.",
+      "target": "Haling Cove",
+      "origin": "Ponybottom",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990610-81662",
+      "kind": "mystery",
+      "text": "Raisa tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990612-569301",
+      "kind": "feud",
+      "text": "urgent plot: an old map fragment says Milet heard of a sealed door that hums at night (from Guiltycrack).",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990612-345062",
+      "kind": "feud",
+      "text": "The Midnight Order offers protection for caravans.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990612-45717",
+      "kind": "monster-sign",
+      "text": "cryptic mystery: a bard fresh from the road says Alexias heard of beasts refusing to cross the old road (from Ponybottom).",
+      "target": "Bluemill",
+      "origin": "Ponybottom",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990612-991764",
+      "kind": "feud",
+      "text": "Storm Guild of Filthtupp Farm watches the markets quietly.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767418990612-907019",
+      "kind": "feud",
+      "text": "The Dawn Sisterhood watches the markets quietly.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990612-776180",
+      "kind": "feud",
+      "text": "Watchful Company of Freymead offers protection for caravans.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990612-886784",
+      "kind": "feud",
+      "text": "The Midnight Order watches the markets quietly.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767418990612-370052",
+      "kind": "feud",
+      "text": "conflicting treasure: a wounded messenger says Emony heard of guards buying lamp oil in bulk (from Blazedump).",
+      "target": "Breington",
+      "origin": "Blazedump",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990612-453230",
+      "kind": "mystery",
+      "text": "Bargain prices on timber; traders racing to Haling Cove.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990612-178429",
+      "kind": "feud",
+      "text": "House of the Wyrm offers protection for caravans.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990612-956915",
+      "kind": "feud",
+      "text": "The Dawn Sisterhood watches the markets quietly.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767418990612-893875",
+      "kind": "feud",
+      "text": "Storm Guild of Filthtupp Farm watches the markets quietly.",
+      "target": "Mortbane Barrow",
+      "origin": "Mortbane Barrow",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990612-224243",
+      "kind": "feud",
+      "text": "House of the Wyrm watches the markets quietly.",
+      "target": "Mortbane Barrow",
+      "origin": "Mortbane Barrow",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767418990612-97738",
+      "kind": "caravan",
+      "text": "conflicting omen: a wandering priest says Biétris heard of guards buying lamp oil in bulk (from Wellston).",
+      "target": "Breington",
+      "origin": "Wellston",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990612-45799",
+      "kind": "mystery",
+      "text": "Bargain prices on livestock; traders racing to Breington.",
+      "target": "Breington",
+      "origin": "Breington",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990612-163227",
+      "kind": "feud",
+      "text": "The Watchful Syndicate offers protection for caravans.",
+      "target": "Breington",
+      "origin": "Breington",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990612-399527",
+      "kind": "feud",
+      "text": "The Dawn Sisterhood watches the markets quietly.",
+      "target": "Breington",
+      "origin": "Breington",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767418990624-375059",
+      "kind": "mystery",
+      "text": "Godafre tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Breington",
+      "origin": "Breington",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990628-738215",
+      "kind": "mystery",
+      "text": "Godafre tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Breington",
+      "origin": "Breington",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767418990630-863516",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Haling Cove.",
+      "target": "Haling Cove",
+      "origin": "Belyscester",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990630-103515",
+      "kind": "mystery",
+      "text": "Raisa tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767418990636-397565",
+      "kind": "mystery",
+      "text": "Raisa tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990636-870851",
+      "kind": "mystery",
+      "text": "Raisa tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767418990639-992463",
+      "kind": "mystery",
+      "text": "Raisa tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990642-725400",
+      "kind": "mystery",
+      "text": "Vidigoia tells all who will listen: \"bears ambush Gidie's Band.\" The tale spreads.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767418990644-900155",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Belyscester.",
+      "target": "Belyscester",
+      "origin": "Wellston",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990654-806097",
+      "kind": "feud",
+      "text": "conflicting mystery: a border scout says Swetyene heard of missing heirlooms traced toward Ponybottom (from Guiltycrack).",
+      "target": "Ponybottom",
+      "origin": "Guiltycrack",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990654-174959",
+      "kind": "mystery",
+      "text": "Bargain prices on textiles; traders racing to Ponybottom.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767418990654-119395",
+      "kind": "feud",
+      "text": "The Midnight Order watches the markets quietly.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767418990654-325499",
+      "kind": "feud",
+      "text": "Storm Guild of Filthtupp Farm watches the markets quietly.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990654-706332",
+      "kind": "feud",
+      "text": "The Midnight Order watches the markets quietly.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990654-633397",
+      "kind": "mystery",
+      "text": "Bargain prices on timber; traders racing to Blazedump.",
+      "target": "Blazedump",
+      "origin": "Blazedump",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990654-673456",
+      "kind": "feud",
+      "text": "The Watchful Syndicate watches the markets quietly.",
+      "target": "Blazedump",
+      "origin": "Blazedump",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990654-252737",
+      "kind": "feud",
+      "text": "The Midnight Order watches the markets quietly.",
+      "target": "Blazedump",
+      "origin": "Blazedump",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990654-87939",
+      "kind": "feud",
+      "text": "The Watchful Syndicate watches the markets quietly.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767418990654-857845",
+      "kind": "feud",
+      "text": "The Watchful Syndicate watches the markets quietly.",
+      "target": "Mortbane Barrow",
+      "origin": "Mortbane Barrow",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990654-926622",
+      "kind": "feud",
+      "text": "Watchful Company of Freymead watches the markets quietly.",
+      "target": "Mortbane Barrow",
+      "origin": "Mortbane Barrow",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767418990654-813575",
+      "kind": "dungeon",
+      "text": "boastful omen: a bard fresh from the road says Ermbourg heard of old map showing 5 levels and barred doors (from Wellston).",
+      "target": "The Forsaken Catacombs",
+      "origin": "Wellston",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767418990654-857166",
+      "kind": "feud",
+      "text": "House of the Wyrm watches the markets quietly.",
+      "target": "Wellston",
+      "origin": "Wellston",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767418990654-96594",
+      "kind": "mystery",
+      "text": "Levies rumored to secure timber; officials say caravans delayed.",
+      "target": "Breington",
+      "origin": "Breington",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990654-209669",
+      "kind": "feud",
+      "text": "Storm Guild of Filthtupp Farm offers protection for caravans.",
+      "target": "Breington",
+      "origin": "Breington",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990669-131857",
+      "kind": "mystery",
+      "text": "Mirentxu tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990669-409468",
+      "kind": "mystery",
+      "text": "Mirentxu tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990671-432986",
+      "kind": "mystery",
+      "text": "Mirentxu tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767418990671-964937",
+      "kind": "mystery",
+      "text": "Mirentxu tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990673-511966",
+      "kind": "mystery",
+      "text": "Judo tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Breington",
+      "origin": "Breington",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767418990674-147421",
+      "kind": "omen",
+      "text": "Explorers speak of a strange discovery near Haling Cove.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990678-371369",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Belyscester.",
+      "target": "Belyscester",
+      "origin": "Breington",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990678-76620",
+      "kind": "mystery",
+      "text": "Mirentxu tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767418990684-824350",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Belyscester.",
+      "target": "Belyscester",
+      "origin": "Mortbane Barrow",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990684-178118",
+      "kind": "mystery",
+      "text": "Judo tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Breington",
+      "origin": "Breington",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990689-946450",
+      "kind": "dungeon",
+      "text": "Explorers speak of a strange discovery near Belyscester.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767418990693-494752",
+      "kind": "mystery",
+      "text": "Mirentxu tells all who will listen: \"Battle at Guiltycrack.\" The tale spreads.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767418990696-412065",
+      "kind": "feud",
+      "text": "House of the Wyrm offers protection for caravans.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767418990696-380365",
+      "kind": "feud",
+      "text": "The Midnight Order offers protection for caravans.",
+      "target": "Guiltycrack",
+      "origin": "Guiltycrack",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767418990696-878224",
+      "kind": "mystery",
+      "text": "Levies rumored to secure salt; officials say caravans delayed.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767418990696-76517",
+      "kind": "feud",
+      "text": "The Watchful Syndicate watches the markets quietly.",
+      "target": "Ponybottom",
+      "origin": "Ponybottom",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990696-542296",
+      "kind": "feud",
+      "text": "Storm Guild of Filthtupp Farm watches the markets quietly.",
+      "target": "Belyscester",
+      "origin": "Belyscester",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767418990696-262056",
+      "kind": "mystery",
+      "text": "Bargain prices on timber; traders racing to Blazedump.",
+      "target": "Blazedump",
+      "origin": "Blazedump",
+      "freshness": 8
+    },
+    {
+      "id": "rumor-1767418990696-10454",
+      "kind": "feud",
+      "text": "Storm Guild of Filthtupp Farm watches the markets quietly.",
+      "target": "Blazedump",
+      "origin": "Blazedump",
+      "freshness": 8
+    },
+    {
+      "id": "rumor-1767418990696-489187",
+      "kind": "feud",
+      "text": "The Dawn Sisterhood watches the markets quietly.",
+      "target": "Blazedump",
+      "origin": "Blazedump",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990696-213720",
+      "kind": "mystery",
+      "text": "Levies rumored to secure livestock; officials say caravans delayed.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767418990696-756921",
+      "kind": "feud",
+      "text": "The Midnight Order offers protection for caravans.",
+      "target": "Haling Cove",
+      "origin": "Haling Cove",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767418990696-829912",
+      "kind": "feud",
+      "text": "urgent treasure: a border scout says Enea heard of villagers hearing chanting at dusk (from Mortbane Barrow).",
+      "target": "Breington",
+      "origin": "Mortbane Barrow",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767418990696-61725",
+      "kind": "feud",
+      "text": "The Watchful Syndicate offers protection for caravans.",
+      "target": "Breington",
+      "origin": "Breington",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767418990696-189711",
+      "kind": "feud",
+      "text": "The Midnight Order offers protection for caravans.",
+      "target": "Breington",
+      "origin": "Breington",
+      "freshness": 8
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc-0",
+      "name": "Mabile",
+      "role": "priest",
+      "home": "settlement-3",
+      "location": "Blazedump",
+      "reputation": -1,
+      "fame": 0,
+      "alive": true,
+      "class": "Elf",
+      "level": 4,
+      "xp": 0,
+      "spells": [
+        "Read Magic",
+        "Sleep",
+        "Web",
+        "Lightning Bolt",
+        "Floating Disc",
+        "Shield",
+        "Detect Magic",
+        "Fly",
+        "Fireball"
+      ],
+      "depth": {
+        "traits": [
+          "pious",
+          "cruel"
+        ],
+        "background": "veteran-soldier",
+        "motivation": "revenge",
+        "relationships": [
+          {
+            "targetId": "npc-18",
+            "targetName": "Mirentxu",
+            "type": "betrayed",
+            "strength": 3,
+            "history": "Watches old friends with new suspicion."
+          },
+          {
+            "targetId": "npc-2",
+            "targetName": "Raisa",
+            "type": "creditor",
+            "strength": 5,
+            "history": "Gold is owed, and gold will be had."
+          },
+          {
+            "targetId": "npc-4",
+            "targetName": "Nob",
+            "type": "mentor",
+            "strength": 2,
+            "history": "Still learning, still surprising."
+          },
+          {
+            "targetId": "npc-17",
+            "targetName": "Admetos",
+            "type": "ally",
+            "strength": 5,
+            "history": "Owe each other debts that gold cannot repay."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "always wears a lucky charm",
+          "keeps a journal in cipher"
+        ]
+      },
+      "age": 24,
+      "title": "Deacon",
+      "appearance": "the bearing of one who has worn armor",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 100,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "birthDate": "1987-01-13T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-18",
+      "marriedAt": "2024-01-04T05:43:10.031Z"
+    },
+    {
+      "id": "npc-1",
+      "name": "Hernais",
+      "role": "merchant",
+      "home": "settlement-7",
+      "location": "Breington",
+      "reputation": -1,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 11,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "greedy",
+          "cruel"
+        ],
+        "background": "foreign-exile",
+        "motivation": "fame",
+        "secretMotivation": "home",
+        "relationships": [
+          {
+            "targetId": "npc-13",
+            "targetName": "Linota",
+            "type": "kin",
+            "strength": 1,
+            "history": "Estranged, but kin nonetheless."
+          },
+          {
+            "targetId": "npc-6",
+            "targetName": "Godafre",
+            "type": "student",
+            "strength": 5,
+            "history": "The most promising pupil in years."
+          },
+          {
+            "targetId": "npc-15",
+            "targetName": "Vidigoia",
+            "type": "betrayer",
+            "strength": 1,
+            "history": "Trust, once given, was spectacularly misplaced."
+          },
+          {
+            "targetId": "npc-5",
+            "targetName": "Enion",
+            "type": "betrayer",
+            "strength": 4,
+            "history": "Still bears the scars of misplaced faith."
+          },
+          {
+            "targetId": "npc-11",
+            "targetName": "Begon",
+            "type": "enemy",
+            "strength": 1,
+            "history": "Words were said that cannot be unsaid."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "speaks in proverbs",
+          "laughs at inappropriate moments"
+        ]
+      },
+      "age": 41,
+      "title": "Trader",
+      "appearance": "eyes of mismatched color",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-1767418990308-r4zjff",
+          "category": "witnessed-death",
+          "eventType": "death",
+          "timestamp": "2026-01-08T19:43:10.031Z",
+          "location": "Breington",
+          "emotion": "grieving",
+          "target": "Gimmo's Blades",
+          "intensity": 7.730000000000048,
+          "acted": false,
+          "narrative": "was there when Gimmo's Blades fell",
+          "secret": false
+        },
+        {
+          "id": "mem-1767418990392-q3dcid",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-11T00:43:10.031Z",
+          "location": "Breington",
+          "emotion": "suspicious",
+          "target": "The Midnight Order",
+          "intensity": 2.260000000000037,
+          "acted": false,
+          "narrative": "saw The Midnight Order clash",
+          "secret": false
+        }
+      ],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 9.418553786617705,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "birthDate": "1981-01-14T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-6",
+      "marriedAt": "2013-01-06T05:43:10.031Z"
+    },
+    {
+      "id": "npc-2",
+      "name": "Raisa",
+      "role": "scout",
+      "home": "settlement-6",
+      "location": "Guiltycrack",
+      "reputation": -2,
+      "fame": 0,
+      "alive": true,
+      "class": "Elf",
+      "level": 12,
+      "xp": 0,
+      "spells": [
+        "Read Magic"
+      ],
+      "depth": {
+        "traits": [
+          "pious",
+          "cautious",
+          "honorable"
+        ],
+        "background": "failed-merchant",
+        "motivation": "power",
+        "relationships": [
+          {
+            "targetId": "npc-0",
+            "targetName": "Mabile",
+            "type": "debtor",
+            "strength": 5,
+            "history": "Gold is owed, and gold will be had."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Danburga",
+            "type": "debtor",
+            "strength": 5,
+            "history": "The debt was financial; the cost was higher."
+          },
+          {
+            "targetId": "npc-7",
+            "targetName": "Woltje",
+            "type": "ally",
+            "strength": 2,
+            "history": "Owe each other debts that gold cannot repay."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "always knows which way is north",
+          "never reveals their true name"
+        ]
+      },
+      "age": 52,
+      "title": "Outrider",
+      "appearance": "the cautious movements of one used to danger",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-1767418990412-rvyhcj",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-11T13:43:10.031Z",
+          "location": "Guiltycrack",
+          "emotion": "suspicious",
+          "target": "The Watchful Syndicate",
+          "intensity": 2.3900000000000343,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        },
+        {
+          "id": "mem-1767418990636-hbqwoz",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-16T19:43:10.031Z",
+          "location": "Belyscester",
+          "emotion": "suspicious",
+          "target": "The Midnight Order",
+          "intensity": 3.6500000000000075,
+          "acted": false,
+          "narrative": "saw The Midnight Order clash",
+          "secret": false
+        }
+      ],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 21.929713863397485,
+          "description": "Establish a seat of power"
+        },
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 11,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "birthDate": "1988-01-13T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-3",
+      "name": "Ingelwara",
+      "role": "bard",
+      "home": "settlement-0",
+      "location": "Breington",
+      "reputation": -1,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 9,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "pious",
+          "pragmatic",
+          "brave"
+        ],
+        "background": "foreign-exile",
+        "motivation": "survival",
+        "relationships": [
+          {
+            "targetId": "npc-18",
+            "targetName": "Mirentxu",
+            "type": "mentor",
+            "strength": 2,
+            "history": "Saw potential where others saw nothing."
+          },
+          {
+            "targetId": "npc-7",
+            "targetName": "Woltje",
+            "type": "betrayed",
+            "strength": 4,
+            "history": "Trust, once given, was spectacularly misplaced."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "never reveals their true name",
+          "constantly counts coins",
+          "quotes ancient philosophers"
+        ]
+      },
+      "age": 59,
+      "title": "Skald",
+      "appearance": "a limp from an old wound",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-1767418990550-pq0zq0",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-14T20:43:10.031Z",
+          "location": "Haling Cove",
+          "emotion": "suspicious",
+          "target": "The Midnight Order",
+          "intensity": 3.1800000000000175,
+          "acted": false,
+          "narrative": "saw The Midnight Order clash",
+          "secret": false
+        },
+        {
+          "id": "mem-1767418990657-ckilkr",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-17T06:43:10.031Z",
+          "location": "Breington",
+          "emotion": "suspicious",
+          "target": "The Watchful Syndicate",
+          "intensity": 3.760000000000005,
+          "acted": false,
+          "narrative": "survived the battle at Breington",
+          "secret": false
+        }
+      ],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 15.627270014111422,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "bloodlineId": "bloodline-1767418990104-7768",
+      "birthDate": "1995-01-11T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-5",
+      "marriedAt": "2026-01-03T05:43:10.031Z"
+    },
+    {
+      "id": "npc-4",
+      "name": "Nob",
+      "role": "priest",
+      "home": "settlement-0",
+      "location": "Ponybottom",
+      "reputation": -1,
+      "fame": 0,
+      "alive": true,
+      "class": "Cleric",
+      "level": 6,
+      "xp": 0,
+      "spells": [
+        "Cure Light Wounds",
+        "Continual Light",
+        "Speak with Animals",
+        "Bless",
+        "Detect Evil"
+      ],
+      "depth": {
+        "traits": [
+          "cowardly",
+          "romantic",
+          "skeptical"
+        ],
+        "background": "veteran-soldier",
+        "motivation": "redemption",
+        "relationships": [
+          {
+            "targetId": "npc-0",
+            "targetName": "Mabile",
+            "type": "student",
+            "strength": 2,
+            "history": "Still learning, still surprising."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "refuses to eat meat"
+        ]
+      },
+      "age": 53,
+      "title": "Sister",
+      "appearance": "ink-stained fingers of a scholar",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 100,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "bloodlineId": "bloodline-1767418990104-7558",
+      "birthDate": "1962-01-19T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "dying",
+      "widowed": false,
+      "divorces": 0,
+      "lastHealthCheck": "2026-01-18T05:43:10.031Z"
+    },
+    {
+      "id": "npc-5",
+      "name": "Enion",
+      "role": "bard",
+      "home": "settlement-0",
+      "location": "Mortbane Barrow",
+      "reputation": 1,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 4,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "pious",
+          "skeptical"
+        ],
+        "background": "hedge-wizard",
+        "motivation": "love",
+        "secretMotivation": "love",
+        "relationships": [
+          {
+            "targetId": "npc-13",
+            "targetName": "Linota",
+            "type": "betrayer",
+            "strength": 2,
+            "history": "Trust, once given, was spectacularly misplaced."
+          },
+          {
+            "targetId": "npc-1",
+            "targetName": "Hernais",
+            "type": "betrayed",
+            "strength": 4,
+            "history": "Still bears the scars of misplaced faith."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "fears deep water",
+          "sleeps with a blade in hand"
+        ]
+      },
+      "age": 24,
+      "title": "Rhapsode",
+      "appearance": "graying at the temples despite apparent youth",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "birthDate": "1990-01-12T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-3",
+      "marriedAt": "2026-01-03T05:43:10.031Z"
+    },
+    {
+      "id": "npc-6",
+      "name": "Godafre",
+      "role": "guard",
+      "home": "settlement-7",
+      "location": "Guiltycrack",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 2,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "greedy",
+          "treacherous",
+          "loyal"
+        ],
+        "background": "foreign-exile",
+        "motivation": "home",
+        "relationships": [
+          {
+            "targetId": "npc-9",
+            "targetName": "Obeko",
+            "type": "creditor",
+            "strength": 4,
+            "history": "Gold is owed, and gold will be had."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "trusts no one who smiles too easily",
+          "constantly counts coins"
+        ]
+      },
+      "age": 40,
+      "title": "Guardsman",
+      "appearance": "weathered hands that speak of hard labor",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-1767418990248-uy9ttp",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-07T03:43:10.031Z",
+          "location": "Guiltycrack",
+          "emotion": "suspicious",
+          "target": "The Watchful Syndicate",
+          "intensity": 1.330000000000042,
+          "acted": false,
+          "narrative": "survived the battle at Guiltycrack",
+          "secret": false
+        },
+        {
+          "id": "mem-1767418990263-t60cen",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-07T12:43:10.031Z",
+          "location": "Guiltycrack",
+          "emotion": "suspicious",
+          "target": "The Watchful Syndicate",
+          "intensity": 1.4200000000000421,
+          "acted": false,
+          "narrative": "saw The Watchful Syndicate clash",
+          "secret": false
+        }
+      ],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "birthDate": "2002-01-09T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-1",
+      "marriedAt": "2013-01-06T05:43:10.031Z"
+    },
+    {
+      "id": "npc-7",
+      "name": "Woltje",
+      "role": "laborer",
+      "home": "settlement-4",
+      "location": "Haling Cove",
+      "reputation": -2,
+      "fame": 0,
+      "alive": true,
+      "class": "Dwarf",
+      "level": 3,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "loyal",
+          "naive",
+          "brave"
+        ],
+        "background": "disgraced-priest",
+        "motivation": "duty",
+        "relationships": [
+          {
+            "targetId": "npc-2",
+            "targetName": "Raisa",
+            "type": "ally",
+            "strength": 2,
+            "history": "Owe each other debts that gold cannot repay."
+          },
+          {
+            "targetId": "npc-3",
+            "targetName": "Ingelwara",
+            "type": "betrayer",
+            "strength": 4,
+            "history": "Trust, once given, was spectacularly misplaced."
+          },
+          {
+            "targetId": "npc-14",
+            "targetName": "Larenz",
+            "type": "rival",
+            "strength": 4,
+            "history": "Both loved the same person, once."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "collects small bones",
+          "trusts no one who smiles too easily",
+          "speaks to animals as if they understand"
+        ]
+      },
+      "age": 52,
+      "title": "Digger",
+      "appearance": "the bearing of one who has worn armor",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-1767418990344-nnu55z",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-09T18:43:10.031Z",
+          "location": "Haling Cove",
+          "emotion": "suspicious",
+          "target": "The Watchful Syndicate",
+          "intensity": 1.9600000000000426,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        },
+        {
+          "id": "mem-1767418990580-bq3zso",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-15T15:43:10.031Z",
+          "location": "Haling Cove",
+          "emotion": "suspicious",
+          "target": "The Watchful Syndicate",
+          "intensity": 3.3700000000000134,
+          "acted": false,
+          "narrative": "saw The Watchful Syndicate clash",
+          "secret": false
+        }
+      ],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1993-01-11T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-8",
+      "name": "Zandua",
+      "role": "merchant",
+      "home": "settlement-3",
+      "location": "Blazedump",
+      "reputation": -2,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 6,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "skeptical",
+          "cruel",
+          "cowardly"
+        ],
+        "background": "plague-orphan",
+        "motivation": "duty",
+        "secretMotivation": "love",
+        "relationships": [
+          {
+            "targetId": "npc-5",
+            "targetName": "Enion",
+            "type": "enemy",
+            "strength": 3,
+            "history": "Blood spilled between them in Blazedump."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Danburga",
+            "type": "enemy",
+            "strength": 4,
+            "history": "Blood spilled between them in Blazedump."
+          },
+          {
+            "targetId": "npc-17",
+            "targetName": "Admetos",
+            "type": "creditor",
+            "strength": 5,
+            "history": "Borrowed gold at the worst possible moment."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "sleeps with a blade in hand",
+          "collects small bones"
+        ]
+      },
+      "age": 52,
+      "title": "Chandler",
+      "appearance": "a limp from an old wound",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-2",
+      "bloodlineId": "bloodline-1767418990104-7475",
+      "birthDate": "1991-01-12T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-13",
+      "marriedAt": "2022-01-04T05:43:10.031Z"
+    },
+    {
+      "id": "npc-9",
+      "name": "Obeko",
+      "role": "laborer",
+      "home": "settlement-6",
+      "location": "Wellston",
+      "reputation": -3,
+      "fame": 0,
+      "alive": true,
+      "class": "Dwarf",
+      "level": 1,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "pious",
+          "cautious",
+          "treacherous"
+        ],
+        "background": "foreign-exile",
+        "motivation": "redemption",
+        "secretMotivation": "duty",
+        "relationships": [
+          {
+            "targetId": "npc-6",
+            "targetName": "Godafre",
+            "type": "debtor",
+            "strength": 4,
+            "history": "Gold is owed, and gold will be had."
+          },
+          {
+            "targetId": "npc-17",
+            "targetName": "Admetos",
+            "type": "enemy",
+            "strength": 4,
+            "history": "Blood spilled between them in Wellston."
+          },
+          {
+            "targetId": "npc-8",
+            "targetName": "Zandua",
+            "type": "betrayed",
+            "strength": 3,
+            "history": "Watches old friends with new suspicion."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "sleeps with a blade in hand"
+        ]
+      },
+      "age": 50,
+      "title": "Hauler",
+      "appearance": "an aristocratic bearing despite rough clothes",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-1767418990230-uqvh8l",
+          "category": "witnessed-death",
+          "eventType": "death",
+          "timestamp": "2026-01-06T12:43:10.031Z",
+          "location": "Wellston",
+          "emotion": "grieving",
+          "target": "Democedes's Wolves",
+          "intensity": 5.19000000000006,
+          "acted": false,
+          "narrative": "was there when Democedes's Wolves fell",
+          "secret": false
+        }
+      ],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "birthDate": "1989-01-12T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-10",
+      "name": "Danburga",
+      "role": "merchant",
+      "home": "settlement-3",
+      "location": "Blazedump",
+      "reputation": -1,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 2,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "naive",
+          "pragmatic"
+        ],
+        "background": "retired-adventurer",
+        "motivation": "survival",
+        "secretMotivation": "revenge",
+        "relationships": [
+          {
+            "targetId": "npc-8",
+            "targetName": "Zandua",
+            "type": "enemy",
+            "strength": 4,
+            "history": "Blood spilled between them in Blazedump."
+          },
+          {
+            "targetId": "npc-13",
+            "targetName": "Linota",
+            "type": "mentor",
+            "strength": 5,
+            "history": "Saw potential where others saw nothing."
+          },
+          {
+            "targetId": "npc-18",
+            "targetName": "Mirentxu",
+            "type": "betrayer",
+            "strength": 4,
+            "history": "Still bears the scars of misplaced faith."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "trusts no one who smiles too easily",
+          "cannot resist a wager",
+          "hums old war songs"
+        ]
+      },
+      "age": 55,
+      "title": "Chandler",
+      "appearance": "the bearing of one who has worn armor",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "birthDate": "2000-01-10T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-12",
+      "name": "Medea",
+      "role": "priest",
+      "home": "settlement-5",
+      "location": "Mortbane Barrow",
+      "reputation": 0,
+      "fame": 0,
+      "alive": true,
+      "class": "Cleric",
+      "level": 9,
+      "xp": 0,
+      "spells": [
+        "Cure Light Wounds",
+        "Protection from Evil"
+      ],
+      "depth": {
+        "traits": [
+          "greedy",
+          "cowardly"
+        ],
+        "background": "foreign-exile",
+        "motivation": "love",
+        "relationships": [
+          {
+            "targetId": "npc-14",
+            "targetName": "Larenz",
+            "type": "enemy",
+            "strength": 5,
+            "history": "Words were said that cannot be unsaid."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "laughs at inappropriate moments",
+          "hums old war songs",
+          "has recurring nightmares"
+        ]
+      },
+      "age": 51,
+      "title": "Sister",
+      "appearance": "missing two fingers on the left hand",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 10.857110936038662,
+          "description": "Establish a seat of power"
+        },
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 2,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "birthDate": "1999-01-10T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-13",
+      "name": "Linota",
+      "role": "merchant",
+      "home": "settlement-3",
+      "location": "Blazedump",
+      "reputation": -2,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 11,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "naive",
+          "honorable",
+          "cautious"
+        ],
+        "background": "farmhand-turned-guard",
+        "motivation": "freedom",
+        "relationships": [
+          {
+            "targetId": "npc-1",
+            "targetName": "Hernais",
+            "type": "kin",
+            "strength": 1,
+            "history": "Estranged, but kin nonetheless."
+          },
+          {
+            "targetId": "npc-5",
+            "targetName": "Enion",
+            "type": "betrayed",
+            "strength": 2,
+            "history": "Trust, once given, was spectacularly misplaced."
+          },
+          {
+            "targetId": "npc-11",
+            "targetName": "Begon",
+            "type": "creditor",
+            "strength": 3,
+            "history": "Interest compounds, and so does resentment."
+          },
+          {
+            "targetId": "npc-3",
+            "targetName": "Ingelwara",
+            "type": "creditor",
+            "strength": 4,
+            "history": "Extended credit when no one else would."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "speaks to animals as if they understand",
+          "trusts no one who smiles too easily",
+          "always wears a lucky charm"
+        ]
+      },
+      "age": 19,
+      "title": "Trader",
+      "appearance": "a brand mark, poorly concealed",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 48.75672512493562,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "bloodlineId": "bloodline-1767418990104-5902",
+      "birthDate": "1997-01-10T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-8",
+      "marriedAt": "2022-01-04T05:43:10.031Z"
+    },
+    {
+      "id": "npc-14",
+      "name": "Larenz",
+      "role": "priest",
+      "home": "settlement-3",
+      "location": "Blazedump",
+      "reputation": 2,
+      "fame": 0,
+      "alive": true,
+      "class": "Elf",
+      "level": 1,
+      "xp": 0,
+      "spells": [
+        "Read Magic",
+        "Web",
+        "Lightning Bolt",
+        "Invisibility"
+      ],
+      "depth": {
+        "traits": [
+          "loyal",
+          "cautious"
+        ],
+        "background": "veteran-soldier",
+        "motivation": "survival",
+        "secretMotivation": "love",
+        "relationships": [
+          {
+            "targetId": "npc-12",
+            "targetName": "Medea",
+            "type": "enemy",
+            "strength": 5,
+            "history": "Words were said that cannot be unsaid."
+          },
+          {
+            "targetId": "npc-7",
+            "targetName": "Woltje",
+            "type": "rival",
+            "strength": 4,
+            "history": "Both loved the same person, once."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "laughs at inappropriate moments",
+          "refuses to eat meat",
+          "prays before every meal"
+        ]
+      },
+      "age": 33,
+      "title": "Prior",
+      "appearance": "a nervous tic in the left eye",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 100,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "birthDate": "1976-01-16T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-15",
+      "name": "Vidigoia",
+      "role": "laborer",
+      "home": "settlement-4",
+      "location": "Haling Cove",
+      "reputation": 0,
+      "fame": 0,
+      "alive": true,
+      "class": "Dwarf",
+      "level": 6,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "charitable",
+          "cruel"
+        ],
+        "background": "reformed-bandit",
+        "motivation": "survival",
+        "relationships": [
+          {
+            "targetId": "npc-1",
+            "targetName": "Hernais",
+            "type": "betrayed",
+            "strength": 1,
+            "history": "Trust, once given, was spectacularly misplaced."
+          },
+          {
+            "targetId": "npc-12",
+            "targetName": "Medea",
+            "type": "debtor",
+            "strength": 3,
+            "history": "Interest compounds, and so does resentment."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "fears deep water"
+        ]
+      },
+      "age": 56,
+      "title": "Porter",
+      "appearance": "the bearing of one who has worn armor",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "bloodlineId": "bloodline-1767418990104-5037",
+      "birthDate": "1982-01-14T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-16",
+      "name": "Judo",
+      "role": "bard",
+      "home": "settlement-2",
+      "location": "Guiltycrack",
+      "reputation": -2,
+      "fame": 0,
+      "alive": true,
+      "class": "Magic-User",
+      "level": 3,
+      "xp": 0,
+      "spells": [
+        "Read Magic",
+        "Sleep",
+        "Detect Magic",
+        "Fireball"
+      ],
+      "depth": {
+        "traits": [
+          "ambitious",
+          "pragmatic",
+          "greedy"
+        ],
+        "background": "wandering-bard",
+        "motivation": "power",
+        "secretMotivation": "revenge",
+        "relationships": [
+          {
+            "targetId": "npc-7",
+            "targetName": "Woltje",
+            "type": "student",
+            "strength": 2,
+            "history": "Will surpass the master, given time."
+          },
+          {
+            "targetId": "npc-11",
+            "targetName": "Begon",
+            "type": "ally",
+            "strength": 3,
+            "history": "Owe each other debts that gold cannot repay."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "always knows which way is north"
+        ]
+      },
+      "age": 41,
+      "title": "Troubadour",
+      "appearance": "surprisingly young features",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-1767418990412-8dmhmd",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-11T13:43:10.031Z",
+          "location": "Guiltycrack",
+          "emotion": "suspicious",
+          "target": "The Watchful Syndicate",
+          "intensity": 2.3900000000000343,
+          "acted": false,
+          "narrative": "survived the battle at Guiltycrack",
+          "secret": false
+        },
+        {
+          "id": "mem-1767418990418-o1jaax",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-11T17:43:10.031Z",
+          "location": "Guiltycrack",
+          "emotion": "suspicious",
+          "target": "The Watchful Syndicate",
+          "intensity": 2.4300000000000335,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        }
+      ],
+      "agendas": [
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 100,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1970-01-17T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-18",
+      "name": "Mirentxu",
+      "role": "guard",
+      "home": "settlement-3",
+      "location": "Haling Cove",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Halfling",
+      "level": 9,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "pious",
+          "brave",
+          "charitable"
+        ],
+        "background": "orphan-thief",
+        "motivation": "redemption",
+        "relationships": [
+          {
+            "targetId": "npc-0",
+            "targetName": "Mabile",
+            "type": "betrayer",
+            "strength": 3,
+            "history": "Watches old friends with new suspicion."
+          },
+          {
+            "targetId": "npc-3",
+            "targetName": "Ingelwara",
+            "type": "student",
+            "strength": 2,
+            "history": "Saw potential where others saw nothing."
+          },
+          {
+            "targetId": "npc-9",
+            "targetName": "Obeko",
+            "type": "lover",
+            "strength": 3,
+            "history": "A passion that scandalized the town."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Danburga",
+            "type": "betrayed",
+            "strength": 4,
+            "history": "Still bears the scars of misplaced faith."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "hums old war songs",
+          "speaks in proverbs"
+        ]
+      },
+      "age": 25,
+      "title": "Guardsman",
+      "appearance": "scarred face and knowing eyes",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-1767418990412-k4a3kn",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-11T13:43:10.031Z",
+          "location": "Guiltycrack",
+          "emotion": "suspicious",
+          "target": "The Watchful Syndicate",
+          "intensity": 2.3900000000000343,
+          "acted": false,
+          "narrative": "saw The Watchful Syndicate clash",
+          "secret": false
+        }
+      ],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 47.72903157261434,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1979-01-15T05:43:10.031Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-0",
+      "marriedAt": "2024-01-04T05:43:10.031Z"
+    }
+  ],
+  "factions": [
+    {
+      "id": "faction-0",
+      "name": "Storm Guild of Filthtupp Farm",
+      "attitude": {
+        "Guiltycrack": 3,
+        "hex:7,7": 1,
+        "hex:7,9": 1,
+        "Breington": 2,
+        "hex:2,8": 1,
+        "hex:6,9": 2,
+        "hex:7,8": 1,
+        "hex:3,9": 1,
+        "hex:1,9": 3,
+        "hex:0,7": 1,
+        "hex:4,2": 1,
+        "Wellston": 2,
+        "hex:8,2": 1,
+        "hex:6,8": 1,
+        "hex:7,5": 1
+      },
+      "wealth": 81,
+      "focus": "trade",
+      "lastNoted": "Blazedump"
+    },
+    {
+      "id": "faction-1",
+      "name": "The Watchful Syndicate",
+      "attitude": {
+        "Haling Cove": 1,
+        "Breington": 2,
+        "Guiltycrack": 3,
+        "hex:7,8": 1,
+        "hex:5,8": 2,
+        "hex:6,8": 1,
+        "Wellston": 3,
+        "hex:0,7": 1,
+        "hex:2,8": 3,
+        "Blazedump": 1,
+        "hex:3,9": 1,
+        "hex:4,9": 2,
+        "Belyscester": 1,
+        "hex:1,9": 1,
+        "Mortbane Barrow": 1,
+        "hex:1,8": 1,
+        "hex:3,7": 1,
+        "hex:1,4": 1
+      },
+      "wealth": 15,
+      "focus": "martial",
+      "lastNoted": "Breington"
+    },
+    {
+      "id": "faction-2",
+      "name": "House of the Wyrm",
+      "attitude": {
+        "Haling Cove": 3,
+        "Guiltycrack": 3,
+        "Mortbane Barrow": 3,
+        "hex:0,8": 1,
+        "Breington": 2,
+        "hex:8,2": 2,
+        "hex:2,2": 1,
+        "hex:7,0": 1,
+        "hex:3,1": 1,
+        "Blazedump": 1,
+        "hex:2,8": 1,
+        "hex:3,9": 1,
+        "Belyscester": 3,
+        "hex:7,9": 1,
+        "hex:1,9": 1,
+        "hex:0,7": 1,
+        "hex:6,9": 1
+      },
+      "wealth": 122,
+      "focus": "pious",
+      "lastNoted": "Guiltycrack"
+    },
+    {
+      "id": "faction-3",
+      "name": "The Dawn Sisterhood",
+      "attitude": {
+        "Guiltycrack": 3,
+        "hex:1,3": 1,
+        "hex:3,1": 1,
+        "hex:3,8": 1,
+        "hex:1,5": 1,
+        "hex:7,3": 1,
+        "hex:5,8": 1,
+        "hex:6,8": 1,
+        "hex:1,8": 2,
+        "Breington": 1,
+        "hex:2,8": 2,
+        "hex:6,1": 1,
+        "hex:0,8": 1,
+        "hex:8,9": 1
+      },
+      "wealth": 89,
+      "focus": "arcane",
+      "lastNoted": "Blazedump"
+    },
+    {
+      "id": "faction-4",
+      "name": "Watchful Company of Freymead",
+      "attitude": {
+        "Belyscester": 3,
+        "Guiltycrack": 3,
+        "hex:6,9": 1,
+        "hex:3,8": 2,
+        "hex:2,8": 1,
+        "hex:7,8": 1,
+        "hex:0,9": 1,
+        "Breington": 1,
+        "hex:1,4": 1,
+        "hex:7,5": 1,
+        "Wellston": 1,
+        "hex:3,9": 1,
+        "hex:4,9": 1,
+        "hex:5,8": 1,
+        "hex:4,2": 1,
+        "hex:6,8": 1,
+        "hex:3,7": 1,
+        "hex:8,2": 1,
+        "hex:0,7": 1,
+        "hex:7,7": 1,
+        "hex:7,9": 1
+      },
+      "wealth": 25,
+      "focus": "trade",
+      "lastNoted": "Mortbane Barrow"
+    },
+    {
+      "id": "faction-5",
+      "name": "The Midnight Order",
+      "attitude": {
+        "hex:3,9": 2,
+        "Guiltycrack": 3,
+        "hex:0,4": 1,
+        "Breington": 3,
+        "hex:2,8": 3,
+        "hex:7,9": 1,
+        "Haling Cove": 2,
+        "hex:1,5": 1,
+        "hex:3,7": 2,
+        "hex:0,8": 1,
+        "hex:1,9": 2,
+        "Belyscester": 1,
+        "hex:4,2": 1,
+        "hex:6,9": 1,
+        "hex:7,5": 1,
+        "hex:6,8": 1,
+        "Wellston": 1,
+        "hex:8,9": 1,
+        "hex:1,4": 1
+      },
+      "wealth": 87,
+      "focus": "martial",
+      "lastNoted": "Breington"
+    }
+  ],
+  "caravans": [
+    {
+      "id": "caravan-0",
+      "name": "Elixane & Sons",
+      "route": [
+        "settlement-0",
+        "settlement-7"
+      ],
+      "goods": [
+        "salt",
+        "fish"
+      ],
+      "location": "Guiltycrack",
+      "progressHours": 1,
+      "direction": "outbound",
+      "escorts": [
+        "npc-6"
+      ],
+      "merchantId": "npc-16"
+    },
+    {
+      "id": "caravan-1",
+      "name": "Lightgrass Traders",
+      "route": [
+        "settlement-0",
+        "settlement-4"
+      ],
+      "goods": [
+        "grain",
+        "textiles"
+      ],
+      "location": "Guiltycrack",
+      "progressHours": 25,
+      "direction": "outbound",
+      "escorts": [
+        "npc-18"
+      ],
+      "factionId": "faction-2",
+      "merchantId": "npc-3"
+    },
+    {
+      "id": "caravan-2",
+      "name": "The Scroll Trading Company",
+      "route": [
+        "settlement-0",
+        "settlement-2"
+      ],
+      "goods": [
+        "salt",
+        "fish"
+      ],
+      "location": "Guiltycrack",
+      "progressHours": 4,
+      "direction": "outbound",
+      "escorts": [
+        "npc-2"
+      ],
+      "factionId": "faction-4",
+      "merchantId": "npc-16"
+    }
+  ],
+  "strongholds": [],
+  "armies": [
+    {
+      "id": "army-faction-1-1767418990134",
+      "ownerId": "faction-1",
+      "location": "Guiltycrack",
+      "strength": 4,
+      "quality": 2,
+      "morale": 12,
+      "status": "idle",
+      "supplies": 87.86000000000013,
+      "supplyLineFrom": "Guiltycrack",
+      "lastSupplied": "2026-01-18T03:43:10.031Z"
+    },
+    {
+      "id": "army-faction-5-1767418990138",
+      "ownerId": "faction-5",
+      "location": "Guiltycrack",
+      "strength": 3,
+      "quality": 3,
+      "morale": 12,
+      "status": "idle",
+      "supplies": 85.03000000000047,
+      "supplyLineFrom": "Guiltycrack",
+      "lastSupplied": "2026-01-17T22:43:10.031Z"
+    },
+    {
+      "id": "army-faction-3-1767418990143",
+      "ownerId": "faction-3",
+      "location": "Guiltycrack",
+      "strength": 123,
+      "quality": 1,
+      "morale": 5.900000000000004,
+      "status": "idle",
+      "supplies": 88.95999999999982,
+      "supplyLineFrom": "Guiltycrack",
+      "lastSupplied": "2026-01-18T05:43:10.031Z"
+    },
+    {
+      "id": "army-faction-4-1767418990143",
+      "ownerId": "faction-4",
+      "location": "Guiltycrack",
+      "strength": 1,
+      "quality": 2,
+      "morale": 2,
+      "status": "surrendered",
+      "supplies": 85.6750000000013,
+      "supplyLineFrom": "Guiltycrack",
+      "lastSupplied": "2026-01-17T23:43:10.031Z"
+    },
+    {
+      "id": "army-faction-2-1767418990145",
+      "ownerId": "faction-2",
+      "location": "Guiltycrack",
+      "strength": 1,
+      "quality": 2,
+      "morale": 2,
+      "status": "surrendered",
+      "supplies": 82.7350000000011,
+      "supplyLineFrom": "Guiltycrack",
+      "lastSupplied": "2026-01-17T17:43:10.031Z"
+    },
+    {
+      "id": "army-faction-0-1767418990165",
+      "ownerId": "faction-0",
+      "location": "Guiltycrack",
+      "strength": 74,
+      "quality": 3,
+      "morale": 8.300000000000002,
+      "status": "idle",
+      "supplies": 80.28999999999849,
+      "supplyLineFrom": "Guiltycrack",
+      "lastSupplied": "2026-01-17T19:43:10.031Z"
+    }
+  ],
+  "landmarks": [
+    {
+      "id": "landmark-1767418990154-524",
+      "name": "The Cracked Cairn",
+      "description": "A cracked cairn, smelling of summer rain and ozone.",
+      "location": {
+        "q": 5,
+        "r": 0
+      },
+      "terrain": "road",
+      "discoveryDate": "2026-01-04T04:43:10.031Z",
+      "discoveredBy": "Democedes's Wolves",
+      "effect": "fey-blessing",
+      "knownBy": [
+        "Democedes's Wolves"
+      ]
+    },
+    {
+      "id": "landmark-1767418990182-250",
+      "name": "The Perfectly smooth Cairn",
+      "description": "A perfectly smooth cairn, home to a silent, white-haired hermit.",
+      "location": {
+        "q": 5,
+        "r": 0
+      },
+      "terrain": "road",
+      "discoveryDate": "2026-01-05T00:43:10.031Z",
+      "discoveredBy": "Democedes's Wolves",
+      "effect": "treasure-clue",
+      "knownBy": [
+        "Democedes's Wolves"
+      ]
+    },
+    {
+      "id": "landmark-1767418990183-467",
+      "name": "The Glowing Statue",
+      "description": "A glowing statue, surrounded by a thin, unnerving mist.",
+      "location": {
+        "q": 5,
+        "r": 0
+      },
+      "terrain": "road",
+      "discoveryDate": "2026-01-05T01:43:10.031Z",
+      "discoveredBy": "Democedes's Wolves",
+      "effect": "prophetic-hint",
+      "knownBy": [
+        "Democedes's Wolves"
+      ]
+    },
+    {
+      "id": "landmark-1767418990184-352",
+      "name": "The Blood-stained Cairn",
+      "description": "A blood-stained cairn, swarming with spectral, blue butterflies.",
+      "location": {
+        "q": 5,
+        "r": 0
+      },
+      "terrain": "road",
+      "discoveryDate": "2026-01-05T02:43:10.031Z",
+      "discoveredBy": "Democedes's Wolves",
+      "effect": "prophetic-hint",
+      "knownBy": [
+        "Democedes's Wolves"
+      ]
+    },
+    {
+      "id": "landmark-1767418990228-66",
+      "name": "The Glowing Cairn",
+      "description": "A glowing cairn, humming a low, vibrating note.",
+      "location": {
+        "q": 2,
+        "r": 6
+      },
+      "terrain": "road",
+      "discoveryDate": "2026-01-06T11:43:10.031Z",
+      "discoveredBy": "Democedes's Wolves",
+      "effect": "treasure-clue",
+      "knownBy": [
+        "Democedes's Wolves"
+      ]
+    },
+    {
+      "id": "landmark-1767418990258-691",
+      "name": "The Blood-stained Cairn",
+      "description": "A blood-stained cairn, swarming with spectral, blue butterflies.",
+      "location": {
+        "q": 2,
+        "r": 6
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-07T09:43:10.031Z",
+      "discoveredBy": "Gimmo's Blades",
+      "effect": "fey-blessing",
+      "knownBy": [
+        "Gimmo's Blades"
+      ]
+    },
+    {
+      "id": "landmark-1767418990278-176",
+      "name": "The Floating Monolith",
+      "description": "A floating monolith, humming a low, vibrating note.",
+      "location": {
+        "q": 2,
+        "r": 6
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-07T23:43:10.031Z",
+      "discoveredBy": "Gimmo's Blades",
+      "effect": "fey-blessing",
+      "knownBy": [
+        "Gimmo's Blades"
+      ]
+    },
+    {
+      "id": "landmark-1767418990290-508",
+      "name": "The Blood-stained Cairn",
+      "description": "A blood-stained cairn, vibrating when approached.",
+      "location": {
+        "q": 1,
+        "r": 7
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-08T06:43:10.031Z",
+      "discoveredBy": "Democedes's Wolves",
+      "effect": "treasure-clue",
+      "knownBy": [
+        "Democedes's Wolves"
+      ]
+    },
+    {
+      "id": "landmark-1767418990297-180",
+      "name": "The Silver Cave",
+      "description": "A silver cave, dripping with a thick, dark sap.",
+      "location": {
+        "q": 2,
+        "r": 6
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-08T11:43:10.031Z",
+      "discoveredBy": "Gimmo's Blades",
+      "effect": "treasure-clue",
+      "knownBy": [
+        "Gimmo's Blades"
+      ]
+    },
+    {
+      "id": "landmark-1767418990334-781",
+      "name": "The Eerie Cairn",
+      "description": "A eerie cairn, home to a silent, white-haired hermit.",
+      "location": {
+        "q": 2,
+        "r": 6
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-09T12:43:10.031Z",
+      "discoveredBy": "Gimmo's Blades",
+      "effect": "historical-knowledge",
+      "knownBy": [
+        "Gimmo's Blades"
+      ]
+    },
+    {
+      "id": "landmark-1767418990354-628",
+      "name": "The Glowing Monolith",
+      "description": "A glowing monolith, surrounded by a thin, unnerving mist.",
+      "location": {
+        "q": 2,
+        "r": 6
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-10T01:43:10.031Z",
+      "discoveredBy": "Gimmo's Blades",
+      "effect": "prophetic-hint",
+      "knownBy": [
+        "Gimmo's Blades"
+      ]
+    },
+    {
+      "id": "landmark-1767418990357-246",
+      "name": "The Silver Altar",
+      "description": "A silver altar, dripping with a thick, dark sap.",
+      "location": {
+        "q": 2,
+        "r": 6
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-10T03:43:10.031Z",
+      "discoveredBy": "Gimmo's Blades",
+      "effect": "treasure-clue",
+      "knownBy": [
+        "Gimmo's Blades"
+      ]
+    },
+    {
+      "id": "landmark-1767418990371-706",
+      "name": "The Blood-stained Pillar",
+      "description": "A blood-stained pillar, pulsing with a faint, rhythmic light.",
+      "location": {
+        "q": 1,
+        "r": 7
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-10T11:43:10.031Z",
+      "discoveredBy": "Democedes's Wolves",
+      "effect": "historical-knowledge",
+      "knownBy": [
+        "Democedes's Wolves"
+      ]
+    },
+    {
+      "id": "landmark-1767418990390-725",
+      "name": "The Glowing Spring",
+      "description": "A glowing spring, smelling of summer rain and ozone.",
+      "location": {
+        "q": 2,
+        "r": 6
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-10T23:43:10.031Z",
+      "discoveredBy": "Gimmo's Blades",
+      "effect": "treasure-clue",
+      "knownBy": [
+        "Gimmo's Blades"
+      ]
+    },
+    {
+      "id": "landmark-1767418990407-506",
+      "name": "The Glowing Pillar",
+      "description": "A glowing pillar, swarming with spectral, blue butterflies.",
+      "location": {
+        "q": 1,
+        "r": 7
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-11T10:43:10.031Z",
+      "discoveredBy": "Democedes's Wolves",
+      "effect": "fey-blessing",
+      "knownBy": [
+        "Democedes's Wolves"
+      ]
+    },
+    {
+      "id": "landmark-1767418990410-923",
+      "name": "The Blood-stained Spring",
+      "description": "A blood-stained spring, surrounded by a thin, unnerving mist.",
+      "location": {
+        "q": 2,
+        "r": 6
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-11T11:43:10.031Z",
+      "discoveredBy": "Gimmo's Blades",
+      "effect": "fey-blessing",
+      "knownBy": [
+        "Gimmo's Blades"
+      ]
+    },
+    {
+      "id": "landmark-1767418990418-372",
+      "name": "The Ancient Cave",
+      "description": "A ancient cave, bearing the marks of a thousand years.",
+      "location": {
+        "q": 1,
+        "r": 7
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-11T17:43:10.031Z",
+      "discoveredBy": "Democedes's Wolves",
+      "effect": "prophetic-hint",
+      "knownBy": [
+        "Democedes's Wolves"
+      ]
+    },
+    {
+      "id": "landmark-1767418990497-770",
+      "name": "The Floating Cairn",
+      "description": "A floating cairn, bearing the marks of a thousand years.",
+      "location": {
+        "q": 5,
+        "r": 0
+      },
+      "terrain": "road",
+      "discoveryDate": "2026-01-13T10:43:10.031Z",
+      "discoveredBy": "Gidie's Band",
+      "effect": "arcane-insight",
+      "knownBy": [
+        "Gidie's Band"
+      ]
+    },
+    {
+      "id": "landmark-1767418990548-610",
+      "name": "The Petrified Spring",
+      "description": "A petrified spring, smelling of summer rain and ozone.",
+      "location": {
+        "q": 6,
+        "r": 0
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-14T18:43:10.031Z",
+      "discoveredBy": "Gimmo's Blades",
+      "effect": "prophetic-hint",
+      "knownBy": [
+        "Gimmo's Blades"
+      ]
+    },
+    {
+      "id": "landmark-1767418990619-770",
+      "name": "The Eerie Cave",
+      "description": "A eerie cave, humming a low, vibrating note.",
+      "location": {
+        "q": 0,
+        "r": 2
+      },
+      "terrain": "forest",
+      "discoveryDate": "2026-01-16T09:43:10.031Z",
+      "discoveredBy": "Gidie's Band",
+      "effect": "prophetic-hint",
+      "knownBy": [
+        "Gidie's Band"
+      ]
+    },
+    {
+      "id": "landmark-1767418990633-541",
+      "name": "The Blood-stained Pool",
+      "description": "A blood-stained pool, bearing the marks of a thousand years.",
+      "location": {
+        "q": 0,
+        "r": 2
+      },
+      "terrain": "forest",
+      "discoveryDate": "2026-01-16T17:43:10.031Z",
+      "discoveredBy": "Gidie's Band",
+      "effect": "arcane-insight",
+      "knownBy": [
+        "Gidie's Band"
+      ]
+    },
+    {
+      "id": "landmark-1767418990647-919",
+      "name": "The Glowing Spring",
+      "description": "A glowing spring, smelling of summer rain and ozone.",
+      "location": {
+        "q": 1,
+        "r": 7
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-17T02:43:10.031Z",
+      "discoveredBy": "Democedes's Wolves",
+      "effect": "arcane-insight",
+      "knownBy": [
+        "Democedes's Wolves"
+      ]
+    },
+    {
+      "id": "landmark-1767418990652-386",
+      "name": "The Floating Pillar",
+      "description": "A floating pillar, dripping with a thick, dark sap.",
+      "location": {
+        "q": 6,
+        "r": 0
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-17T05:43:10.031Z",
+      "discoveredBy": "Gimmo's Blades",
+      "effect": "treasure-clue",
+      "knownBy": [
+        "Gimmo's Blades"
+      ]
+    },
+    {
+      "id": "landmark-1767418990666-87",
+      "name": "The Moss-covered Cave",
+      "description": "A moss-covered cave, pulsing with a faint, rhythmic light.",
+      "location": {
+        "q": 1,
+        "r": 7
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-17T10:43:10.031Z",
+      "discoveredBy": "Democedes's Wolves",
+      "effect": "fey-blessing",
+      "knownBy": [
+        "Democedes's Wolves"
+      ]
+    },
+    {
+      "id": "landmark-1767418990671-256",
+      "name": "The Crystalline Altar",
+      "description": "A crystalline altar, home to a silent, white-haired hermit.",
+      "location": {
+        "q": 1,
+        "r": 7
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-17T14:43:10.031Z",
+      "discoveredBy": "Democedes's Wolves",
+      "effect": "prophetic-hint",
+      "knownBy": [
+        "Democedes's Wolves"
+      ]
+    },
+    {
+      "id": "landmark-1767418990685-879",
+      "name": "The Overgrown Spring",
+      "description": "A overgrown spring, vibrating when approached.",
+      "location": {
+        "q": 6,
+        "r": 0
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-17T23:43:10.031Z",
+      "discoveredBy": "Gimmo's Blades",
+      "effect": "prophetic-hint",
+      "knownBy": [
+        "Gimmo's Blades"
+      ]
+    },
+    {
+      "id": "landmark-1767418990689-686",
+      "name": "The Blood-stained Cairn",
+      "description": "A blood-stained cairn, swarming with spectral, blue butterflies.",
+      "location": {
+        "q": 6,
+        "r": 0
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-18T01:43:10.031Z",
+      "discoveredBy": "Gimmo's Blades",
+      "effect": "treasure-clue",
+      "knownBy": [
+        "Gimmo's Blades"
+      ]
+    }
+  ],
+  "ruins": [
+    {
+      "id": "ruin-1767418990360-648",
+      "name": "Shattered Forge",
+      "description": "An ancient shattered forge from the Empire of Dust.",
+      "location": {
+        "q": 1,
+        "r": 7
+      },
+      "rooms": [
+        {
+          "type": "empty",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "trap",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "empty",
+          "threat": 3,
+          "loot": true,
+          "rare": "artifact"
+        },
+        {
+          "type": "empty",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "trap",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "treasure",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "lair",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 5,
+          "loot": false
+        }
+      ],
+      "cleared": false,
+      "danger": 4,
+      "history": "Shattered Forge was once a center of faith before its fall."
+    }
+  ],
+  "nexuses": [
+    {
+      "id": "nexus-0",
+      "name": "Eternal Nexus of Void",
+      "location": {
+        "q": 3,
+        "r": 3
+      },
+      "powerType": "Primal",
+      "intensity": 6
+    },
+    {
+      "id": "nexus-1",
+      "name": "Eternal Nexus of Bones",
+      "location": {
+        "q": 5,
+        "r": 3
+      },
+      "powerType": "Shadow",
+      "intensity": 7
+    },
+    {
+      "id": "nexus-2",
+      "name": "Deep Nexus of Time",
+      "location": {
+        "q": 7,
+        "r": 8
+      },
+      "powerType": "Arcane",
+      "intensity": 9
+    },
+    {
+      "id": "nexus-3",
+      "name": "Eternal Nexus of Stars",
+      "location": {
+        "q": 1,
+        "r": 6
+      },
+      "powerType": "Primal",
+      "intensity": 6
+    },
+    {
+      "id": "nexus-4",
+      "name": "Deep Nexus of Life",
+      "location": {
+        "q": 7,
+        "r": 6
+      },
+      "powerType": "Shadow",
+      "intensity": 9
+    },
+    {
+      "id": "nexus-5",
+      "name": "Shattered Nexus of Stars",
+      "location": {
+        "q": 5,
+        "r": 3
+      },
+      "powerType": "Arcane",
+      "intensity": 8
+    }
+  ],
+  "mercenaries": [
+    {
+      "id": "merc-0",
+      "name": "The Iron Brotherhood",
+      "captainId": "npc-merc-captain-0",
+      "location": "Blazedump",
+      "size": 115,
+      "quality": 3,
+      "monthlyRate": 455,
+      "loyalty": 8
+    },
+    {
+      "id": "merc-1",
+      "name": "Silver Shields",
+      "captainId": "npc-merc-captain-1",
+      "location": "Breington",
+      "size": 188,
+      "quality": 3,
+      "monthlyRate": 366,
+      "loyalty": 7
+    },
+    {
+      "id": "merc-2",
+      "name": "The Golden Lions",
+      "captainId": "npc-merc-captain-2",
+      "location": "Breington",
+      "size": 146,
+      "quality": 3,
+      "monthlyRate": 181,
+      "loyalty": 9
+    },
+    {
+      "id": "merc-3",
+      "name": "Black Boars",
+      "captainId": "npc-merc-captain-3",
+      "location": "Haling Cove",
+      "size": 78,
+      "quality": 3,
+      "monthlyRate": 349,
+      "loyalty": 9
+    },
+    {
+      "id": "merc-4",
+      "name": "Red Ravagers",
+      "captainId": "npc-merc-captain-4",
+      "location": "Mortbane Barrow",
+      "size": 160,
+      "quality": 2,
+      "monthlyRate": 403,
+      "loyalty": 9
+    },
+    {
+      "id": "merc-5",
+      "name": "The Free Company",
+      "captainId": "npc-merc-captain-5",
+      "location": "Mortbane Barrow",
+      "size": 126,
+      "quality": 4,
+      "monthlyRate": 252,
+      "loyalty": 7
+    }
+  ],
+  "startedAt": "2026-01-03T05:43:10.031Z",
+  "partyStates": {
+    "party-0": {
+      "morale": 10,
+      "resources": 50,
+      "enemies": [],
+      "allies": [],
+      "questLog": [
+        {
+          "id": "quest-1767418990188",
+          "type": "hunt",
+          "target": "Gundesvinda",
+          "reason": "End the threat of Gundesvinda the Grinning",
+          "progress": 0
+        }
+      ],
+      "killList": [
+        "Gundesvinda",
+        null
+      ],
+      "reputation": {}
+    },
+    "band-0": {
+      "morale": 5,
+      "resources": 50,
+      "enemies": [],
+      "allies": [],
+      "questLog": [],
+      "killList": [],
+      "reputation": {}
+    },
+    "band-2": {
+      "morale": 5,
+      "resources": 50,
+      "enemies": [],
+      "allies": [],
+      "questLog": [],
+      "killList": [],
+      "reputation": {}
+    }
+  },
+  "factionStates": {
+    "faction-0": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [],
+      "casusBelli": {},
+      "activeOperations": [
+        {
+          "id": "op-marriage-1767418990137",
+          "type": "marriage-alliance",
+          "target": "The Watchful Syndicate",
+          "startedAt": "2026-01-03T09:43:10.031Z",
+          "completesAt": "2026-02-02T09:43:10.031Z",
+          "participants": [],
+          "successChance": 0.5,
+          "resources": 500,
+          "secret": false,
+          "reason": "Forge alliance with The Watchful Syndicate through marriage"
+        },
+        {
+          "id": "op-relief-1767418990608",
+          "type": "relief",
+          "target": "Guiltycrack",
+          "startedAt": "2026-01-16T04:43:10.031Z",
+          "completesAt": "2026-01-23T04:43:10.031Z",
+          "participants": [],
+          "successChance": 0.9,
+          "resources": 300,
+          "secret": false,
+          "reason": "Aid the suffering of Guiltycrack"
+        }
+      ],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-1": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [],
+      "casusBelli": {},
+      "activeOperations": [
+        {
+          "id": "op-marriage-1767418990156",
+          "type": "marriage-alliance",
+          "target": "Storm Guild of Filthtupp Farm",
+          "startedAt": "2026-01-04T05:43:10.031Z",
+          "completesAt": "2026-02-03T05:43:10.031Z",
+          "participants": [],
+          "successChance": 0.5,
+          "resources": 500,
+          "secret": false,
+          "reason": "Forge alliance with Storm Guild of Filthtupp Farm through marriage"
+        }
+      ],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-2": {
+      "power": 50,
+      "territory": [],
+      "enemies": [
+        "faction-5",
+        "faction-1"
+      ],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [],
+      "casusBelli": {
+        "faction-5": {
+          "reason": "the robbery of their caravan near Haling Cove",
+          "magnitude": 5
+        },
+        "faction-1": {
+          "reason": "the robbery of their caravan near Guiltycrack",
+          "magnitude": 5
+        }
+      },
+      "activeOperations": [
+        {
+          "id": "op-marriage-1767418990120",
+          "type": "marriage-alliance",
+          "target": "Storm Guild of Filthtupp Farm",
+          "startedAt": "2026-01-03T05:43:10.031Z",
+          "completesAt": "2026-02-02T05:43:10.031Z",
+          "participants": [],
+          "successChance": 0.5,
+          "resources": 500,
+          "secret": false,
+          "reason": "Forge alliance with Storm Guild of Filthtupp Farm through marriage"
+        },
+        {
+          "id": "op-relief-1767418990519",
+          "type": "relief",
+          "target": "Guiltycrack",
+          "startedAt": "2026-01-14T00:43:10.031Z",
+          "completesAt": "2026-01-21T00:43:10.031Z",
+          "participants": [],
+          "successChance": 0.9,
+          "resources": 300,
+          "secret": false,
+          "reason": "Aid the suffering of Guiltycrack"
+        }
+      ],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-3": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [],
+      "casusBelli": {},
+      "activeOperations": [
+        {
+          "id": "op-marriage-1767418990302",
+          "type": "marriage-alliance",
+          "target": "Storm Guild of Filthtupp Farm",
+          "startedAt": "2026-01-08T14:43:10.031Z",
+          "completesAt": "2026-02-07T14:43:10.031Z",
+          "participants": [],
+          "successChance": 0.5,
+          "resources": 500,
+          "secret": false,
+          "reason": "Forge alliance with Storm Guild of Filthtupp Farm through marriage"
+        }
+      ],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-4": {
+      "power": 50,
+      "territory": [],
+      "enemies": [
+        "faction-5",
+        "faction-1"
+      ],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [],
+      "casusBelli": {
+        "faction-5": {
+          "reason": "the robbery of their caravan near Belyscester",
+          "magnitude": 5
+        },
+        "faction-1": {
+          "reason": "the robbery of their caravan near Guiltycrack",
+          "magnitude": 5
+        }
+      },
+      "activeOperations": [
+        {
+          "id": "op-marriage-1767418990165",
+          "type": "marriage-alliance",
+          "target": "Storm Guild of Filthtupp Farm",
+          "startedAt": "2026-01-04T09:43:10.031Z",
+          "completesAt": "2026-02-03T09:43:10.031Z",
+          "participants": [],
+          "successChance": 0.5,
+          "resources": 500,
+          "secret": false,
+          "reason": "Forge alliance with Storm Guild of Filthtupp Farm through marriage"
+        },
+        {
+          "id": "op-relief-1767418990641",
+          "type": "relief",
+          "target": "Guiltycrack",
+          "startedAt": "2026-01-16T22:43:10.031Z",
+          "completesAt": "2026-01-23T22:43:10.031Z",
+          "participants": [],
+          "successChance": 0.9,
+          "resources": 300,
+          "secret": false,
+          "reason": "Aid the suffering of Guiltycrack"
+        }
+      ],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-5": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [],
+      "casusBelli": {},
+      "activeOperations": [
+        {
+          "id": "op-marriage-1767418990136",
+          "type": "marriage-alliance",
+          "target": "Storm Guild of Filthtupp Farm",
+          "startedAt": "2026-01-03T08:43:10.031Z",
+          "completesAt": "2026-02-02T08:43:10.031Z",
+          "participants": [],
+          "successChance": 0.5,
+          "resources": 500,
+          "secret": false,
+          "reason": "Forge alliance with Storm Guild of Filthtupp Farm through marriage"
+        }
+      ],
+      "recentLosses": 0,
+      "recentWins": 0
+    }
+  },
+  "settlementStates": {
+    "Guiltycrack": {
+      "prosperity": -11,
+      "safety": -19,
+      "unrest": 1,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Ponybottom": {
+      "prosperity": 0,
+      "safety": 1,
+      "unrest": 2,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Belyscester": {
+      "prosperity": -7,
+      "safety": -5,
+      "unrest": 1,
+      "populationDelta": -50,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Blazedump": {
+      "prosperity": 0,
+      "safety": 3,
+      "unrest": 1,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Haling Cove": {
+      "prosperity": -4,
+      "safety": -3,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Mortbane Barrow": {
+      "prosperity": -3,
+      "safety": 5,
+      "unrest": 1,
+      "populationDelta": -50,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Wellston": {
+      "prosperity": -3,
+      "safety": 2,
+      "unrest": 2,
+      "populationDelta": -50,
+      "recentEvents": [
+        "battle-1767418990230"
+      ],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false,
+      "disease": {
+        "type": "The Red Ache",
+        "intensity": 3,
+        "spreadRate": 0.11579014617018402,
+        "discovered": true
+      }
+    },
+    "Breington": {
+      "prosperity": -3,
+      "safety": -1,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    }
+  },
+  "eventHistory": [
+    {
+      "id": "robbery-1767418990149",
+      "type": "robbery",
+      "timestamp": "2026-01-03T22:43:10.031Z",
+      "location": "Guiltycrack",
+      "actors": [
+        "The Watchful Syndicate"
+      ],
+      "perpetrators": [
+        "The Watchful Syndicate"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 148,
+        "targetType": "caravan",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990154",
+      "type": "robbery",
+      "timestamp": "2026-01-04T04:43:10.031Z",
+      "location": "Guiltycrack",
+      "actors": [
+        "The Midnight Order"
+      ],
+      "perpetrators": [
+        "The Midnight Order"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 86,
+        "targetType": "caravan",
+        "factionId": "faction-2",
+        "goods": [
+          "grain",
+          "textiles"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990163",
+      "type": "robbery",
+      "timestamp": "2026-01-04T08:43:10.031Z",
+      "location": "Guiltycrack",
+      "actors": [
+        "The Midnight Order"
+      ],
+      "perpetrators": [
+        "The Midnight Order"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 70,
+        "targetType": "caravan",
+        "factionId": "faction-4",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990171",
+      "type": "robbery",
+      "timestamp": "2026-01-04T15:43:10.031Z",
+      "location": "Guiltycrack",
+      "actors": [
+        "The Midnight Order"
+      ],
+      "perpetrators": [
+        "The Midnight Order"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 122,
+        "targetType": "caravan",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990173",
+      "type": "robbery",
+      "timestamp": "2026-01-04T17:43:10.031Z",
+      "location": "Guiltycrack",
+      "actors": [
+        "The Midnight Order"
+      ],
+      "perpetrators": [
+        "The Midnight Order"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 119,
+        "targetType": "caravan",
+        "factionId": "faction-2",
+        "goods": [
+          "grain",
+          "textiles"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990202",
+      "type": "robbery",
+      "timestamp": "2026-01-05T14:43:10.031Z",
+      "location": "Breington",
+      "actors": [
+        "The Watchful Syndicate"
+      ],
+      "perpetrators": [
+        "The Watchful Syndicate"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 124,
+        "targetType": "caravan",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990209",
+      "type": "robbery",
+      "timestamp": "2026-01-05T21:43:10.031Z",
+      "location": "Belyscester",
+      "actors": [
+        "The Watchful Syndicate"
+      ],
+      "perpetrators": [
+        "The Watchful Syndicate"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 88,
+        "targetType": "caravan",
+        "factionId": "faction-4",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "battle-1767418990230",
+      "type": "battle",
+      "timestamp": "2026-01-06T12:43:10.031Z",
+      "location": "Wellston",
+      "actors": [
+        "Democedes's Wolves",
+        "Gundesvinda"
+      ],
+      "magnitude": 6,
+      "witnessed": true,
+      "data": {
+        "victor": "Democedes's Wolves",
+        "loser": "Gundesvinda",
+        "significance": 4
+      }
+    },
+    {
+      "id": "death-1767418990230",
+      "type": "death",
+      "timestamp": "2026-01-06T12:43:10.031Z",
+      "location": "Wellston",
+      "actors": [
+        "Democedes's Wolves"
+      ],
+      "victims": [
+        "Gundesvinda"
+      ],
+      "perpetrators": [
+        "Democedes's Wolves"
+      ],
+      "magnitude": 8,
+      "witnessed": true,
+      "data": {
+        "cause": "vendetta",
+        "killedBy": "Democedes's Wolves"
+      }
+    },
+    {
+      "id": "robbery-1767418990248",
+      "type": "robbery",
+      "timestamp": "2026-01-07T03:43:10.031Z",
+      "location": "Guiltycrack",
+      "actors": [
+        "The Watchful Syndicate"
+      ],
+      "perpetrators": [
+        "The Watchful Syndicate"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 68,
+        "targetType": "caravan",
+        "factionId": "faction-4",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990263",
+      "type": "robbery",
+      "timestamp": "2026-01-07T12:43:10.031Z",
+      "location": "Guiltycrack",
+      "actors": [
+        "The Watchful Syndicate"
+      ],
+      "perpetrators": [
+        "The Watchful Syndicate"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 125,
+        "targetType": "caravan",
+        "factionId": "faction-4",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990303",
+      "type": "robbery",
+      "timestamp": "2026-01-08T15:43:10.031Z",
+      "location": "Guiltycrack",
+      "actors": [
+        "The Watchful Syndicate"
+      ],
+      "perpetrators": [
+        "The Watchful Syndicate"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 140,
+        "targetType": "caravan",
+        "factionId": "faction-4",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "slayer-1767418990308",
+      "type": "death",
+      "timestamp": "2026-01-08T19:43:10.031Z",
+      "location": "Breington",
+      "actors": [
+        "Gimmo's Blades"
+      ],
+      "victims": [
+        "Cerberus-kin"
+      ],
+      "magnitude": 10,
+      "witnessed": true,
+      "data": {
+        "cause": "legendary battle",
+        "legendary": true
+      }
+    },
+    {
+      "id": "robbery-1767418990320",
+      "type": "robbery",
+      "timestamp": "2026-01-09T04:43:10.031Z",
+      "location": "Haling Cove",
+      "actors": [
+        "The Watchful Syndicate"
+      ],
+      "perpetrators": [
+        "The Watchful Syndicate"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 95,
+        "targetType": "caravan",
+        "factionId": "faction-2",
+        "goods": [
+          "grain",
+          "textiles"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990344",
+      "type": "robbery",
+      "timestamp": "2026-01-09T18:43:10.031Z",
+      "location": "Haling Cove",
+      "actors": [
+        "The Watchful Syndicate"
+      ],
+      "perpetrators": [
+        "The Watchful Syndicate"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 132,
+        "targetType": "caravan",
+        "factionId": "faction-2",
+        "goods": [
+          "grain",
+          "textiles"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990351",
+      "type": "robbery",
+      "timestamp": "2026-01-09T23:43:10.031Z",
+      "location": "Belyscester",
+      "actors": [
+        "The Watchful Syndicate"
+      ],
+      "perpetrators": [
+        "The Watchful Syndicate"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 84,
+        "targetType": "caravan",
+        "factionId": "faction-4",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990392",
+      "type": "robbery",
+      "timestamp": "2026-01-11T00:43:10.031Z",
+      "location": "Breington",
+      "actors": [
+        "The Midnight Order"
+      ],
+      "perpetrators": [
+        "The Midnight Order"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 59,
+        "targetType": "caravan",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990412",
+      "type": "robbery",
+      "timestamp": "2026-01-11T13:43:10.031Z",
+      "location": "Guiltycrack",
+      "actors": [
+        "The Watchful Syndicate"
+      ],
+      "perpetrators": [
+        "The Watchful Syndicate"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 102,
+        "targetType": "caravan",
+        "factionId": "faction-4",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990418",
+      "type": "robbery",
+      "timestamp": "2026-01-11T17:43:10.031Z",
+      "location": "Guiltycrack",
+      "actors": [
+        "The Watchful Syndicate"
+      ],
+      "perpetrators": [
+        "The Watchful Syndicate"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 139,
+        "targetType": "caravan",
+        "factionId": "faction-4",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990515",
+      "type": "robbery",
+      "timestamp": "2026-01-13T21:43:10.031Z",
+      "location": "Belyscester",
+      "actors": [
+        "The Midnight Order"
+      ],
+      "perpetrators": [
+        "The Midnight Order"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 137,
+        "targetType": "caravan",
+        "factionId": "faction-4",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990550",
+      "type": "robbery",
+      "timestamp": "2026-01-14T20:43:10.031Z",
+      "location": "Haling Cove",
+      "actors": [
+        "The Midnight Order"
+      ],
+      "perpetrators": [
+        "The Midnight Order"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 110,
+        "targetType": "caravan",
+        "factionId": "faction-2",
+        "goods": [
+          "grain",
+          "textiles"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990580",
+      "type": "robbery",
+      "timestamp": "2026-01-15T15:43:10.031Z",
+      "location": "Haling Cove",
+      "actors": [
+        "The Watchful Syndicate"
+      ],
+      "perpetrators": [
+        "The Watchful Syndicate"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 95,
+        "targetType": "caravan",
+        "factionId": "faction-2",
+        "goods": [
+          "grain",
+          "textiles"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990636",
+      "type": "robbery",
+      "timestamp": "2026-01-16T19:43:10.031Z",
+      "location": "Belyscester",
+      "actors": [
+        "The Midnight Order"
+      ],
+      "perpetrators": [
+        "The Midnight Order"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 118,
+        "targetType": "caravan",
+        "factionId": "faction-4",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990657",
+      "type": "robbery",
+      "timestamp": "2026-01-17T06:43:10.031Z",
+      "location": "Breington",
+      "actors": [
+        "The Watchful Syndicate"
+      ],
+      "perpetrators": [
+        "The Watchful Syndicate"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 57,
+        "targetType": "caravan",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767418990671",
+      "type": "robbery",
+      "timestamp": "2026-01-17T14:43:10.031Z",
+      "location": "Guiltycrack",
+      "actors": [
+        "The Watchful Syndicate"
+      ],
+      "perpetrators": [
+        "The Watchful Syndicate"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 72,
+        "targetType": "caravan",
+        "factionId": "faction-2",
+        "goods": [
+          "grain",
+          "textiles"
+        ]
+      }
+    }
+  ],
+  "lastTickAt": "2026-01-18T05:43:10.031Z",
+  "storyThreads": [
+    {
+      "id": "story-1767418990114-2213",
+      "type": "ancient-evil",
+      "title": "The Awakening",
+      "summary": "Something sealed away long ago stirs in Blazedump.",
+      "phase": "rising",
+      "actors": [
+        "Haraldus"
+      ],
+      "location": "Blazedump",
+      "startedAt": "2026-01-03T05:43:10.031Z",
+      "lastUpdated": "2026-01-15T23:43:10.031Z",
+      "tension": 5,
+      "beats": [
+        {
+          "timestamp": "2026-01-03T05:43:10.031Z",
+          "summary": "Blazedump stirs to life",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-04T17:43:10.031Z",
+          "summary": "Animals flee the area.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-09T02:43:10.031Z",
+          "summary": "Old artifacts reactivate.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-13T06:43:10.031Z",
+          "summary": "Time seems to distort near the site. Haraldus remains seeks knowledge and wisdom.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-15T23:43:10.031Z",
+          "summary": "Local wildlife behaves erratically. Darkness spreads its influence.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The evil is resealed, but weakened watchers remain.",
+        "The evil is destroyed at tremendous cost.",
+        "The evil proves to be misunderstood—not evil at all.",
+        "The evil escapes and begins its conquest.",
+        "A bargain is struck with the awakened power."
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "Blazedump"
+        ],
+        "themes": [
+          "corruption",
+          "doom",
+          "salvation"
+        ],
+        "motivations": {
+          "Haraldus": "seeks knowledge and wisdom"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    },
+    {
+      "id": "story-1767418990114-4368",
+      "type": "ancient-evil",
+      "title": "The Awakening",
+      "summary": "Eluned races to prevent catastrophe.",
+      "phase": "rising",
+      "actors": [
+        "Eluned"
+      ],
+      "location": "Wellston",
+      "startedAt": "2026-01-03T05:43:10.031Z",
+      "lastUpdated": "2026-01-16T18:43:10.031Z",
+      "tension": 6,
+      "beats": [
+        {
+          "timestamp": "2026-01-03T05:43:10.031Z",
+          "summary": "Wellston stirs to life",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-04T15:43:10.031Z",
+          "summary": "Dreams of darkness plague the populace.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-06T05:43:10.031Z",
+          "summary": "Time seems to distort near the site. Eluned remains motivated by fear and survival.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-08T02:43:10.031Z",
+          "summary": "Heroes are drawn to confront it. Hope flickers in the darkness.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-14T00:43:10.031Z",
+          "summary": "The ground becomes unstable. Eluned remains motivated by fear and survival.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-16T18:43:10.031Z",
+          "summary": "The evil influences local politics.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The evil is resealed, but weakened watchers remain.",
+        "The evil is destroyed at tremendous cost.",
+        "The evil proves to be misunderstood—not evil at all.",
+        "The evil escapes and begins its conquest.",
+        "A bargain is struck with the awakened power."
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "Wellston",
+          "hidden grove"
+        ],
+        "themes": [
+          "salvation",
+          "doom"
+        ],
+        "motivations": {
+          "Eluned": "motivated by fear and survival"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    },
+    {
+      "id": "story-1767418990114-5619",
+      "type": "ancient-evil",
+      "title": "What Sleeps Beneath Breington",
+      "summary": "Osewold races to prevent catastrophe.",
+      "phase": "rising",
+      "actors": [
+        "Osewold"
+      ],
+      "location": "Breington",
+      "startedAt": "2026-01-03T05:43:10.031Z",
+      "lastUpdated": "2026-01-13T06:43:10.031Z",
+      "tension": 6,
+      "beats": [
+        {
+          "timestamp": "2026-01-03T05:43:10.031Z",
+          "summary": "Breington stirs to life",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-06T05:43:10.031Z",
+          "summary": "Ancient runes glow with power. Osewold remains driven by curiosity and discovery.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-07T10:43:10.031Z",
+          "summary": "Time seems to distort near the site.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-08T14:43:10.031Z",
+          "summary": "The seals show signs of weakening. Osewold remains driven by curiosity and discovery.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-10T14:43:10.031Z",
+          "summary": "Heroes are drawn to confront it. Osewold remains driven by curiosity and discovery.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-13T06:43:10.031Z",
+          "summary": "The evil sends visions to the weak. Hope flickers in the darkness.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The evil is resealed, but weakened watchers remain.",
+        "The evil is destroyed at tremendous cost.",
+        "The evil proves to be misunderstood—not evil at all.",
+        "The evil escapes and begins its conquest.",
+        "A bargain is struck with the awakened power."
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "Breington"
+        ],
+        "themes": [
+          "corruption",
+          "salvation"
+        ],
+        "motivations": {
+          "Osewold": "driven by curiosity and discovery"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    },
+    {
+      "id": "story-1767418990115-4396",
+      "type": "hunt",
+      "title": "Blood on the Trail",
+      "summary": "A deadly game of cat and mouse unfolds near Wellston.",
+      "phase": "rising",
+      "actors": [
+        "Gundesvinda the Grinning"
+      ],
+      "location": "Wellston",
+      "startedAt": "2026-01-03T05:43:10.031Z",
+      "lastUpdated": "2026-01-17T09:43:10.031Z",
+      "tension": 5,
+      "beats": [
+        {
+          "timestamp": "2026-01-03T05:43:10.031Z",
+          "summary": "A new threat arises: Gundesvinda the Grinning",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-04T15:43:10.031Z",
+          "summary": "Supplies dwindle; the hunt becomes desperate.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-10T12:43:10.031Z",
+          "summary": "A bounty is placed, attracting more Gundesvinda the Grinning.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-13T04:43:10.031Z",
+          "summary": "The quarry leaves a taunt. It's personal now.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-17T09:43:10.031Z",
+          "summary": "The hunt leads through treacherous terrain.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The quarry is slain.",
+        "The quarry escapes to parts unknown.",
+        "The hunters become the hunted.",
+        "An unexpected alliance forms.",
+        "The quarry is captured alive—but for what purpose?"
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "Wellston"
+        ],
+        "themes": [
+          "pursuit",
+          "justice",
+          "survival"
+        ],
+        "motivations": {
+          "Gundesvinda the Grinning": "motivated by love and protection"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    },
+    {
+      "id": "story-1767418990128-7052",
+      "type": "haunting",
+      "title": "The Guiltycrack Haunting",
+      "summary": "What do the ghosts want? What will make them stop?",
+      "phase": "inciting",
+      "actors": [
+        "Amellia"
+      ],
+      "location": "Guiltycrack",
+      "startedAt": "2026-01-03T05:43:10.031Z",
+      "lastUpdated": "2026-01-17T05:43:10.031Z",
+      "tension": 4,
+      "beats": [
+        {
+          "timestamp": "2026-01-03T05:43:10.031Z",
+          "summary": "Guiltycrack spirits high",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-03T05:43:10.031Z",
+          "summary": "A new tale begins: \"The Guiltycrack Haunting\"",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-10T12:43:10.031Z",
+          "summary": "The haunting ends.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-17T05:43:10.031Z",
+          "summary": "Investigations begin. Amellia remains driven by ambition and status.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The spirits are laid to rest.",
+        "The haunting intensifies to lethal levels.",
+        "Coexistence is negotiated.",
+        "The ghosts reveal crucial information.",
+        "The \"haunting\" proves to have mortal origins."
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "Guiltycrack",
+          "sacred temple"
+        ],
+        "themes": [
+          "supernatural",
+          "torment",
+          "release"
+        ],
+        "motivations": {
+          "Amellia": "driven by ambition and status"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    },
+    {
+      "id": "story-1767418990141-4839",
+      "type": "succession",
+      "title": "The Empty Throne",
+      "summary": "Legitimacy, force, and cunning all have their advocates.",
+      "phase": "climax",
+      "actors": [
+        "Democedes's Wolves",
+        "deserters"
+      ],
+      "location": "Guiltycrack",
+      "startedAt": "2026-01-03T13:43:10.031Z",
+      "lastUpdated": "2026-01-09T05:43:10.031Z",
+      "tension": 8.666666666666666,
+      "beats": [
+        {
+          "timestamp": "2026-01-03T13:43:10.031Z",
+          "summary": "deserters shadow Democedes's Wolves but keep their distance",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-04T15:43:10.031Z",
+          "summary": "Religious approval is sought.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-06T05:43:10.031Z",
+          "summary": "The claimants campaign actively. Democedes's Wolves remains motivated by love and protection.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-06T12:43:10.031Z",
+          "summary": "Blood is spilled.",
+          "tensionChange": 2
+        },
+        {
+          "timestamp": "2026-01-06T12:43:10.031Z",
+          "summary": "A key figure falls.",
+          "tensionChange": 2
+        },
+        {
+          "timestamp": "2026-01-09T04:43:10.031Z",
+          "summary": "Violence breaks out. Democedes's Wolves remains seeks wealth and riches.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-09T05:43:10.031Z",
+          "summary": "Resolution: The strongest claimant seizes power.",
+          "tensionChange": 0
+        }
+      ],
+      "potentialOutcomes": [
+        "The rightful heir prevails.",
+        "The strongest claimant seizes power.",
+        "Civil war erupts over the succession.",
+        "An outside power dictates the succession.",
+        "An unexpected candidate emerges victorious."
+      ],
+      "resolved": true,
+      "context": {
+        "actorRelationships": [
+          "Democedes's Wolves betrayed deserters in the past"
+        ],
+        "keyLocations": [
+          "Guiltycrack"
+        ],
+        "themes": [
+          "power",
+          "ambition",
+          "legitimacy"
+        ],
+        "motivations": {
+          "Democedes's Wolves": "motivated by love and protection",
+          "deserters": "seeks wealth and riches"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      },
+      "resolution": "The strongest claimant seizes power."
+    },
+    {
+      "id": "story-1767418990158-4029",
+      "type": "haunting",
+      "title": "Unquiet Dead",
+      "summary": "The dead do not rest peacefully in Ponybottom.",
+      "phase": "rising",
+      "actors": [
+        "Xanthos"
+      ],
+      "location": "Ponybottom",
+      "startedAt": "2026-01-04T05:43:10.031Z",
+      "lastUpdated": "2026-01-16T18:43:10.031Z",
+      "tension": 5,
+      "beats": [
+        {
+          "timestamp": "2026-01-04T05:43:10.031Z",
+          "summary": "Ponybottom spirits high",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-09T04:43:10.031Z",
+          "summary": "Allies emerge.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-11T00:43:10.031Z",
+          "summary": "The source is revealed.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-14T15:43:10.031Z",
+          "summary": "Manifestations increase.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-16T18:43:10.031Z",
+          "summary": "The haunting intensifies.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The spirits are laid to rest.",
+        "The haunting intensifies to lethal levels.",
+        "Coexistence is negotiated.",
+        "The ghosts reveal crucial information.",
+        "The \"haunting\" proves to have mortal origins."
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "Ponybottom"
+        ],
+        "themes": [
+          "supernatural"
+        ],
+        "motivations": {
+          "Xanthos": "driven by ambition and status"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    },
+    {
+      "id": "story-1767418990159-3788",
+      "type": "haunting",
+      "title": "What Lingers",
+      "summary": "Teuthranes confronts spirits who refuse to pass on.",
+      "phase": "rising",
+      "actors": [
+        "Teuthranes"
+      ],
+      "location": "Belyscester",
+      "startedAt": "2026-01-04T05:43:10.031Z",
+      "lastUpdated": "2026-01-17T09:43:10.031Z",
+      "tension": 6,
+      "beats": [
+        {
+          "timestamp": "2026-01-04T05:43:10.031Z",
+          "summary": "Belyscester spirits high",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-05T07:43:10.031Z",
+          "summary": "Manifestations increase. Teuthranes remains seeks power and influence.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-08T14:43:10.031Z",
+          "summary": "The haunted reflect.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-10T12:43:10.031Z",
+          "summary": "Manifestations increase.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-14T00:43:10.031Z",
+          "summary": "The haunting intensifies.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-17T09:43:10.031Z",
+          "summary": "The haunting affects the living. Teuthranes remains seeks power and influence.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The spirits are laid to rest.",
+        "The haunting intensifies to lethal levels.",
+        "Coexistence is negotiated.",
+        "The ghosts reveal crucial information.",
+        "The \"haunting\" proves to have mortal origins."
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "Belyscester"
+        ],
+        "themes": [
+          "supernatural"
+        ],
+        "motivations": {
+          "Teuthranes": "seeks power and influence"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    },
+    {
+      "id": "story-1767418990332-3625",
+      "type": "raid",
+      "title": "Fire in Wellston",
+      "summary": "Hit and run tactics terrorize Wellston.",
+      "phase": "inciting",
+      "actors": [
+        "Democedes's Wolves"
+      ],
+      "location": "Wellston",
+      "startedAt": "2026-01-09T10:43:10.031Z",
+      "lastUpdated": "2026-01-17T05:43:10.031Z",
+      "tension": 4,
+      "beats": [
+        {
+          "timestamp": "2026-01-09T10:43:10.031Z",
+          "summary": "Democedes's Wolves spot orc raiders and avoid notice",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-13T06:43:10.031Z",
+          "summary": "War cries echo through the valleys.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-14T15:43:10.031Z",
+          "summary": "War cries echo through the valleys.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-17T05:43:10.031Z",
+          "summary": "Raiders demand tribute to spare settlements.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The raid succeeds with heavy plunder.",
+        "The raiders are intercepted and destroyed.",
+        "The raid escalates into open war.",
+        "The raiders demand tribute to stop."
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "Wellston"
+        ],
+        "themes": [
+          "destruction"
+        ],
+        "motivations": {
+          "Democedes's Wolves": "driven by ambition and status"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    }
+  ],
+  "antagonists": [
+    {
+      "id": "antagonist-1767418990036-991",
+      "name": "Dreues",
+      "epithet": "the Grinning",
+      "type": "bandit-chief",
+      "threat": 5,
+      "territory": "Breington",
+      "motivation": "Building an empire of outlaws",
+      "notoriety": 10,
+      "defeats": 0,
+      "victories": 0,
+      "nemeses": [],
+      "followers": 27,
+      "treasure": 1011,
+      "alive": true,
+      "traits": [
+        "cunning tactician"
+      ],
+      "weaknesses": [
+        "gold can buy their followers",
+        "enemies among their own"
+      ],
+      "lastSeen": "2026-01-17T00:43:10.031Z"
+    },
+    {
+      "id": "antagonist-1767418990036-8878",
+      "name": "Gundesvinda",
+      "epithet": "the Grinning",
+      "type": "bandit-chief",
+      "threat": 2,
+      "territory": "Wellston",
+      "motivation": "Revenge on the authorities who wronged them",
+      "notoriety": 4,
+      "defeats": 0,
+      "victories": 0,
+      "nemeses": [],
+      "followers": 24,
+      "treasure": 599,
+      "alive": false,
+      "traits": [
+        "cunning tactician",
+        "inspires fierce loyalty"
+      ],
+      "weaknesses": [
+        "gold can buy their followers",
+        "enemies among their own"
+      ],
+      "lastSeen": "2026-01-04T22:43:10.031Z"
+    }
+  ]
+}

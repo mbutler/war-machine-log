@@ -423,7 +423,8 @@ function onHourTick(event: TickEvent): void {
     world.dynastyState = dynastyState;
     world.treasureState = treasureState;
     world.navalState = navalState;
-    world.lastTickAt = event.worldTime; // Track for catch-up
+    world.lastTickAt = event.worldTime; // Track world time for catch-up
+    (world as any).lastRealTickAt = new Date(); // Track real time for 1:1 catch-up
     await saveWorld(world);
   })();
 }
@@ -541,7 +542,8 @@ function onDayTick(event: TickEvent): void {
     world.dynastyState = dynastyState;
     world.treasureState = treasureState;
     world.navalState = navalState;
-    world.lastTickAt = event.worldTime; // Track for catch-up
+    world.lastTickAt = event.worldTime; // Track world time for catch-up
+    (world as any).lastRealTickAt = new Date(); // Track real time for 1:1 catch-up
     (world as any).legendaryState = legendaryState; // Persist legendary elements
     await saveWorld(world);
   })();
@@ -583,6 +585,7 @@ async function simulateTurn(worldTime: Date, turnIndex: number): Promise<void> {
 }
 
 // Catch up missed time when resuming after a pause
+// For 1:1 time scale: 1 real day = 1 world day
 async function catchUpMissedTime(): Promise<void> {
   if (!config.catchUp) {
     console.log(`⏰ Catch-up disabled (SIM_CATCH_UP=false)`);
@@ -594,30 +597,46 @@ async function catchUpMissedTime(): Promise<void> {
     return;
   }
   
-  const lastTick = new Date(world.lastTickAt);
+  const lastWorldTime = new Date(world.lastTickAt);
+  const lastRealTime = (world as any).lastRealTickAt ? new Date((world as any).lastRealTickAt) : new Date(world.startedAt);
   const now = new Date();
-  const missedMs = now.getTime() - lastTick.getTime();
+  
+  // For 1:1 time: calculate how much REAL time has passed
+  const realTimeElapsedMs = now.getTime() - lastRealTime.getTime();
+  
+  // Advance world time by the same amount (1:1 ratio)
+  const targetWorldTime = new Date(lastWorldTime.getTime() + realTimeElapsedMs);
+  
+  // Calculate how many turns we need to simulate
   const turnMs = config.turnMinutes * 60 * 1000;
-  const missedTurns = Math.floor(missedMs / turnMs);
+  const worldTimeToCatchUp = targetWorldTime.getTime() - lastWorldTime.getTime();
+  const missedTurns = Math.floor(worldTimeToCatchUp / turnMs);
   
   if (missedTurns <= 0) {
-    console.log(`⏰ World is current (lastTickAt: ${lastTick.toISOString()})`);
+    console.log(`⏰ World is current (world time: ${lastWorldTime.toISOString()})`);
+    // Still update lastRealTickAt to prevent future false catch-ups
+    (world as any).lastRealTickAt = now;
+    await saveWorld(world);
     return;
   }
   
   // Cap catch-up at 7 days (1008 turns) to prevent very long waits
   const maxCatchUp = 7 * 24 * 6; // 7 days of turns
   const turnsToSimulate = Math.min(missedTurns, maxCatchUp);
-  const missedDays = Math.floor(missedTurns / (config.hourTurns * config.dayHours));
-  const missedHours = Math.floor((missedTurns % (config.hourTurns * config.dayHours)) / config.hourTurns);
+  const turnsPerDay = config.hourTurns * config.dayHours;
+  const missedDays = Math.floor(turnsToSimulate / turnsPerDay);
+  const missedHours = Math.floor((turnsToSimulate % turnsPerDay) / config.hourTurns);
   
   console.log(`\n⏰ Catching up ${missedDays}d ${missedHours}h of missed time (${turnsToSimulate} turns)...`);
+  console.log(`   Last world time: ${lastWorldTime.toISOString()}`);
+  console.log(`   Target world time: ${targetWorldTime.toISOString()}`);
   
   const catchUpDelayMs = 1000 / config.catchUpSpeed; // ms between turns
   let simulatedTurns = 0;
   
   for (let i = 0; i < turnsToSimulate; i++) {
-    const turnWorldTime = new Date(lastTick.getTime() + (i + 1) * turnMs);
+    // Calculate world time for this turn (advancing from lastWorldTime)
+    const turnWorldTime = new Date(lastWorldTime.getTime() + (i + 1) * turnMs);
     await simulateTurn(turnWorldTime, i + 1);
     simulatedTurns++;
     
@@ -633,12 +652,15 @@ async function catchUpMissedTime(): Promise<void> {
   
   console.log(`\n✓ Caught up! World time is now synchronized.`);
   
-  // Update world time to now
-  world.lastTickAt = now;
+  // Update both world time and real time tracking
+  world.lastTickAt = targetWorldTime;
+  (world as any).lastRealTickAt = now;
   await saveWorld(world);
 }
 
 // Batch mode: run N days at max speed then exit
+// For 1:1 time: simulate from startWorldTime to (startWorldTime + days)
+// Simulates everything with zero gaps in logs
 async function runBatchMode(days: number): Promise<void> {
   const TICKS_PER_DAY = config.hourTurns * config.dayHours; // 144 turns per day
   const TOTAL_TICKS = days * TICKS_PER_DAY;
@@ -646,6 +668,8 @@ async function runBatchMode(days: number): Promise<void> {
   console.log(`\n═══════════════════════════════════════════`);
   console.log(`  BATCH MODE: ${days} days (${TOTAL_TICKS} turns)`);
   console.log(`  Seed: ${config.seed}`);
+  console.log(`  Start: ${config.startWorldTime.toISOString()}`);
+  console.log(`  End: ${new Date(config.startWorldTime.getTime() + days * 24 * 60 * 60 * 1000).toISOString()}`);
   console.log(`═══════════════════════════════════════════\n`);
   
   let eventCount = 0;
@@ -861,8 +885,11 @@ async function runBatchMode(days: number): Promise<void> {
   console.log(`  Active stories: ${storyThreads.filter(s => !s.resolved).length}`);
   console.log(`\nOutput: ${config.logDir}/events.log\n`);
   
-  // Save final state
-  world.lastTickAt = new Date(config.startWorldTime.getTime() + days * 24 * 60 * 60 * 1000);
+  // Save final state - for 1:1 time, set world time to (startWorldTime + days)
+  // and set lastRealTickAt to now so scheduler continues from here
+  const finalWorldTime = new Date(config.startWorldTime.getTime() + days * 24 * 60 * 60 * 1000);
+  world.lastTickAt = finalWorldTime;
+  (world as any).lastRealTickAt = new Date(); // Real time when batch completed
   world.storyThreads = storyThreads as EnhancedWorldState['storyThreads'];
   world.antagonists = antagonists as EnhancedWorldState['antagonists'];
   await saveWorld(world);
@@ -910,8 +937,8 @@ async function main() {
     `╚${'═'.repeat(64)}╝\n\n`,
   );
 
-  // Start the scheduler (now synchronized with real time)
-  const scheduler = new Scheduler(bus, config);
+  // Start the scheduler (now synchronized with real time for 1:1 time scale)
+  const scheduler = new Scheduler(bus, config, world);
   scheduler.start();
 }
 

@@ -14,8 +14,10 @@ $basePath = '/home/mbutler/fantasy-log';  // Path to your simulation folder
 $eventsPath = $basePath . '/logs/events.jsonl';
 $worldPath = $basePath . '/world.json';
 
-// How many events to show
-$limit = isset($_GET['limit']) ? min(100, max(10, (int)$_GET['limit'])) : 50;
+// Pagination settings
+$limit = isset($_GET['limit']) ? min(500, max(10, (int)$_GET['limit'])) : 50;
+$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$order = isset($_GET['order']) && $_GET['order'] === 'oldest' ? 'oldest' : 'newest'; // 'newest' or 'oldest'
 
 // Category colors
 $categoryColors = [
@@ -31,9 +33,11 @@ $categoryColors = [
     'character' => '#fb923c', // orange
 ];
 
-// Load events
+// Load events with pagination
 $events = [];
 $error = null;
+$totalEvents = 0;
+$totalPages = 1;
 
 if (!file_exists($eventsPath)) {
     $error = "Events file not found: $eventsPath";
@@ -42,8 +46,8 @@ if (!file_exists($eventsPath)) {
     if ($lines === false) {
         $error = "Cannot read events file";
     } else {
-        $lines = array_slice($lines, -$limit);
-        $lines = array_reverse($lines); // Newest first
+        // Parse all events first (for deduplication and counting)
+        $allEvents = [];
         $seenIds = [];
         foreach ($lines as $line) {
             $decoded = json_decode($line, true);
@@ -59,9 +63,33 @@ if (!file_exists($eventsPath)) {
                     if (isset($seenIds[$key])) continue;
                     $seenIds[$key] = true;
                 }
-                $events[] = $decoded;
+                $allEvents[] = $decoded;
             }
         }
+        
+        // Sort by worldTime (newest first by default, or oldest first if requested)
+        usort($allEvents, function($a, $b) use ($order) {
+            $timeA = $a['worldTime'] ?? '';
+            $timeB = $b['worldTime'] ?? '';
+            // If worldTime is missing, use realTime as fallback
+            if (empty($timeA)) $timeA = $a['realTime'] ?? '';
+            if (empty($timeB)) $timeB = $b['realTime'] ?? '';
+            // Compare as timestamps
+            if ($order === 'oldest') {
+                return strcmp($timeA, $timeB); // Ascending = oldest first
+            } else {
+                return strcmp($timeB, $timeA); // Descending = newest first
+            }
+        });
+        $totalEvents = count($allEvents);
+        $totalPages = max(1, ceil($totalEvents / $limit));
+        
+        // Ensure page is within valid range
+        $page = min($page, $totalPages);
+        
+        // Calculate pagination offset
+        $offset = ($page - 1) * $limit;
+        $events = array_slice($allEvents, $offset, $limit);
     }
 }
 
@@ -1175,6 +1203,44 @@ function formatWorldDate($iso) {
         a { color: #c084fc; text-decoration: none; }
         a:hover { text-decoration: underline; }
         
+        /* Pagination styles */
+        .pagination-link {
+            padding: 4px 8px;
+            background: #1a1a24;
+            border: 1px solid #2a2a35;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .pagination-link:hover {
+            background: #252530;
+            border-color: #3a3a45;
+        }
+        
+        .pagination-current {
+            padding: 4px 8px;
+            background: #c084fc;
+            color: #0f0f14;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .pagination-disabled {
+            padding: 4px 8px;
+            color: #3a3a45;
+            border: 1px solid #2a2a35;
+            border-radius: 4px;
+            cursor: not-allowed;
+        }
+        
+        select {
+            cursor: pointer;
+        }
+        
+        select:hover {
+            border-color: #3a3a45;
+        }
+        
         /* Mobile responsive */
         @media (max-width: 640px) {
             body {
@@ -1431,12 +1497,101 @@ function formatWorldDate($iso) {
         </div>
         
         <footer>
-            <span>Showing <?= count($events) ?> events (newest first) · Auto-refresh: 60s</span>
-            <span>
-                <a href="?limit=20">20</a> · 
-                <a href="?limit=50">50</a> · 
-                <a href="?limit=100">100</a>
-            </span>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <span>
+                        Showing <?= count($events) ?> of <?= $totalEvents ?> events 
+                        <?php if ($totalPages > 1): ?>
+                        (page <?= $page ?> of <?= $totalPages ?>)
+                        <?php endif; ?>
+                        · Auto-refresh: 60s
+                    </span>
+                    <span style="display: flex; align-items: center; gap: 12px;">
+                        <label for="order" style="color: #6b6b7a; font-size: 11px;">Order:</label>
+                        <select id="order" onchange="changeOrder(this.value)" style="background: #1a1a24; border: 1px solid #2a2a35; color: #e2e2e8; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-family: inherit;">
+                            <option value="newest" <?= $order === 'newest' ? 'selected' : '' ?>>Newest First</option>
+                            <option value="oldest" <?= $order === 'oldest' ? 'selected' : '' ?>>Oldest First (Jan 1)</option>
+                        </select>
+                        <label for="perPage" style="color: #6b6b7a; font-size: 11px;">Per page:</label>
+                        <select id="perPage" onchange="changePerPage(this.value)" style="background: #1a1a24; border: 1px solid #2a2a35; color: #e2e2e8; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-family: inherit;">
+                            <option value="20" <?= $limit == 20 ? 'selected' : '' ?>>20</option>
+                            <option value="50" <?= $limit == 50 ? 'selected' : '' ?>>50</option>
+                            <option value="100" <?= $limit == 100 ? 'selected' : '' ?>>100</option>
+                            <option value="200" <?= $limit == 200 ? 'selected' : '' ?>>200</option>
+                            <option value="500" <?= $limit == 500 ? 'selected' : '' ?>>500</option>
+                        </select>
+                    </span>
+                </div>
+                
+                <?php if ($totalPages > 1): ?>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <?php
+                    // Build pagination links
+                    $queryParams = $_GET;
+                    $queryParams['limit'] = $limit;
+                    $queryParams['order'] = $order;
+                    
+                    // First page
+                    if ($page > 1) {
+                        $queryParams['page'] = 1;
+                        $firstUrl = '?' . http_build_query($queryParams);
+                        echo '<a href="' . htmlspecialchars($firstUrl) . '" class="pagination-link">« First</a>';
+                    } else {
+                        echo '<span class="pagination-disabled">« First</span>';
+                    }
+                    
+                    // Previous page
+                    if ($page > 1) {
+                        $queryParams['page'] = $page - 1;
+                        $prevUrl = '?' . http_build_query($queryParams);
+                        echo '<a href="' . htmlspecialchars($prevUrl) . '" class="pagination-link">‹ Prev</a>';
+                    } else {
+                        echo '<span class="pagination-disabled">‹ Prev</span>';
+                    }
+                    
+                    // Page numbers (show up to 7 pages around current)
+                    $startPage = max(1, $page - 3);
+                    $endPage = min($totalPages, $page + 3);
+                    
+                    if ($startPage > 1) {
+                        echo '<span style="color: #6b6b7a; padding: 4px 8px;">...</span>';
+                    }
+                    
+                    for ($i = $startPage; $i <= $endPage; $i++) {
+                        if ($i == $page) {
+                            echo '<span class="pagination-current">' . $i . '</span>';
+                        } else {
+                            $queryParams['page'] = $i;
+                            $pageUrl = '?' . http_build_query($queryParams);
+                            echo '<a href="' . htmlspecialchars($pageUrl) . '" class="pagination-link">' . $i . '</a>';
+                        }
+                    }
+                    
+                    if ($endPage < $totalPages) {
+                        echo '<span style="color: #6b6b7a; padding: 4px 8px;">...</span>';
+                    }
+                    
+                    // Next page
+                    if ($page < $totalPages) {
+                        $queryParams['page'] = $page + 1;
+                        $nextUrl = '?' . http_build_query($queryParams);
+                        echo '<a href="' . htmlspecialchars($nextUrl) . '" class="pagination-link">Next ›</a>';
+                    } else {
+                        echo '<span class="pagination-disabled">Next ›</span>';
+                    }
+                    
+                    // Last page
+                    if ($page < $totalPages) {
+                        $queryParams['page'] = $totalPages;
+                        $lastUrl = '?' . http_build_query($queryParams);
+                        echo '<a href="' . htmlspecialchars($lastUrl) . '" class="pagination-link">Last »</a>';
+                    } else {
+                        echo '<span class="pagination-disabled">Last »</span>';
+                    }
+                    ?>
+                </div>
+                <?php endif; ?>
+            </div>
         </footer>
     </div>
     
@@ -1444,6 +1599,20 @@ function formatWorldDate($iso) {
     <div id="tooltip" class="custom-tooltip"></div>
     
     <script>
+    function changePerPage(value) {
+        const url = new URL(window.location);
+        url.searchParams.set('limit', value);
+        url.searchParams.set('page', '1'); // Reset to first page when changing per-page
+        window.location.href = url.toString();
+    }
+    
+    function changeOrder(value) {
+        const url = new URL(window.location);
+        url.searchParams.set('order', value);
+        url.searchParams.set('page', '1'); // Reset to first page when changing order
+        window.location.href = url.toString();
+    }
+    
     (function() {
         const tooltip = document.getElementById('tooltip');
         if (!tooltip) {

@@ -1,0 +1,547 @@
+Sun Jan  4 14:36:03 CST 2026: Starting fantasy-log simulation with auto-restart...
+Sun Jan  4 14:36:03 CST 2026: Launching process...
+Sun Jan  4 14:36:03 CST 2026: Using bun...
+📦 Migrating world from schema v1 to v2...
+⏰ No lastTickAt found - using startedAt for catch-up baseline
+✓ World loaded successfully (schema v2)
+
+⏰ Catching up 7d 0h of missed time (1008 turns)...
+   Last world time: 2025-01-01T00:00:00.000Z
+   Target world time: 2026-01-04T20:36:03.539Z
+2025-01-01T01:00:00.000Z [road] @ Belfos [The Wandering Peddlers, Sons of the Wolf] The Wandering Peddlers is raided! — Sons of the Wolf forces have intercepted the caravan en route to Azmarin.
+2025-01-01T01:00:00.000Z [town] @ Belfos Trade routes near Belfos grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-01T01:00:00.000Z [faction] The Storm Guild declares a shortage of textiles — Their stockpiles are low. They will seek textiles by any means necessary.
+2025-01-01T01:00:00.000Z [faction] Circle of the Dawn declares a shortage of textiles — Their stockpiles are low. They will seek textiles by any means necessary.
+2025-01-01T02:00:00.000Z [town] @ Myrrka [Katixa] Construction continues on Katixa's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2025-01-01T02:00:00.000Z [faction] Order of the Hawk declares a shortage of timber — Their stockpiles are low. They will seek timber by any means necessary.
+2025-01-01T03:00:00.000Z [road] @ Windleigh [Northbeach Traders, Sons of the Wolf] Northbeach Traders is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2025-01-01T03:00:00.000Z [town] @ Windleigh Trade routes near Windleigh grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-01T03:00:00.000Z [town] @ Belfos [Izot] Magical mist chokes Belfos — A toxic green cloud, conjured by Izot, rolls through the streets. Panic ensues.
+2025-01-01T04:00:00.000Z [town] @ Belfos [Peli] Construction continues on Peli's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2025-01-01T04:00:00.000Z [faction] Order of the Hawk declares a shortage of grain — Their stockpiles are low. They will seek grain by any means necessary.
+2025-01-01T05:00:00.000Z [faction] Circle of the Dawn declares a shortage of grain — Their stockpiles are low. They will seek grain by any means necessary.
+2025-01-01T06:00:00.000Z [system] The world turns (18th of Deepwinter, Year 1056) — 0 parties traveling, 2 resting. 0 threats lurk.
+2025-01-01T06:00:00.000Z [town] @ Minasfeld Word spreads in Minasfeld — Thieves struck near Belfos. The roads grow dangerous.
+2025-01-01T06:00:00.000Z [town] @ Belfos [Izot] Magical mist chokes Belfos — A toxic green cloud, conjured by Izot, rolls through the streets. Panic ensues.
+2025-01-01T07:00:00.000Z [faction] Sons of the Wolf declares a shortage of textiles — Their stockpiles are low. They will seek textiles by any means necessary.
+2025-01-01T07:00:00.000Z [faction] Order of the Hawk declares a shortage of fish — Their stockpiles are low. They will seek fish by any means necessary.
+2025-01-01T07:00:00.000Z [faction] The Hawk Compact declares a shortage of fish — Their stockpiles are low. They will seek fish by any means necessary.
+2025-01-01T08:00:00.000Z [road] @ Belfos The New Caravan makes camp under escort — Road to Minasfeld (road) quiet tonight.
+2025-01-01T08:00:00.000Z [faction] @ Belfos [Order of the Hawk] Order of the Hawk sends relief to Belfos — Wagons of grain and medicine roll toward the suffering. Compassion—or calculated politics?
+2025-01-01T08:00:00.000Z [faction] Circle of the Dawn declares a shortage of timber — Their stockpiles are low. They will seek timber by any means necessary.
+2025-01-01T08:00:00.000Z [faction] The Hawk Compact declares a shortage of textiles — Their stockpiles are low. They will seek textiles by any means necessary.
+2025-01-01T09:00:00.000Z [town] @ Belfos [Izot] Izot masters a new spell: Detect Magic — After weeks of intense study and meditation, the bard has unlocked new power.
+2025-01-01T09:00:00.000Z [town] @ Azmarin [Mainardus] Magical mist chokes Azmarin — A toxic green cloud, conjured by Mainardus, rolls through the streets. Panic ensues.
+2025-01-01T10:00:00.000Z [faction] The Storm Guild declares a shortage of timber — Their stockpiles are low. They will seek timber by any means necessary.
+2025-01-01T11:00:00.000Z [road] @ Windleigh Northbeach Traders makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-01T11:00:00.000Z [faction] Sons of the Wolf declares a shortage of ore — Their stockpiles are low. They will seek ore by any means necessary.
+2025-01-01T12:00:00.000Z [system] The world turns (18th of Deepwinter, Year 1056) — 0 parties traveling, 2 resting. 0 threats lurk.
+2025-01-01T12:00:00.000Z [road] @ Belfos [Beroldus's Wagons, Sons of the Wolf] Beroldus's Wagons is raided! — Sons of the Wolf forces have intercepted the caravan en route to Greenmist.
+2025-01-01T12:00:00.000Z [town] @ Belfos Trade routes near Belfos grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-01T13:00:00.000Z [faction] The Hawk Compact declares a shortage of timber — Their stockpiles are low. They will seek timber by any means necessary.
+2025-01-01T13:00:00.000Z [faction] @ the region [Merilda] A new tale begins: "Payment Due" — The terms seemed fair once. They do not seem fair now.
+2025-01-01T15:00:00.000Z [faction] Sons of the Wolf declares a shortage of fish — Their stockpiles are low. They will seek fish by any means necessary.
+2025-01-01T15:00:00.000Z [faction] Order of the Hawk declares a shortage of salt — Their stockpiles are low. They will seek salt by any means necessary.
+2025-01-01T16:00:00.000Z [faction] Sons of the Wolf declares a shortage of grain — Their stockpiles are low. They will seek grain by any means necessary.
+⏰ Catch-up progress: 9% (100/1008 turns)2025-01-01T18:00:00.000Z [system] The world turns (18th of Deepwinter, Year 1056) — 0 parties traveling, 2 resting. 0 threats lurk.
+2025-01-01T18:00:00.000Z [road] @ Belfos The Wandering Merchants makes camp under escort — Road to Myrrka (road) quiet tonight.
+2025-01-01T18:00:00.000Z [road] @ Belfos The New Caravan makes camp under escort — Road to Minasfeld (road) quiet tonight.
+2025-01-01T18:00:00.000Z [town] @ Belfos Word spreads in Belfos — Thieves struck near Windleigh. The roads grow dangerous.
+2025-01-01T18:00:00.000Z [faction] Sons of the Wolf declares a shortage of timber — Their stockpiles are low. They will seek timber by any means necessary.
+2025-01-01T19:00:00.000Z [road] @ Windleigh [Northbeach Traders, Sons of the Wolf] Northbeach Traders is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2025-01-01T19:00:00.000Z [town] @ Windleigh Trade routes near Windleigh grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-01T19:00:00.000Z [faction] The Storm Guild declares a shortage of salt — Their stockpiles are low. They will seek salt by any means necessary.
+2025-01-01T20:00:00.000Z [road] @ Windleigh Northbeach Traders makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-01T22:00:00.000Z [faction] Order of the Hawk declares a shortage of ore — Their stockpiles are low. They will seek ore by any means necessary.
+2025-01-01T23:00:00.000Z [faction] The Storm Guild declares a shortage of livestock — Their stockpiles are low. They will seek livestock by any means necessary.
+2025-01-01T23:00:00.000Z [faction] The Hawk Compact declares a shortage of grain — Their stockpiles are low. They will seek grain by any means necessary.
+2025-01-02T00:00:00.000Z [system] The world turns (18th of Deepwinter, Year 1056) — 0 parties traveling, 2 resting. 0 threats lurk.
+2025-01-02T00:00:00.000Z [weather] The full moon rises — Silver light bathes the land. Strange things stir in the shadows.
+2025-01-02T00:00:00.000Z [town] @ Windleigh Word spreads in Windleigh — A valuable shipment was lost near Belfos.
+2025-01-02T00:00:00.000Z [town] @ Belfos Belfos folk watchful — Shortages in grain/ore.
+2025-01-02T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Levies rumored to secure ore; officials say caravans delayed.
+2025-01-02T00:00:00.000Z [town] @ Belfos Rumor in Belfos — The Storm Guild watches the markets quietly.
+2025-01-02T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Sons of the Wolf watches the markets quietly.
+2025-01-02T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Order of the Hawk watches the markets quietly.
+2025-01-02T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Circle of the Dawn watches the markets quietly.
+2025-01-02T00:00:00.000Z [town] @ Belfos Rumor in Belfos — The Hawk Compact watches the markets quietly.
+2025-01-02T00:00:00.000Z [town] @ Windleigh Windleigh folk watchful — Surplus ore/fish and shortages in textiles.
+2025-01-02T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Levies rumored to secure textiles; officials say caravans delayed.
+2025-01-02T00:00:00.000Z [town] @ Azmarin Mainardus seen in Azmarin markets — scout haggles and swaps news.
+2025-01-02T00:00:00.000Z [town] @ Azmarin Azmarin spirits high — Surplus textiles/salt and shortages in ore/livestock.
+2025-01-02T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — The Storm Guild watches the markets quietly.
+2025-01-02T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Sons of the Wolf watches the markets quietly.
+2025-01-02T00:00:00.000Z [town] @ Minasfeld Minasfeld spirits high — Surplus livestock.
+2025-01-02T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Bargain prices on livestock; traders racing to Minasfeld.
+2025-01-02T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Sons of the Wolf watches the markets quietly.
+2025-01-02T00:00:00.000Z [town] @ Myrrka Katixa seen in Myrrka markets — guard haggles and swaps news.
+2025-01-02T00:00:00.000Z [town] @ Myrrka Molora seen in Myrrka markets — scout haggles and swaps news.
+2025-01-02T00:00:00.000Z [town] @ Myrrka Myrrka folk watchful — Surplus textiles and shortages in salt.
+2025-01-02T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Bargain prices on textiles; traders racing to Myrrka.
+2025-01-02T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Order of the Hawk watches the markets quietly.
+2025-01-02T00:00:00.000Z [town] @ Greenmist Eryalus seen in Greenmist markets — laborer haggles and swaps news.
+2025-01-02T00:00:00.000Z [town] @ Greenmist Eadmund seen in Greenmist markets — laborer haggles and swaps news.
+2025-01-02T00:00:00.000Z [town] @ Greenmist Greenmist tempers frayed — Surplus grain/textiles and shortages in salt/fish/livestock.
+2025-01-02T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Levies rumored to secure fish; officials say caravans delayed.
+2025-01-02T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Sons of the Wolf watches the markets quietly.
+2025-01-02T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Order of the Hawk watches the markets quietly.
+2025-01-02T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Circle of the Dawn watches the markets quietly.
+2025-01-02T01:00:00.000Z [road] @ Windleigh Northbeach Traders makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-02T01:00:00.000Z [town] @ Minasfeld [Theodric] Theodric falls ill — The scout takes to their bed. Healers are summoned.
+2025-01-02T02:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — Thieves struck near Belfos. The roads grow dangerous.
+2025-01-02T03:00:00.000Z [road] @ Belfos [The New Caravan, Sons of the Wolf] The New Caravan is raided! — Sons of the Wolf forces have intercepted the caravan en route to Minasfeld.
+2025-01-02T03:00:00.000Z [faction] @ Belfos [The New Caravan, Sons of the Wolf] A new tale begins: "Strike and Vanish" — The New Caravan strikes fast at Belfos and withdraws before retaliation.
+2025-01-02T03:00:00.000Z [town] @ Belfos Trade routes near Belfos grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-02T03:00:00.000Z [town] @ Minasfeld Mood darkens in Minasfeld — Following recent events, the people's spirit sinks.
+2025-01-02T06:00:00.000Z [system] The world turns (16th of Deepwinter, Year 1055) — 0 parties traveling, 2 resting. 0 threats lurk.
+2025-01-02T07:00:00.000Z [road] @ Belfos The New Caravan makes camp under escort — Road to Minasfeld (road) quiet tonight.
+2025-01-02T08:00:00.000Z [town] @ Myrrka The Wandering Merchants arrives at Myrrka — Bringing livestock from Belfos with escorts under banner of Order of the Hawk.
+2025-01-02T08:00:00.000Z [town] @ Myrrka Katixa arrives in Myrrka — guard from Myrrka
+2025-01-02T08:00:00.000Z [town] @ Myrrka Wantelien arrives in Myrrka — bard from Minasfeld
+2025-01-02T08:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Word spreads that The Wandering Merchants of Order of the Hawk reached Myrrka with livestock.
+2025-01-02T09:00:00.000Z [town] @ Azmarin The Wandering Peddlers arrives at Azmarin — Bringing grain/textiles from Belfos with escorts.
+2025-01-02T09:00:00.000Z [town] @ Azmarin Molora arrives in Azmarin — scout from Myrrka
+2025-01-02T09:00:00.000Z [town] @ Azmarin Izot arrives in Azmarin — bard from Belfos
+⏰ Catch-up progress: 19% (200/1008 turns)2025-01-02T10:00:00.000Z [road] @ Belfos [The New Caravan, Sons of the Wolf] The New Caravan is raided! — Sons of the Wolf forces have intercepted the caravan en route to Minasfeld.
+2025-01-02T10:00:00.000Z [town] @ Belfos Trade routes near Belfos grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-02T10:00:00.000Z [faction] @ Belfos [Polydamna] A new tale begins: "Tracking the Polydamna" — The hunt enters its final phase. One will not survive.
+2025-01-02T11:00:00.000Z [road] @ Azmarin [The Wandering Peddlers, Sons of the Wolf] The Wandering Peddlers is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2025-01-02T11:00:00.000Z [town] @ Azmarin Trade routes near Azmarin grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-02T12:00:00.000Z [system] The world turns (16th of Deepwinter, Year 1055) — 0 parties traveling, 2 resting. 0 threats lurk.
+2025-01-02T13:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-02T13:00:00.000Z [town] @ Belfos [Peli] Construction continues on Peli's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2025-01-02T15:00:00.000Z [road] @ Belfos Beroldus's Wagons makes camp under escort — Road to Greenmist (road) quiet tonight.
+2025-01-02T15:00:00.000Z [town] @ Belfos Mainardus arrives in Belfos — scout from Azmarin
+2025-01-02T15:00:00.000Z [town] @ Belfos Rumor in Belfos — Beroldus's Wagons of Circle of the Dawn lost goods on the road; prices may shift.
+2025-01-02T15:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-02T16:00:00.000Z [road] @ Belfos Beroldus's Wagons makes camp under escort — Road to Greenmist (road) quiet tonight.
+2025-01-02T16:00:00.000Z [town] @ Myrrka Disease outbreak in Myrrka! — Local healers have identified Gripsha among the populace. Fear spreads as quickly as the sickness.
+2025-01-02T17:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — A valuable shipment was lost near Belfos.
+2025-01-02T18:00:00.000Z [system] The world turns (16th of Deepwinter, Year 1055) — 0 parties traveling, 2 resting. 0 threats lurk.
+2025-01-02T18:00:00.000Z [road] @ Windleigh [Northbeach Traders, Sons of the Wolf] Northbeach Traders is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2025-01-02T18:00:00.000Z [town] @ Windleigh Trade routes near Windleigh grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-02T19:00:00.000Z [faction] @ Azmarin [The Storm Guild] The Storm Guild eyes Azmarin for its salt — Desperate for salt, the faction has decided to take the settlement by force.
+2025-01-02T20:00:00.000Z [town] @ Greenmist Beroldus's Wagons arrives at Greenmist — Bringing salt/fish from Belfos with escorts under banner of Circle of the Dawn.
+2025-01-02T20:00:00.000Z [town] @ Greenmist Mainardus arrives in Greenmist — scout from Azmarin
+2025-01-02T20:00:00.000Z [town] @ Greenmist Eurydamus arrives in Greenmist — merchant from Windleigh
+2025-01-02T20:00:00.000Z [town] @ Belfos Word spreads in Belfos — Thieves struck near Windleigh. The roads grow dangerous.
+2025-01-02T20:00:00.000Z [town] @ Myrrka [Gawyne] Construction continues on Gawyne's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2025-01-02T22:00:00.000Z [faction] @ Azmarin [The Storm Guild] The Storm Guild eyes Azmarin for its textiles — Desperate for textiles, the faction has decided to take the settlement by force.
+2025-01-02T23:00:00.000Z [faction] @ Belfos [The Storm Guild] The Storm Guild sends relief to Belfos — Wagons of grain and medicine roll toward the suffering. Compassion—or calculated politics?
+2025-01-03T00:00:00.000Z [system] The world turns (16th of Deepwinter, Year 1055) — 0 parties traveling, 2 resting. 0 threats lurk.
+2025-01-03T00:00:00.000Z [road] @ Greenmist Beroldus's Wagons makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-03T00:00:00.000Z [town] @ Minasfeld Word spreads in Minasfeld — Thieves struck near Windleigh. The roads grow dangerous.
+2025-01-03T00:00:00.000Z [weather] @ Azmarin Fog shrouds Azmarin — Shapes loomed and vanished in the murk.
+2025-01-03T00:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band departs Greenmist — Bound for Myrrka across mountains (~36 miles).
+2025-01-03T00:00:00.000Z [town] @ Belfos Belfos tempers frayed — Shortages in grain/ore.
+2025-01-03T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Circle of the Dawn watches the markets quietly.
+2025-01-03T00:00:00.000Z [town] @ Windleigh Windleigh folk watchful — Surplus ore/fish and shortages in textiles.
+2025-01-03T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Sons of the Wolf watches the markets quietly.
+2025-01-03T00:00:00.000Z [town] @ Azmarin Azmarin folk watchful — Surplus textiles/salt and shortages in ore/livestock.
+2025-01-03T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Bargain prices on salt; traders racing to Azmarin.
+2025-01-03T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — The Hawk Compact watches the markets quietly.
+2025-01-03T00:00:00.000Z [town] @ Minasfeld Minasfeld spirits high — Surplus livestock.
+2025-01-03T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Order of the Hawk watches the markets quietly.
+2025-01-03T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Circle of the Dawn watches the markets quietly.
+2025-01-03T00:00:00.000Z [town] @ Myrrka Myrrka folk watchful — Surplus textiles and shortages in salt.
+2025-01-03T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — boastful mystery: a drunken soldier says Maiuel heard of a sealed door that hums at night (from Myrrka).
+2025-01-03T00:00:00.000Z [town] @ Greenmist Mainardus seen in Greenmist markets — scout haggles and swaps news.
+2025-01-03T00:00:00.000Z [town] @ Greenmist Eurydamus seen in Greenmist markets — merchant haggles and swaps news.
+2025-01-03T00:00:00.000Z [town] @ Greenmist Greenmist folk watchful — Surplus textiles and shortages in fish/livestock.
+2025-01-03T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — The Storm Guild watches the markets quietly.
+2025-01-03T01:00:00.000Z [road] @ Greenmist [Parthenius's Band, trolls] trolls set traps for unwary Parthenius's Band — With only moonlight for company wild berries ripening on bushes hung in the air. The world shrinks to arms-length in the murk. A few dangerous trolls, watching warily. They pressed their advantage until the enemy fled.
+2025-01-03T01:00:00.000Z [road] @ Azmarin [The Wandering Peddlers, Sons of the Wolf] The Wandering Peddlers is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2025-01-03T01:00:00.000Z [town] @ Azmarin Trade routes near Azmarin grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-03T01:00:00.000Z [faction] @ Azmarin [Warrenus] A new tale begins: "Tracking the Warrenus" — Warrenus stalks a dangerous quarry across the region.
+2025-01-03T01:00:00.000Z [town] @ Windleigh Word spreads in Windleigh — Thieves struck near Azmarin. The roads grow dangerous.
+2025-01-03T01:00:00.000Z [faction] @ the region [Merilda] Payment Due: The pact deepens. — The terms seemed fair once. They do not seem fair now.
+2025-01-03T01:00:00.000Z [town] @ Azmarin [Izot] Izot masters a new spell: Floating Disc — After weeks of intense study and meditation, the bard has unlocked new power.
+⏰ Catch-up progress: 29% (300/1008 turns)2025-01-03T02:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot goblins and avoid notice — They detour carefully, leaving only faint tracks.
+2025-01-03T03:00:00.000Z [road] @ Greenmist [Parthenius's Band, the orc raiders called Sergius] the orc raiders called Sergius offer Parthenius's Band aid on the road — In the cold hours before dawn avalanches rumbling in the distance. A few night-hunting orc raiders, dragging captives. They found common ground in their mutual interests.
+2025-01-03T03:00:00.000Z [faction] @ Azmarin [Circle of the Dawn] Circle of the Dawn eyes Azmarin for its textiles — Desperate for textiles, the faction has decided to take the settlement by force.
+2025-01-03T05:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Giant footprints in the snow, each as long as a man is tall.
+2025-01-03T05:00:00.000Z [road] @ Greenmist [Parthenius's Band, trolls] Parthenius's Band battle trolls for control of the path — As rose light crept across the land switchback paths climbing steep slopes. The world shrinks to arms-length in the murk. A handful of shadow-cloaked trolls, watching warily. They pressed their advantage until the enemy fled.
+2025-01-03T05:00:00.000Z [town] @ Belfos Word spreads in Belfos — Thieves struck near Azmarin. The roads grow dangerous.
+2025-01-03T06:00:00.000Z [system] The world turns (17th of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-03T06:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot giant bats and avoid notice — They detour carefully, leaving only faint tracks.
+2025-01-03T06:00:00.000Z [town] @ Minasfeld Word spreads in Minasfeld — A valuable shipment was lost near Belfos.
+2025-01-03T06:00:00.000Z [town] @ Greenmist Mood darkens in Greenmist — Following recent events, the people's spirit sinks.
+2025-01-03T06:00:00.000Z [town] @ Greenmist Mood darkens in Greenmist — Following recent events, the people's spirit sinks.
+2025-01-03T06:00:00.000Z [faction] [The Storm Guild, Sons of the Wolf] The Storm Guild proposes marriage alliance with Sons of the Wolf — Envoys are sent. Dowries discussed. A political wedding could reshape alliances.
+2025-01-03T07:00:00.000Z [road] @ Minasfeld [Hans-Ruedi] Hans-Ruedi flees Minasfeld — Driven by Theodric falls ill, they take to the road toward Azmarin.
+2025-01-03T08:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Eagle cries echo, but no birds are visible.
+2025-01-03T08:00:00.000Z [road] @ Greenmist [Parthenius's Band, yeti] yeti block the path but allow passage — As smoke rose from breakfast fires the groan of shifting ice. A single night-hunting yeti, watching warily. Cultural misunderstandings were resolved through patience.
+2025-01-03T08:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band clash with ogre — Brief skirmish; foes driven off with minor bruises.
+2025-01-03T08:00:00.000Z [town] @ Minasfeld The New Caravan arrives at Minasfeld — Bringing grain/textiles from Belfos with escorts.
+2025-01-03T08:00:00.000Z [town] @ Minasfeld Emlyn arrives in Minasfeld — scout from Minasfeld
+2025-01-03T08:00:00.000Z [town] @ Minasfeld Ilene arrives in Minasfeld — bard from Windleigh
+2025-01-03T08:00:00.000Z [town] @ Belfos Word spreads in Belfos — A valuable shipment was lost near Windleigh.
+2025-01-03T08:00:00.000Z [town] @ Myrrka [Wantelien, Yllaria] Wantelien grows impatient with Yllaria's excuses — The ledger must balance, one way or another.
+2025-01-03T10:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Giant footprints in the snow, each as long as a man is tall.
+2025-01-03T10:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-03T11:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band parley with ogre — Trade news and share a quick meal before parting ways.
+2025-01-03T11:00:00.000Z [town] @ Belfos Northbeach Traders arrives at Belfos — Bringing grain/textiles from Windleigh with escorts.
+2025-01-03T11:00:00.000Z [town] @ Belfos Cybele arrives in Belfos — guard from Windleigh
+2025-01-03T11:00:00.000Z [town] @ Belfos Yllaria arrives in Belfos — merchant from Greenmist
+2025-01-03T12:00:00.000Z [system] The world turns (17th of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-03T12:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-03T12:00:00.000Z [faction] @ Belfos [The Hawk Compact] The Hawk Compact sends relief to Belfos — Wagons of grain and medicine roll toward the suffering. Compassion—or calculated politics?
+2025-01-03T13:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot goblins and avoid notice — They detour carefully, leaving only faint tracks.
+2025-01-03T13:00:00.000Z [town] @ Minasfeld [Theodric] Construction continues on Theodric's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2025-01-03T13:00:00.000Z [town] @ Belfos [Peli] Divine blessing upon Belfos — Peli performs a grand ritual of sanctification. A sense of peace fills the air.
+2025-01-03T14:00:00.000Z [road] @ Minasfeld The New Caravan makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-03T14:00:00.000Z [road] @ Belfos [Northbeach Traders, Sons of the Wolf] Northbeach Traders is raided! — Sons of the Wolf forces have intercepted the caravan en route to Windleigh.
+2025-01-03T14:00:00.000Z [town] @ Belfos Trade routes near Belfos grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-03T14:00:00.000Z [faction] @ Belfos [The New Caravan, Sons of the Wolf] Strike and Vanish approaches its climax — The threads of fate draw tight. A decisive moment is at hand.
+2025-01-03T14:00:00.000Z [town] @ Myrrka Gripsha fades in Myrrka — The worst of the sickness has passed. The bells ring in celebration.
+2025-01-03T16:00:00.000Z [town] @ Belfos The Wandering Merchants arrives at Belfos — Bringing livestock from Myrrka with escorts under banner of Order of the Hawk.
+2025-01-03T16:00:00.000Z [town] @ Belfos Katixa arrives in Belfos — guard from Myrrka
+2025-01-03T16:00:00.000Z [town] @ Belfos Wantelien arrives in Belfos — bard from Minasfeld
+2025-01-03T16:00:00.000Z [town] @ Azmarin [Izot, Theodric] Izot seeks guidance from Theodric — The lessons take root.
+2025-01-03T17:00:00.000Z [road] @ Greenmist [Parthenius's Band, giant eagles] giant eagles block the path but allow passage — As purple shadows gathered hot springs steaming in rocky basins. A lone territorial giant eagles, blocking the path. The negotiation revealed unexpected shared values.
+2025-01-03T18:00:00.000Z [system] The world turns (17th of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-03T18:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-03T18:00:00.000Z [road] @ Greenmist [Eurydamus] Eurydamus flees Greenmist — Driven by Parthenius's Band battle trolls for control of the path, they take to the road toward Minasfeld.
+⏰ Catch-up progress: 39% (400/1008 turns)2025-01-03T20:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Giant footprints in the snow, each as long as a man is tall.
+2025-01-03T21:00:00.000Z [road] @ Belfos Northbeach Traders makes camp under escort — Road to Windleigh (road) quiet tonight.
+2025-01-03T21:00:00.000Z [faction] @ Azmarin [The Hawk Compact] The Hawk Compact eyes Azmarin for its textiles — Desperate for textiles, the faction has decided to take the settlement by force.
+2025-01-03T22:00:00.000Z [road] @ Azmarin [The Wandering Peddlers, Sons of the Wolf] The Wandering Peddlers is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2025-01-03T22:00:00.000Z [town] @ Azmarin Trade routes near Azmarin grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-03T22:00:00.000Z [faction] @ Azmarin [Elinora] A new tale begins: "The Hunt for Elinora" — A deadly game of cat and mouse unfolds near Azmarin.
+2025-01-03T22:00:00.000Z [faction] [Circle of the Dawn, The Storm Guild] Circle of the Dawn proposes marriage alliance with The Storm Guild — Envoys are sent. Dowries discussed. A political wedding could reshape alliances.
+2025-01-04T00:00:00.000Z [town] @ Belfos Belfos tempers frayed — Surplus textiles and shortages in ore.
+2025-01-04T00:00:00.000Z [system] The world turns (17th of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-04T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Levies rumored to secure ore; officials say caravans delayed.
+2025-01-04T00:00:00.000Z [road] @ Belfos The Wandering Merchants makes camp under escort — Road to Myrrka (road) quiet tonight.
+2025-01-04T00:00:00.000Z [town] @ Windleigh Windleigh folk watchful — Surplus ore/fish and shortages in textiles.
+2025-01-04T00:00:00.000Z [road] @ Belfos [Northbeach Traders, Sons of the Wolf] Northbeach Traders is raided! — Sons of the Wolf forces have intercepted the caravan en route to Windleigh.
+2025-01-04T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — cryptic omen: a caravan guard says Aldebrand heard of beasts refusing to cross the old road (from Windleigh).
+2025-01-04T00:00:00.000Z [town] @ Belfos Trade routes near Belfos grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-04T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — The Storm Guild watches the markets quietly.
+2025-01-04T00:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-04T00:00:00.000Z [town] @ Azmarin Hans-Ruedi seen in Azmarin markets — laborer haggles and swaps news.
+2025-01-04T00:00:00.000Z [town] @ Azmarin Molora seen in Azmarin markets — scout haggles and swaps news.
+2025-01-04T00:00:00.000Z [town] @ Azmarin Azmarin folk watchful — Surplus textiles/salt and shortages in ore/livestock.
+2025-01-04T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Circle of the Dawn watches the markets quietly.
+2025-01-04T00:00:00.000Z [town] @ Minasfeld Minasfeld folk watchful — Surplus grain/textiles/livestock.
+2025-01-04T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Sons of the Wolf watches the markets quietly.
+2025-01-04T00:00:00.000Z [town] @ Myrrka Myrrka folk watchful — Shortages in salt.
+2025-01-04T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Order of the Hawk watches the markets quietly.
+2025-01-04T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — The Hawk Compact watches the markets quietly.
+2025-01-04T00:00:00.000Z [town] @ Greenmist Parthenius's Band hailed in Greenmist — Locals toast their exploits.
+2025-01-04T00:00:00.000Z [faction] @ Greenmist [Amyntas] A new tale begins: "From Nothing to Everything" — Power and fame gather around a rising figure in Greenmist.
+2025-01-04T00:00:00.000Z [town] @ Greenmist Greenmist tempers frayed — Surplus textiles and shortages in fish/livestock.
+2025-01-04T02:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Giant footprints in the snow, each as long as a man is tall.
+2025-01-04T02:00:00.000Z [town] @ Myrrka [Irantzu, Molora] Irantzu negotiates terms with creditor Molora — Gold owed sits heavy on both parties.
+2025-01-04T03:00:00.000Z [road] @ Greenmist [Parthenius's Band, wyverns] wyverns block the path but allow passage — As even the taverns fell silent glaciers carving valleys below. The world shrinks to arms-length in the murk. Two or three aggressive wyverns, watching warily. The exchange of gifts sealed the temporary truce.
+2025-01-04T04:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band completes rest — Ready to travel again.
+2025-01-04T04:00:00.000Z [road] @ Belfos [The Wandering Merchants, Sons of the Wolf] The Wandering Merchants is raided! — Sons of the Wolf forces have intercepted the caravan en route to Myrrka.
+2025-01-04T04:00:00.000Z [town] @ Belfos Trade routes near Belfos grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-04T04:00:00.000Z [town] @ Belfos Beroldus's Wagons arrives at Belfos — Bringing salt/fish from Greenmist with escorts under banner of Circle of the Dawn.
+2025-01-04T04:00:00.000Z [town] @ Belfos Mainardus arrives in Belfos — scout from Azmarin
+2025-01-04T04:00:00.000Z [town] @ Belfos Eurydamus arrives in Belfos — merchant from Windleigh
+2025-01-04T06:00:00.000Z [system] The world turns (18th of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-04T06:00:00.000Z [road] @ Greenmist [Parthenius's Band, dwarven patrols] dwarven patrols offer Parthenius's Band aid on the road — With the first cock-crow the sharp crack of ice breaking. A single aggressive dwarven patrols, moving with purpose. Coin changed hands. Honor was satisfied, barely. Stone cairns marking safe paths marked the scene.
+2025-01-04T06:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — Thieves struck near Belfos. The roads grow dangerous.
+2025-01-04T06:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — A valuable shipment was lost near Belfos.
+2025-01-04T07:00:00.000Z [road] @ Belfos Northbeach Traders makes camp under escort — Road to Windleigh (road) quiet tonight.
+2025-01-04T07:00:00.000Z [faction] @ the region [Merilda] Payment Due: The story evolves. Merilda remains seeks knowledge and wisdom. — The terms seemed fair once. They do not seem fair now.
+2025-01-04T07:00:00.000Z [faction] @ Belfos [The New Caravan, Sons of the Wolf] Strike and Vanish concludes — The raid escalates into open war.
+2025-01-04T07:00:00.000Z [faction] @ Azmarin [Warrenus] Tracking the Warrenus: Tracks are found. The quarry draws near. — Warrenus stalks a dangerous quarry across the region.
+2025-01-04T08:00:00.000Z [town] @ Minasfeld Word spreads in Minasfeld — Thieves struck near Azmarin. The roads grow dangerous.
+2025-01-04T09:00:00.000Z [town] @ Azmarin Word spreads in Azmarin — Thieves struck near Belfos. The roads grow dangerous.
+2025-01-04T10:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Giant footprints in the snow, each as long as a man is tall.
+2025-01-04T10:00:00.000Z [road] @ Minasfeld The New Caravan makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-04T10:00:00.000Z [faction] @ Azmarin [Sons of the Wolf] Sons of the Wolf eyes Azmarin for its textiles — Desperate for textiles, the faction has decided to take the settlement by force.
+2025-01-04T11:00:00.000Z [road] @ Greenmist [Parthenius's Band, trolls] trolls attack Parthenius's Band without warning — As the bell tolled the sixth hour A solitary shadow-cloaked trolls, moving with purpose. They exploited a momentary weakness in the enemy line. A glacier grinding slowly downward marked the scene. A well-timed spell from their caster turned the tide.
+2025-01-04T11:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+⏰ Catch-up progress: 49% (500/1008 turns)2025-01-04T12:00:00.000Z [system] The world turns (18th of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-04T12:00:00.000Z [road] @ Greenmist [Parthenius's Band, yeti] yeti eye Parthenius's Band suspiciously — In the drowsy heat of noon An army of scarce yeti, emerging from concealment. They retreated with honor intact.
+2025-01-04T12:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — A valuable shipment was lost near Azmarin.
+2025-01-04T13:00:00.000Z [road] @ Minasfeld The New Caravan makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-04T13:00:00.000Z [town] @ Azmarin [Hans-Ruedi] Hans-Ruedi arrives in Azmarin — The refugee finds uncertain welcome in their new home.
+2025-01-04T13:00:00.000Z [town] @ Belfos Mood darkens in Belfos — Following recent events, the people's spirit sinks.
+2025-01-04T14:00:00.000Z [road] @ Belfos The Wandering Merchants makes camp under escort — Road to Myrrka (road) quiet tonight.
+2025-01-04T14:00:00.000Z [road] @ Minasfeld The New Caravan makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-04T14:00:00.000Z [faction] @ Windleigh [Order of the Hawk] Order of the Hawk eyes Windleigh for its fish — Desperate for fish, the faction has decided to take the settlement by force.
+2025-01-04T15:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — Thieves struck near Azmarin. The roads grow dangerous.
+2025-01-04T15:00:00.000Z [town] @ Belfos [Katixa] Construction continues on Katixa's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2025-01-04T16:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band ambushed by orc raiders — Forced retreat; they fall back to regroup.
+2025-01-04T16:00:00.000Z [town] @ Belfos The New Caravan arrives at Belfos — Bringing grain/textiles from Minasfeld with escorts.
+2025-01-04T16:00:00.000Z [town] @ Belfos Emlyn arrives in Belfos — scout from Minasfeld
+2025-01-04T16:00:00.000Z [town] @ Belfos Ilene arrives in Belfos — bard from Windleigh
+2025-01-04T16:00:00.000Z [town] @ Belfos Word spreads in Belfos — A valuable shipment was lost near Azmarin.
+2025-01-04T17:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band clash with ogre — Brief skirmish; foes driven off with minor bruises.
+2025-01-04T17:00:00.000Z [town] @ Greenmist Mood darkens in Greenmist — Following recent events, the people's spirit sinks.
+2025-01-04T18:00:00.000Z [system] The world turns (18th of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-04T18:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band clash with orc raiders — Brief skirmish; foes driven off with minor bruises.
+2025-01-04T18:00:00.000Z [faction] @ Greenmist [Parthenius's Band] A new tale begins: "Strike and Vanish" — Parthenius's Band strikes fast at Greenmist and withdraws before retaliation.
+2025-01-04T18:00:00.000Z [town] @ Windleigh Word spreads in Windleigh — Thieves struck near Belfos. The roads grow dangerous.
+2025-01-04T18:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — A valuable shipment was lost near Belfos.
+2025-01-04T19:00:00.000Z [town] @ Belfos The Wandering Peddlers arrives at Belfos — Bringing grain/textiles from Azmarin with escorts.
+2025-01-04T19:00:00.000Z [town] @ Belfos Molora arrives in Belfos — scout from Myrrka
+2025-01-04T19:00:00.000Z [town] @ Belfos Izot arrives in Belfos — bard from Belfos
+2025-01-04T20:00:00.000Z [town] @ Windleigh Word spreads in Windleigh — Thieves struck near Belfos. The roads grow dangerous.
+2025-01-04T21:00:00.000Z [road] @ Greenmist [Parthenius's Band, yeti] Parthenius's Band signal peaceful intentions to yeti — With ale flowing in taprooms hot springs steaming in rocky basins. The world shrinks to arms-length in the murk. One night-hunting yeti, emerging from concealment. Preserving their lives was the wiser course. Switchback paths climbing steep slopes marked the scene.
+2025-01-04T23:00:00.000Z [road] @ Belfos [Northbeach Traders, Sons of the Wolf] Northbeach Traders is raided! — Sons of the Wolf forces have intercepted the caravan en route to Windleigh.
+2025-01-04T23:00:00.000Z [town] @ Belfos Trade routes near Belfos grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-05T00:00:00.000Z [system] The world turns (18th of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-05T00:00:00.000Z [weather] @ Minasfeld Clouds gather over Minasfeld — The mood matched the dull sky.
+2025-01-05T00:00:00.000Z [town] @ Windleigh Word spreads in Windleigh — Thieves struck near Belfos. The roads grow dangerous.
+2025-01-05T00:00:00.000Z [town] @ Belfos Peli seen in Belfos markets — priest haggles and swaps news.
+2025-01-05T00:00:00.000Z [town] @ Belfos [Mainardus] Construction continues on Mainardus's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2025-01-05T00:00:00.000Z [town] @ Belfos Mainardus seen in Belfos markets — scout haggles and swaps news.
+2025-01-05T00:00:00.000Z [town] @ Greenmist [Eryalus] Construction continues on Eryalus's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2025-01-05T00:00:00.000Z [town] @ Belfos Belfos tempers frayed — Surplus textiles and shortages in ore.
+2025-01-05T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Order of the Hawk watches the markets quietly.
+2025-01-05T00:00:00.000Z [town] @ Windleigh Windleigh folk watchful — Surplus ore/fish and shortages in textiles.
+2025-01-05T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Bargain prices on fish; traders racing to Windleigh.
+2025-01-05T00:00:00.000Z [town] @ Azmarin Azmarin folk watchful — Surplus textiles/salt and shortages in ore.
+2025-01-05T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Bargain prices on salt; traders racing to Azmarin.
+2025-01-05T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Order of the Hawk watches the markets quietly.
+2025-01-05T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — The Hawk Compact watches the markets quietly.
+2025-01-05T00:00:00.000Z [town] @ Minasfeld Minasfeld spirits high — Surplus grain/textiles/livestock and shortages in salt.
+2025-01-05T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Levies rumored to secure salt; officials say caravans delayed.
+2025-01-05T00:00:00.000Z [town] @ Myrrka Myrrka folk watchful — Shortages in salt.
+2025-01-05T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — The Storm Guild watches the markets quietly.
+2025-01-05T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Circle of the Dawn watches the markets quietly.
+2025-01-05T00:00:00.000Z [town] @ Greenmist Greenmist tempers frayed — Surplus textiles and shortages in salt/fish/livestock.
+2025-01-05T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Bargain prices on textiles; traders racing to Greenmist.
+2025-01-05T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — The Storm Guild watches the markets quietly.
+2025-01-05T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Sons of the Wolf watches the markets quietly.
+2025-01-05T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Order of the Hawk watches the markets quietly.
+2025-01-05T01:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Eagle cries echo, but no birds are visible.
+2025-01-05T01:00:00.000Z [faction] @ Greenmist [Parthenius's Band] A new tale begins: "The Hunt for Parthenius's Band" — Parthenius's Band stalks a dangerous quarry across the region.
+2025-01-05T01:00:00.000Z [road] @ Belfos The New Caravan makes camp under escort — Road to Minasfeld (road) quiet tonight.
+2025-01-05T02:00:00.000Z [road] @ Belfos The Wandering Peddlers makes camp under escort — Road to Azmarin (road) quiet tonight.
+2025-01-05T03:00:00.000Z [town] @ Belfos [Yllaria, Cybele] Yllaria and Cybele seen conferring — Old bonds proved their worth once again.
+⏰ Catch-up progress: 59% (600/1008 turns)2025-01-05T04:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band discovers The Weather-worn Monolith — When shadows grew deepest avalanche scars on rocky faces. A weather-worn monolith, pulsing with a faint, rhythmic light. They find a marking pointing toward a hidden cache.
+2025-01-05T04:00:00.000Z [road] @ Belfos [The Wandering Merchants, Sons of the Wolf] The Wandering Merchants is raided! — Sons of the Wolf forces have intercepted the caravan en route to Myrrka.
+2025-01-05T04:00:00.000Z [town] @ Belfos Trade routes near Belfos grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-05T04:00:00.000Z [town] @ Minasfeld [Eurydamus] Eurydamus arrives in Minasfeld — The refugee finds uncertain welcome in their new home.
+2025-01-05T04:00:00.000Z [town] @ Belfos [Peli] Construction continues on Peli's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2025-01-05T06:00:00.000Z [system] The world turns (19th of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-05T06:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band clash with goblins — Brief skirmish; foes driven off with minor bruises.
+2025-01-05T07:00:00.000Z [road] @ Belfos Beroldus's Wagons makes camp under escort — Road to Greenmist (road) quiet tonight.
+2025-01-05T07:00:00.000Z [road] @ Belfos The Wandering Peddlers makes camp under escort — Road to Azmarin (road) quiet tonight.
+2025-01-05T10:00:00.000Z [road] @ Greenmist [Parthenius's Band, wyverns] wyverns offer Parthenius's Band aid on the road — Amid the bustle of morning trade avalanche scars on rocky faces. Clouds obscure all but the lowest slopes. A handful of night-hunting wyverns, apparently startled. A hostage exchange ensured good behavior.
+2025-01-05T10:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — A valuable shipment was lost near Belfos.
+2025-01-05T10:00:00.000Z [town] @ Greenmist [Eryalus, Irantzu] Eryalus instructs Irantzu — Wisdom passed from one generation to the next.
+2025-01-05T11:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band shadowed by orc raiders — Tense standoff; both sides withdraw before blades are drawn.
+2025-01-05T12:00:00.000Z [system] The world turns (19th of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-05T12:00:00.000Z [road] @ Greenmist [Parthenius's Band, orc raiders] Battle joined between Parthenius's Band and orc raiders — Under the high sun copper deposits staining rock faces green. Countless shadow-cloaked orc raiders, scouting for targets. Blades flashed in the uncertain light. When it ended, the way was clear. The victors claim 36 coin worth of plunder.
+2025-01-05T12:00:00.000Z [road] @ Belfos The Wandering Merchants makes camp under escort — Road to Myrrka (road) quiet tonight.
+2025-01-05T12:00:00.000Z [town] @ Greenmist Beroldus's Wagons arrives at Greenmist — Bringing salt/fish from Belfos with escorts under banner of Circle of the Dawn.
+2025-01-05T12:00:00.000Z [town] @ Greenmist Mainardus arrives in Greenmist — scout from Azmarin
+2025-01-05T12:00:00.000Z [town] @ Greenmist Eurydamus arrives in Greenmist — merchant from Windleigh
+2025-01-05T12:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Word spreads that Beroldus's Wagons of Circle of the Dawn reached Greenmist with salt/fish.
+2025-01-05T12:00:00.000Z [town] @ Belfos [Yllaria, Eadmund] Yllaria speaks publicly of Eadmund's treachery — Forgiveness is not in their nature.
+2025-01-05T12:00:00.000Z [faction] @ Belfos [Sons of the Wolf] Sons of the Wolf eyes Belfos for its textiles — Desperate for textiles, the faction has decided to take the settlement by force.
+2025-01-05T13:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — A valuable shipment was lost near Belfos.
+2025-01-05T15:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band clash with orc raiders — Brief skirmish; foes driven off with minor bruises.
+2025-01-05T16:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — A cairn of skulls marks a territorial boundary.
+2025-01-05T18:00:00.000Z [system] The world turns (19th of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-05T19:00:00.000Z [road] @ Greenmist [Parthenius's Band, orc raiders] orc raiders eye Parthenius's Band suspiciously — With the setting of the sun mineral-rich hot springs hung in the air. Clouds obscure all but the lowest slopes. Several frenzied orc raiders, returning from a raid. They retreated in good order, minimizing losses.
+2025-01-05T19:00:00.000Z [town] @ Minasfeld Word spreads in Minasfeld — A valuable shipment was lost near Belfos.
+2025-01-05T20:00:00.000Z [town] @ Windleigh Northbeach Traders arrives at Windleigh — Bringing grain/textiles from Belfos with escorts.
+2025-01-05T20:00:00.000Z [town] @ Windleigh Cybele arrives in Windleigh — guard from Windleigh
+2025-01-05T20:00:00.000Z [town] @ Windleigh Yllaria arrives in Windleigh — merchant from Greenmist
+2025-01-05T20:00:00.000Z [faction] @ Greenmist [Eurydamus, Order of the Hawk] Eurydamus seeks Order of the Hawk's protection — Frightened by Parthenius's Band clash with orc raiders, the merchant appeals to the pious faction.
+⏰ Catch-up progress: 69% (700/1008 turns)2025-01-05T22:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — Explorers speak of a strange discovery near Greenmist.
+2025-01-05T22:00:00.000Z [town] @ Greenmist [Eadmund, Hans-Ruedi] Eadmund takes Hans-Ruedi under their wing — Wisdom passed from one generation to the next.
+2025-01-05T23:00:00.000Z [road] @ Greenmist [Parthenius's Band, giant eagles] Parthenius's Band exchange stories with curious giant eagles — In the hush of late night meteor impact craters on peaks. Two or three shadow-cloaked giant eagles, apparently startled. The negotiation revealed unexpected shared values. A glacier grinding slowly downward marked the scene.
+2025-01-06T00:00:00.000Z [weather] @ Azmarin Winter's grip tightens on Azmarin — Children made sport while adults worried over firewood.
+2025-01-06T00:00:00.000Z [system] The world turns (19th of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-06T00:00:00.000Z [town] @ Belfos Belfos tempers frayed — Surplus textiles and shortages in ore.
+2025-01-06T00:00:00.000Z [town] @ Myrrka The Wandering Merchants arrives at Myrrka — Bringing livestock from Belfos with escorts under banner of Order of the Hawk.
+2025-01-06T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Levies rumored to secure ore; officials say caravans delayed.
+2025-01-06T00:00:00.000Z [town] @ Myrrka Katixa arrives in Myrrka — guard from Myrrka
+2025-01-06T00:00:00.000Z [town] @ Belfos Rumor in Belfos — The Storm Guild watches the markets quietly.
+2025-01-06T00:00:00.000Z [town] @ Myrrka Wantelien arrives in Myrrka — bard from Minasfeld
+2025-01-06T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Order of the Hawk watches the markets quietly.
+2025-01-06T00:00:00.000Z [town] @ Windleigh Windleigh tempers frayed — Surplus grain/ore/fish and shortages in textiles.
+2025-01-06T00:00:00.000Z [town] @ Minasfeld The New Caravan arrives at Minasfeld — Bringing grain/textiles from Belfos with escorts.
+2025-01-06T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Sons of the Wolf watches the markets quietly.
+2025-01-06T00:00:00.000Z [town] @ Minasfeld Emlyn arrives in Minasfeld — scout from Minasfeld
+2025-01-06T00:00:00.000Z [town] @ Azmarin Hans-Ruedi seen in Azmarin markets — laborer haggles and swaps news.
+2025-01-06T00:00:00.000Z [town] @ Minasfeld Ilene arrives in Minasfeld — bard from Windleigh
+2025-01-06T00:00:00.000Z [town] @ Azmarin Azmarin tempers frayed — Surplus textiles/salt and shortages in ore.
+2025-01-06T00:00:00.000Z [faction] [Order of the Hawk, The Storm Guild] Order of the Hawk proposes marriage alliance with The Storm Guild — Envoys are sent. Dowries discussed. A political wedding could reshape alliances.
+2025-01-06T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Levies rumored to secure ore; officials say caravans delayed.
+2025-01-06T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Sons of the Wolf watches the markets quietly.
+2025-01-06T00:00:00.000Z [town] @ Minasfeld Minasfeld folk watchful — Surplus textiles/livestock and shortages in salt.
+2025-01-06T00:00:00.000Z [town] @ Myrrka Myrrka tempers frayed — Shortages in salt.
+2025-01-06T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — The Hawk Compact watches the markets quietly.
+2025-01-06T00:00:00.000Z [town] @ Greenmist Greenmist tempers frayed — Surplus textiles and shortages in fish/livestock.
+2025-01-06T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — official plot: a wounded messenger says Everill heard of guards buying lamp oil in bulk (from Greenmist).
+2025-01-06T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Order of the Hawk watches the markets quietly.
+2025-01-06T01:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — A cairn of skulls marks a territorial boundary.
+2025-01-06T01:00:00.000Z [road] @ Greenmist [Parthenius's Band, dwarven patrols] dwarven patrols charge Parthenius's Band with weapons drawn — In the hush of late night bridges spanning raging torrents. Fresh snow makes every path treacherous. A lone shadow-cloaked dwarven patrols, moving with purpose. They pressed their advantage until the enemy fled.
+2025-01-06T01:00:00.000Z [road] @ Windleigh [Northbeach Traders, Sons of the Wolf] Northbeach Traders is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2025-01-06T01:00:00.000Z [town] @ Windleigh Trade routes near Windleigh grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-06T01:00:00.000Z [faction] @ Windleigh [Gillot] A new tale begins: "Tracking the Gillot" — A deadly game of cat and mouse unfolds near Windleigh.
+2025-01-06T01:00:00.000Z [town] @ Minasfeld [Theodric] Theodric is dying — The end approaches for the scout. Family and rivals alike watch and wait.
+2025-01-06T03:00:00.000Z [town] @ Azmarin The Wandering Peddlers arrives at Azmarin — Bringing grain/textiles from Belfos with escorts.
+2025-01-06T03:00:00.000Z [town] @ Azmarin Molora arrives in Azmarin — scout from Myrrka
+2025-01-06T03:00:00.000Z [town] @ Azmarin Izot arrives in Azmarin — bard from Belfos
+2025-01-06T04:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band discovers The Blood-stained Altar — In the cold hours before dawn waterfalls plunging into deep pools. A blood-stained altar, surrounded by a thin, unnerving mist. A light heart and swift feet follow them.
+2025-01-06T04:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band shadowed by orc raiders — Tense standoff; both sides withdraw before blades are drawn.
+2025-01-06T04:00:00.000Z [faction] [Sons of the Wolf, The Storm Guild] Sons of the Wolf proposes marriage alliance with The Storm Guild — Envoys are sent. Dowries discussed. A political wedding could reshape alliances.
+2025-01-06T05:00:00.000Z [faction] @ the region [Merilda] Payment Due: Regret grows. — The terms seemed fair once. They do not seem fair now.
+2025-01-06T05:00:00.000Z [faction] @ Belfos [Polydamna] Tracking the Polydamna: A witness points the way. — The hunt enters its final phase. One will not survive.
+2025-01-06T05:00:00.000Z [faction] @ Belfos [Circle of the Dawn] Circle of the Dawn eyes Belfos for its textiles — Desperate for textiles, the faction has decided to take the settlement by force.
+2025-01-06T06:00:00.000Z [system] The world turns (20th of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-06T06:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band clash with ogre — Brief skirmish; foes driven off with minor bruises.
+2025-01-06T06:00:00.000Z [road] @ Minasfeld The New Caravan makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-06T06:00:00.000Z [town] @ Azmarin Word spreads in Azmarin — A valuable shipment was lost near Belfos.
+2025-01-06T07:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — A cairn of skulls marks a territorial boundary.
+2025-01-06T07:00:00.000Z [town] @ Greenmist Mood darkens in Greenmist — Following recent events, the people's spirit sinks.
+2025-01-06T08:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Eagle cries echo, but no birds are visible.
+2025-01-06T08:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band clash with ogre — Brief skirmish; foes driven off with minor bruises.
+2025-01-06T08:00:00.000Z [town] @ Greenmist [Mainardus] Mainardus vows vengeance — Following Parthenius's Band clash with orc raiders, the scout swears an oath that cannot go unanswered.
+2025-01-06T10:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band parley with giant bats — Trade news and share a quick meal before parting ways.
+2025-01-06T10:00:00.000Z [road] @ Windleigh Northbeach Traders makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-06T10:00:00.000Z [town] @ Minasfeld Disease outbreak in Minasfeld! — Local healers have identified Yellow Plague among the populace. Fear spreads as quickly as the sickness.
+2025-01-06T11:00:00.000Z [faction] @ Windleigh [The Hawk Compact] The Hawk Compact eyes Windleigh for its fish — Desperate for fish, the faction has decided to take the settlement by force.
+2025-01-06T11:00:00.000Z [weather] @ Greenmist [Mainardus] Mainardus alters the weather — Through ancient incantations, the Elf calls forth storm over the region.
+2025-01-06T12:00:00.000Z [system] The world turns (20th of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-06T12:00:00.000Z [town] @ Greenmist [Eurydamus] Eurydamus vows vengeance — Following Parthenius's Band clash with ogre, the merchant swears an oath that cannot go unanswered.
+2025-01-06T13:00:00.000Z [road] @ Windleigh Northbeach Traders makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-06T13:00:00.000Z [town] @ Greenmist [Eryalus] Eryalus spreads tales — The laborer speaks openly of Battle joined between Parthenius's Band and orc raiders. The story grows in the telling.
+2025-01-06T13:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — Eryalus tells all who will listen: "Battle joined between Parthenius's Band and orc raiders." The tale spreads.
+⏰ Catch-up progress: 79% (800/1008 turns)2025-01-06T14:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — The ruins of a dwarven waystation, recently looted.
+2025-01-06T14:00:00.000Z [town] @ Belfos Word spreads in Belfos — A valuable shipment was lost near Windleigh.
+2025-01-06T15:00:00.000Z [town] @ Myrrka [Katixa] Construction continues on Katixa's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2025-01-06T16:00:00.000Z [road] @ Greenmist Beroldus's Wagons makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-06T16:00:00.000Z [faction] @ Azmarin [Warrenus] Tracking the Warrenus: The Warrenus discover they are not alone in the chase. — Warrenus stalks a dangerous quarry across the region.
+2025-01-06T16:00:00.000Z [faction] @ Azmarin [Elinora] The Hunt for Elinora: Local villagers share rumors of the prey. — A deadly game of cat and mouse unfolds near Azmarin.
+2025-01-06T17:00:00.000Z [road] @ Greenmist [Parthenius's Band, goblins] goblins teach Parthenius's Band a useful survival skill — As bats took wing ancient petroglyphs on cliff walls. A company of tribal goblins, setting crude traps. The negotiation revealed unexpected shared values.
+2025-01-06T17:00:00.000Z [town] @ Minasfeld [Theodric, Cybele] Theodric negotiates terms with creditor Cybele — Gold owed sits heavy on both parties.
+2025-01-06T18:00:00.000Z [system] The world turns (20th of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-06T18:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band clash with orc raiders — Brief skirmish; foes driven off with minor bruises.
+2025-01-06T18:00:00.000Z [town] @ Greenmist [Eryalus] Construction continues on Eryalus's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2025-01-06T19:00:00.000Z [road] @ Greenmist [Parthenius's Band, wyverns] Parthenius's Band battle wyverns for control of the path — As lanterns were kindled avalanche scars on rocky faces. A few night-hunting wyverns, blocking the path. A well-timed feint created the opening they needed.
+2025-01-06T19:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-06T20:00:00.000Z [town] @ Belfos Beroldus's Wagons arrives at Belfos — Bringing salt/fish from Greenmist with escorts under banner of Circle of the Dawn.
+2025-01-06T20:00:00.000Z [town] @ Belfos Mainardus arrives in Belfos — scout from Azmarin
+2025-01-06T20:00:00.000Z [town] @ Belfos Eurydamus arrives in Belfos — merchant from Windleigh
+2025-01-06T22:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band clash with giant bats — Brief skirmish; foes driven off with minor bruises.
+2025-01-07T00:00:00.000Z [system] The world turns (20th of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-07T00:00:00.000Z [town] @ Belfos Belfos tempers frayed — Surplus textiles/fish and shortages in ore.
+2025-01-07T00:00:00.000Z [faction] @ Greenmist [Amyntas] From Nothing to Everything: Power brings unexpected responsibilities. Amyntas remains motivated by duty and honor. — Power and fame gather around a rising figure in Greenmist.
+2025-01-07T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Levies rumored to secure ore; officials say caravans delayed.
+2025-01-07T00:00:00.000Z [faction] @ Greenmist [Parthenius's Band] Strike and Vanish: Raiders demand tribute to spare settlements. — Parthenius's Band strikes fast at Greenmist and withdraws before retaliation.
+2025-01-07T00:00:00.000Z [town] @ Windleigh Cybele seen in Windleigh markets — guard haggles and swaps news.
+2025-01-07T00:00:00.000Z [town] @ Windleigh Yllaria seen in Windleigh markets — merchant haggles and swaps news.
+2025-01-07T00:00:00.000Z [town] @ Windleigh Windleigh tempers frayed — Surplus grain/ore/fish and shortages in textiles/livestock.
+2025-01-07T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Levies rumored to secure textiles; officials say caravans delayed.
+2025-01-07T00:00:00.000Z [town] @ Azmarin Azmarin tempers frayed — Surplus grain/textiles/salt and shortages in ore.
+2025-01-07T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Circle of the Dawn watches the markets quietly.
+2025-01-07T00:00:00.000Z [town] @ Minasfeld Minasfeld folk watchful — Surplus grain/textiles/livestock and shortages in salt.
+2025-01-07T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Levies rumored to secure salt; officials say caravans delayed.
+2025-01-07T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — The Storm Guild watches the markets quietly.
+2025-01-07T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Order of the Hawk watches the markets quietly.
+2025-01-07T00:00:00.000Z [town] @ Myrrka Katixa seen in Myrrka markets — guard haggles and swaps news.
+2025-01-07T00:00:00.000Z [town] @ Myrrka Wantelien seen in Myrrka markets — bard haggles and swaps news.
+2025-01-07T00:00:00.000Z [town] @ Myrrka Myrrka tempers frayed — Surplus livestock and shortages in salt.
+2025-01-07T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Order of the Hawk offers protection for caravans.
+2025-01-07T00:00:00.000Z [town] @ Greenmist Greenmist tempers frayed — Surplus textiles and shortages in fish/livestock.
+2025-01-07T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Levies rumored to secure livestock; officials say caravans delayed.
+2025-01-07T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — The Hawk Compact watches the markets quietly.
+2025-01-07T00:00:00.000Z [road] @ Minasfeld [Vermithrax] Vermithrax Bane of Kingdoms spotted near Minasfeld — Three heads, each with its own cruel cunning. Travelers flee in terror. Ancient lore suggests: Blinded by sunlight.
+2025-01-07T01:00:00.000Z [town] @ Minasfeld [Theodric] Theodric has died — The scout passes away from old age. They will be remembered.
+2025-01-07T03:00:00.000Z [road] @ Greenmist [Parthenius's Band, orc raiders] Parthenius's Band detour to avoid orc raiders's territory — When shadows grew deepest fresh goat cheese from herds hung in the air. Many battle-scarred orc raiders, dragging captives. They vanished into the shadows before the enemy could react. Waterfalls plunging into deep pools marked the scene.
+2025-01-07T03:00:00.000Z [road] @ Minasfeld The New Caravan makes camp under escort — Road to Belfos (road) quiet tonight.
+2025-01-07T03:00:00.000Z [road] @ Belfos Beroldus's Wagons makes camp under escort — Road to Greenmist (road) quiet tonight.
+2025-01-07T03:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — A valuable shipment was lost near Windleigh.
+2025-01-07T04:00:00.000Z [road] @ Greenmist [Parthenius's Band, wyverns] wyverns follow Parthenius's Band at a safe distance — As the world held its breath a glacier grinding slowly downward. Several night-hunting wyverns, watching warily. A calculated withdrawal to more favorable ground.
+2025-01-07T05:00:00.000Z [road] @ Greenmist [Parthenius's Band, giant eagles] giant eagles charge Parthenius's Band with weapons drawn — As rose light crept across the land ancient petroglyphs on cliff walls. The mountain seems alive with fury. A few dangerous giant eagles, emerging from concealment. The foe's weapons glanced off enchanted armor. A well-timed spell from their caster turned the tide.
+⏰ Catch-up progress: 89% (900/1008 turns)2025-01-07T06:00:00.000Z [system] The world turns (21st of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-07T06:00:00.000Z [road] @ Greenmist [Parthenius's Band, goblins] goblins block the path but allow passage — As the world stirred from slumber thunder rolling between peaks. The mountain seems alive with fury. Many cunning goblins, worshipping a crude idol. Words proved mightier than steel on this occasion. Bridges spanning raging torrents marked the scene.
+2025-01-07T06:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot giant bats and avoid notice — They detour carefully, leaving only faint tracks.
+2025-01-07T07:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band shadowed by ogre — Tense standoff; both sides withdraw before blades are drawn.
+2025-01-07T07:00:00.000Z [road] @ Belfos Beroldus's Wagons makes camp under escort — Road to Greenmist (road) quiet tonight.
+2025-01-07T08:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band discovers The Weather-worn Monolith — As smoke rose from breakfast fires avalanches rumbling in the distance. A weather-worn monolith, surrounded by a thin, unnerving mist. They find a marking pointing toward a hidden cache.
+2025-01-07T08:00:00.000Z [town] @ Belfos The Wandering Merchants arrives at Belfos — Bringing livestock from Myrrka with escorts under banner of Order of the Hawk.
+2025-01-07T08:00:00.000Z [town] @ Belfos Katixa arrives in Belfos — guard from Myrrka
+2025-01-07T08:00:00.000Z [town] @ Belfos Wantelien arrives in Belfos — bard from Minasfeld
+2025-01-07T08:00:00.000Z [town] @ Belfos Rumor in Belfos — Word spreads that The Wandering Merchants of Order of the Hawk reached Belfos with livestock.
+2025-01-07T08:00:00.000Z [town] @ Belfos The New Caravan arrives at Belfos — Bringing grain/textiles from Minasfeld with escorts.
+2025-01-07T08:00:00.000Z [town] @ Belfos Emlyn arrives in Belfos — scout from Minasfeld
+2025-01-07T08:00:00.000Z [town] @ Belfos Ilene arrives in Belfos — bard from Windleigh
+2025-01-07T08:00:00.000Z [road] @ Belfos Beroldus's Wagons makes camp under escort — Road to Greenmist (road) quiet tonight.
+2025-01-07T08:00:00.000Z [town] @ Myrrka [Gawyne, Mainardus] Gawyne seen leaving Mainardus's lodgings at dawn — Some say passion; others say scandal.
+2025-01-07T09:00:00.000Z [town] @ Belfos Northbeach Traders arrives at Belfos — Bringing grain/textiles from Windleigh with escorts.
+2025-01-07T09:00:00.000Z [town] @ Belfos Cybele arrives in Belfos — guard from Windleigh
+2025-01-07T09:00:00.000Z [town] @ Belfos Yllaria arrives in Belfos — merchant from Greenmist
+2025-01-07T10:00:00.000Z [faction] @ Greenmist [Order of the Hawk] Order of the Hawk increases patrols — Devout members of Order of the Hawk now walk the roads in prayer near Greenmist.
+2025-01-07T11:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Eagle cries echo, but no birds are visible.
+2025-01-07T11:00:00.000Z [town] @ Belfos The Wandering Peddlers arrives at Belfos — Bringing grain/textiles from Azmarin with escorts.
+2025-01-07T11:00:00.000Z [town] @ Belfos Molora arrives in Belfos — scout from Myrrka
+2025-01-07T11:00:00.000Z [town] @ Belfos Izot arrives in Belfos — bard from Belfos
+2025-01-07T12:00:00.000Z [system] The world turns (21st of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-07T12:00:00.000Z [town] @ Greenmist [Mainardus] Mainardus makes their move — The vengeance long promised by the scout comes to pass.
+2025-01-07T14:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band clash with goblins — Brief skirmish; foes driven off with minor bruises.
+2025-01-07T14:00:00.000Z [road] @ Belfos [The New Caravan, Sons of the Wolf] The New Caravan is raided! — Sons of the Wolf forces have intercepted the caravan en route to Minasfeld.
+2025-01-07T14:00:00.000Z [town] @ Belfos Trade routes near Belfos grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-07T14:00:00.000Z [town] @ Belfos [Izot] Magical mist chokes Belfos — A toxic green cloud, conjured by Izot, rolls through the streets. Panic ensues.
+2025-01-07T15:00:00.000Z [town] @ Greenmist [Eadmund] Eadmund vows vengeance — Following Parthenius's Band clash with giant bats, the laborer swears an oath that cannot go unanswered.
+2025-01-07T16:00:00.000Z [road] @ Belfos The Wandering Merchants makes camp under escort — Road to Myrrka (road) quiet tonight.
+2025-01-07T16:00:00.000Z [faction] @ Belfos [Circle of the Dawn] Circle of the Dawn eyes Belfos for its grain — Desperate for grain, the faction has decided to take the settlement by force.
+2025-01-07T17:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Giant footprints in the snow, each as long as a man is tall.
+2025-01-07T17:00:00.000Z [road] @ Greenmist [Parthenius's Band, wyverns] Parthenius's Band duel wyverns champions — In the gloaming hour bridges spanning raging torrents. A few red-eyed in the dark wyverns, emerging from concealment. A decisive strike ended the conflict before it could escalate. Stone cairns marking safe paths marked the scene. The victors claim 39 coin worth of plunder.
+2025-01-07T17:00:00.000Z [road] @ Belfos [Northbeach Traders, Sons of the Wolf] Northbeach Traders is raided! — Sons of the Wolf forces have intercepted the caravan en route to Windleigh.
+2025-01-07T17:00:00.000Z [town] @ Belfos Trade routes near Belfos grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2025-01-07T17:00:00.000Z [town] @ Minasfeld Yellow Plague fades in Minasfeld — The worst of the sickness has passed. The bells ring in celebration.
+2025-01-07T18:00:00.000Z [system] The world turns (21st of Deepwinter, Year 1055) — 1 parties traveling, 1 resting. 0 threats lurk.
+2025-01-07T18:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — A cairn of skulls marks a territorial boundary.
+2025-01-07T18:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band completes rest — Ready to travel again.
+2025-01-07T18:00:00.000Z [town] @ Belfos [Izot] Magical mist chokes Belfos — A toxic green cloud, conjured by Izot, rolls through the streets. Panic ensues.
+2025-01-07T19:00:00.000Z [faction] @ the region [Merilda] Payment Due: The story evolves. Merilda remains seeks knowledge and wisdom. — The terms seemed fair once. They do not seem fair now.
+2025-01-07T22:00:00.000Z [faction] @ Minasfeld [Sons of the Wolf] Sons of the Wolf increases patrols — Armed members of Sons of the Wolf now patrol the roads near Minasfeld.
+2025-01-07T22:00:00.000Z [town] @ Greenmist [Eryalus, Irantzu] Eryalus instructs Irantzu — Wisdom passed from one generation to the next.
+⏰ Catch-up progress: 99% (1000/1008 turns)2025-01-07T23:00:00.000Z [faction] @ Minasfeld A new band appears near Minasfeld — Nigellus's Band takes to the byways.
+2025-01-07T23:00:00.000Z [road] @ Belfos The Wandering Merchants makes camp under escort — Road to Myrrka (road) quiet tonight.
+2025-01-07T23:00:00.000Z [town] @ Greenmist [Eurydamus] Eurydamus makes their move — The vengeance long promised by the merchant comes to pass.
+2025-01-08T00:00:00.000Z [system] The world turns (21st of Deepwinter, Year 1055) — 1 parties traveling, 2 resting. 0 threats lurk.
+2025-01-08T00:00:00.000Z [weather] @ Belfos A fire breaks out in Belfos — In the dry winter air, flames spread fast. Buckets form a chain.
+2025-01-08T00:00:00.000Z [weather] @ Myrrka A fire breaks out in Myrrka — In the dry winter air, flames spread fast. Buckets form a chain.
+2025-01-08T00:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — A cairn of skulls marks a territorial boundary.
+2025-01-08T00:00:00.000Z [road] @ Minasfeld [Nigellus's Band] Nigellus's Band departs Minasfeld — Bound for Greenmist across mountains (~18 miles).
+2025-01-08T00:00:00.000Z [town] @ Windleigh Disease outbreak in Windleigh! — Local healers have identified Yellow Plague among the populace. Fear spreads as quickly as the sickness.
+2025-01-08T00:00:00.000Z [town] @ Belfos Belfos tempers frayed — Surplus grain/textiles/fish and shortages in ore.
+2025-01-08T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Levies rumored to secure ore; officials say caravans delayed.
+2025-01-08T00:00:00.000Z [town] @ Belfos Rumor in Belfos — The Storm Guild watches the markets quietly.
+2025-01-08T00:00:00.000Z [town] @ Windleigh Windleigh tempers frayed — Surplus grain/ore/fish and shortages in textiles/livestock.
+2025-01-08T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Levies rumored to secure livestock; officials say caravans delayed.
+2025-01-08T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — The Storm Guild watches the markets quietly.
+2025-01-08T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Sons of the Wolf watches the markets quietly.
+2025-01-08T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Order of the Hawk watches the markets quietly.
+2025-01-08T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Circle of the Dawn watches the markets quietly.
+2025-01-08T00:00:00.000Z [town] @ Azmarin Azmarin tempers frayed — Surplus grain/textiles/salt and shortages in ore.
+2025-01-08T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — conflicting threat: a bard fresh from the road says Echelaos heard of beasts refusing to cross the old road (from Azmarin).
+2025-01-08T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Order of the Hawk watches the markets quietly.
+2025-01-08T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Circle of the Dawn watches the markets quietly.
+2025-01-08T00:00:00.000Z [town] @ Minasfeld Minasfeld tempers frayed — Surplus grain/textiles/livestock and shortages in salt.
+2025-01-08T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Levies rumored to secure salt; officials say caravans delayed.
+2025-01-08T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — The Storm Guild watches the markets quietly.
+2025-01-08T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Order of the Hawk watches the markets quietly.
+2025-01-08T00:00:00.000Z [town] @ Myrrka Myrrka tempers frayed — Surplus livestock and shortages in salt.
+2025-01-08T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Levies rumored to secure salt; officials say caravans delayed.
+2025-01-08T00:00:00.000Z [town] @ Greenmist Greenmist tempers frayed — Surplus textiles and shortages in fish/livestock.
+2025-01-08T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Levies rumored to secure livestock; officials say caravans delayed.
+2025-01-08T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — The Storm Guild watches the markets quietly.
+2025-01-08T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Sons of the Wolf watches the markets quietly.
+
+✓ Caught up! World time is now synchronized.
+
+╔════════════════════════════════════════════════════════════════╗
+║  BECMI Real-Time Simulator                                     ║
+║  22nd of Deepwinter, Year 1055                                 ║
+╠════════════════════════════════════════════════════════════════╣
+║  Seed: gator                                                   ║
+║  Time Scale: 1x (turn every 600000ms)                          ║
+║  Settlements: 6   Parties: 3   Antagonists: 0                  ║
+║  Active Stories: 8                                             ║
+╚════════════════════════════════════════════════════════════════╝
+

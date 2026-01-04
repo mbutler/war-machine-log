@@ -1,0 +1,2682 @@
+{
+  "seed": "gator",
+  "archetype": "Standard",
+  "hexes": [
+    {
+      "coord": {
+        "q": 0,
+        "r": 0
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 4
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 5
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 6
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 7
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 8
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 9
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 0
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 2
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 3
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 4
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 5
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 6
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 8
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 9
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 0
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 2
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 3
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 4
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 5
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 7
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 8
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 9
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 0
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 2
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 3
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 4
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 5
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 6
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 7
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 8
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 9
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 0
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 1
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 4
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 8
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 9
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 0
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 1
+      },
+      "terrain": "desert"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 2
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 4
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 8
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 9
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 0
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 1
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 2
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 4
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 8
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 9
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 0
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 1
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 2
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 4
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 8
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 9
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 0
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 2
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 3
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 4
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 5
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 6
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 7
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 8
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 9
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 0
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 1
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 2
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 3
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 4
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 5
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 6
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 7
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 8
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 9
+      },
+      "terrain": "ocean"
+    }
+  ],
+  "width": 10,
+  "height": 10,
+  "settlements": [
+    {
+      "id": "settlement-0",
+      "name": "Belfos",
+      "population": 550,
+      "type": "town",
+      "coord": {
+        "q": 5,
+        "r": 7
+      },
+      "supply": {
+        "grain": -2,
+        "timber": 0,
+        "ore": -2,
+        "textiles": 1,
+        "salt": -1,
+        "fish": 0,
+        "livestock": 0
+      },
+      "mood": 0,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "normal"
+      }
+    },
+    {
+      "id": "settlement-1",
+      "name": "Windleigh",
+      "population": 1312,
+      "type": "town",
+      "coord": {
+        "q": 4,
+        "r": 6
+      },
+      "supply": {
+        "grain": 1,
+        "timber": 0,
+        "ore": 2,
+        "textiles": -2,
+        "salt": -2,
+        "fish": 2,
+        "livestock": -1
+      },
+      "mood": 1,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "normal"
+      }
+    },
+    {
+      "id": "settlement-2",
+      "name": "Azmarin",
+      "population": 359,
+      "type": "town",
+      "coord": {
+        "q": 6,
+        "r": 5
+      },
+      "supply": {
+        "grain": 1,
+        "timber": -1,
+        "ore": -2,
+        "textiles": 2,
+        "salt": 2,
+        "fish": -1,
+        "livestock": -2
+      },
+      "mood": 1,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "normal"
+      }
+    },
+    {
+      "id": "settlement-3",
+      "name": "Minasfeld",
+      "population": 627,
+      "type": "village",
+      "coord": {
+        "q": 3,
+        "r": 6
+      },
+      "supply": {
+        "grain": 0,
+        "timber": 1,
+        "ore": 0,
+        "textiles": 1,
+        "salt": -1,
+        "fish": -1,
+        "livestock": 2
+      },
+      "mood": 1,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "normal"
+      }
+    },
+    {
+      "id": "settlement-4",
+      "name": "Myrrka",
+      "population": 1191,
+      "type": "town",
+      "coord": {
+        "q": 7,
+        "r": 0
+      },
+      "supply": {
+        "grain": 1,
+        "timber": -1,
+        "ore": 1,
+        "textiles": 2,
+        "salt": -2,
+        "fish": 0,
+        "livestock": -2
+      },
+      "mood": 1,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "normal"
+      }
+    },
+    {
+      "id": "settlement-5",
+      "name": "Greenmist",
+      "population": 1647,
+      "type": "village",
+      "coord": {
+        "q": 1,
+        "r": 5
+      },
+      "supply": {
+        "grain": 2,
+        "timber": 1,
+        "ore": -1,
+        "textiles": 2,
+        "salt": -2,
+        "fish": -2,
+        "livestock": -2
+      },
+      "mood": -1,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "normal"
+      }
+    }
+  ],
+  "parties": [
+    {
+      "id": "party-0",
+      "name": "The Grim Wolves",
+      "members": [
+        {
+          "name": "Jumel",
+          "class": "Fighter",
+          "level": 1,
+          "hp": 20,
+          "maxHp": 20
+        },
+        {
+          "name": "Mauricius",
+          "class": "Cleric",
+          "level": 1,
+          "hp": 15,
+          "maxHp": 15
+        },
+        {
+          "name": "Aizkorri",
+          "class": "Magic-User",
+          "level": 2,
+          "hp": 10,
+          "maxHp": 10
+        }
+      ],
+      "location": "Belfos",
+      "status": "idle",
+      "xp": 0
+    },
+    {
+      "id": "band-0",
+      "name": "Parthenius's Band",
+      "members": [
+        {
+          "name": "Gonilda",
+          "class": "Thief",
+          "level": 1,
+          "hp": 12,
+          "maxHp": 12
+        },
+        {
+          "name": "Marjer",
+          "class": "Elf",
+          "level": 2,
+          "hp": 14,
+          "maxHp": 14
+        }
+      ],
+      "location": "Greenmist",
+      "status": "idle",
+      "xp": 0
+    }
+  ],
+  "roads": [
+    [
+      "settlement-0",
+      "settlement-1"
+    ],
+    [
+      "settlement-0",
+      "settlement-2"
+    ],
+    [
+      "settlement-0",
+      "settlement-3"
+    ],
+    [
+      "settlement-0",
+      "settlement-4"
+    ],
+    [
+      "settlement-0",
+      "settlement-5"
+    ],
+    [
+      "settlement-1",
+      "settlement-0"
+    ]
+  ],
+  "dungeons": [
+    {
+      "id": "dungeon-0",
+      "name": "Wealdlock Crypt",
+      "coord": {
+        "q": 4,
+        "r": 8
+      },
+      "depth": 4,
+      "danger": 4,
+      "rooms": [
+        {
+          "type": "laboratory",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "lair",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "trap",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": true
+        }
+      ],
+      "explored": 0
+    },
+    {
+      "id": "dungeon-1",
+      "name": "The Sanctum of Blighted Death",
+      "coord": {
+        "q": 5,
+        "r": 1
+      },
+      "depth": 3,
+      "danger": 3,
+      "rooms": [
+        {
+          "type": "treasure",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "trap",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "empty",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "treasure",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "treasure",
+          "threat": 2,
+          "loot": true
+        },
+        {
+          "type": "trap",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "lair",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 2,
+          "loot": true
+        },
+        {
+          "type": "treasure",
+          "threat": 2,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 4,
+          "loot": false
+        }
+      ],
+      "explored": 0
+    },
+    {
+      "id": "dungeon-2",
+      "name": "The Whispers Tower",
+      "coord": {
+        "q": 5,
+        "r": 6
+      },
+      "depth": 3,
+      "danger": 4,
+      "rooms": [
+        {
+          "type": "trap",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "trap",
+          "threat": 4,
+          "loot": true,
+          "rare": "relic"
+        },
+        {
+          "type": "shrine",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "trap",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "trap",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": true,
+          "rare": "artifact"
+        },
+        {
+          "type": "laboratory",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": false
+        }
+      ],
+      "explored": 0
+    }
+  ],
+  "activeRumors": [],
+  "npcs": [
+    {
+      "id": "npc-0",
+      "name": "Peli",
+      "role": "priest",
+      "home": "settlement-0",
+      "location": "Belfos",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Cleric",
+      "level": 12,
+      "xp": 0,
+      "spells": [
+        "Cure Light Wounds",
+        "Protection from Evil"
+      ],
+      "depth": {
+        "traits": [
+          "cunning",
+          "pious"
+        ],
+        "background": "noble-exile",
+        "motivation": "justice",
+        "relationships": [
+          {
+            "targetId": "npc-4",
+            "targetName": "Hans-Ruedi",
+            "type": "student",
+            "strength": 2,
+            "history": "The most promising pupil in years."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "tells the same three stories",
+          "prays before every meal"
+        ]
+      },
+      "age": 63,
+      "title": "Sister",
+      "appearance": "missing two fingers on the left hand",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 40,
+          "description": "Establish a seat of power"
+        },
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 17,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "bloodlineId": "bloodline-1767559263386-1871",
+      "birthDate": "1972-01-15T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-1",
+      "name": "Theodric",
+      "role": "scout",
+      "home": "settlement-3",
+      "location": "Minasfeld",
+      "reputation": 2,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 9,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "brave",
+          "romantic",
+          "honorable"
+        ],
+        "background": "farmhand-turned-guard",
+        "motivation": "redemption",
+        "secretMotivation": "redemption",
+        "relationships": [
+          {
+            "targetId": "npc-0",
+            "targetName": "Peli",
+            "type": "betrayed",
+            "strength": 1,
+            "history": "Watches old friends with new suspicion."
+          },
+          {
+            "targetId": "npc-3",
+            "targetName": "Cybele",
+            "type": "debtor",
+            "strength": 1,
+            "history": "Interest compounds, and so does resentment."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Eadmund",
+            "type": "mentor",
+            "strength": 4,
+            "history": "Saw potential where others saw nothing."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "cannot resist a wager",
+          "keeps a journal in cipher"
+        ]
+      },
+      "age": 26,
+      "title": "Outrider",
+      "appearance": "a nervous tic in the left eye",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 48,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "bloodlineId": "bloodline-1767559263387-5722",
+      "birthDate": "1965-01-16T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-8",
+      "marriedAt": "2006-01-06T00:00:00.000Z"
+    },
+    {
+      "id": "npc-2",
+      "name": "Mainardus",
+      "role": "scout",
+      "home": "settlement-2",
+      "location": "Azmarin",
+      "reputation": 1,
+      "fame": 0,
+      "alive": true,
+      "class": "Elf",
+      "level": 10,
+      "xp": 0,
+      "spells": [
+        "Read Magic"
+      ],
+      "depth": {
+        "traits": [
+          "skeptical",
+          "romantic",
+          "naive"
+        ],
+        "background": "orphan-thief",
+        "motivation": "power",
+        "relationships": [
+          {
+            "targetId": "npc-9",
+            "targetName": "Eryalus",
+            "type": "mentor",
+            "strength": 1,
+            "history": "Saw potential where others saw nothing."
+          },
+          {
+            "targetId": "npc-12",
+            "targetName": "Molora",
+            "type": "enemy",
+            "strength": 2,
+            "history": "Only one of them can have what they both want."
+          },
+          {
+            "targetId": "npc-5",
+            "targetName": "Ilene",
+            "type": "ally",
+            "strength": 5,
+            "history": "Survived a dangerous journey together."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Eadmund",
+            "type": "lover",
+            "strength": 3,
+            "history": "Met under strange circumstances; love was stranger still."
+          },
+          {
+            "targetId": "npc-15",
+            "targetName": "Gawyne",
+            "type": "lover",
+            "strength": 1,
+            "history": "Some say the affair still smolders."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "trusts no one who smiles too easily",
+          "fears deep water",
+          "speaks in proverbs"
+        ]
+      },
+      "age": 59,
+      "title": "Woods-Guide",
+      "appearance": "a limp from an old wound",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 35,
+          "description": "Establish a seat of power"
+        },
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 6,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-2",
+      "birthDate": "1974-01-14T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-3",
+      "name": "Cybele",
+      "role": "guard",
+      "home": "settlement-1",
+      "location": "Windleigh",
+      "reputation": -3,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 1,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "loyal",
+          "charitable",
+          "ambitious"
+        ],
+        "background": "failed-merchant",
+        "motivation": "justice",
+        "relationships": [
+          {
+            "targetId": "npc-16",
+            "targetName": "Yllaria",
+            "type": "ally",
+            "strength": 1,
+            "history": "Owe each other debts that gold cannot repay."
+          },
+          {
+            "targetId": "npc-4",
+            "targetName": "Hans-Ruedi",
+            "type": "debtor",
+            "strength": 4,
+            "history": "The debt was financial; the cost was higher."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Eadmund",
+            "type": "creditor",
+            "strength": 1,
+            "history": "Borrowed gold at the worst possible moment."
+          },
+          {
+            "targetId": "npc-14",
+            "targetName": "Irantzu",
+            "type": "enemy",
+            "strength": 5,
+            "history": "Only one of them can have what they both want."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "fears deep water",
+          "hums old war songs",
+          "tells the same three stories"
+        ]
+      },
+      "age": 26,
+      "title": "Sergeant",
+      "appearance": "ink-stained fingers of a scholar",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1979-01-13T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-4",
+      "name": "Hans-Ruedi",
+      "role": "laborer",
+      "home": "settlement-3",
+      "location": "Minasfeld",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Dwarf",
+      "level": 11,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "skeptical",
+          "cunning"
+        ],
+        "background": "guild-dropout",
+        "motivation": "duty",
+        "relationships": [
+          {
+            "targetId": "npc-0",
+            "targetName": "Peli",
+            "type": "mentor",
+            "strength": 2,
+            "history": "The most promising pupil in years."
+          },
+          {
+            "targetId": "npc-3",
+            "targetName": "Cybele",
+            "type": "creditor",
+            "strength": 4,
+            "history": "The debt was financial; the cost was higher."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Eadmund",
+            "type": "student",
+            "strength": 5,
+            "history": "Still learning, still surprising."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "hums old war songs",
+          "sleeps with a blade in hand"
+        ]
+      },
+      "age": 22,
+      "title": "Dockhand",
+      "appearance": "calluses of a lifetime of sword work",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 48,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "birthDate": "1974-01-14T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-11",
+      "marriedAt": "2008-01-06T00:00:00.000Z"
+    },
+    {
+      "id": "npc-5",
+      "name": "Ilene",
+      "role": "bard",
+      "home": "settlement-1",
+      "location": "Windleigh",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 9,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "pious",
+          "romantic"
+        ],
+        "background": "farmhand-turned-guard",
+        "motivation": "home",
+        "relationships": [
+          {
+            "targetId": "npc-2",
+            "targetName": "Mainardus",
+            "type": "ally",
+            "strength": 5,
+            "history": "Survived a dangerous journey together."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "laughs at inappropriate moments",
+          "always wears a lucky charm",
+          "refuses to eat meat"
+        ]
+      },
+      "age": 57,
+      "title": "Rhapsode",
+      "appearance": "the cautious movements of one used to danger",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 40,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "birthDate": "1996-01-09T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-7",
+      "marriedAt": "2018-01-03T00:00:00.000Z"
+    },
+    {
+      "id": "npc-6",
+      "name": "Katixa",
+      "role": "guard",
+      "home": "settlement-4",
+      "location": "Myrrka",
+      "reputation": -2,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 9,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "loyal",
+          "greedy",
+          "cunning"
+        ],
+        "background": "foreign-exile",
+        "motivation": "power",
+        "relationships": [
+          {
+            "targetId": "npc-3",
+            "targetName": "Cybele",
+            "type": "debtor",
+            "strength": 5,
+            "history": "Interest compounds, and so does resentment."
+          },
+          {
+            "targetId": "npc-14",
+            "targetName": "Irantzu",
+            "type": "enemy",
+            "strength": 5,
+            "history": "Only one of them can have what they both want."
+          },
+          {
+            "targetId": "npc-8",
+            "targetName": "Emlyn",
+            "type": "creditor",
+            "strength": 1,
+            "history": "Expects repayment, with interest."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "speaks to animals as if they understand",
+          "refuses to eat meat"
+        ]
+      },
+      "age": 29,
+      "title": "Sergeant",
+      "appearance": "the bearing of one who has worn armor",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 20,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "bloodlineId": "bloodline-1767559263387-5794",
+      "birthDate": "1992-01-10T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-7",
+      "name": "Eurydamus",
+      "role": "merchant",
+      "home": "settlement-1",
+      "location": "Windleigh",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 8,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "cautious",
+          "greedy"
+        ],
+        "background": "retired-adventurer",
+        "motivation": "duty",
+        "secretMotivation": "power",
+        "relationships": [
+          {
+            "targetId": "npc-14",
+            "targetName": "Irantzu",
+            "type": "mentor",
+            "strength": 1,
+            "history": "The old ways, passed down in secret."
+          },
+          {
+            "targetId": "npc-12",
+            "targetName": "Molora",
+            "type": "student",
+            "strength": 5,
+            "history": "Saw potential where others saw nothing."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "keeps a journal in cipher",
+          "always wears a lucky charm"
+        ]
+      },
+      "age": 35,
+      "title": "Master",
+      "appearance": "a nervous tic in the left eye",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-2",
+      "bloodlineId": "bloodline-1767559263387-6626",
+      "birthDate": "1996-01-09T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-5",
+      "marriedAt": "2018-01-03T00:00:00.000Z"
+    },
+    {
+      "id": "npc-8",
+      "name": "Emlyn",
+      "role": "scout",
+      "home": "settlement-3",
+      "location": "Minasfeld",
+      "reputation": -1,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 2,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "pious",
+          "cowardly"
+        ],
+        "background": "retired-adventurer",
+        "motivation": "home",
+        "secretMotivation": "knowledge",
+        "relationships": [
+          {
+            "targetId": "npc-6",
+            "targetName": "Katixa",
+            "type": "debtor",
+            "strength": 1,
+            "history": "Expects repayment, with interest."
+          },
+          {
+            "targetId": "npc-11",
+            "targetName": "Wantelien",
+            "type": "rival",
+            "strength": 3,
+            "history": "Competed for the same position in Minasfeld."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "quotes ancient philosophers",
+          "always wears a lucky charm",
+          "always knows which way is north"
+        ]
+      },
+      "age": 41,
+      "title": "Ranger",
+      "appearance": "a brand mark, poorly concealed",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "birthDate": "1985-01-11T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-1",
+      "marriedAt": "2006-01-06T00:00:00.000Z"
+    },
+    {
+      "id": "npc-9",
+      "name": "Eryalus",
+      "role": "laborer",
+      "home": "settlement-5",
+      "location": "Greenmist",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Dwarf",
+      "level": 10,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "cowardly",
+          "pragmatic"
+        ],
+        "background": "guild-dropout",
+        "motivation": "duty",
+        "relationships": [
+          {
+            "targetId": "npc-14",
+            "targetName": "Irantzu",
+            "type": "mentor",
+            "strength": 1,
+            "history": "Taught them everything worth knowing."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "prays before every meal"
+        ]
+      },
+      "age": 29,
+      "title": "Dockhand",
+      "appearance": "ink-stained fingers of a scholar",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 40,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1986-01-11T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-10",
+      "marriedAt": "2023-01-02T00:00:00.000Z"
+    },
+    {
+      "id": "npc-10",
+      "name": "Eadmund",
+      "role": "laborer",
+      "home": "settlement-5",
+      "location": "Greenmist",
+      "reputation": -3,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 6,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "greedy",
+          "cruel"
+        ],
+        "background": "guild-dropout",
+        "motivation": "freedom",
+        "relationships": [
+          {
+            "targetId": "npc-1",
+            "targetName": "Theodric",
+            "type": "student",
+            "strength": 4,
+            "history": "Saw potential where others saw nothing."
+          },
+          {
+            "targetId": "npc-4",
+            "targetName": "Hans-Ruedi",
+            "type": "mentor",
+            "strength": 5,
+            "history": "Still learning, still surprising."
+          },
+          {
+            "targetId": "npc-16",
+            "targetName": "Yllaria",
+            "type": "betrayer",
+            "strength": 4,
+            "history": "The knife came from behind, as always."
+          },
+          {
+            "targetId": "npc-2",
+            "targetName": "Mainardus",
+            "type": "lover",
+            "strength": 3,
+            "history": "Met under strange circumstances; love was stranger still."
+          },
+          {
+            "targetId": "npc-3",
+            "targetName": "Cybele",
+            "type": "debtor",
+            "strength": 1,
+            "history": "Borrowed gold at the worst possible moment."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "speaks to animals as if they understand",
+          "trusts no one who smiles too easily",
+          "never sits with back to door"
+        ]
+      },
+      "age": 29,
+      "title": "Porter",
+      "appearance": "a limp from an old wound",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "bloodlineId": "bloodline-1767559263387-2227",
+      "birthDate": "1970-01-15T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-9",
+      "marriedAt": "2023-01-02T00:00:00.000Z"
+    },
+    {
+      "id": "npc-11",
+      "name": "Wantelien",
+      "role": "bard",
+      "home": "settlement-3",
+      "location": "Minasfeld",
+      "reputation": 1,
+      "fame": 0,
+      "alive": true,
+      "class": "Magic-User",
+      "level": 9,
+      "xp": 0,
+      "spells": [
+        "Read Magic"
+      ],
+      "depth": {
+        "traits": [
+          "honorable",
+          "ambitious"
+        ],
+        "background": "failed-merchant",
+        "motivation": "fame",
+        "relationships": [
+          {
+            "targetId": "npc-16",
+            "targetName": "Yllaria",
+            "type": "creditor",
+            "strength": 4,
+            "history": "Expects repayment, with interest."
+          },
+          {
+            "targetId": "npc-2",
+            "targetName": "Mainardus",
+            "type": "enemy",
+            "strength": 3,
+            "history": "Blood spilled between them in Minasfeld."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "trusts no one who smiles too easily",
+          "speaks in proverbs",
+          "tells the same three stories"
+        ]
+      },
+      "age": 65,
+      "title": "Cantor",
+      "appearance": "a limp from an old wound",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 8,
+          "description": "Establish a seat of power"
+        },
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 7,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1968-01-16T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-4",
+      "marriedAt": "2008-01-06T00:00:00.000Z"
+    },
+    {
+      "id": "npc-12",
+      "name": "Molora",
+      "role": "scout",
+      "home": "settlement-4",
+      "location": "Myrrka",
+      "reputation": -3,
+      "fame": 0,
+      "alive": true,
+      "class": "Halfling",
+      "level": 1,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "brave",
+          "skeptical",
+          "pious"
+        ],
+        "background": "escaped-slave",
+        "motivation": "survival",
+        "relationships": [
+          {
+            "targetId": "npc-7",
+            "targetName": "Eurydamus",
+            "type": "mentor",
+            "strength": 5,
+            "history": "Saw potential where others saw nothing."
+          },
+          {
+            "targetId": "npc-14",
+            "targetName": "Irantzu",
+            "type": "creditor",
+            "strength": 1,
+            "history": "Gold is owed, and gold will be had."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "keeps a journal in cipher",
+          "never reveals their true name",
+          "laughs at inappropriate moments"
+        ]
+      },
+      "age": 47,
+      "title": "Woods-Guide",
+      "appearance": "ink-stained fingers of a scholar",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1985-01-11T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-13",
+      "name": "Izot",
+      "role": "bard",
+      "home": "settlement-0",
+      "location": "Belfos",
+      "reputation": 1,
+      "fame": 0,
+      "alive": true,
+      "class": "Magic-User",
+      "level": 6,
+      "xp": 0,
+      "spells": [
+        "Read Magic"
+      ],
+      "depth": {
+        "traits": [
+          "romantic",
+          "cunning",
+          "charitable"
+        ],
+        "background": "guild-dropout",
+        "motivation": "love",
+        "relationships": [
+          {
+            "targetId": "npc-1",
+            "targetName": "Theodric",
+            "type": "student",
+            "strength": 3,
+            "history": "The most promising pupil in years."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "never sits with back to door"
+        ]
+      },
+      "age": 20,
+      "title": "Cantor",
+      "appearance": "a limp from an old wound",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 27,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "bloodlineId": "bloodline-1767559263387-4533",
+      "birthDate": "1973-01-14T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-14",
+      "name": "Irantzu",
+      "role": "guard",
+      "home": "settlement-4",
+      "location": "Myrrka",
+      "reputation": -3,
+      "fame": 0,
+      "alive": true,
+      "class": "Halfling",
+      "level": 8,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "cunning",
+          "brave"
+        ],
+        "background": "reformed-bandit",
+        "motivation": "duty",
+        "relationships": [
+          {
+            "targetId": "npc-6",
+            "targetName": "Katixa",
+            "type": "enemy",
+            "strength": 5,
+            "history": "Only one of them can have what they both want."
+          },
+          {
+            "targetId": "npc-7",
+            "targetName": "Eurydamus",
+            "type": "student",
+            "strength": 1,
+            "history": "The old ways, passed down in secret."
+          },
+          {
+            "targetId": "npc-9",
+            "targetName": "Eryalus",
+            "type": "student",
+            "strength": 1,
+            "history": "Taught them everything worth knowing."
+          },
+          {
+            "targetId": "npc-12",
+            "targetName": "Molora",
+            "type": "debtor",
+            "strength": 1,
+            "history": "Gold is owed, and gold will be had."
+          },
+          {
+            "targetId": "npc-3",
+            "targetName": "Cybele",
+            "type": "enemy",
+            "strength": 5,
+            "history": "Only one of them can have what they both want."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "never reveals their true name",
+          "quotes ancient philosophers"
+        ]
+      },
+      "age": 58,
+      "title": "Watch-Captain",
+      "appearance": "elaborate tattoos visible at wrist and neck",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "bloodlineId": "bloodline-1767559263387-6311",
+      "birthDate": "1987-01-11T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-15",
+      "name": "Gawyne",
+      "role": "bard",
+      "home": "settlement-4",
+      "location": "Myrrka",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 11,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "pious",
+          "honorable",
+          "brave"
+        ],
+        "background": "guild-dropout",
+        "motivation": "duty",
+        "secretMotivation": "redemption",
+        "relationships": [
+          {
+            "targetId": "npc-2",
+            "targetName": "Mainardus",
+            "type": "lover",
+            "strength": 1,
+            "history": "Some say the affair still smolders."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "laughs at inappropriate moments",
+          "speaks in proverbs"
+        ]
+      },
+      "age": 30,
+      "title": "Rhapsode",
+      "appearance": "ink-stained fingers of a scholar",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 48,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "bloodlineId": "bloodline-1767559263387-4227",
+      "birthDate": "1975-01-14T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-16",
+      "name": "Yllaria",
+      "role": "merchant",
+      "home": "settlement-5",
+      "location": "Greenmist",
+      "reputation": 1,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 3,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "cautious",
+          "ambitious",
+          "cruel"
+        ],
+        "background": "failed-merchant",
+        "motivation": "duty",
+        "relationships": [
+          {
+            "targetId": "npc-3",
+            "targetName": "Cybele",
+            "type": "ally",
+            "strength": 1,
+            "history": "Owe each other debts that gold cannot repay."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Eadmund",
+            "type": "betrayed",
+            "strength": 4,
+            "history": "The knife came from behind, as always."
+          },
+          {
+            "targetId": "npc-11",
+            "targetName": "Wantelien",
+            "type": "debtor",
+            "strength": 4,
+            "history": "Expects repayment, with interest."
+          },
+          {
+            "targetId": "npc-4",
+            "targetName": "Hans-Ruedi",
+            "type": "debtor",
+            "strength": 1,
+            "history": "Interest compounds, and so does resentment."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "always knows which way is north"
+        ]
+      },
+      "age": 38,
+      "title": "Master",
+      "appearance": "surprisingly young features",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "2007-01-06T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    }
+  ],
+  "factions": [
+    {
+      "id": "faction-0",
+      "name": "The Storm Guild",
+      "attitude": {},
+      "wealth": 110,
+      "focus": "trade"
+    },
+    {
+      "id": "faction-1",
+      "name": "Sons of the Wolf",
+      "attitude": {},
+      "wealth": 91,
+      "focus": "martial"
+    },
+    {
+      "id": "faction-2",
+      "name": "Order of the Hawk",
+      "attitude": {},
+      "wealth": 65,
+      "focus": "pious"
+    },
+    {
+      "id": "faction-3",
+      "name": "Circle of the Dawn",
+      "attitude": {},
+      "wealth": 101,
+      "focus": "arcane"
+    },
+    {
+      "id": "faction-4",
+      "name": "The Hawk Compact",
+      "attitude": {},
+      "wealth": 92,
+      "focus": "trade"
+    }
+  ],
+  "caravans": [
+    {
+      "id": "caravan-0",
+      "name": "The Wandering Merchants",
+      "route": [
+        "settlement-0",
+        "settlement-4"
+      ],
+      "goods": [
+        "livestock"
+      ],
+      "location": "Belfos",
+      "progressHours": 0,
+      "direction": "outbound",
+      "escorts": [],
+      "factionId": "faction-2"
+    },
+    {
+      "id": "caravan-1",
+      "name": "The New Caravan",
+      "route": [
+        "settlement-0",
+        "settlement-3"
+      ],
+      "goods": [
+        "grain",
+        "textiles"
+      ],
+      "location": "Belfos",
+      "progressHours": 0,
+      "direction": "outbound",
+      "escorts": []
+    },
+    {
+      "id": "caravan-2",
+      "name": "Northbeach Traders",
+      "route": [
+        "settlement-1",
+        "settlement-0"
+      ],
+      "goods": [
+        "grain",
+        "textiles"
+      ],
+      "location": "Windleigh",
+      "progressHours": 0,
+      "direction": "outbound",
+      "escorts": []
+    },
+    {
+      "id": "caravan-3",
+      "name": "Beroldus's Wagons",
+      "route": [
+        "settlement-0",
+        "settlement-5"
+      ],
+      "goods": [
+        "salt",
+        "fish"
+      ],
+      "location": "Belfos",
+      "progressHours": 0,
+      "direction": "outbound",
+      "escorts": [],
+      "factionId": "faction-3"
+    },
+    {
+      "id": "caravan-4",
+      "name": "The Wandering Peddlers",
+      "route": [
+        "settlement-0",
+        "settlement-2"
+      ],
+      "goods": [
+        "grain",
+        "textiles"
+      ],
+      "location": "Belfos",
+      "progressHours": 0,
+      "direction": "outbound",
+      "escorts": []
+    }
+  ],
+  "strongholds": [],
+  "armies": [],
+  "landmarks": [],
+  "ruins": [],
+  "nexuses": [
+    {
+      "id": "nexus-0",
+      "name": "Whispering Nexus of Life",
+      "location": {
+        "q": 4,
+        "r": 9
+      },
+      "powerType": "Arcane",
+      "intensity": 9
+    },
+    {
+      "id": "nexus-1",
+      "name": "Golden Nexus of Stars",
+      "location": {
+        "q": 8,
+        "r": 8
+      },
+      "powerType": "Primal",
+      "intensity": 8
+    },
+    {
+      "id": "nexus-2",
+      "name": "Whispering Nexus of Stars",
+      "location": {
+        "q": 0,
+        "r": 6
+      },
+      "powerType": "Arcane",
+      "intensity": 8
+    },
+    {
+      "id": "nexus-3",
+      "name": "Whispering Nexus of Time",
+      "location": {
+        "q": 2,
+        "r": 0
+      },
+      "powerType": "Shadow",
+      "intensity": 5
+    },
+    {
+      "id": "nexus-4",
+      "name": "Shattered Nexus of Life",
+      "location": {
+        "q": 0,
+        "r": 2
+      },
+      "powerType": "Arcane",
+      "intensity": 6
+    },
+    {
+      "id": "nexus-5",
+      "name": "Deep Nexus of Void",
+      "location": {
+        "q": 0,
+        "r": 8
+      },
+      "powerType": "Divine",
+      "intensity": 7
+    },
+    {
+      "id": "nexus-6",
+      "name": "Whispering Nexus of Time",
+      "location": {
+        "q": 1,
+        "r": 6
+      },
+      "powerType": "Divine",
+      "intensity": 9
+    }
+  ],
+  "mercenaries": [
+    {
+      "id": "merc-0",
+      "name": "The Iron Brotherhood",
+      "captainId": "npc-merc-captain-0",
+      "location": "Myrrka",
+      "size": 143,
+      "quality": 2,
+      "monthlyRate": 198,
+      "loyalty": 8
+    },
+    {
+      "id": "merc-1",
+      "name": "Silver Shields",
+      "captainId": "npc-merc-captain-1",
+      "location": "Azmarin",
+      "size": 84,
+      "quality": 6,
+      "monthlyRate": 208,
+      "loyalty": 9
+    },
+    {
+      "id": "merc-2",
+      "name": "The Golden Lions",
+      "captainId": "npc-merc-captain-2",
+      "location": "Azmarin",
+      "size": 129,
+      "quality": 3,
+      "monthlyRate": 104,
+      "loyalty": 9
+    },
+    {
+      "id": "merc-3",
+      "name": "Black Boars",
+      "captainId": "npc-merc-captain-3",
+      "location": "Belfos",
+      "size": 55,
+      "quality": 6,
+      "monthlyRate": 184,
+      "loyalty": 7
+    },
+    {
+      "id": "merc-4",
+      "name": "Red Ravagers",
+      "captainId": "npc-merc-captain-4",
+      "location": "Myrrka",
+      "size": 184,
+      "quality": 4,
+      "monthlyRate": 273,
+      "loyalty": 8
+    },
+    {
+      "id": "merc-5",
+      "name": "The Free Company",
+      "captainId": "npc-merc-captain-5",
+      "location": "Windleigh",
+      "size": 124,
+      "quality": 4,
+      "monthlyRate": 264,
+      "loyalty": 7
+    }
+  ],
+  "startedAt": "2025-01-01T00:00:00.000Z"
+}

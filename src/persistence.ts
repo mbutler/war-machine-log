@@ -91,6 +91,10 @@ export async function loadWorld(): Promise<WorldState | null> {
       parsed.lastTickAt = new Date(parsed.startedAt);
       console.log(`⏰ No lastTickAt found - using startedAt for catch-up baseline`);
     }
+    // Rehydrate lastRealTickAt if present (for 1:1 catch-up)
+    if ((parsed as any).lastRealTickAt) {
+      (parsed as any).lastRealTickAt = new Date((parsed as any).lastRealTickAt);
+    }
     
   // Rehydrate story thread dates and add enhanced fields
   if (parsed.storyThreads) {
