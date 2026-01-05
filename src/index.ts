@@ -14,12 +14,13 @@ import { LogEntry, TickEvent, EnhancedWorldState } from './types.ts';
 import { createInitialWorld, isCoastalHex } from './world.ts';
 import { updateTravel, maybeStartTravel } from './travel.ts';
 import { loadWorld, saveWorld } from './persistence.ts';
+import { stat } from 'fs/promises';
 import { dailyTownTick } from './town.ts';
 import { advanceCaravans } from './trade.ts';
 
 // Enhanced systems
 import { processConsequences, setConsequenceQueue, getConsequenceQueue, analyzeEventForConsequences } from './consequences.ts';
-import { CalendarState, getCalendarFromDate, dailyCalendarTick, generateWeather, getSeason, formatDate } from './calendar.ts';
+import { CalendarState, getCalendarFromDate, dailyCalendarTick, generateWeather, getSeason, formatDate, getActiveHoliday } from './calendar.ts';
 import { Antagonist, seedAntagonists, antagonistAct, introduceAntagonist } from './antagonists.ts';
 import { enhancedEncounter, encounterSign } from './encounters-enhanced.ts';
 import { StoryThread, tickStories, checkForStorySpawn } from './stories.ts';
@@ -57,6 +58,48 @@ let calendar: CalendarState;
 let antagonists: Antagonist[] = [];
 let storyThreads: StoryThread[] = [];
 let legendaryState: LegendaryState = createLegendaryState();
+let worldFileModTime: number | null = null;
+
+// Check if world.json has been modified externally
+async function checkWorldFileModified(): Promise<boolean> {
+  if (worldFileModTime === null) return false;
+  try {
+    const stats = await stat('world.json');
+    return stats.mtime.getTime() > worldFileModTime;
+  } catch (e) {
+    return false;
+  }
+}
+
+// Reload world if externally modified
+async function reloadWorldIfModified(): Promise<boolean> {
+  if (await checkWorldFileModified()) {
+    console.log('🔄 World.json modified externally, reloading...');
+    const loaded = await loadWorld();
+    if (loaded) {
+      world = loaded as EnhancedWorldState;
+      // Update our tracking time
+      try {
+        const stats = await stat('world.json');
+        worldFileModTime = stats.mtime.getTime();
+      } catch (e) {}
+      // Reinitialize systems from loaded world
+      calendar = getCalendarFromDate(world.lastTickAt || config.startWorldTime);
+      antagonists = world.antagonists || [];
+      storyThreads = world.storyThreads || [];
+      legendaryState = (world as any).legendaryState || createLegendaryState();
+      retainerRoster = world.retainerRoster || createRetainerRoster();
+      guildState = world.guildState || createGuildState();
+      ecologyState = world.ecologyState || createEcologyState();
+      dynastyState = world.dynastyState || createDynastyState();
+      treasureState = world.treasureState || createTreasureState();
+      navalState = world.navalState || { ships: [], seaRoutes: [], pirates: [], recentShipwrecks: [], portActivity: {}, distantLands: [], distantFigures: [] };
+      console.log('✅ World reloaded successfully');
+      return true;
+    }
+  }
+  return false;
+}
 
 // New systems state
 let retainerRoster: RetainerRoster = createRetainerRoster();
@@ -146,13 +189,26 @@ async function log(entry: Omit<LogEntry, 'realTime'>) {
 }
 
 async function initWorld(): Promise<void> {
+  // Always try to load existing world first
   const loaded = await loadWorld();
   if (loaded) {
     world = loaded as EnhancedWorldState;
+    // Track when we loaded the world file to detect external changes
+    try {
+      const stats = await stat('world.json');
+      worldFileModTime = stats.mtime.getTime();
+    } catch (e) {
+      // Ignore stat errors
+    }
 
     // Use world's seed if it exists (for existing worlds)
-    // CRITICAL: Always use world.seed if it exists, never overwrite it with config.seed
-    if (world.seed) {
+    // Allow override with FORCE_SEED environment variable for admin purposes
+    const forceSeed = process.env.FORCE_SEED;
+    if (forceSeed && forceSeed !== world.seed) {
+      console.log(`🔄 FORCE SEED: Overriding world seed "${world.seed}" with "${forceSeed}"`);
+      world.seed = forceSeed;
+      rng = makeRandom(forceSeed);
+    } else if (world.seed) {
       if (world.seed !== config.seed) {
         console.log(`🔄 Using world seed: "${world.seed}" (config had: "${config.seed}")`);
       }
@@ -214,7 +270,7 @@ async function initWorld(): Promise<void> {
 
     // Initialize calendar
     calendar = getCalendarFromDate(config.startWorldTime);
-    calendar.weather = generateWeather(rng, getSeason(calendar.month));
+    calendar.weather = generateWeather(rng, getSeason(config.startWorldTime.getUTCMonth()));
 
     // Seed initial antagonists
     antagonists = seedAntagonists(rng, world);
@@ -236,7 +292,7 @@ async function initWorld(): Promise<void> {
     await log({
       category: 'system',
       summary: `The chronicle begins: ${world.archetype}`,
-      details: `${formatDate(calendar)}. The simulation awakens in an era known as the ${world.archetype}.`,
+      details: `${formatDate(config.startWorldTime)}. The simulation awakens in an era known as the ${world.archetype}.`,
       worldTime: config.startWorldTime,
       seed: world.seed ?? config.seed,
     });
@@ -267,8 +323,11 @@ async function initWorld(): Promise<void> {
 }
 
 // Hourly tick - travel, encounters, caravans
-function onHourTick(event: TickEvent): void {
+async function onHourTick(event: TickEvent): Promise<void> {
   if (!initialized) return;
+
+  // Check if world.json was modified externally (e.g., uploaded new version)
+  await reloadWorldIfModified();
 
   void (async () => {
     // Heartbeat - ensures at least one log per hour for health monitoring
@@ -279,7 +338,7 @@ function onHourTick(event: TickEvent): void {
       const idleParties = world.parties.filter(p => p.status === 'idle').length;
       await logger.log({
         category: 'system',
-        summary: `The world turns (${formatDate(calendar)})`,
+        summary: `The world turns (${formatDate(event.worldTime)})`,
         details: `${activeParties} parties traveling, ${idleParties} resting. ${antagonists.filter(a => a.alive).length} threats lurk.`,
         worldTime: event.worldTime,
         realTime: new Date(),
@@ -501,7 +560,7 @@ function onDayTick(event: TickEvent): void {
     // Periodic cleanup to prevent memory growth (runs daily)
     pruneOldData(event.worldTime);
     
-    // Daily calendar update (weather, festivals, moon phases)
+    // Daily calendar update (weather, holidays, moon phases)
     const { logs: calendarLogs, newCalendar } = dailyCalendarTick(world, rng, event.worldTime, calendar);
     calendar = newCalendar;
     for (const entry of calendarLogs) await log(entry);
@@ -547,7 +606,7 @@ function onDayTick(event: TickEvent): void {
     for (const entry of legendaryLogs) await log(entry);
     
     // Naval daily - Ship departures, pirate raids, sea monsters
-    const navalDailyLogs = tickNavalDaily(navalState, world, rng, event.worldTime, calendar.weather, getSeason(calendar.month));
+    const navalDailyLogs = tickNavalDaily(navalState, world, rng, event.worldTime, calendar.weather, getSeason(event.worldTime.getUTCMonth()));
     for (const l of navalDailyLogs) await log(l);
 
     // Save state (including legendary state)
@@ -879,7 +938,7 @@ async function runBatchMode(days: number): Promise<void> {
       const legendaryLogs = maybeLegendarySpike(rng, world, worldTime, legendaryState);
       for (const entry of legendaryLogs) await countingLog(entry);
       
-      const navalDailyLogs = tickNavalDaily(navalState, world, rng, worldTime, calendar.weather, getSeason(calendar.month));
+      const navalDailyLogs = tickNavalDaily(navalState, world, rng, worldTime, calendar.weather, getSeason(worldTime.getUTCMonth()));
       for (const l of navalDailyLogs) await countingLog(l);
       
       // Progress indicator every 30 days
@@ -905,10 +964,9 @@ async function runBatchMode(days: number): Promise<void> {
   console.log(`\nOutput: ${config.logDir}/events.log\n`);
   
   // Save final state - for 1:1 time, set world time to (startWorldTime + days)
-  // and set lastRealTickAt to now so scheduler continues from here
   const finalWorldTime = new Date(config.startWorldTime.getTime() + days * 24 * 60 * 60 * 1000);
   world.lastTickAt = finalWorldTime;
-  (world as any).lastRealTickAt = new Date(); // Real time when batch completed
+  // Don't set lastRealTickAt - let real-time simulation handle time sync
   world.storyThreads = storyThreads as EnhancedWorldState['storyThreads'];
   world.antagonists = antagonists as EnhancedWorldState['antagonists'];
   await saveWorld(world);
@@ -947,7 +1005,7 @@ async function main() {
   process.stdout.write(
     `\n╔${'═'.repeat(64)}╗\n` +
     pad('BECMI Real-Time Simulator') + '\n' +
-    pad(formatDate(calendar)) + '\n' +
+    pad(formatDate(config.startWorldTime)) + '\n' +
     `╠${'═'.repeat(64)}╣\n` +
     pad(`Seed: ${world.seed ?? config.seed}`) + '\n' +
     pad(`Time Scale: ${config.timeScale}x (turn every ${turnMs}ms)`) + '\n' +

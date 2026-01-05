@@ -1,0 +1,446 @@
+📦 Migrating world from schema v1 to v2...
+✓ World loaded successfully (schema v2)
+
+⏰ Catching up 4d 22h of missed time (708 turns)...
+   Last world time: 2026-01-05T00:00:00.000Z
+   Target world time: 2026-01-09T22:00:03.194Z
+2026-01-05T01:00:00.000Z [road] @ Belfos The Wandering Merchants makes camp under escort — Road to Myrrka (road) quiet tonight.
+2026-01-05T01:00:00.000Z [town] @ Belfos Rumor in Belfos — The Wandering Merchants of Order of the Hawk lost goods on the road; prices may shift.
+2026-01-05T01:00:00.000Z [town] @ Greenmist Beroldus's Wagons arrives at Greenmist — Bringing salt/fish from Belfos with escorts under banner of Circle of the Dawn.
+2026-01-05T01:00:00.000Z [town] @ Greenmist Mainardus arrives in Greenmist — scout from Azmarin
+2026-01-05T01:00:00.000Z [town] @ Greenmist Eurydamus arrives in Greenmist — merchant from Windleigh
+2026-01-05T01:00:00.000Z [faction] @ Myrrka [Mendia the Pallid] Mendia conducts a dark ritual — Strange lights in the sky. Animals flee.
+2026-01-05T02:00:00.000Z [road] @ Windleigh Northbeach Traders makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-05T02:00:00.000Z [faction] @ Myrrka [Engelwara] The Old Darkness Returns: Strange creatures appear at night. — Engelwara races to prevent catastrophe.
+2026-01-05T02:00:00.000Z [faction] @ Greenmist [Parthenius's Band, orc raiders] Fire in Greenmist: Raiders demand tribute to spare settlements. — Parthenius's Band strikes fast at Greenmist and withdraws before retaliation.
+2026-01-05T03:00:00.000Z [road] @ Greenmist [Parthenius's Band, yeti] yeti follow Parthenius's Band at a safe distance — In the cold hours before dawn the sharp scent of juniper hung in the air. Countless aggressive yeti, blocking the path. They retreated in good order, minimizing losses.
+2026-01-05T03:00:00.000Z [road] @ Belfos [The Wandering Merchants, Sons of the Wolf] The Wandering Merchants is raided! — Sons of the Wolf forces have intercepted the caravan en route to Myrrka.
+2026-01-05T03:00:00.000Z [town] @ Belfos Trade routes near Belfos grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-05T03:00:00.000Z [road] @ Greenmist Beroldus's Wagons makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-05T04:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — The ruins of a dwarven waystation, recently looted.
+2026-01-05T04:00:00.000Z [road] @ Greenmist [Parthenius's Band, giant eagles] giant eagles block the path but allow passage — As even the taverns fell silent the sharp scent of juniper hung in the air. The peaks gleam with eternal snow. A handful of shadow-cloaked giant eagles, apparently startled. A calculated withdrawal to more favorable ground.
+2026-01-05T04:00:00.000Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves completes rest — Ready to travel again.
+2026-01-05T04:00:00.000Z [road] @ Windleigh [Northbeach Traders, Sons of the Wolf] Northbeach Traders is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-05T04:00:00.000Z [town] @ Windleigh Trade routes near Windleigh grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-05T04:00:00.000Z [town] @ Belfos Word spreads in Belfos — Travelers speak of Mendia the Pallid. The roads grow dangerous.
+2026-01-05T04:00:00.000Z [road] @ Azmarin [The Grim Wolves, Mendia] The Grim Wolves tracks Mendia — Their quarry was last seen near Myrrka. The hunt continues.
+2026-01-05T05:00:00.000Z [road] @ Greenmist [Parthenius's Band, giant eagles] giant eagles set traps for unwary Parthenius's Band — As the world stirred from slumber A group of night-hunting giant eagles, apparently startled. They pressed their advantage until the enemy fled. The victors claim 10 coin worth of plunder.
+2026-01-05T06:00:00.000Z [system] The world turns (January 5th, 2026) — 1 parties traveling, 1 resting. 1 threats lurk.
+2026-01-05T07:00:00.000Z [road] @ Greenmist [Beroldus's Wagons, Sons of the Wolf] Beroldus's Wagons is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-05T07:00:00.000Z [town] @ Greenmist Trade routes near Greenmist grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-05T07:00:00.000Z [town] @ Belfos [Izot] Izot masters a new spell: Detect Magic — After weeks of intense study and meditation, the bard has unlocked new power.
+2026-01-05T07:00:00.000Z [town] @ Greenmist [Mainardus] Magical mist chokes Greenmist — A toxic green cloud, conjured by Mainardus, rolls through the streets. Panic ensues.
+2026-01-05T08:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — The ruins of a dwarven waystation, recently looted.
+2026-01-05T08:00:00.000Z [road] @ Azmarin [The Wandering Peddlers, Sons of the Wolf] The Wandering Peddlers is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-05T08:00:00.000Z [town] @ Azmarin Trade routes near Azmarin grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-05T09:00:00.000Z [road] @ Belfos The Wandering Merchants makes camp under escort — Road to Myrrka (road) quiet tonight.
+2026-01-05T09:00:00.000Z [road] @ Greenmist [Beroldus's Wagons, Sons of the Wolf] Beroldus's Wagons is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-05T09:00:00.000Z [town] @ Greenmist Trade routes near Greenmist grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-05T09:00:00.000Z [town] @ Myrrka [Molora, Irantzu] Molora demands repayment from Irantzu — The ledger must balance, one way or another. Amidst the growing danger in Myrrka, their creditor feels all the more pressing.
+2026-01-05T09:00:00.000Z [town] @ Greenmist [Mainardus] Magical mist chokes Greenmist — A toxic green cloud, conjured by Mainardus, rolls through the streets. Panic ensues.
+2026-01-05T10:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — Thieves struck near Windleigh. The roads grow dangerous.
+2026-01-05T10:00:00.000Z [faction] [The Storm Guild, Sons of the Wolf] The Storm Guild proposes marriage alliance with Sons of the Wolf — Envoys are sent. Dowries discussed. A political wedding could reshape alliances.
+2026-01-05T12:00:00.000Z [system] The world turns (January 5th, 2026) — 1 parties traveling, 1 resting. 1 threats lurk.
+2026-01-05T15:00:00.000Z [faction] @ Greenmist [Parthenius's Band] Blood on the Trail: A witness points the way. — Parthenius's Band stalks a dangerous quarry across the region.
+2026-01-05T15:00:00.000Z [faction] @ the region [Epistor] What Was Promised: Redemption occurs. — In the region, ancient bargains come due.
+2026-01-05T15:00:00.000Z [weather] @ Greenmist [Mainardus] Mainardus alters the weather — Through ancient incantations, the Elf calls forth snow over the region.
+2026-01-05T16:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot goblins and avoid notice — They detour carefully, leaving only faint tracks.
+2026-01-05T16:00:00.000Z [town] @ Minasfeld The New Caravan arrives at Minasfeld — Bringing grain/textiles from Belfos with escorts.
+2026-01-05T16:00:00.000Z [town] @ Minasfeld Cybele arrives in Minasfeld — guard from Windleigh
+2026-01-05T16:00:00.000Z [town] @ Minasfeld Wantelien arrives in Minasfeld — bard from Minasfeld
+⏰ Catch-up progress: 14% (100/708 turns)2026-01-05T17:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — The ruins of a dwarven waystation, recently looted.
+2026-01-05T17:00:00.000Z [road] @ Windleigh [Northbeach Traders, Sons of the Wolf] Northbeach Traders is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-05T17:00:00.000Z [town] @ Windleigh Trade routes near Windleigh grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-05T17:00:00.000Z [town] @ Windleigh Word spreads in Windleigh — A valuable shipment was lost near Azmarin.
+2026-01-05T18:00:00.000Z [system] The world turns (January 5th, 2026) — 1 parties traveling, 1 resting. 1 threats lurk.
+2026-01-05T20:00:00.000Z [road] @ Greenmist [Parthenius's Band, goblins] goblins mark their territory with warning signs — With ale flowing in taprooms Several sneaky goblins, carrying plunder. Strategic retreat preserved their strength.
+2026-01-05T20:00:00.000Z [town] @ Azmarin Word spreads in Azmarin — Thieves struck near Greenmist. The roads grow dangerous.
+2026-01-05T22:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — The ruins of a dwarven waystation, recently looted.
+2026-01-05T22:00:00.000Z [road] @ Greenmist [Parthenius's Band, Féderyc's orc raiders] Féderyc's orc raiders follow Parthenius's Band at a safe distance — Under an indigo sky wind chimes made of bone. Fresh snow makes every path treacherous. Many battle-scarred orc raiders, dragging captives. They left the field but not their dignity.
+2026-01-05T22:00:00.000Z [road] @ Minasfeld [The New Caravan, Sons of the Wolf] The New Caravan is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-05T22:00:00.000Z [town] @ Minasfeld Trade routes near Minasfeld grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-05T23:00:00.000Z [road] @ Greenmist Beroldus's Wagons makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-06T00:00:00.000Z [system] The world turns (January 6th, 2026) — 1 parties traveling, 1 resting. 1 threats lurk.
+2026-01-06T00:00:00.000Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves departs Azmarin — Bound for Myrrka across hills (~30 miles).
+2026-01-06T00:00:00.000Z [road] @ Windleigh [Northbeach Traders, Sons of the Wolf] Northbeach Traders is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-06T00:00:00.000Z [town] @ Belfos Peli seen in Belfos markets — priest haggles and swaps news.
+2026-01-06T00:00:00.000Z [town] @ Windleigh Trade routes near Windleigh grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-06T00:00:00.000Z [town] @ Belfos Izot seen in Belfos markets — bard haggles and swaps news.
+2026-01-06T00:00:00.000Z [town] @ Belfos Belfos tempers frayed — Surplus textiles and shortages in ore.
+2026-01-06T00:00:00.000Z [town] @ Azmarin Word spreads in Azmarin — Thieves struck near Greenmist. The roads grow dangerous.
+2026-01-06T00:00:00.000Z [town] @ Belfos Rumor in Belfos — The Storm Guild watches the markets quietly.
+2026-01-06T00:00:00.000Z [town] @ Minasfeld [Wantelien] Construction continues on Wantelien's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2026-01-06T00:00:00.000Z [town] @ Windleigh Windleigh folk watchful — Surplus grain/timber/ore/fish and shortages in textiles/salt.
+2026-01-06T00:00:00.000Z [town] @ Windleigh Camp Fever fades in Windleigh — The worst of the sickness has passed. The bells ring in celebration.
+2026-01-06T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Bargain prices on timber; traders racing to Windleigh.
+2026-01-06T00:00:00.000Z [town] @ Azmarin Katixa seen in Azmarin markets — guard haggles and swaps news.
+2026-01-06T00:00:00.000Z [town] @ Azmarin Gawyne seen in Azmarin markets — bard haggles and swaps news.
+2026-01-06T00:00:00.000Z [town] @ Azmarin The Grim Wolves hailed in Azmarin — Locals toast their exploits.
+2026-01-06T00:00:00.000Z [town] @ Azmarin Azmarin spirits high — Surplus grain/textiles/salt and shortages in ore/livestock.
+2026-01-06T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Levies rumored to secure livestock; officials say caravans delayed.
+2026-01-06T00:00:00.000Z [town] @ Minasfeld Cybele seen in Minasfeld markets — guard haggles and swaps news.
+2026-01-06T00:00:00.000Z [town] @ Minasfeld Hans-Ruedi seen in Minasfeld markets — laborer haggles and swaps news.
+2026-01-06T00:00:00.000Z [town] @ Minasfeld Minasfeld tempers frayed — Surplus grain/textiles/livestock and shortages in salt.
+2026-01-06T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Bargain prices on textiles; traders racing to Minasfeld.
+2026-01-06T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — The Storm Guild watches the markets quietly.
+2026-01-06T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Circle of the Dawn watches the markets quietly.
+2026-01-06T00:00:00.000Z [town] @ Myrrka Myrrka tempers frayed — Surplus textiles/fish and shortages in timber.
+2026-01-06T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Levies rumored to secure timber; officials say caravans delayed.
+2026-01-06T00:00:00.000Z [town] @ Greenmist Mainardus seen in Greenmist markets — scout haggles and swaps news.
+2026-01-06T00:00:00.000Z [town] @ Greenmist Eurydamus seen in Greenmist markets — merchant haggles and swaps news.
+2026-01-06T00:00:00.000Z [town] @ Greenmist Parthenius's Band hailed in Greenmist — Locals toast their exploits.
+2026-01-06T00:00:00.000Z [town] @ Greenmist Greenmist tempers frayed — Surplus grain and shortages in livestock.
+2026-01-06T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Bargain prices on grain; traders racing to Greenmist.
+2026-01-06T02:00:00.000Z [road] @ Azmarin [The Grim Wolves, hill giants] The Grim Wolves storm hill giants's stronghold — When shadows grew deepest narrow passes between rocky peaks. A horde of red-eyed in the dark hill giants, apparently startled. With discipline and fury, the foe was broken.
+2026-01-06T02:00:00.000Z [road] @ Greenmist [Parthenius's Band, giant eagles] Parthenius's Band trade crafted goods with giant eagles — When shadows grew deepest Fresh snow makes every path treacherous. Two or three red-eyed in the dark giant eagles, moving with purpose. They found common ground in their mutual interests.
+2026-01-06T02:00:00.000Z [road] @ Minasfeld The New Caravan makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-06T02:00:00.000Z [town] @ Windleigh Word spreads in Windleigh — A valuable shipment was lost near Belfos.
+2026-01-06T03:00:00.000Z [road] @ Azmarin [The Grim Wolves, prospectors] The Grim Wolves watch prospectors warily from cover — As even the taverns fell silent The hills are white quilts, beautiful and deadly. A horde of aggressive prospectors, moving with purpose. They retreated in good order, minimizing losses.
+2026-01-06T03:00:00.000Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves shadowed by goblins — Tense standoff; both sides withdraw before blades are drawn.
+2026-01-06T03:00:00.000Z [road] @ Minasfeld [The New Caravan, Sons of the Wolf] The New Caravan is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-06T03:00:00.000Z [town] @ Minasfeld Trade routes near Minasfeld grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-06T03:00:00.000Z [road] @ Windleigh Northbeach Traders makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-06T04:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band completes rest — Ready to travel again.
+2026-01-06T05:00:00.000Z [road] @ Greenmist [Parthenius's Band, orc raiders] Parthenius's Band band together with orc raiders against a common threat — As the world stirred from slumber bridges spanning raging torrents. Many red-eyed in the dark orc raiders, performing war rituals. An uneasy bargain was struck beneath wary eyes. Hot springs steaming in rocky basins marked the scene.
+2026-01-06T05:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — Thieves struck near Windleigh. The roads grow dangerous.
+2026-01-06T05:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — A valuable shipment was lost near Minasfeld.
+2026-01-06T05:00:00.000Z [faction] @ Windleigh [Dionysios] Seals Breaking: Local wildlife behaves erratically. — Ancient wards fail. What they imprisoned walks again.
+2026-01-06T05:00:00.000Z [faction] @ Myrrka [Engelwara] The Old Darkness Returns: Local wildlife behaves erratically. Engelwara remains seeks power and influence. — Engelwara races to prevent catastrophe.
+2026-01-06T05:00:00.000Z [faction] @ Greenmist [Kreon] Echoes of the Past: The source is revealed. — The dead do not rest peacefully in Greenmist.
+2026-01-06T06:00:00.000Z [system] The world turns (January 6th, 2026) — 2 parties traveling, 0 resting. 1 threats lurk.
+2026-01-06T06:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — A cairn of skulls marks a territorial boundary.
+2026-01-06T07:00:00.000Z [road] @ Azmarin [The Grim Wolves, brigands] brigands follow The Grim Wolves at a safe distance — With the sun climbing steadily The hills are white quilts, beautiful and deadly. A company of seasoned brigands, blocking the path. They left the meeting with hope for peaceful coexistence.
+2026-01-06T07:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — Thieves struck near Azmarin. The roads grow dangerous.
+2026-01-06T07:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — A valuable shipment was lost near Windleigh.
+2026-01-06T08:00:00.000Z [road] @ Minasfeld The New Caravan makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-06T08:00:00.000Z [town] @ Azmarin Word spreads in Azmarin — Thieves struck near Minasfeld. The roads grow dangerous.
+2026-01-06T08:00:00.000Z [faction] @ the region [Wattie] The Bargain: Terms are tested. — Wattie made a deal with powers best left alone.
+2026-01-06T09:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band discovers The Crystalline Cairn — Under a brightening sky switchback paths climbing steep slopes. A crystalline cairn, swallowing all sound around it. They uncover a fragment of lost history.
+2026-01-06T09:00:00.000Z [town] @ Myrrka The Wandering Merchants arrives at Myrrka — Bringing livestock from Belfos with escorts under banner of Order of the Hawk.
+2026-01-06T09:00:00.000Z [town] @ Myrrka Izot arrives in Myrrka — bard from Belfos
+⏰ Catch-up progress: 28% (200/708 turns)2026-01-06T10:00:00.000Z [town] @ Minasfeld [Hans-Ruedi] Construction continues on Hans-Ruedi's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2026-01-06T10:00:00.000Z [faction] @ Windleigh [Circle of the Dawn] Circle of the Dawn eyes Windleigh for its timber — Desperate for timber, the faction has decided to take the settlement by force.
+2026-01-06T11:00:00.000Z [road] @ Azmarin [The Grim Wolves, mountain lions] The Grim Wolves trade news with passing mountain lions — While sensible folk sought shade The hills are white quilts, beautiful and deadly. A few red-eyed in the dark mountain lions, emerging from concealment. They found common ground in their mutual interests.
+2026-01-06T11:00:00.000Z [town] @ Windleigh Word spreads in Windleigh — A valuable shipment was lost near Greenmist.
+2026-01-06T11:00:00.000Z [town] @ Belfos Word spreads in Belfos — Thieves struck near Minasfeld. The roads grow dangerous.
+2026-01-06T12:00:00.000Z [system] The world turns (January 6th, 2026) — 2 parties traveling, 0 resting. 1 threats lurk.
+2026-01-06T12:00:00.000Z [road] @ Azmarin [The Grim Wolves, prospectors] The Grim Wolves move slowly to avoid alarming prospectors — Under the high sun Several aggressive prospectors, apparently startled. Neither side wished to die today. Terms were agreed. Stone circles on hilltops marked the scene.
+2026-01-06T12:00:00.000Z [road] @ Greenmist [Parthenius's Band, goblins] goblins guide Parthenius's Band to a hidden spring — Under the high sun copper deposits staining rock faces green. Fresh snow makes every path treacherous. A band of cowardly goblins, tracking something. They parted as wary allies rather than bitter enemies. Snow-capped peaks gleaming in sunlight marked the scene.
+2026-01-06T13:00:00.000Z [road] @ Azmarin [The Grim Wolves, brigands] The Grim Wolves share trail rations with hungry brigands — Under the high sun waterfalls roaring down cliffs. The hills are white quilts, beautiful and deadly. Two or three seasoned brigands, moving with purpose. The negotiation revealed unexpected shared values. Stone walls dividing hill farms marked the scene.
+2026-01-06T13:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot goblins and avoid notice — They detour carefully, leaving only faint tracks.
+2026-01-06T14:00:00.000Z [dungeon] @ Azmarin [The Grim Wolves] The Grim Wolves discovers Sunken Archives — As travelers grew road-weary the mouth of a cave, dark and inviting. They have found An ancient sunken archives from the Age of Wonders. Sunken Archives was once a center of faith before its fall.
+2026-01-06T14:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — Thieves struck near Minasfeld. The roads grow dangerous.
+2026-01-06T14:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — A valuable shipment was lost near Minasfeld.
+2026-01-06T15:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Eagle cries echo, but no birds are visible.
+2026-01-06T15:00:00.000Z [town] @ Minasfeld Word spreads in Minasfeld — Thieves struck near Windleigh. The roads grow dangerous.
+2026-01-06T15:00:00.000Z [town] @ Azmarin [Katixa] Construction continues on Katixa's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2026-01-06T16:00:00.000Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves parley with ogre — Trade news and share a quick meal before parting ways.
+2026-01-06T16:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band parley with ogre — Trade news and share a quick meal before parting ways.
+2026-01-06T16:00:00.000Z [town] @ Belfos The Wandering Peddlers arrives at Belfos — Bringing grain/textiles from Azmarin with escorts.
+2026-01-06T16:00:00.000Z [town] @ Belfos Katixa arrives in Belfos — guard from Myrrka
+2026-01-06T16:00:00.000Z [town] @ Belfos Gawyne arrives in Belfos — bard from Myrrka
+2026-01-06T17:00:00.000Z [road] @ Greenmist [Parthenius's Band, wyverns] wyverns teach Parthenius's Band a useful survival skill — With the setting of the sun A lone red-eyed in the dark wyverns, blocking the path. They established rules for future encounters.
+2026-01-06T17:00:00.000Z [town] @ Belfos Beroldus's Wagons arrives at Belfos — Bringing salt/fish from Greenmist with escorts under banner of Circle of the Dawn.
+2026-01-06T17:00:00.000Z [town] @ Belfos Mainardus arrives in Belfos — scout from Azmarin
+2026-01-06T17:00:00.000Z [town] @ Belfos Eurydamus arrives in Belfos — merchant from Windleigh
+2026-01-06T17:00:00.000Z [town] @ Belfos Rumor in Belfos — Word spreads that Beroldus's Wagons of Circle of the Dawn reached Belfos with salt/fish.
+2026-01-06T18:00:00.000Z [system] The world turns (January 6th, 2026) — 2 parties traveling, 0 resting. 1 threats lurk.
+2026-01-06T18:00:00.000Z [faction] @ Myrrka [Mendia the Pallid] Mendia conducts a dark ritual — Strange lights in the sky. Animals flee.
+2026-01-06T20:00:00.000Z [faction] @ Belfos [Sons of the Wolf] Sons of the Wolf eyes Belfos for its textiles — Desperate for textiles, the faction has decided to take the settlement by force.
+2026-01-06T21:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band clash with giant bats — Brief skirmish; foes driven off with minor bruises.
+2026-01-06T22:00:00.000Z [road] @ Greenmist [Parthenius's Band, giant eagles] giant eagles charge Parthenius's Band with weapons drawn — Under an indigo sky waterfalls roaring into gorges. One red-eyed in the dark giant eagles, emerging from concealment. Their tactics turned the tide against overwhelming odds. A well-timed spell from their caster turned the tide.
+2026-01-06T22:00:00.000Z [town] @ Greenmist [Eadmund, Theodric] Eadmund demonstrates new skills learned from Theodric — Not every student surpasses the master, but hope remains.
+2026-01-06T23:00:00.000Z [road] @ Greenmist [Parthenius's Band, orc raiders] Parthenius's Band counterattack orc raiders invaders — As owls hunted in darkness Fresh snow makes every path treacherous. Several war-painted orc raiders, returning from a raid. The fight was brief and brutal. The survivors withdrew.
+2026-01-07T00:00:00.000Z [weather] @ Myrrka Winter supplies monitored in Myrrka — Food stores are carefully managed for the long winter.
+2026-01-07T00:00:00.000Z [system] The world turns (January 7th, 2026) — 2 parties traveling, 0 resting. 1 threats lurk.
+2026-01-07T00:00:00.000Z [road] @ Belfos Beroldus's Wagons makes camp under escort — Road to Greenmist (road) quiet tonight.
+2026-01-07T00:00:00.000Z [town] @ Belfos Peli seen in Belfos markets — priest haggles and swaps news.
+2026-01-07T00:00:00.000Z [town] @ Belfos Mainardus seen in Belfos markets — scout haggles and swaps news.
+2026-01-07T00:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — Explorers speak of a strange discovery near Greenmist.
+2026-01-07T00:00:00.000Z [town] @ Belfos Belfos tempers frayed — Surplus textiles and shortages in ore.
+2026-01-07T00:00:00.000Z [town] @ Windleigh Windleigh folk watchful — Surplus grain/timber/ore/fish and shortages in textiles/salt.
+2026-01-07T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Levies rumored to secure salt; officials say caravans delayed.
+2026-01-07T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Sons of the Wolf watches the markets quietly.
+2026-01-07T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Circle of the Dawn watches the markets quietly.
+2026-01-07T00:00:00.000Z [town] @ Azmarin The Grim Wolves hailed in Azmarin — Locals toast their exploits.
+2026-01-07T00:00:00.000Z [town] @ Azmarin Azmarin folk watchful — Surplus grain/textiles/salt and shortages in ore.
+2026-01-07T00:00:00.000Z [town] @ Minasfeld Cybele seen in Minasfeld markets — guard haggles and swaps news.
+2026-01-07T00:00:00.000Z [town] @ Minasfeld Hans-Ruedi seen in Minasfeld markets — laborer haggles and swaps news.
+2026-01-07T00:00:00.000Z [town] @ Minasfeld Minasfeld tempers frayed — Surplus grain/textiles/livestock and shortages in salt.
+2026-01-07T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — conflicting plot: a caravan guard says Hildeuuif heard of missing heirlooms traced toward The Sanctum of Blighted Death (from Minasfeld).
+2026-01-07T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Sons of the Wolf watches the markets quietly.
+2026-01-07T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Circle of the Dawn watches the markets quietly.
+2026-01-07T00:00:00.000Z [town] @ Myrrka Molora seen in Myrrka markets — scout haggles and swaps news.
+2026-01-07T00:00:00.000Z [town] @ Myrrka Izot seen in Myrrka markets — bard haggles and swaps news.
+2026-01-07T00:00:00.000Z [town] @ Myrrka Myrrka tempers frayed — Surplus textiles/fish and shortages in timber.
+2026-01-07T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — The Storm Guild watches the markets quietly.
+2026-01-07T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Sons of the Wolf watches the markets quietly.
+2026-01-07T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Order of the Hawk watches the markets quietly.
+2026-01-07T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Circle of the Dawn watches the markets quietly.
+2026-01-07T00:00:00.000Z [town] @ Greenmist Greenmist tempers frayed — Surplus grain and shortages in ore/livestock.
+2026-01-07T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — cryptic omen: an old map fragment says Wofled heard of strange lights near The Whispers Tower (from Greenmist).
+2026-01-07T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — The Storm Guild watches the markets quietly.
+2026-01-07T01:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — A valuable shipment was lost near Windleigh.
+⏰ Catch-up progress: 42% (300/708 turns)2026-01-07T02:00:00.000Z [road] @ Azmarin [The Grim Wolves, orc raiders] The Grim Wolves and orc raiders find common cause — In the cold hours before dawn thunder echoing between hills. Several red-eyed in the dark orc raiders, performing war rituals. The negotiation revealed unexpected shared values.
+2026-01-07T02:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Giant footprints in the snow, each as long as a man is tall.
+2026-01-07T03:00:00.000Z [road] @ Greenmist [Parthenius's Band, ogres] Parthenius's Band share songs and tales around the campfire — As even the taverns fell silent Fresh snow makes every path treacherous. One hungry ogres, moving with purpose. An uneasy bargain was struck beneath wary eyes.
+2026-01-07T03:00:00.000Z [road] @ Myrrka The Wandering Merchants makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-07T05:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Giant footprints in the snow, each as long as a man is tall.
+2026-01-07T05:00:00.000Z [road] @ Greenmist [Parthenius's Band, yeti] yeti test Parthenius's Band's resolve with challenges — As the world stirred from slumber ancient petroglyphs on cliff walls. A solitary night-hunting yeti, emerging from concealment. They slipped away while the enemy celebrated prematurely.
+2026-01-07T05:00:00.000Z [road] @ Myrrka [The Wandering Merchants, Sons of the Wolf] The Wandering Merchants is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-07T05:00:00.000Z [town] @ Myrrka Trade routes near Myrrka grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-07T05:00:00.000Z [faction] @ Myrrka [Engelwara] The Old Darkness Returns: Time seems to distort near the site. Engelwara remains seeks power and influence. — Engelwara races to prevent catastrophe.
+2026-01-07T05:00:00.000Z [faction] @ Greenmist [Kreon] Echoes of the Past: The haunting affects the living. — The dead do not rest peacefully in Greenmist.
+2026-01-07T05:00:00.000Z [faction] @ Greenmist [Parthenius's Band] Blood on the Trail: Supplies dwindle; the hunt becomes desperate. Parthenius's Band remains seeks justice and righteousness. — Parthenius's Band stalks a dangerous quarry across the region.
+2026-01-07T05:00:00.000Z [faction] @ Greenmist [Parthenius's Band, orc raiders] Fire in Greenmist: Local heroes organize resistance. — Parthenius's Band strikes fast at Greenmist and withdraws before retaliation.
+2026-01-07T05:00:00.000Z [town] @ Myrrka [Izot] Izot masters a new spell: Lightning Bolt — After weeks of intense study and meditation, the bard has unlocked new power.
+2026-01-07T06:00:00.000Z [system] The world turns (January 7th, 2026) — 2 parties traveling, 0 resting. 1 threats lurk.
+2026-01-07T07:00:00.000Z [road] @ Windleigh Northbeach Traders makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-07T08:00:00.000Z [road] @ Greenmist [Parthenius's Band, goblins] goblins guide Parthenius's Band to a hidden spring — Amid the bustle of morning trade wild berries ripening on bushes hung in the air. Two or three feral goblins, tracking something. They traded information as valuable as gold.
+2026-01-07T08:00:00.000Z [town] @ Belfos Northbeach Traders arrives at Belfos — Bringing grain/textiles from Windleigh with escorts.
+2026-01-07T08:00:00.000Z [town] @ Belfos Emlyn arrives in Belfos — scout from Minasfeld
+2026-01-07T08:00:00.000Z [town] @ Belfos Ilene arrives in Belfos — bard from Windleigh
+2026-01-07T09:00:00.000Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves spot signs of danger — Caves in the hillside show signs of habitation.
+2026-01-07T09:00:00.000Z [road] @ Greenmist [Parthenius's Band, ogres] Parthenius's Band siege ogres's encampment — Amid the bustle of morning trade waterfalls roaring into gorges. A handful of dim-witted ogres, moving with purpose. The foe fought bravely but could not withstand the onslaught. The victors claim 39 coin worth of plunder.
+2026-01-07T09:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band grows in power! — Through hardship and battle, the members of Parthenius's Band have reached level 3.
+2026-01-07T11:00:00.000Z [road] @ Azmarin [The Grim Wolves, goatherds] goatherds provide shelter from the weather — As shadows pooled beneath eaves the flap of laundry in the breeze. A group of numerous goatherds, watching warily. They reached an accommodation that served both sides.
+2026-01-07T11:00:00.000Z [town] @ Belfos The New Caravan arrives at Belfos — Bringing grain/textiles from Minasfeld with escorts.
+2026-01-07T11:00:00.000Z [town] @ Belfos Cybele arrives in Belfos — guard from Windleigh
+2026-01-07T11:00:00.000Z [town] @ Belfos Wantelien arrives in Belfos — bard from Minasfeld
+2026-01-07T12:00:00.000Z [system] The world turns (January 7th, 2026) — 2 parties traveling, 0 resting. 1 threats lurk.
+2026-01-07T12:00:00.000Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves spot signs of danger — Bones litter a rock shelf. Not all are animal bones.
+2026-01-07T12:00:00.000Z [road] @ Greenmist [Parthenius's Band, trolls] Battle joined between Parthenius's Band and trolls — While sensible folk sought shade A few shadow-cloaked trolls, apparently startled. Victory came at great cost, but the path was secured. A well-timed spell from their caster turned the tide.
+2026-01-07T13:00:00.000Z [road] @ Belfos [The New Caravan, Sons of the Wolf] The New Caravan is raided! — Sons of the Wolf forces have intercepted the caravan en route to Minasfeld.
+2026-01-07T13:00:00.000Z [town] @ Belfos Trade routes near Belfos grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-07T13:00:00.000Z [road] @ Belfos Beroldus's Wagons makes camp under escort — Road to Greenmist (road) quiet tonight.
+2026-01-07T13:00:00.000Z [road] @ Belfos Beroldus's Wagons reports losses — Supplies spoiled en route; banners of Circle of the Dawn tarnished.
+2026-01-07T13:00:00.000Z [town] @ Belfos Rumor in Belfos — Beroldus's Wagons of Circle of the Dawn lost goods on the road; prices may shift.
+2026-01-07T14:00:00.000Z [road] @ Belfos The Wandering Peddlers makes camp under escort — Road to Azmarin (road) quiet tonight.
+2026-01-07T15:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Eagle cries echo, but no birds are visible.
+2026-01-07T15:00:00.000Z [road] @ Belfos Northbeach Traders makes camp under escort — Road to Windleigh (road) quiet tonight.
+2026-01-07T16:00:00.000Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves spot signs of danger — Caves in the hillside show signs of habitation.
+2026-01-07T16:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band discovers The Eerie Pillar — In the golden afternoon light A eerie pillar, vibrating when approached. The party feels a surge of mental clarity.
+2026-01-07T16:00:00.000Z [road] @ Myrrka The Wandering Merchants makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-07T16:00:00.000Z [road] @ Belfos Northbeach Traders makes camp under escort — Road to Windleigh (road) quiet tonight.
+2026-01-07T17:00:00.000Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves spot signs of danger — Bones litter a rock shelf. Not all are animal bones.
+2026-01-07T17:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — The ruins of a dwarven waystation, recently looted.
+2026-01-07T18:00:00.000Z [system] The world turns (January 7th, 2026) — 2 parties traveling, 0 resting. 1 threats lurk.
+2026-01-07T18:00:00.000Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves spot signs of danger — Crude totems mark a boundary. You have been warned.
+2026-01-07T18:00:00.000Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves discovers The Petrified Cave — As purple shadows gathered mineral tang from exposed rock hung in the air. A petrified cave, home to a silent, white-haired hermit. A light heart and swift feet follow them.
+2026-01-07T18:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — The ruins of a dwarven waystation, recently looted.
+⏰ Catch-up progress: 56% (400/708 turns)2026-01-07T20:00:00.000Z [road] @ Belfos [The Wandering Peddlers, Sons of the Wolf] The Wandering Peddlers is raided! — Sons of the Wolf forces have intercepted the caravan en route to Azmarin.
+2026-01-07T20:00:00.000Z [town] @ Belfos Trade routes near Belfos grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-07T21:00:00.000Z [road] @ Azmarin [The Grim Wolves, ogres] ogres offer The Grim Wolves aid on the road — By candlelight and hearth-glow damp moss on stone walls hung in the air. One night-hunting ogres, emerging from concealment. They established rules for future encounters.
+2026-01-07T21:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — Thieves struck near Myrrka. The roads grow dangerous.
+2026-01-07T22:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band arrives at Myrrka — They slip through the gates as lanterns are lit.
+2026-01-07T22:00:00.000Z [road] @ Belfos The New Caravan makes camp under escort — Road to Minasfeld (road) quiet tonight.
+2026-01-07T22:00:00.000Z [town] @ Azmarin Word spreads in Azmarin — A valuable shipment was lost near Belfos.
+2026-01-07T22:00:00.000Z [road] @ Myrrka [Parthenius's Band, Mendia] Parthenius's Band decides to confront Mendia — Mendia the Pallid's reign of terror must end. They prepare for battle.
+2026-01-07T23:00:00.000Z [faction] @ Windleigh [Dionysios] Seals Breaking: Time seems to distort near the site. — Ancient wards fail. What they imprisoned walks again.
+2026-01-07T23:00:00.000Z [faction] @ the region [Wattie] The Bargain: Consequences follow. Power shifts in subtle ways. — Wattie made a deal with powers best left alone.
+2026-01-07T23:00:00.000Z [faction] @ hex:7,7 [Itzia] Itzia's Last Stand: A witness points the way. — Itzia stalks a dangerous quarry across the region.
+2026-01-07T23:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band completes their vendetta — Mendia falls. The oath is fulfilled.
+2026-01-07T23:00:00.000Z [faction] @ Greenmist [Parthenius's Band] Blood on the Trail approaches its climax — The threads of fate draw tight. A decisive moment is at hand.
+2026-01-07T23:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band triumphs over Mendia! — A great victory. Their enemy lies defeated. Songs will be sung of this day.
+2026-01-08T00:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band departs Myrrka — Bound for Azmarin across hills (~30 miles).
+2026-01-08T00:00:00.000Z [system] The world turns (January 8th, 2026) — 1 parties traveling, 1 resting. 0 threats lurk.
+2026-01-08T00:00:00.000Z [town] @ Belfos Peli seen in Belfos markets — priest haggles and swaps news.
+2026-01-08T00:00:00.000Z [town] @ Azmarin Word spreads in Azmarin — Thieves struck near Myrrka. The roads grow dangerous.
+2026-01-08T00:00:00.000Z [town] @ Belfos Mainardus seen in Belfos markets — scout haggles and swaps news.
+2026-01-08T00:00:00.000Z [town] @ Azmarin Word spreads in Azmarin — Mendia the Pallid is dead! Slain near Myrrka.
+2026-01-08T00:00:00.000Z [town] @ Belfos Belfos tempers frayed — Surplus grain/textiles/salt and shortages in ore.
+2026-01-08T00:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — Mendia the Pallid is dead! Slain near Myrrka.
+2026-01-08T00:00:00.000Z [town] @ Belfos Rumor in Belfos — conflicting mystery: a border scout says Poyo heard of villagers hearing chanting at dusk (from Belfos).
+2026-01-08T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Order of the Hawk watches the markets quietly.
+2026-01-08T00:00:00.000Z [town] @ Windleigh Windleigh tempers frayed — Surplus grain/timber/ore/fish and shortages in textiles/salt.
+2026-01-08T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Levies rumored to secure textiles; officials say caravans delayed.
+2026-01-08T00:00:00.000Z [town] @ Azmarin The Grim Wolves hailed in Azmarin — Locals toast their exploits.
+2026-01-08T00:00:00.000Z [town] @ Azmarin Azmarin folk watchful — Surplus grain/textiles/salt and shortages in ore.
+2026-01-08T00:00:00.000Z [town] @ Minasfeld Hans-Ruedi seen in Minasfeld markets — laborer haggles and swaps news.
+2026-01-08T00:00:00.000Z [town] @ Minasfeld Eryalus seen in Minasfeld markets — laborer haggles and swaps news.
+2026-01-08T00:00:00.000Z [town] @ Minasfeld Minasfeld tempers frayed — Surplus grain/textiles/livestock and shortages in salt.
+2026-01-08T00:00:00.000Z [town] @ Myrrka Molora seen in Myrrka markets — scout haggles and swaps news.
+2026-01-08T00:00:00.000Z [town] @ Myrrka Izot seen in Myrrka markets — bard haggles and swaps news.
+2026-01-08T00:00:00.000Z [town] @ Myrrka Parthenius's Band hailed in Myrrka — Locals toast their exploits.
+2026-01-08T00:00:00.000Z [town] @ Myrrka Myrrka tempers frayed — Surplus textiles/fish and shortages in timber.
+2026-01-08T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Levies rumored to secure timber; officials say caravans delayed.
+2026-01-08T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Sons of the Wolf watches the markets quietly.
+2026-01-08T00:00:00.000Z [town] @ Greenmist Greenmist tempers frayed — Surplus grain/timber and shortages in ore/livestock.
+2026-01-08T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Levies rumored to secure livestock; officials say caravans delayed.
+2026-01-08T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Circle of the Dawn watches the markets quietly.
+2026-01-08T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — The Hawk Compact watches the markets quietly.
+2026-01-08T01:00:00.000Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves spot signs of danger — Rockfall has blocked the easy path. An ambush site, perhaps.
+2026-01-08T01:00:00.000Z [town] @ Greenmist Beroldus's Wagons arrives at Greenmist — Bringing salt/fish from Belfos with escorts under banner of Circle of the Dawn.
+2026-01-08T01:00:00.000Z [town] @ Greenmist Mainardus arrives in Greenmist — scout from Azmarin
+2026-01-08T01:00:00.000Z [town] @ Greenmist Eurydamus arrives in Greenmist — merchant from Windleigh
+2026-01-08T01:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Word spreads that Beroldus's Wagons of Circle of the Dawn reached Greenmist with salt/fish.
+2026-01-08T01:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — A valuable shipment was lost near Belfos.
+2026-01-08T01:00:00.000Z [town] @ Belfos Word spreads in Belfos — Mendia the Pallid is dead! Slain near Myrrka.
+2026-01-08T01:00:00.000Z [town] @ Minasfeld Word spreads in Minasfeld — Mendia the Pallid is dead! Slain near Myrrka.
+2026-01-08T01:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — Mendia the Pallid is dead! Slain near Myrrka.
+2026-01-08T01:00:00.000Z [town] @ Belfos [Cybele, Hans-Ruedi] Cybele negotiates terms with creditor Hans-Ruedi — Gold owed sits heavy on both parties.
+2026-01-08T02:00:00.000Z [road] @ Belfos The Wandering Peddlers makes camp under escort — Road to Azmarin (road) quiet tonight.
+2026-01-08T02:00:00.000Z [town] @ Windleigh Word spreads in Windleigh — Mendia the Pallid is dead! Slain near Myrrka.
+2026-01-08T02:00:00.000Z [town] @ Greenmist [Mainardus] Construction continues on Mainardus's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2026-01-08T03:00:00.000Z [town] @ Minasfeld [Hans-Ruedi, Cybele] Hans-Ruedi demands repayment from Cybele — Patience has limits, even for gold. Amidst the growing danger in Minasfeld, their creditor feels all the more pressing.
+2026-01-08T04:00:00.000Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves spot signs of danger — Rockfall has blocked the easy path. An ambush site, perhaps.
+2026-01-08T04:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band discovers The Shadowy Cairn — In the cold hours before dawn wild ponies roaming free. A shadowy cairn, vibrating when approached. They uncover a fragment of lost history.
+2026-01-08T05:00:00.000Z [dungeon] @ Azmarin [The Grim Wolves] The Grim Wolves discovers Sunken Archives — As mist still clung to low places They have found An ancient sunken archives from the Age of Wonders. Sunken Archives was once a center of faith before its fall.
+2026-01-08T05:00:00.000Z [town] @ Belfos The Wandering Merchants arrives at Belfos — Bringing livestock from Myrrka with escorts under banner of Order of the Hawk.
+2026-01-08T05:00:00.000Z [town] @ Belfos Izot arrives in Belfos — bard from Belfos
+2026-01-08T06:00:00.000Z [system] The world turns (January 8th, 2026) — 2 parties traveling, 0 resting. 0 threats lurk.
+2026-01-08T06:00:00.000Z [road] @ Azmarin [The Grim Wolves, Adelheidis the red-eyed in the dark] The Grim Wolves prepare defenses against potential Adelheidis the red-eyed in the dark attack — As the world stirred from slumber rain pattering on slate roofs. The hills are white quilts, beautiful and deadly. Several mangy goblins, carrying plunder. They faded into the wilderness, leaving no trail.
+2026-01-08T06:00:00.000Z [faction] @ Belfos [Sons of the Wolf] Sons of the Wolf eyes Belfos for its textiles — Desperate for textiles, the faction has decided to take the settlement by force.
+2026-01-08T07:00:00.000Z [road] @ Myrrka Parthenius's Band falls ill in Myrrka — The Camp Fever has claimed members of the company. They must rest to recover.
+2026-01-08T08:00:00.000Z [town] @ Azmarin Word spreads in Azmarin — A battle was fought near Myrrka. Blood stains the earth.
+2026-01-08T09:00:00.000Z [road] @ Myrrka [Parthenius's Band, brigands] Parthenius's Band and brigands find common cause — As smoke rose from breakfast fires the crunch of gravel under boots. Two or three cruel brigands, moving with purpose. They traded information as valuable as gold. Cairns marking ancient graves marked the scene.
+2026-01-08T09:00:00.000Z [town] @ Windleigh Word spreads in Windleigh — Thieves struck near Myrrka. The roads grow dangerous.
+2026-01-08T09:00:00.000Z [faction] @ the region [Epistor] What Was Promised: New pacts are made. — In the region, ancient bargains come due.
+2026-01-08T11:00:00.000Z [road] @ Azmarin [The Grim Wolves, the brigands called Eustochius] the brigands called Eustochius guide The Grim Wolves to a hidden spring — As shadows pooled beneath eaves goats picking their way along cliffs. A horde of former soldiers brigands, moving with purpose. Words proved mightier than steel on this occasion. Ancient hill forts with crumbling walls marked the scene.
+2026-01-08T11:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band spot signs of danger — Rockfall has blocked the easy path. An ambush site, perhaps.
+2026-01-08T11:00:00.000Z [road] @ Belfos The Wandering Merchants makes camp under escort — Road to Myrrka (road) quiet tonight.
+⏰ Catch-up progress: 70% (500/708 turns)2026-01-08T12:00:00.000Z [system] The world turns (January 8th, 2026) — 2 parties traveling, 0 resting. 0 threats lurk.
+2026-01-08T12:00:00.000Z [road] @ Azmarin [The Grim Wolves, hill giants] The Grim Wolves watch hill giants warily from cover — In the drowsy heat of noon freshly baked bread from hill farms hung in the air. A band of night-hunting hill giants, watching warily. Cultural misunderstandings were resolved through patience. Hot springs steaming in valleys marked the scene.
+2026-01-08T12:00:00.000Z [road] @ Greenmist Beroldus's Wagons makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-08T12:00:00.000Z [town] @ Azmarin The Wandering Peddlers arrives at Azmarin — Bringing grain/textiles from Belfos with escorts.
+2026-01-08T12:00:00.000Z [town] @ Azmarin Katixa arrives in Azmarin — guard from Myrrka
+2026-01-08T12:00:00.000Z [town] @ Azmarin Gawyne arrives in Azmarin — bard from Myrrka
+2026-01-08T13:00:00.000Z [faction] @ Minasfeld A new band appears near Minasfeld — Anketin's Band takes to the byways.
+2026-01-08T13:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — A valuable shipment was lost near Belfos.
+2026-01-08T14:00:00.000Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves spot signs of danger — Rockfall has blocked the easy path. An ambush site, perhaps.
+2026-01-08T14:00:00.000Z [road] @ Azmarin [The Grim Wolves, prospectors] The Grim Wolves counterattack prospectors invaders — As travelers grew road-weary The hills are white quilts, beautiful and deadly. A few red-eyed in the dark prospectors, emerging from concealment. A decisive strike ended the conflict before it could escalate. A well-timed spell from their caster turned the tide. The victors claim 20 coin worth of plunder.
+2026-01-08T14:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band discovers The Shadowy Monolith — In the golden afternoon light wind-bent trees clinging to slopes. A shadowy monolith, humming a low, vibrating note. A sudden vision of what is to come flashes before them.
+2026-01-08T15:00:00.000Z [town] @ Azmarin Word spreads in Azmarin — A valuable shipment was lost near Belfos.
+2026-01-08T15:00:00.000Z [faction] @ Greenmist [Parthenius's Band] Blood on the Trail concludes — The hunters become the hunted.
+2026-01-08T16:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band discovers The Obsidian Cairn — As the day wore on stone walls dividing hill farms. A obsidian cairn, bearing the marks of a thousand years. They uncover a fragment of lost history.
+2026-01-08T16:00:00.000Z [road] @ Myrrka [The Grim Wolves] The Grim Wolves arrives at Myrrka — They find an inn and stable their mounts.
+2026-01-08T16:00:00.000Z [town] @ Windleigh Northbeach Traders arrives at Windleigh — Bringing grain/textiles from Belfos with escorts.
+2026-01-08T16:00:00.000Z [town] @ Windleigh Emlyn arrives in Windleigh — scout from Minasfeld
+2026-01-08T16:00:00.000Z [town] @ Windleigh Ilene arrives in Windleigh — bard from Windleigh
+2026-01-08T18:00:00.000Z [system] The world turns (January 8th, 2026) — 1 parties traveling, 2 resting. 0 threats lurk.
+2026-01-08T18:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band ambushed by orc raiders — Forced retreat; they fall back to regroup.
+2026-01-08T18:00:00.000Z [town] @ Belfos Camp Fever fades in Belfos — The worst of the sickness has passed. The bells ring in celebration.
+2026-01-08T20:00:00.000Z [road] @ Belfos [The Wandering Merchants, Sons of the Wolf] The Wandering Merchants is raided! — Sons of the Wolf forces have intercepted the caravan en route to Myrrka.
+2026-01-08T20:00:00.000Z [faction] @ Belfos [The Wandering Merchants, Sons of the Wolf] A new tale begins: "Fire in Belfos" — Hit and run tactics terrorize Belfos.
+2026-01-08T20:00:00.000Z [town] @ Belfos Trade routes near Belfos grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-08T20:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-08T21:00:00.000Z [town] @ Minasfeld The New Caravan arrives at Minasfeld — Bringing grain/textiles from Belfos with escorts.
+2026-01-08T21:00:00.000Z [town] @ Minasfeld Cybele arrives in Minasfeld — guard from Windleigh
+2026-01-08T21:00:00.000Z [town] @ Minasfeld Wantelien arrives in Minasfeld — bard from Minasfeld
+2026-01-08T21:00:00.000Z [road] @ Windleigh [Northbeach Traders, Sons of the Wolf] Northbeach Traders is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-08T21:00:00.000Z [town] @ Windleigh Trade routes near Windleigh grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-08T22:00:00.000Z [town] @ Minasfeld Word spreads in Minasfeld — Mendia has died at Myrrka.
+2026-01-08T23:00:00.000Z [road] @ Greenmist Beroldus's Wagons makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-08T23:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — Explorers speak of a strange discovery near Myrrka.
+2026-01-09T00:00:00.000Z [road] @ Myrrka [The Grim Wolves] The Grim Wolves departs Myrrka — Bound for Greenmist across mountains (~36 miles).
+2026-01-09T00:00:00.000Z [system] The world turns (January 9th, 2026) — 1 parties traveling, 2 resting. 0 threats lurk.
+2026-01-09T00:00:00.000Z [road] @ Greenmist Beroldus's Wagons makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-09T00:00:00.000Z [road] @ Minasfeld [Anketin's Band] Anketin's Band departs Minasfeld — Bound for Belfos across road (~18 miles).
+2026-01-09T00:00:00.000Z [road] @ Greenmist Beroldus's Wagons reports losses — Supplies spoiled en route; banners of Circle of the Dawn tarnished.
+2026-01-09T00:00:00.000Z [town] @ Belfos Peli seen in Belfos markets — priest haggles and swaps news.
+2026-01-09T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Beroldus's Wagons of Circle of the Dawn lost goods on the road; prices may shift.
+2026-01-09T00:00:00.000Z [town] @ Belfos Izot seen in Belfos markets — bard haggles and swaps news.
+2026-01-09T00:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-09T00:00:00.000Z [town] @ Belfos Belfos tempers frayed — Surplus grain/textiles/salt and shortages in ore.
+2026-01-09T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Levies rumored to secure ore; officials say caravans delayed.
+2026-01-09T00:00:00.000Z [town] @ Belfos Rumor in Belfos — The Storm Guild watches the markets quietly.
+2026-01-09T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Order of the Hawk offers protection for caravans.
+2026-01-09T00:00:00.000Z [town] @ Windleigh Windleigh tempers frayed — Surplus grain/timber/ore/fish and shortages in textiles/salt.
+2026-01-09T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Sons of the Wolf watches the markets quietly.
+2026-01-09T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — The Hawk Compact watches the markets quietly.
+2026-01-09T00:00:00.000Z [town] @ Azmarin Katixa seen in Azmarin markets — guard haggles and swaps news.
+2026-01-09T00:00:00.000Z [town] @ Azmarin Gawyne seen in Azmarin markets — bard haggles and swaps news.
+2026-01-09T00:00:00.000Z [town] @ Azmarin Azmarin folk watchful — Surplus grain/textiles/salt and shortages in ore.
+2026-01-09T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Levies rumored to secure ore; officials say caravans delayed.
+2026-01-09T00:00:00.000Z [town] @ Minasfeld Minasfeld tempers frayed — Surplus grain/textiles/livestock and shortages in salt.
+2026-01-09T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Levies rumored to secure salt; officials say caravans delayed.
+2026-01-09T00:00:00.000Z [town] @ Myrrka Molora seen in Myrrka markets — scout haggles and swaps news.
+2026-01-09T00:00:00.000Z [town] @ Myrrka Irantzu seen in Myrrka markets — guard haggles and swaps news.
+2026-01-09T00:00:00.000Z [town] @ Myrrka Myrrka tempers frayed — Surplus textiles/fish and shortages in timber.
+2026-01-09T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Bargain prices on textiles; traders racing to Myrrka.
+2026-01-09T00:00:00.000Z [town] @ Greenmist Greenmist tempers frayed — Surplus grain/timber and shortages in ore/livestock.
+2026-01-09T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Levies rumored to secure livestock; officials say caravans delayed.
+2026-01-09T01:00:00.000Z [road] @ Myrrka [Parthenius's Band, Zumadoia's goatherds] Parthenius's Band signal peaceful intentions to Zumadoia's goatherds — With only moonlight for company The hills are white quilts, beautiful and deadly. Several night-hunting goatherds, apparently startled. Survival trumped victory in this encounter.
+2026-01-09T01:00:00.000Z [road] @ Minasfeld [Anketin's Band] Anketin's Band spot signs of danger — A weathered signpost has been defaced with crude warnings.
+2026-01-09T01:00:00.000Z [road] @ Azmarin [The Wandering Peddlers, Sons of the Wolf] The Wandering Peddlers is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-09T01:00:00.000Z [town] @ Azmarin Trade routes near Azmarin grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-09T02:00:00.000Z [road] @ Minasfeld [Anketin's Band, patrol guards] Anketin's Band share songs and tales around the campfire — As even the taverns fell silent caravan drivers shouting commands. Snow covers the road, hiding its dangers. A company of shadow-cloaked patrol guards, emerging from concealment. Diplomacy prevailed where force might have failed.
+2026-01-09T02:00:00.000Z [town] @ Minasfeld Word spreads in Minasfeld — A valuable shipment was lost near Windleigh.
+2026-01-09T03:00:00.000Z [road] @ Myrrka [The Grim Wolves, goblins] Battle joined between The Grim Wolves and goblins — When shadows grew deepest meteor impact craters on peaks. Several red-eyed in the dark goblins, tracking something. The fight was brief and brutal. The survivors withdrew. A glacier grinding slowly downward marked the scene. A well-timed spell from their caster turned the tide. The victors claim 23 coin worth of plunder.
+2026-01-09T03:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band spot signs of danger — Bones litter a rock shelf. Not all are animal bones.
+2026-01-09T03:00:00.000Z [road] @ Minasfeld [Anketin's Band] Anketin's Band spot signs of danger — Fresh hoofprints diverge from the road, as if riders left in haste.
+2026-01-09T03:00:00.000Z [town] @ Azmarin Word spreads in Azmarin — Thieves struck near Windleigh. The roads grow dangerous.
+2026-01-09T03:00:00.000Z [town] @ Azmarin [Katixa, Cybele] Katixa negotiates terms with creditor Cybele — The debt strains whatever else exists between them.
+⏰ Catch-up progress: 84% (600/708 turns)2026-01-09T04:00:00.000Z [road] @ Minasfeld [Anketin's Band] Anketin's Band spot signs of danger — Fresh hoofprints diverge from the road, as if riders left in haste.
+2026-01-09T04:00:00.000Z [town] @ Myrrka Mood darkens in Myrrka — Following recent events, the people's spirit sinks.
+2026-01-09T04:00:00.000Z [faction] @ Windleigh [Circle of the Dawn] Circle of the Dawn eyes Windleigh for its timber — Desperate for timber, the faction has decided to take the settlement by force.
+2026-01-09T05:00:00.000Z [road] @ Windleigh Northbeach Traders makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-09T05:00:00.000Z [faction] @ Myrrka [Irantzu, Sons of the Wolf] Irantzu seeks Sons of the Wolf's protection — Frightened by Parthenius's Band falls ill in Myrrka, the guard appeals to the martial faction.
+2026-01-09T05:00:00.000Z [town] @ Minasfeld [Hans-Ruedi] Construction continues on Hans-Ruedi's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2026-01-09T06:00:00.000Z [system] The world turns (January 9th, 2026) — 3 parties traveling, 0 resting. 0 threats lurk.
+2026-01-09T06:00:00.000Z [road] @ Myrrka [The Grim Wolves, dwarven patrols] dwarven patrols offer The Grim Wolves aid on the road — As the world stirred from slumber copper deposits staining rock faces green. A few shadow-cloaked dwarven patrols, moving with purpose. They agreed to respect each other's territories. Snow-capped peaks gleaming in sunlight marked the scene.
+2026-01-09T06:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — Explorers speak of a strange discovery near Myrrka.
+2026-01-09T07:00:00.000Z [road] @ Myrrka [The Grim Wolves, the ogres called Exekias] The Grim Wolves help the ogres called Exekias gather firewood — Amid the bustle of morning trade glaciers carving valleys below. A single solitary ogres, blocking the path. They traded information as valuable as gold.
+2026-01-09T07:00:00.000Z [road] @ Windleigh Northbeach Traders makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-09T07:00:00.000Z [faction] @ Greenmist [Parthenius's Band, orc raiders] Fire in Greenmist: Fires on the horizon approach. — Parthenius's Band strikes fast at Greenmist and withdraws before retaliation.
+2026-01-09T08:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band spot signs of danger — Caves in the hillside show signs of habitation.
+2026-01-09T08:00:00.000Z [weather] @ Minasfeld [Wantelien] Wantelien alters the weather — Through ancient incantations, the Magic-User calls forth fog over the region.
+2026-01-09T09:00:00.000Z [town] @ Belfos Beroldus's Wagons arrives at Belfos — Bringing salt/fish from Greenmist with escorts under banner of Circle of the Dawn.
+2026-01-09T09:00:00.000Z [town] @ Belfos Mainardus arrives in Belfos — scout from Azmarin
+2026-01-09T09:00:00.000Z [town] @ Belfos Eurydamus arrives in Belfos — merchant from Windleigh
+2026-01-09T10:00:00.000Z [road] @ Myrrka [Parthenius's Band, the brigands called Oure] the brigands called Oure mark their territory with warning signs — As folk went about their labors rolling hills covered in heather. A group of organized brigands, emerging from concealment. Cultural misunderstandings were resolved through patience. Wind-bent trees clinging to slopes marked the scene.
+2026-01-09T10:00:00.000Z [road] @ Minasfeld [Anketin's Band] Anketin's Band spot signs of danger — Fresh hoofprints diverge from the road, as if riders left in haste.
+2026-01-09T10:00:00.000Z [road] @ Minasfeld [Anketin's Band, Philostratos's merchants] Anketin's Band move slowly to avoid alarming Philostratos's merchants — Amid the bustle of morning trade A group of night-hunting merchants, apparently startled. Strategic retreat preserved their strength. A caravan of wagons approaching from the distance marked the scene.
+2026-01-09T10:00:00.000Z [road] @ Myrrka [The Grim Wolves] The Grim Wolves parley with ogre — Trade news and share a quick meal before parting ways.
+2026-01-09T11:00:00.000Z [road] @ Myrrka [The Grim Wolves] The Grim Wolves discovers The Blood-stained Altar — While sensible folk sought shade waterfalls plunging into deep pools. A blood-stained altar, surrounded by a thin, unnerving mist. A light heart and swift feet follow them.
+2026-01-09T11:00:00.000Z [road] @ Myrrka [Parthenius's Band, Wackrill the shadow-cloaked] Wackrill the shadow-cloaked guide Parthenius's Band to a hidden spring — As the bell tolled the sixth hour sheep bells tinkling in the distance. The valleys have become lakes of mist. A band of cowardly goblins, carrying plunder. Diplomacy prevailed where force might have failed.
+2026-01-09T11:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band shadowed by orc raiders — Tense standoff; both sides withdraw before blades are drawn.
+2026-01-09T11:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-09T11:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — Explorers speak of a strange discovery near Myrrka.
+2026-01-09T12:00:00.000Z [system] The world turns (January 9th, 2026) — 3 parties traveling, 0 resting. 0 threats lurk.
+2026-01-09T12:00:00.000Z [road] @ Myrrka [The Grim Wolves] The Grim Wolves spot signs of danger — Eagle cries echo, but no birds are visible.
+2026-01-09T12:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band discovers The Glowing Cairn — While sensible folk sought shade A glowing cairn, swarming with spectral, blue butterflies. The party feels a surge of mental clarity.
+2026-01-09T12:00:00.000Z [road] @ Myrrka [The Grim Wolves] The Grim Wolves spot ogre and avoid notice — They detour carefully, leaving only faint tracks.
+2026-01-09T12:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band spot ogre and avoid notice — They detour carefully, leaving only faint tracks.
+2026-01-09T12:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — Thieves struck near Windleigh. The roads grow dangerous.
+2026-01-09T13:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — Thieves struck near Windleigh. The roads grow dangerous.
+2026-01-09T14:00:00.000Z [road] @ Myrrka [The Grim Wolves] The Grim Wolves spot giant bats and avoid notice — They detour carefully, leaving only faint tracks.
+2026-01-09T14:00:00.000Z [road] @ Belfos [Anketin's Band] Anketin's Band arrives at Belfos — They find an inn and stable their mounts.
+2026-01-09T14:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-09T14:00:00.000Z [town] @ Belfos [Peli] Construction continues on Peli's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2026-01-09T15:00:00.000Z [road] @ Myrrka [Parthenius's Band, brigands] Parthenius's Band assist brigands with a broken wagon — As travelers grew road-weary cairns marking ancient graves. A solitary cruel brigands, emerging from concealment. They traded information as valuable as gold.
+2026-01-09T15:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band shadowed by brigands — Tense standoff; both sides withdraw before blades are drawn.
+2026-01-09T15:00:00.000Z [faction] @ Windleigh [The Storm Guild] The Storm Guild eyes Windleigh for its grain — Desperate for grain, the faction has decided to take the settlement by force.
+2026-01-09T15:00:00.000Z [town] @ Myrrka Camp Fever fades in Myrrka — The worst of the sickness has passed. The bells ring in celebration.
+2026-01-09T16:00:00.000Z [road] @ Myrrka [Parthenius's Band, brigands] Parthenius's Band siege brigands's encampment — In the golden afternoon light hot springs steaming in valleys. A horde of poorly equipped brigands, blocking the path. The foe fought bravely but could not withstand the onslaught. The victors claim 52 coin worth of plunder.
+2026-01-09T16:00:00.000Z [town] @ Azmarin Word spreads in Azmarin — A valuable shipment was lost near Belfos.
+2026-01-09T16:00:00.000Z [faction] @ Belfos [Sons of the Wolf] Sons of the Wolf eyes Belfos for its salt — Desperate for salt, the faction has decided to take the settlement by force.
+2026-01-09T18:00:00.000Z [system] The world turns (January 9th, 2026) — 2 parties traveling, 1 resting. 0 threats lurk.
+2026-01-09T18:00:00.000Z [road] @ Myrrka [Parthenius's Band, Wackrill the massive] Parthenius's Band skirt around wary Wackrill the massive — As purple shadows gathered The valleys have become lakes of mist. A swarm of shadow-cloaked ogres, apparently startled. Strategic retreat preserved their strength. The mouth of a cave, dark and inviting marked the scene.
+2026-01-09T19:00:00.000Z [road] @ Myrrka [The Grim Wolves, dwarven patrols] The Grim Wolves exchange stories with curious dwarven patrols — As lanterns were kindled charred wood from forest fires hung in the air. The world shrinks to arms-length in the murk. Several night-hunting dwarven patrols, emerging from concealment. They left the meeting with hope for peaceful coexistence. Glaciers carving valleys below marked the scene.
+2026-01-09T19:00:00.000Z [road] @ Windleigh Northbeach Traders makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-09T20:00:00.000Z [road] @ Myrrka [The Grim Wolves, orc raiders] orc raiders launch arrows at The Grim Wolves from hiding — By candlelight and hearth-glow The world shrinks to arms-length in the murk. A band of shadow-cloaked orc raiders, scouting for targets. The foe's weapons glanced off enchanted armor. A well-timed spell from their caster turned the tide.
+2026-01-09T20:00:00.000Z [dungeon] @ Myrrka [Parthenius's Band] Parthenius's Band discovers Sunken Citadel — By candlelight and hearth-glow goats picking their way along cliffs. They have found An ancient sunken citadel from the Empire of Dust. Sunken Citadel was once a center of faith before its fall.
+2026-01-09T20:00:00.000Z [road] @ Windleigh [Northbeach Traders, Sons of the Wolf] Northbeach Traders is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-09T20:00:00.000Z [town] @ Windleigh Trade routes near Windleigh grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-09T20:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-09T20:00:00.000Z [faction] @ Belfos [The Hawk Compact] The Hawk Compact eyes Belfos for its salt — Desperate for salt, the faction has decided to take the settlement by force.
+2026-01-09T20:00:00.000Z [road] @ Myrrka [The Grim Wolves] The Grim Wolves grows in power! — Through hardship and battle, the members of The Grim Wolves have reached level 2.
+⏰ Catch-up progress: 98% (700/708 turns)2026-01-09T21:00:00.000Z [road] @ Myrrka [The Grim Wolves] The Grim Wolves spot signs of danger — The ruins of a dwarven waystation, recently looted.
+2026-01-09T21:00:00.000Z [road] @ Myrrka [The Grim Wolves, orc raiders] The Grim Wolves skirt around wary orc raiders — With ale flowing in taprooms the sharp tang of alpine herbs hung in the air. The world shrinks to arms-length in the murk. Several red-eyed in the dark orc raiders, dragging captives. Diplomacy prevailed where force might have failed.
+2026-01-09T21:00:00.000Z [road] @ Myrrka [Parthenius's Band, goblins] goblins provide shelter from the weather — By candlelight and hearth-glow mineral springs with a metallic tang hung in the air. A few shadow-cloaked goblins, tracking something. Words proved mightier than steel on this occasion.
+2026-01-09T22:00:00.000Z [road] @ Myrrka [Parthenius's Band, goatherds] goatherds test Parthenius's Band's resolve with challenges — As the stars emerged one by one the clatter of loose stones. A few shadow-cloaked goatherds, apparently startled. Diplomacy prevailed where force might have failed.
+
+✓ Caught up! World time is now synchronized.
+2026-01-01T00:00:00.000Z [road] @ Belfos [Anketin's Band] Anketin's Band departs Belfos — Bound for Windleigh across road (~12 miles).
+
+╔════════════════════════════════════════════════════════════════╗
+║  BECMI Real-Time Simulator                                     ║
+║  January 1st, 2026                                             ║
+╠════════════════════════════════════════════════════════════════╣
+║  Seed: gator                                                   ║
+║  Time Scale: 1x (turn every 600000ms)                          ║
+║  Settlements: 6   Parties: 3   Antagonists: 1                  ║
+║  Active Stories: 8                                             ║
+╚════════════════════════════════════════════════════════════════╝
+

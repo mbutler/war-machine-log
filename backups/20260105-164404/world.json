@@ -716,15 +716,15 @@
         "r": 7
       },
       "supply": {
-        "grain": 0,
-        "timber": 1,
+        "grain": -1,
+        "timber": 0,
         "ore": -2,
         "textiles": 3,
         "salt": 1,
-        "fish": 0,
-        "livestock": 1
+        "fish": 1,
+        "livestock": 0
       },
-      "mood": -1,
+      "mood": -3,
       "priceTrends": {
         "grain": "normal",
         "timber": "normal",
@@ -749,19 +749,19 @@
         "grain": 2,
         "timber": 1,
         "ore": 2,
-        "textiles": -2,
-        "salt": -2,
-        "fish": 2,
-        "livestock": 0
+        "textiles": -1,
+        "salt": -1,
+        "fish": 1,
+        "livestock": -1
       },
       "mood": -3,
       "priceTrends": {
         "grain": "low",
         "timber": "normal",
         "ore": "low",
-        "textiles": "high",
-        "salt": "high",
-        "fish": "low",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "normal",
         "livestock": "normal"
       },
       "lastTownLogDay": "2026-01-05"
@@ -776,18 +776,18 @@
         "r": 5
       },
       "supply": {
-        "grain": 2,
-        "timber": -3,
+        "grain": 1,
+        "timber": -1,
         "ore": -2,
-        "textiles": 4,
+        "textiles": 2,
         "salt": 2,
         "fish": -1,
-        "livestock": -2
+        "livestock": -3
       },
-      "mood": -2,
+      "mood": 3,
       "priceTrends": {
-        "grain": "low",
-        "timber": "high",
+        "grain": "normal",
+        "timber": "normal",
         "ore": "high",
         "textiles": "low",
         "salt": "low",
@@ -806,21 +806,21 @@
         "r": 6
       },
       "supply": {
-        "grain": 2,
-        "timber": 1,
-        "ore": -1,
+        "grain": 1,
+        "timber": 0,
+        "ore": 0,
         "textiles": 2,
-        "salt": -1,
+        "salt": -2,
         "fish": -1,
         "livestock": 3
       },
-      "mood": -2.1,
+      "mood": 1,
       "priceTrends": {
-        "grain": "low",
+        "grain": "normal",
         "timber": "normal",
         "ore": "normal",
         "textiles": "low",
-        "salt": "normal",
+        "salt": "high",
         "fish": "normal",
         "livestock": "low"
       },
@@ -837,20 +837,20 @@
       },
       "supply": {
         "grain": 1,
-        "timber": -2,
-        "ore": 1,
+        "timber": 0,
+        "ore": 0,
         "textiles": 2,
-        "salt": -3,
+        "salt": 0,
         "fish": 1,
-        "livestock": 0
+        "livestock": -1
       },
       "mood": -3,
       "priceTrends": {
         "grain": "normal",
-        "timber": "high",
+        "timber": "normal",
         "ore": "normal",
         "textiles": "low",
-        "salt": "high",
+        "salt": "normal",
         "fish": "normal",
         "livestock": "normal"
       },
@@ -866,23 +866,23 @@
         "r": 5
       },
       "supply": {
-        "grain": 1,
+        "grain": 2,
         "timber": 1,
         "ore": -1,
-        "textiles": 2,
+        "textiles": 3,
         "salt": -1,
-        "fish": -1,
-        "livestock": -2
+        "fish": -2,
+        "livestock": 0
       },
-      "mood": -2,
+      "mood": -3,
       "priceTrends": {
-        "grain": "normal",
+        "grain": "low",
         "timber": "normal",
         "ore": "normal",
         "textiles": "low",
         "salt": "normal",
-        "fish": "normal",
-        "livestock": "high"
+        "fish": "high",
+        "livestock": "normal"
       },
       "lastTownLogDay": "2026-01-05"
     }
@@ -915,23 +915,11 @@
         }
       ],
       "location": "Myrrka",
-      "status": "travel",
-      "xp": 845,
-      "travel": {
-        "destination": "Minasfeld",
-        "terrain": "mountains",
-        "milesRemaining": 37,
-        "milesPerHour": 0.5
-      },
-      "fame": 16,
+      "status": "idle",
+      "xp": 515,
+      "fame": 12,
       "wounded": true,
-      "restHoursRemaining": 34,
-      "goal": {
-        "kind": "travel-to",
-        "target": "Minasfeld",
-        "sourceRumorId": "rumor-1767653045907-223281"
-      },
-      "fatigue": 3
+      "restHoursRemaining": 4
     },
     {
       "id": "band-0",
@@ -940,46 +928,23 @@
         {
           "name": "Gonilda",
           "class": "Thief",
-          "level": 3,
-          "hp": 18,
-          "maxHp": 18
+          "level": 1,
+          "hp": 12,
+          "maxHp": 12
         },
         {
           "name": "Marjer",
           "class": "Elf",
-          "level": 4,
-          "hp": 23,
-          "maxHp": 23
+          "level": 2,
+          "hp": 14,
+          "maxHp": 14
         }
       ],
-      "location": "Greenmist",
-      "status": "travel",
-      "xp": 4023,
-      "travel": {
-        "destination": "Myrrka",
-        "terrain": "mountains",
-        "milesRemaining": 24,
-        "milesPerHour": 0.5
-      },
-      "fame": 44,
-      "fatigue": 5,
-      "wounded": false,
-      "restHoursRemaining": 0
-    },
-    {
-      "id": "band-2",
-      "name": "Tiede's Band",
-      "members": [
-        "Wybir",
-        "Guimar"
-      ],
-      "location": "The Whispers Tower",
+      "location": "Myrrka",
       "status": "idle",
-      "fatigue": -2,
-      "fame": 10,
-      "wounded": true,
-      "restHoursRemaining": 4,
-      "xp": null
+      "xp": 403,
+      "fame": 20,
+      "fatigue": 0
     }
   ],
   "roads": [
@@ -1164,13 +1129,76 @@
       },
       "depth": 3,
       "danger": 4,
-      "rooms": [],
-      "explored": 12
+      "rooms": [
+        {
+          "type": "trap",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "trap",
+          "threat": 4,
+          "loot": true,
+          "rare": "relic"
+        },
+        {
+          "type": "shrine",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "trap",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "trap",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": true,
+          "rare": "artifact"
+        },
+        {
+          "type": "laboratory",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": false
+        }
+      ],
+      "explored": 0
     }
   ],
   "activeRumors": [
     {
-      "id": "rumor-1767653044733-254305",
+      "id": "rumor-1767652787349-254305",
       "kind": "mystery",
       "text": "Levies rumored to secure ore; officials say caravans delayed.",
       "target": "Belfos",
@@ -1178,7 +1206,7 @@
       "freshness": 2
     },
     {
-      "id": "rumor-1767653044733-727156",
+      "id": "rumor-1767652787349-727156",
       "kind": "feud",
       "text": "The Storm Guild watches the markets quietly.",
       "target": "Belfos",
@@ -1186,7 +1214,7 @@
       "freshness": 3
     },
     {
-      "id": "rumor-1767653044733-138204",
+      "id": "rumor-1767652787349-138204",
       "kind": "feud",
       "text": "Sons of the Wolf watches the markets quietly.",
       "target": "Belfos",
@@ -1194,7 +1222,7 @@
       "freshness": 4
     },
     {
-      "id": "rumor-1767653044733-792102",
+      "id": "rumor-1767652787349-792102",
       "kind": "feud",
       "text": "Order of the Hawk watches the markets quietly.",
       "target": "Belfos",
@@ -1202,7 +1230,7 @@
       "freshness": 1
     },
     {
-      "id": "rumor-1767653044733-897340",
+      "id": "rumor-1767652787349-897340",
       "kind": "feud",
       "text": "Circle of the Dawn watches the markets quietly.",
       "target": "Belfos",
@@ -1210,7 +1238,7 @@
       "freshness": 4
     },
     {
-      "id": "rumor-1767653044733-214210",
+      "id": "rumor-1767652787349-214210",
       "kind": "feud",
       "text": "The Hawk Compact watches the markets quietly.",
       "target": "Belfos",
@@ -1218,7 +1246,7 @@
       "freshness": 4
     },
     {
-      "id": "rumor-1767653044733-913299",
+      "id": "rumor-1767652787349-913299",
       "kind": "mystery",
       "text": "Bargain prices on fish; traders racing to Windleigh.",
       "target": "Windleigh",
@@ -1226,7 +1254,7 @@
       "freshness": 1
     },
     {
-      "id": "rumor-1767653044733-910637",
+      "id": "rumor-1767652787349-910637",
       "kind": "feud",
       "text": "Order of the Hawk watches the markets quietly.",
       "target": "Windleigh",
@@ -1234,7 +1262,7 @@
       "freshness": 3
     },
     {
-      "id": "rumor-1767653044733-496987",
+      "id": "rumor-1767652787349-496987",
       "kind": "dungeon",
       "text": "whispered mystery: a bard fresh from the road says Millesenta heard of whispers of depth 3 halls (from Azmarin).",
       "target": "The Whispers Tower",
@@ -1242,7 +1270,7 @@
       "freshness": 2
     },
     {
-      "id": "rumor-1767653044733-974498",
+      "id": "rumor-1767652787349-974498",
       "kind": "feud",
       "text": "Sons of the Wolf watches the markets quietly.",
       "target": "Azmarin",
@@ -1250,7 +1278,7 @@
       "freshness": 2
     },
     {
-      "id": "rumor-1767653044733-87927",
+      "id": "rumor-1767652787349-87927",
       "kind": "feud",
       "text": "The Hawk Compact watches the markets quietly.",
       "target": "Azmarin",
@@ -1258,7 +1286,7 @@
       "freshness": 2
     },
     {
-      "id": "rumor-1767653044733-476487",
+      "id": "rumor-1767652787349-476487",
       "kind": "feud",
       "text": "Circle of the Dawn watches the markets quietly.",
       "target": "Minasfeld",
@@ -1266,7 +1294,7 @@
       "freshness": 2
     },
     {
-      "id": "rumor-1767653044733-541123",
+      "id": "rumor-1767652787349-541123",
       "kind": "feud",
       "text": "The Hawk Compact watches the markets quietly.",
       "target": "Myrrka",
@@ -1274,7 +1302,7 @@
       "freshness": 4
     },
     {
-      "id": "rumor-1767653044790-444113",
+      "id": "rumor-1767652787415-444113",
       "kind": "threat",
       "text": "Travelers speak of Mendia the Pallid. Ascending to godhood.",
       "target": "Myrrka",
@@ -1282,7 +1310,7 @@
       "freshness": 2
     },
     {
-      "id": "rumor-1767653045254-769919",
+      "id": "rumor-1767652787706-769919",
       "kind": "omen",
       "text": "Explorers speak of a strange discovery near Belfos.",
       "target": "Belfos",
@@ -1290,23 +1318,15 @@
       "freshness": 2
     },
     {
-      "id": "rumor-1767653045432-393319",
+      "id": "rumor-1767652787865-989629",
       "kind": "mystery",
       "text": "Explorers speak of a strange discovery near Greenmist.",
       "target": "Greenmist",
       "origin": "Greenmist",
-      "freshness": 4
+      "freshness": 1
     },
     {
-      "id": "rumor-1767653045448-836343",
-      "kind": "mystery",
-      "text": "Levies rumored to secure grain; officials say caravans delayed.",
-      "target": "Belfos",
-      "origin": "Belfos",
-      "freshness": 2
-    },
-    {
-      "id": "rumor-1767653045448-721229",
+      "id": "rumor-1767652787902-188753",
       "kind": "feud",
       "text": "The Storm Guild watches the markets quietly.",
       "target": "Belfos",
@@ -1314,199 +1334,183 @@
       "freshness": 4
     },
     {
-      "id": "rumor-1767653045448-464628",
-      "kind": "feud",
-      "text": "Sons of the Wolf watches the markets quietly.",
-      "target": "Belfos",
-      "origin": "Belfos",
-      "freshness": 5
-    },
-    {
-      "id": "rumor-1767653045448-388176",
-      "kind": "feud",
-      "text": "Circle of the Dawn watches the markets quietly.",
-      "target": "Windleigh",
-      "origin": "Windleigh",
-      "freshness": 5
-    },
-    {
-      "id": "rumor-1767653045448-572279",
-      "kind": "mystery",
-      "text": "Levies rumored to secure livestock; officials say caravans delayed.",
-      "target": "Azmarin",
-      "origin": "Azmarin",
-      "freshness": 4
-    },
-    {
-      "id": "rumor-1767653045448-226215",
-      "kind": "feud",
-      "text": "Circle of the Dawn watches the markets quietly.",
-      "target": "Azmarin",
-      "origin": "Azmarin",
-      "freshness": 5
-    },
-    {
-      "id": "rumor-1767653045448-657983",
-      "kind": "feud",
-      "text": "The Hawk Compact watches the markets quietly.",
-      "target": "Azmarin",
-      "origin": "Azmarin",
-      "freshness": 2
-    },
-    {
-      "id": "rumor-1767653045448-506185",
-      "kind": "feud",
-      "text": "whispered threat: a frantic merchant says Audrey heard of strange lights near Windleigh (from Minasfeld).",
-      "target": "Windleigh",
-      "origin": "Minasfeld",
-      "freshness": 3
-    },
-    {
-      "id": "rumor-1767653045448-207099",
-      "kind": "feud",
-      "text": "Sons of the Wolf watches the markets quietly.",
-      "target": "Minasfeld",
-      "origin": "Minasfeld",
-      "freshness": 3
-    },
-    {
-      "id": "rumor-1767653045448-17",
-      "kind": "feud",
-      "text": "Circle of the Dawn watches the markets quietly.",
-      "target": "Minasfeld",
-      "origin": "Minasfeld",
-      "freshness": 5
-    },
-    {
-      "id": "rumor-1767653045448-404599",
-      "kind": "dungeon",
-      "text": "cryptic missing: a frantic merchant says Babitt heard of villagers hearing chanting at dusk (from Myrrka).",
-      "target": "The Whispers Tower",
-      "origin": "Myrrka",
-      "freshness": 2
-    },
-    {
-      "id": "rumor-1767653045448-889681",
-      "kind": "feud",
-      "text": "The Storm Guild watches the markets quietly.",
-      "target": "Myrrka",
-      "origin": "Myrrka",
-      "freshness": 2
-    },
-    {
-      "id": "rumor-1767653045448-864722",
-      "kind": "feud",
-      "text": "Circle of the Dawn watches the markets quietly.",
-      "target": "Myrrka",
-      "origin": "Myrrka",
-      "freshness": 2
-    },
-    {
-      "id": "rumor-1767653045448-337809",
-      "kind": "feud",
-      "text": "The Hawk Compact watches the markets quietly.",
-      "target": "Myrrka",
-      "origin": "Myrrka",
-      "freshness": 5
-    },
-    {
-      "id": "rumor-1767653045448-187456",
-      "kind": "mystery",
-      "text": "Levies rumored to secure fish; officials say caravans delayed.",
-      "target": "Greenmist",
-      "origin": "Greenmist",
-      "freshness": 3
-    },
-    {
-      "id": "rumor-1767653045448-320234",
+      "id": "rumor-1767652787902-127604",
       "kind": "feud",
       "text": "Order of the Hawk watches the markets quietly.",
-      "target": "Greenmist",
-      "origin": "Greenmist",
-      "freshness": 4
-    },
-    {
-      "id": "rumor-1767653045681-779969",
-      "kind": "feud",
-      "text": "Word spreads that Beroldus's Wagons of Circle of the Dawn reached Greenmist with salt/fish.",
-      "target": "Greenmist",
-      "origin": "Greenmist",
-      "freshness": 2
-    },
-    {
-      "id": "rumor-1767653045823-871087",
-      "kind": "feud",
-      "text": "Beroldus's Wagons of Circle of the Dawn lost goods on the road; prices may shift.",
-      "target": "Greenmist",
-      "origin": "Greenmist",
+      "target": "Belfos",
+      "origin": "Belfos",
       "freshness": 5
     },
     {
-      "id": "rumor-1767653045893-869565",
+      "id": "rumor-1767652787902-797373",
       "kind": "mystery",
-      "text": "Thieves struck near Greenmist. The roads grow dangerous.",
-      "target": "Greenmist",
+      "text": "Levies rumored to secure salt; officials say caravans delayed.",
+      "target": "Windleigh",
       "origin": "Windleigh",
       "freshness": 4
     },
     {
-      "id": "rumor-1767653045907-223281",
+      "id": "rumor-1767652787902-367023",
+      "kind": "feud",
+      "text": "Sons of the Wolf watches the markets quietly.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767652787902-226215",
       "kind": "mystery",
-      "text": "A valuable shipment was lost near Minasfeld.",
+      "text": "Levies rumored to secure salt; officials say caravans delayed.",
       "target": "Minasfeld",
-      "origin": "Greenmist",
+      "origin": "Minasfeld",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767652787902-657983",
+      "kind": "feud",
+      "text": "The Storm Guild watches the markets quietly.",
+      "target": "Minasfeld",
+      "origin": "Minasfeld",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767652787902-535261",
+      "kind": "feud",
+      "text": "Sons of the Wolf watches the markets quietly.",
+      "target": "Minasfeld",
+      "origin": "Minasfeld",
       "freshness": 3
     },
     {
-      "id": "rumor-1767653045993-137328",
+      "id": "rumor-1767652787902-252921",
       "kind": "feud",
-      "text": "The Wandering Merchants of Order of the Hawk lost goods on the road; prices may shift.",
+      "text": "Order of the Hawk watches the markets quietly.",
+      "target": "Minasfeld",
+      "origin": "Minasfeld",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767652787902-11705",
+      "kind": "mystery",
+      "text": "Levies rumored to secure livestock; officials say caravans delayed.",
       "target": "Myrrka",
       "origin": "Myrrka",
       "freshness": 3
     },
     {
-      "id": "rumor-1767653046067-196292",
+      "id": "rumor-1767652787902-466974",
+      "kind": "feud",
+      "text": "The Storm Guild watches the markets quietly.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767652787902-207099",
+      "kind": "feud",
+      "text": "Order of the Hawk watches the markets quietly.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767652787902-17",
+      "kind": "feud",
+      "text": "The Hawk Compact watches the markets quietly.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767652787902-404599",
+      "kind": "dungeon",
+      "text": "cryptic missing: a frantic merchant says Babitt heard of villagers hearing chanting at dusk (from Greenmist).",
+      "target": "The Whispers Tower",
+      "origin": "Greenmist",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767652787902-889681",
+      "kind": "feud",
+      "text": "The Storm Guild watches the markets quietly.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767652787902-864722",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767652787902-337809",
+      "kind": "feud",
+      "text": "The Hawk Compact watches the markets quietly.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767652788122-545362",
+      "kind": "feud",
+      "text": "Word spreads that The Wandering Merchants of Order of the Hawk reached Myrrka with livestock.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767652788375-364578",
       "kind": "mystery",
-      "text": "Levies rumored to secure ore; officials say caravans delayed.",
+      "text": "Thieves struck near Belfos. The roads grow dangerous.",
+      "target": "Belfos",
+      "origin": "Windleigh",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767652788441-155013",
+      "kind": "feud",
+      "text": "Sons of the Wolf watches the markets quietly.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767652788441-1791",
+      "kind": "feud",
+      "text": "The Hawk Compact watches the markets quietly.",
       "target": "Belfos",
       "origin": "Belfos",
       "freshness": 6
     },
     {
-      "id": "rumor-1767653046067-517665",
-      "kind": "caravan",
-      "text": "conflicting mystery: a wandering priest says Eraric heard of strange lights near Greenmist (from Windleigh).",
-      "target": "Greenmist",
-      "origin": "Windleigh",
-      "freshness": 6
-    },
-    {
-      "id": "rumor-1767653046067-975228",
-      "kind": "feud",
-      "text": "Sons of the Wolf watches the markets quietly.",
-      "target": "Windleigh",
+      "id": "rumor-1767652788441-183102",
+      "kind": "dungeon",
+      "text": "whispered omen: a bard fresh from the road says Cordylion heard of guards buying lamp oil in bulk (from Windleigh).",
+      "target": "The Whispers Tower",
       "origin": "Windleigh",
       "freshness": 3
     },
     {
-      "id": "rumor-1767653046067-271773",
-      "kind": "feud",
-      "text": "The Storm Guild watches the markets quietly.",
-      "target": "Azmarin",
+      "id": "rumor-1767652788441-18937",
+      "kind": "caravan",
+      "text": "official omen: a frightened child says Egiarte heard of fresh graves disturbed (from Azmarin).",
+      "target": "Greenmist",
       "origin": "Azmarin",
-      "freshness": 4
+      "freshness": 3
     },
     {
-      "id": "rumor-1767653046067-511915",
+      "id": "rumor-1767652788441-658610",
       "kind": "feud",
-      "text": "Circle of the Dawn watches the markets quietly.",
+      "text": "The Hawk Compact watches the markets quietly.",
       "target": "Azmarin",
       "origin": "Azmarin",
       "freshness": 5
     },
     {
-      "id": "rumor-1767653046067-194181",
+      "id": "rumor-1767652788441-769496",
       "kind": "mystery",
       "text": "Bargain prices on livestock; traders racing to Minasfeld.",
       "target": "Minasfeld",
@@ -1514,378 +1518,364 @@
       "freshness": 4
     },
     {
-      "id": "rumor-1767653046067-842057",
+      "id": "rumor-1767652788441-356501",
       "kind": "feud",
-      "text": "The Storm Guild watches the markets quietly.",
+      "text": "Sons of the Wolf watches the markets quietly.",
+      "target": "Minasfeld",
+      "origin": "Minasfeld",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767652788441-33756",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
       "target": "Minasfeld",
       "origin": "Minasfeld",
       "freshness": 4
     },
     {
-      "id": "rumor-1767653046067-691484",
-      "kind": "feud",
-      "text": "Sons of the Wolf watches the markets quietly.",
-      "target": "Minasfeld",
-      "origin": "Minasfeld",
-      "freshness": 5
-    },
-    {
-      "id": "rumor-1767653046067-860246",
-      "kind": "monster-sign",
-      "text": "official plot: a drunken soldier says Milbrer heard of a caravan late by two days (from Myrrka).",
-      "target": "Seaonas Farm",
-      "origin": "Myrrka",
-      "freshness": 3
-    },
-    {
-      "id": "rumor-1767653046067-593677",
-      "kind": "feud",
-      "text": "Sons of the Wolf watches the markets quietly.",
-      "target": "Myrrka",
-      "origin": "Myrrka",
-      "freshness": 6
-    },
-    {
-      "id": "rumor-1767653046067-187498",
-      "kind": "feud",
-      "text": "The Hawk Compact watches the markets quietly.",
-      "target": "Myrrka",
-      "origin": "Myrrka",
-      "freshness": 3
-    },
-    {
-      "id": "rumor-1767653046067-436232",
+      "id": "rumor-1767652788441-541660",
       "kind": "mystery",
-      "text": "Levies rumored to secure livestock; officials say caravans delayed.",
-      "target": "Greenmist",
-      "origin": "Greenmist",
+      "text": "Bargain prices on textiles; traders racing to Myrrka.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767652788441-288297",
+      "kind": "feud",
+      "text": "Order of the Hawk watches the markets quietly.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767652788441-30517",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
       "freshness": 6
     },
     {
-      "id": "rumor-1767653046067-650179",
+      "id": "rumor-1767652788441-479752",
       "kind": "feud",
       "text": "Sons of the Wolf watches the markets quietly.",
       "target": "Greenmist",
       "origin": "Greenmist",
-      "freshness": 5
+      "freshness": 4
     },
     {
-      "id": "rumor-1767653046067-428574",
+      "id": "rumor-1767652788441-479131",
       "kind": "feud",
       "text": "Order of the Hawk watches the markets quietly.",
       "target": "Greenmist",
       "origin": "Greenmist",
-      "freshness": 3
+      "freshness": 5
     },
     {
-      "id": "rumor-1767653046067-480852",
-      "kind": "feud",
-      "text": "Circle of the Dawn watches the markets quietly.",
+      "id": "rumor-1767652788612-53351",
+      "kind": "mystery",
+      "text": "Thieves struck near Belfos. The roads grow dangerous.",
+      "target": "Belfos",
+      "origin": "Greenmist",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767652788648-265059",
+      "kind": "mystery",
+      "text": "Theodric tells all who will listen: \"Theodric falls ill.\" The tale spreads.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767652788686-391374",
+      "kind": "mystery",
+      "text": "Thieves struck near Belfos. The roads grow dangerous.",
+      "target": "Belfos",
+      "origin": "Minasfeld",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767652788717-171427",
+      "kind": "omen",
+      "text": "Explorers speak of a strange discovery near Greenmist.",
       "target": "Greenmist",
       "origin": "Greenmist",
       "freshness": 6
     },
     {
-      "id": "rumor-1767653046067-64842",
-      "kind": "feud",
-      "text": "The Hawk Compact watches the markets quietly.",
+      "id": "rumor-1767652788717-474406",
+      "kind": "mystery",
+      "text": "Eurydamus tells all who will listen: \"trolls ambush Parthenius's Band.\" The tale spreads.",
       "target": "Greenmist",
       "origin": "Greenmist",
       "freshness": 3
     },
     {
-      "id": "rumor-1767653046265-20066",
+      "id": "rumor-1767652788776-943743",
       "kind": "mystery",
-      "text": "A valuable shipment was lost near Minasfeld.",
-      "target": "Minasfeld",
+      "text": "Mendia has died at Myrrka.",
+      "target": "Myrrka",
+      "origin": "Minasfeld",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767652788823-482031",
+      "kind": "mystery",
+      "text": "The Grim Wolves and Mendia clashed at Myrrka.",
+      "target": "Myrrka",
       "origin": "Windleigh",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767652788889-985816",
+      "kind": "mystery",
+      "text": "Explorers speak of a strange discovery near Greenmist.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
       "freshness": 3
     },
     {
-      "id": "rumor-1767653046276-402981",
+      "id": "rumor-1767652788889-220638",
+      "kind": "mystery",
+      "text": "Mendia has died at Myrrka.",
+      "target": "Myrrka",
+      "origin": "Azmarin",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767652788903-426920",
+      "kind": "mystery",
+      "text": "They say Mendia met their end. Foul play is suspected.",
+      "target": "Myrrka",
+      "origin": "Belfos",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767652788903-128928",
+      "kind": "mystery",
+      "text": "Thieves struck near Belfos. The roads grow dangerous.",
+      "target": "Belfos",
+      "origin": "Minasfeld",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767652788965-954464",
       "kind": "dungeon",
       "text": "Explorers speak of a strange discovery near Greenmist.",
       "target": "Greenmist",
       "origin": "Greenmist",
-      "freshness": 4
-    },
-    {
-      "id": "rumor-1767653046336-686304",
-      "kind": "monster-sign",
-      "text": "Travelers speak of Mendia the Pallid. The roads grow dangerous.",
-      "target": "Myrrka",
-      "origin": "Windleigh",
       "freshness": 6
     },
     {
-      "id": "rumor-1767653046399-533185",
-      "kind": "monster-sign",
-      "text": "Travelers speak of Mendia the Pallid. The roads grow dangerous.",
-      "target": "Myrrka",
-      "origin": "Minasfeld",
-      "freshness": 5
-    },
-    {
-      "id": "rumor-1767653046539-922692",
-      "kind": "feud",
-      "text": "The Wandering Merchants of Order of the Hawk lost goods on the road; prices may shift.",
-      "target": "Belfos",
-      "origin": "Belfos",
-      "freshness": 5
-    },
-    {
-      "id": "rumor-1767653046660-250211",
-      "kind": "mystery",
-      "text": "A valuable shipment was lost near Belfos.",
-      "target": "Belfos",
-      "origin": "Windleigh",
-      "freshness": 3
-    },
-    {
-      "id": "rumor-1767653046668-84929",
-      "kind": "feud",
-      "text": "The Storm Guild watches the markets quietly.",
-      "target": "Belfos",
-      "origin": "Belfos",
-      "freshness": 6
-    },
-    {
-      "id": "rumor-1767653046668-713839",
-      "kind": "mystery",
-      "text": "Bargain prices on fish; traders racing to Windleigh.",
-      "target": "Windleigh",
-      "origin": "Windleigh",
-      "freshness": 7
-    },
-    {
-      "id": "rumor-1767653046668-445115",
-      "kind": "feud",
-      "text": "Order of the Hawk watches the markets quietly.",
-      "target": "Windleigh",
-      "origin": "Windleigh",
-      "freshness": 7
-    },
-    {
-      "id": "rumor-1767653046668-248064",
-      "kind": "mystery",
-      "text": "Bargain prices on grain; traders racing to Azmarin.",
-      "target": "Azmarin",
-      "origin": "Azmarin",
-      "freshness": 7
-    },
-    {
-      "id": "rumor-1767653046668-705862",
-      "kind": "feud",
-      "text": "Order of the Hawk watches the markets quietly.",
-      "target": "Azmarin",
-      "origin": "Azmarin",
-      "freshness": 4
-    },
-    {
-      "id": "rumor-1767653046668-838243",
-      "kind": "feud",
-      "text": "The Hawk Compact watches the markets quietly.",
-      "target": "Azmarin",
-      "origin": "Azmarin",
-      "freshness": 7
-    },
-    {
-      "id": "rumor-1767653046668-403097",
-      "kind": "feud",
-      "text": "whispered threat: an old map fragment says Raoulin heard of bandits offering odd coins (from Minasfeld).",
-      "target": "Minasfeld",
-      "origin": "Minasfeld",
-      "freshness": 6
-    },
-    {
-      "id": "rumor-1767653046668-555578",
-      "kind": "mystery",
-      "text": "Levies rumored to secure timber; officials say caravans delayed.",
-      "target": "Myrrka",
-      "origin": "Myrrka",
-      "freshness": 6
-    },
-    {
-      "id": "rumor-1767653046668-696292",
-      "kind": "feud",
-      "text": "The Storm Guild watches the markets quietly.",
-      "target": "Greenmist",
-      "origin": "Greenmist",
-      "freshness": 4
-    },
-    {
-      "id": "treasure-rumor-1767653046838-903221",
-      "kind": "mystery",
-      "text": "urgent treasure: a temple acolyte whispers of Tiede's Band discovering a hoard worth 22,131 gold. Fortune-seekers gather.",
-      "target": "The Whispers Tower",
-      "origin": "Windleigh",
-      "freshness": 17,
-      "treasureType": "massive-hoard",
-      "estimatedValue": 22131,
-      "discoveredBy": "Tiede's Band",
-      "attractsTypes": [
-        "thieves-guild",
-        "rival-party",
-        "dragon",
-        "faction",
-        "bandit"
-      ]
-    },
-    {
-      "id": "treasure-rumor-1767653046838-986914",
-      "kind": "mystery",
-      "text": "urgent treasure: a temple acolyte whispers of Tiede's Band discovering a hoard worth 22,131 gold. Fortune-seekers gather.",
-      "target": "The Whispers Tower",
-      "origin": "Belfos",
-      "freshness": 14,
-      "treasureType": "massive-hoard",
-      "estimatedValue": 22131,
-      "discoveredBy": "Tiede's Band",
-      "attractsTypes": [
-        "thieves-guild",
-        "rival-party",
-        "dragon",
-        "faction",
-        "bandit"
-      ]
-    },
-    {
-      "id": "treasure-rumor-1767653046838-665904",
-      "kind": "mystery",
-      "text": "urgent treasure: a temple acolyte whispers of Tiede's Band discovering a hoard worth 22,131 gold. Fortune-seekers gather.",
-      "target": "The Whispers Tower",
-      "origin": "Azmarin",
-      "freshness": 15,
-      "treasureType": "massive-hoard",
-      "estimatedValue": 39673,
-      "discoveredBy": "Tiede's Band",
-      "attractsTypes": [
-        "thieves-guild",
-        "rival-party",
-        "dragon",
-        "faction",
-        "bandit"
-      ]
-    },
-    {
-      "id": "rumor-1767653047075-531954",
+      "id": "rumor-1767652788981-642869",
       "kind": "mystery",
       "text": "Thieves struck near Belfos. The roads grow dangerous.",
       "target": "Belfos",
-      "origin": "Myrrka",
-      "freshness": 6
+      "origin": "Minasfeld",
+      "freshness": 5
     },
     {
-      "id": "rumor-1767653047156-154681",
+      "id": "rumor-1767652789026-846297",
       "kind": "feud",
-      "text": "Beroldus's Wagons of Circle of the Dawn lost goods on the road; prices may shift.",
+      "text": "Sons of the Wolf watches the markets quietly.",
       "target": "Belfos",
       "origin": "Belfos",
       "freshness": 5
     },
     {
-      "id": "rumor-1767653047310-940711",
-      "kind": "dungeon",
-      "text": "urgent treasure: a caravan guard says Halie heard of old map showing 3 levels and barred doors (from Windleigh).",
-      "target": "The Sanctum of Blighted Death",
-      "origin": "Windleigh",
-      "freshness": 5
-    },
-    {
-      "id": "rumor-1767653047310-256702",
+      "id": "rumor-1767652789026-599851",
       "kind": "mystery",
-      "text": "Levies rumored to secure ore; officials say caravans delayed.",
-      "target": "Azmarin",
-      "origin": "Azmarin",
-      "freshness": 5
-    },
-    {
-      "id": "rumor-1767653047310-18442",
-      "kind": "feud",
-      "text": "The Hawk Compact watches the markets quietly.",
-      "target": "Azmarin",
-      "origin": "Azmarin",
+      "text": "Levies rumored to secure salt; officials say caravans delayed.",
+      "target": "Windleigh",
+      "origin": "Windleigh",
       "freshness": 7
     },
     {
-      "id": "rumor-1767653047310-862774",
-      "kind": "dungeon",
-      "text": "conflicting missing: a caravan guard says Apal heard of villagers hearing chanting at dusk (from Minasfeld).",
-      "target": "The Sanctum of Blighted Death",
-      "origin": "Minasfeld",
-      "freshness": 8
+      "id": "rumor-1767652789026-509308",
+      "kind": "feud",
+      "text": "Sons of the Wolf watches the markets quietly.",
+      "target": "Windleigh",
+      "origin": "Windleigh",
+      "freshness": 6
     },
     {
-      "id": "rumor-1767653047310-944845",
-      "kind": "feud",
-      "text": "The Storm Guild watches the markets quietly.",
-      "target": "Minasfeld",
+      "id": "rumor-1767652789026-945231",
+      "kind": "mystery",
+      "text": "Bargain prices on textiles; traders racing to Azmarin.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767652789026-24149",
+      "kind": "dungeon",
+      "text": "boastful mystery: a wandering priest says Aglaia heard of beasts refusing to cross the old road (from Minasfeld).",
+      "target": "The Whispers Tower",
       "origin": "Minasfeld",
       "freshness": 6
     },
     {
-      "id": "rumor-1767653047310-880311",
+      "id": "rumor-1767652789026-110603",
+      "kind": "mystery",
+      "text": "Bargain prices on textiles; traders racing to Myrrka.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767652789026-369342",
       "kind": "feud",
       "text": "Order of the Hawk watches the markets quietly.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767652789026-969960",
+      "kind": "mystery",
+      "text": "Levies rumored to secure fish; officials say caravans delayed.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767652789094-633746",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Belfos.",
+      "target": "Belfos",
+      "origin": "Greenmist",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767652789101-656622",
+      "kind": "feud",
+      "text": "Word spreads that Beroldus's Wagons of Circle of the Dawn reached Belfos with salt/fish.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767652789151-601203",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Belfos.",
+      "target": "Belfos",
+      "origin": "Myrrka",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767652789371-523903",
+      "kind": "omen",
+      "text": "Explorers speak of a strange discovery near Greenmist.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767652789415-486427",
+      "kind": "mystery",
+      "text": "Explorers speak of a strange discovery near Greenmist.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767652789447-869286",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Belfos.",
+      "target": "Belfos",
+      "origin": "Minasfeld",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767652789495-371492",
+      "kind": "mystery",
+      "text": "Levies rumored to secure ore; officials say caravans delayed.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767652789495-62228",
+      "kind": "feud",
+      "text": "Order of the Hawk watches the markets quietly.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767652789495-603222",
+      "kind": "dungeon",
+      "text": "boastful threat: a bard fresh from the road says Gomesano heard of villagers hearing chanting at dusk (from Windleigh).",
+      "target": "The Sanctum of Blighted Death",
+      "origin": "Windleigh",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767652789495-648135",
+      "kind": "feud",
+      "text": "Sons of the Wolf watches the markets quietly.",
+      "target": "Windleigh",
+      "origin": "Windleigh",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767652789495-61344",
+      "kind": "mystery",
+      "text": "Levies rumored to secure livestock; officials say caravans delayed.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 8
+    },
+    {
+      "id": "rumor-1767652789495-207986",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767652789495-353282",
+      "kind": "feud",
+      "text": "Sons of the Wolf watches the markets quietly.",
       "target": "Minasfeld",
       "origin": "Minasfeld",
       "freshness": 5
     },
     {
-      "id": "rumor-1767653047310-500182",
-      "kind": "mystery",
-      "text": "Levies rumored to secure timber; officials say caravans delayed.",
+      "id": "rumor-1767652789495-86812",
+      "kind": "feud",
+      "text": "official treasure: a bard fresh from the road says Theodekles heard of a caravan late by two days (from Myrrka).",
+      "target": "Windleigh",
+      "origin": "Myrrka",
+      "freshness": 8
+    },
+    {
+      "id": "rumor-1767652789495-779649",
+      "kind": "feud",
+      "text": "The Storm Guild watches the markets quietly.",
       "target": "Myrrka",
       "origin": "Myrrka",
       "freshness": 8
     },
     {
-      "id": "rumor-1767653047310-325279",
-      "kind": "mystery",
-      "text": "Levies rumored to secure livestock; officials say caravans delayed.",
-      "target": "Greenmist",
-      "origin": "Greenmist",
-      "freshness": 8
-    },
-    {
-      "id": "rumor-1767653047310-857347",
-      "kind": "feud",
-      "text": "The Storm Guild watches the markets quietly.",
-      "target": "Greenmist",
+      "id": "rumor-1767652789495-803893",
+      "kind": "dungeon",
+      "text": "whispered missing: a frantic merchant says Merope heard of bandits offering odd coins (from Greenmist).",
+      "target": "The Whispers Tower",
       "origin": "Greenmist",
       "freshness": 6
     },
     {
-      "id": "rumor-1767653047310-944701",
+      "id": "rumor-1767652789495-962637",
       "kind": "feud",
       "text": "Sons of the Wolf watches the markets quietly.",
       "target": "Greenmist",
       "origin": "Greenmist",
-      "freshness": 7
-    },
-    {
-      "id": "rumor-1767653047310-973789",
-      "kind": "feud",
-      "text": "Order of the Hawk watches the markets quietly.",
-      "target": "Greenmist",
-      "origin": "Greenmist",
       "freshness": 8
-    },
-    {
-      "id": "rumor-1767653047310-324273",
-      "kind": "feud",
-      "text": "Circle of the Dawn watches the markets quietly.",
-      "target": "Greenmist",
-      "origin": "Greenmist",
-      "freshness": 5
-    },
-    {
-      "id": "rumor-1767653047310-512655",
-      "kind": "feud",
-      "text": "The Hawk Compact watches the markets quietly.",
-      "target": "Greenmist",
-      "origin": "Greenmist",
-      "freshness": 7
     }
   ],
   "npcs": [
@@ -1931,12 +1921,39 @@
       "title": "Sister",
       "appearance": "missing two fingers on the left hand",
       "secretsKnown": [],
-      "memories": [],
+      "memories": [
+        {
+          "id": "mem-1767652788063-e2n4n5",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-02T05:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.3200000000000145,
+          "acted": false,
+          "narrative": "saw Sons of the Wolf clash",
+          "secret": false
+        },
+        {
+          "id": "mem-1767652788641-7i0jrn",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-03T06:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.570000000000009,
+          "acted": false,
+          "narrative": "saw Sons of the Wolf clash",
+          "secret": false
+        }
+      ],
       "agendas": [
         {
           "type": "stronghold",
           "priority": 8,
-          "progress": 40.12326177109731,
+          "progress": 40.327626095905444,
           "description": "Establish a seat of power"
         },
         {
@@ -1948,7 +1965,7 @@
       ],
       "morale": 0,
       "loyalty": "faction-0",
-      "bloodlineId": "bloodline-1767653044675-1871",
+      "bloodlineId": "bloodline-1767652787292-1871",
       "birthDate": "1973-01-14T00:00:00.000Z",
       "childrenIds": [],
       "titles": [
@@ -1962,85 +1979,155 @@
       "divorces": 0
     },
     {
-      "id": "npc-1",
-      "name": "Theodric",
+      "id": "npc-2",
+      "name": "Mainardus",
       "role": "scout",
-      "home": "settlement-3",
-      "location": "Myrrka",
-      "reputation": 2,
-      "fame": 1,
+      "home": "settlement-2",
+      "location": "Belfos",
+      "reputation": 1,
+      "fame": 0,
       "alive": true,
-      "class": "Thief",
-      "level": 9,
+      "class": "Elf",
+      "level": 10,
       "xp": 0,
+      "spells": [
+        "Read Magic"
+      ],
       "depth": {
         "traits": [
-          "brave",
+          "skeptical",
           "romantic",
-          "honorable"
+          "naive"
         ],
-        "background": "farmhand-turned-guard",
-        "motivation": "redemption",
-        "secretMotivation": "redemption",
+        "background": "orphan-thief",
+        "motivation": "power",
         "relationships": [
           {
-            "targetId": "npc-0",
-            "targetName": "Peli",
-            "type": "betrayed",
+            "targetId": "npc-9",
+            "targetName": "Eryalus",
+            "type": "mentor",
             "strength": 1,
-            "history": "Watches old friends with new suspicion."
+            "history": "Saw potential where others saw nothing."
           },
           {
-            "targetId": "npc-3",
-            "targetName": "Cybele",
-            "type": "debtor",
-            "strength": 1,
-            "history": "Interest compounds, and so does resentment."
+            "targetId": "npc-12",
+            "targetName": "Molora",
+            "type": "enemy",
+            "strength": 2,
+            "history": "Only one of them can have what they both want."
+          },
+          {
+            "targetId": "npc-5",
+            "targetName": "Ilene",
+            "type": "ally",
+            "strength": 5,
+            "history": "Survived a dangerous journey together."
           },
           {
             "targetId": "npc-10",
             "targetName": "Eadmund",
-            "type": "mentor",
-            "strength": 4,
-            "history": "Saw potential where others saw nothing."
+            "type": "lover",
+            "strength": 3,
+            "history": "Met under strange circumstances; love was stranger still."
+          },
+          {
+            "targetId": "npc-15",
+            "targetName": "Gawyne",
+            "type": "lover",
+            "strength": 1,
+            "history": "Some say the affair still smolders."
           }
         ],
         "memories": [],
         "quirks": [
-          "cannot resist a wager",
-          "keeps a journal in cipher"
+          "trusts no one who smiles too easily",
+          "fears deep water",
+          "speaks in proverbs"
         ]
       },
-      "age": 26,
-      "title": "Outrider",
-      "appearance": "a nervous tic in the left eye",
+      "age": 59,
+      "title": "Woods-Guide",
+      "appearance": "a limp from an old wound",
       "secretsKnown": [],
-      "memories": [],
+      "memories": [
+        {
+          "id": "mem-1767652789277-bf5vki",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-04T10:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.850000000000003,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        },
+        {
+          "id": "mem-1767652789293-7zksph",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-04T11:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.860000000000003,
+          "acted": false,
+          "narrative": "survived the battle at Belfos",
+          "secret": false
+        },
+        {
+          "id": "mem-1767652789373-ha1x9e",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-04T18:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.9300000000000015,
+          "acted": false,
+          "narrative": "survived the battle at Belfos",
+          "secret": false
+        },
+        {
+          "id": "mem-1767652789438-oleo56",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-04T22:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.9700000000000006,
+          "acted": false,
+          "narrative": "saw Sons of the Wolf clash",
+          "secret": false
+        }
+      ],
       "agendas": [
         {
           "type": "stronghold",
           "priority": 8,
-          "progress": 48.124792989420236,
+          "progress": 35.15612072727178,
           "description": "Establish a seat of power"
+        },
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 6,
+          "description": "Unlock deeper magical secrets"
         }
       ],
       "morale": 0,
-      "bloodlineId": "bloodline-1767653044675-5722",
-      "birthDate": "1966-01-16T00:00:00.000Z",
+      "loyalty": "faction-2",
+      "birthDate": "1975-01-14T00:00:00.000Z",
       "childrenIds": [],
-      "titles": [
-        "Lord"
-      ],
+      "titles": [],
       "claims": [],
       "legitimate": true,
       "acknowledged": true,
-      "healthCondition": "dying",
+      "healthCondition": "healthy",
       "widowed": false,
-      "divorces": 0,
-      "spouseId": "npc-8",
-      "marriedAt": "2007-01-06T00:00:00.000Z",
-      "lastHealthCheck": "2026-01-05T00:00:00.000Z",
-      "wounded": true
+      "divorces": 0
     },
     {
       "id": "npc-3",
@@ -2103,7 +2190,34 @@
       "title": "Sergeant",
       "appearance": "ink-stained fingers of a scholar",
       "secretsKnown": [],
-      "memories": [],
+      "memories": [
+        {
+          "id": "mem-1767652789277-k7za26",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-04T10:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.850000000000003,
+          "acted": false,
+          "narrative": "survived the battle at Belfos",
+          "secret": false
+        },
+        {
+          "id": "mem-1767652789373-g4bhb6",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-04T18:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.9300000000000015,
+          "acted": false,
+          "narrative": "survived the battle at Belfos",
+          "secret": false
+        }
+      ],
       "agendas": [],
       "morale": 0,
       "loyalty": "faction-1",
@@ -2174,7 +2288,7 @@
         {
           "type": "stronghold",
           "priority": 8,
-          "progress": 48.21506532280007,
+          "progress": 48.134910308490504,
           "description": "Establish a seat of power"
         }
       ],
@@ -2235,7 +2349,7 @@
         {
           "type": "stronghold",
           "priority": 8,
-          "progress": 40.14217547805049,
+          "progress": 40.22800344201504,
           "description": "Establish a seat of power"
         }
       ],
@@ -2307,16 +2421,29 @@
       "secretsKnown": [],
       "memories": [
         {
-          "id": "mem-1767653047235-vaqtir",
+          "id": "mem-1767652789277-i79a5c",
           "category": "witnessed-battle",
           "eventType": "robbery",
-          "timestamp": "2026-01-04T22:00:00.000Z",
+          "timestamp": "2026-01-04T10:00:00.000Z",
           "location": "Belfos",
           "emotion": "suspicious",
           "target": "Sons of the Wolf",
-          "intensity": 3.9700000000000006,
+          "intensity": 3.850000000000003,
           "acted": false,
           "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        },
+        {
+          "id": "mem-1767652789373-plu86w",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-04T18:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.9300000000000015,
+          "acted": false,
+          "narrative": "survived the battle at Belfos",
           "secret": false
         }
       ],
@@ -2324,12 +2451,12 @@
         {
           "type": "stronghold",
           "priority": 8,
-          "progress": 20.075804187208416,
+          "progress": 20.16949050781783,
           "description": "Establish a seat of power"
         }
       ],
       "morale": 0,
-      "bloodlineId": "bloodline-1767653044675-5794",
+      "bloodlineId": "bloodline-1767652787292-5794",
       "birthDate": "1993-01-09T00:00:00.000Z",
       "childrenIds": [],
       "titles": [
@@ -2388,11 +2515,25 @@
       "title": "Master",
       "appearance": "a nervous tic in the left eye",
       "secretsKnown": [],
-      "memories": [],
+      "memories": [
+        {
+          "id": "mem-1767652789373-cjw73p",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-04T18:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.9300000000000015,
+          "acted": false,
+          "narrative": "survived the battle at Belfos",
+          "secret": false
+        }
+      ],
       "agendas": [],
       "morale": 0,
       "loyalty": "faction-2",
-      "bloodlineId": "bloodline-1767653044675-6626",
+      "bloodlineId": "bloodline-1767652787292-6626",
       "birthDate": "1997-01-08T00:00:00.000Z",
       "childrenIds": [],
       "titles": [
@@ -2454,20 +2595,35 @@
       "title": "Ranger",
       "appearance": "a brand mark, poorly concealed",
       "secretsKnown": [],
-      "memories": [],
+      "memories": [
+        {
+          "id": "mem-1767652788641-smf6fk",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-03T06:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.570000000000009,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        }
+      ],
       "agendas": [],
       "morale": 0,
       "loyalty": "faction-0",
       "birthDate": "1986-01-11T00:00:00.000Z",
       "childrenIds": [],
-      "titles": [],
+      "titles": [
+        "Lord"
+      ],
       "claims": [],
       "legitimate": true,
       "acknowledged": true,
       "healthCondition": "healthy",
-      "widowed": false,
+      "widowed": true,
       "divorces": 0,
-      "spouseId": "npc-1",
       "marriedAt": "2007-01-06T00:00:00.000Z"
     },
     {
@@ -2512,7 +2668,7 @@
         {
           "type": "stronghold",
           "priority": 8,
-          "progress": 40.0897334049223,
+          "progress": 40.13648270878941,
           "description": "Establish a seat of power"
         }
       ],
@@ -2600,7 +2756,7 @@
       "memories": [],
       "agendas": [],
       "morale": 0,
-      "bloodlineId": "bloodline-1767653044675-2227",
+      "bloodlineId": "bloodline-1767652787292-2227",
       "birthDate": "1971-01-15T00:00:00.000Z",
       "childrenIds": [],
       "titles": [
@@ -2666,20 +2822,33 @@
       "secretsKnown": [],
       "memories": [
         {
-          "id": "mem-1767653045812-whpiwu",
+          "id": "mem-1767652788883-fc83b3",
           "category": "witnessed-battle",
           "eventType": "robbery",
-          "timestamp": "2026-01-02T12:00:00.000Z",
-          "location": "Minasfeld",
+          "timestamp": "2026-01-03T16:00:00.000Z",
+          "location": "Belfos",
           "emotion": "suspicious",
           "target": "Sons of the Wolf",
-          "intensity": 3.390000000000013,
+          "intensity": 3.670000000000007,
           "acted": false,
-          "narrative": "survived the battle at Minasfeld",
+          "narrative": "saw Sons of the Wolf clash",
           "secret": false
         },
         {
-          "id": "mem-1767653047236-da94lv",
+          "id": "mem-1767652789277-a9n25s",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-04T10:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.850000000000003,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        },
+        {
+          "id": "mem-1767652789438-xadfut",
           "category": "witnessed-battle",
           "eventType": "robbery",
           "timestamp": "2026-01-04T22:00:00.000Z",
@@ -2688,7 +2857,7 @@
           "target": "Sons of the Wolf",
           "intensity": 3.9700000000000006,
           "acted": false,
-          "narrative": "survived the battle at Belfos",
+          "narrative": "saw Sons of the Wolf clash",
           "secret": false
         }
       ],
@@ -2696,7 +2865,7 @@
         {
           "type": "stronghold",
           "priority": 8,
-          "progress": 8.177537835657128,
+          "progress": 8.149725108065176,
           "description": "Establish a seat of power"
         },
         {
@@ -2767,7 +2936,21 @@
       "title": "Woods-Guide",
       "appearance": "ink-stained fingers of a scholar",
       "secretsKnown": [],
-      "memories": [],
+      "memories": [
+        {
+          "id": "mem-1767652788574-gynnil",
+          "category": "witnessed-death",
+          "eventType": "death",
+          "timestamp": "2026-01-03T02:00:00.000Z",
+          "location": "Myrrka",
+          "emotion": "fearful",
+          "target": "The Grim Wolves",
+          "intensity": 7.54000000000001,
+          "acted": false,
+          "narrative": "carries the memory of The Grim Wolves",
+          "secret": false
+        }
+      ],
       "agendas": [],
       "morale": 0,
       "loyalty": "faction-1",
@@ -2786,7 +2969,7 @@
       "name": "Izot",
       "role": "bard",
       "home": "settlement-0",
-      "location": "Myrrka",
+      "location": "Belfos",
       "reputation": 1,
       "fame": 0,
       "alive": true,
@@ -2794,7 +2977,8 @@
       "level": 6,
       "xp": 0,
       "spells": [
-        "Read Magic"
+        "Read Magic",
+        "Invisibility"
       ],
       "depth": {
         "traits": [
@@ -2822,18 +3006,59 @@
       "title": "Cantor",
       "appearance": "a limp from an old wound",
       "secretsKnown": [],
-      "memories": [],
+      "memories": [
+        {
+          "id": "mem-1767652788063-buf7h8",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-02T05:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.3200000000000145,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        },
+        {
+          "id": "mem-1767652788574-f45zmk",
+          "category": "witnessed-battle",
+          "eventType": "battle",
+          "timestamp": "2026-01-03T02:00:00.000Z",
+          "location": "Myrrka",
+          "emotion": "fearful",
+          "target": "The Grim Wolves",
+          "secondaryTarget": "Mendia",
+          "intensity": 5.54000000000001,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        },
+        {
+          "id": "mem-1767652788884-1q9h46",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-03T16:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.670000000000007,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        }
+      ],
       "agendas": [
         {
           "type": "research",
           "priority": 5,
-          "progress": 27,
+          "progress": 100,
           "description": "Unlock deeper magical secrets"
         }
       ],
       "morale": 0,
       "loyalty": "faction-0",
-      "bloodlineId": "bloodline-1767653044675-4533",
+      "bloodlineId": "bloodline-1767652787292-4533",
       "birthDate": "1974-01-14T00:00:00.000Z",
       "childrenIds": [],
       "titles": [
@@ -2912,11 +3137,26 @@
       "title": "Watch-Captain",
       "appearance": "elaborate tattoos visible at wrist and neck",
       "secretsKnown": [],
-      "memories": [],
+      "memories": [
+        {
+          "id": "mem-1767652788574-w4vxsx",
+          "category": "witnessed-battle",
+          "eventType": "battle",
+          "timestamp": "2026-01-03T02:00:00.000Z",
+          "location": "Myrrka",
+          "emotion": "proud",
+          "target": "The Grim Wolves",
+          "secondaryTarget": "Mendia",
+          "intensity": 5.54000000000001,
+          "acted": false,
+          "narrative": "survived the battle at Myrrka",
+          "secret": false
+        }
+      ],
       "agendas": [],
       "morale": 0,
       "loyalty": "faction-0",
-      "bloodlineId": "bloodline-1767653044675-6311",
+      "bloodlineId": "bloodline-1767652787292-6311",
       "birthDate": "1988-01-11T00:00:00.000Z",
       "childrenIds": [],
       "titles": [
@@ -2969,18 +3209,45 @@
       "title": "Rhapsode",
       "appearance": "ink-stained fingers of a scholar",
       "secretsKnown": [],
-      "memories": [],
+      "memories": [
+        {
+          "id": "mem-1767652789373-wqbhfg",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-04T18:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.9300000000000015,
+          "acted": false,
+          "narrative": "saw Sons of the Wolf clash",
+          "secret": false
+        },
+        {
+          "id": "mem-1767652789438-txkz21",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-04T22:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.9700000000000006,
+          "acted": false,
+          "narrative": "saw Sons of the Wolf clash",
+          "secret": false
+        }
+      ],
       "agendas": [
         {
           "type": "stronghold",
           "priority": 8,
-          "progress": 48.084910552182706,
+          "progress": 48.07016291965964,
           "description": "Establish a seat of power"
         }
       ],
       "morale": 0,
       "loyalty": "faction-1",
-      "bloodlineId": "bloodline-1767653044675-4227",
+      "bloodlineId": "bloodline-1767652787292-4227",
       "birthDate": "1976-01-14T00:00:00.000Z",
       "childrenIds": [],
       "titles": [
@@ -2998,7 +3265,7 @@
       "name": "Yllaria",
       "role": "merchant",
       "home": "settlement-5",
-      "location": "Greenmist",
+      "location": "Belfos",
       "reputation": 1,
       "fame": 0,
       "alive": true,
@@ -3052,7 +3319,34 @@
       "title": "Master",
       "appearance": "surprisingly young features",
       "secretsKnown": [],
-      "memories": [],
+      "memories": [
+        {
+          "id": "mem-1767652789373-jespyi",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-04T18:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.9300000000000015,
+          "acted": false,
+          "narrative": "saw Sons of the Wolf clash",
+          "secret": false
+        },
+        {
+          "id": "mem-1767652789438-oa7a5b",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-04T22:00:00.000Z",
+          "location": "Belfos",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.9700000000000006,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        }
+      ],
       "agendas": [],
       "morale": 0,
       "loyalty": "faction-1",
@@ -3074,7 +3368,7 @@
       "attitude": {},
       "wealth": 110,
       "focus": "trade",
-      "lastNoted": "Greenmist"
+      "lastNoted": "Myrrka"
     },
     {
       "id": "faction-1",
@@ -3089,22 +3383,22 @@
       "name": "Order of the Hawk",
       "attitude": {
         "Myrrka": 1,
-        "Belfos": 0
+        "Belfos": 1
       },
-      "wealth": 70,
+      "wealth": 71,
       "focus": "pious",
-      "lastNoted": "Greenmist"
+      "lastNoted": "Belfos"
     },
     {
       "id": "faction-3",
       "name": "Circle of the Dawn",
       "attitude": {
-        "Greenmist": 0,
-        "Belfos": 0
+        "Greenmist": 1,
+        "Belfos": 1
       },
-      "wealth": 103,
+      "wealth": 107,
       "focus": "arcane",
-      "lastNoted": "Greenmist"
+      "lastNoted": "Azmarin"
     },
     {
       "id": "faction-4",
@@ -3112,7 +3406,7 @@
       "attitude": {},
       "wealth": 92,
       "focus": "trade",
-      "lastNoted": "Greenmist"
+      "lastNoted": "Azmarin"
     }
   ],
   "caravans": [
@@ -3126,9 +3420,9 @@
       "goods": [
         "livestock"
       ],
-      "location": "Myrrka",
-      "progressHours": 1,
-      "direction": "inbound",
+      "location": "Belfos",
+      "progressHours": 20,
+      "direction": "outbound",
       "escorts": [
         "npc-1"
       ],
@@ -3147,7 +3441,7 @@
         "textiles"
       ],
       "location": "Belfos",
-      "progressHours": 28,
+      "progressHours": 21,
       "direction": "outbound",
       "escorts": [
         "npc-3"
@@ -3166,7 +3460,7 @@
         "textiles"
       ],
       "location": "Windleigh",
-      "progressHours": 21,
+      "progressHours": 19,
       "direction": "outbound",
       "escorts": [
         "npc-8"
@@ -3185,7 +3479,7 @@
         "fish"
       ],
       "location": "Belfos",
-      "progressHours": 31,
+      "progressHours": 6,
       "direction": "outbound",
       "escorts": [
         "npc-2"
@@ -3217,7 +3511,7 @@
   "armies": [],
   "landmarks": [
     {
-      "id": "landmark-1767653044855-55",
+      "id": "landmark-1767652787500-55",
       "name": "The Cracked Statue",
       "description": "A cracked statue, whispering in an unknown, melodic tongue.",
       "location": {
@@ -3233,7 +3527,7 @@
       ]
     },
     {
-      "id": "landmark-1767653045225-825",
+      "id": "landmark-1767652787656-825",
       "name": "The Sun-bleached Altar",
       "description": "A sun-bleached altar, whispering in an unknown, melodic tongue.",
       "location": {
@@ -3249,7 +3543,7 @@
       ]
     },
     {
-      "id": "landmark-1767653045358-127",
+      "id": "landmark-1767652787784-127",
       "name": "The Cracked Cave",
       "description": "A cracked cave, humming a low, vibrating note.",
       "location": {
@@ -3265,95 +3559,31 @@
       ]
     },
     {
-      "id": "landmark-1767653045821-573",
-      "name": "The Silver Monolith",
-      "description": "A silver monolith, surrounded by a thin, unnerving mist.",
+      "id": "landmark-1767652788311-548",
+      "name": "The Weather-worn Cave",
+      "description": "A weather-worn cave, pulsing with a faint, rhythmic light.",
       "location": {
         "q": 1,
         "r": 5
       },
       "terrain": "mountains",
-      "discoveryDate": "2026-01-02T13:00:00.000Z",
+      "discoveryDate": "2026-01-02T18:00:00.000Z",
       "discoveredBy": "Parthenius's Band",
-      "effect": "treasure-clue",
+      "effect": "historical-knowledge",
       "knownBy": [
         "Parthenius's Band"
       ]
     },
     {
-      "id": "landmark-1767653046243-866",
-      "name": "The Weather-worn Statue",
-      "description": "A weather-worn statue, whispering in an unknown, melodic tongue.",
-      "location": {
-        "q": 4,
-        "r": 6
-      },
-      "terrain": "hills",
-      "discoveryDate": "2026-01-03T05:00:00.000Z",
-      "discoveredBy": "Tiede's Band",
-      "effect": "fey-blessing",
-      "knownBy": [
-        "Tiede's Band"
-      ]
-    },
-    {
-      "id": "landmark-1767653046274-15",
-      "name": "The Glowing Cairn",
-      "description": "A glowing cairn, whispering in an unknown, melodic tongue.",
-      "location": {
-        "q": 4,
-        "r": 6
-      },
-      "terrain": "hills",
-      "discoveryDate": "2026-01-03T08:00:00.000Z",
-      "discoveredBy": "Tiede's Band",
-      "effect": "arcane-insight",
-      "knownBy": [
-        "Tiede's Band"
-      ]
-    },
-    {
-      "id": "landmark-1767653046348-250",
-      "name": "The Silver Pillar",
-      "description": "A silver pillar, swallowing all sound around it.",
+      "id": "landmark-1767652788354-98",
+      "name": "The Glowing Pillar",
+      "description": "A glowing pillar, home to a silent, white-haired hermit.",
       "location": {
         "q": 1,
         "r": 5
       },
       "terrain": "mountains",
-      "discoveryDate": "2026-01-03T11:00:00.000Z",
-      "discoveredBy": "Parthenius's Band",
-      "effect": "arcane-insight",
-      "knownBy": [
-        "Parthenius's Band"
-      ]
-    },
-    {
-      "id": "landmark-1767653046600-533",
-      "name": "The Moss-covered Pillar",
-      "description": "A moss-covered pillar, surrounded by a thin, unnerving mist.",
-      "location": {
-        "q": 7,
-        "r": 0
-      },
-      "terrain": "mountains",
-      "discoveryDate": "2026-01-03T19:00:00.000Z",
-      "discoveredBy": "The Grim Wolves",
-      "effect": "arcane-insight",
-      "knownBy": [
-        "The Grim Wolves"
-      ]
-    },
-    {
-      "id": "landmark-1767653046629-266",
-      "name": "The Perfectly smooth Cave",
-      "description": "A perfectly smooth cave, pulsing with a faint, rhythmic light.",
-      "location": {
-        "q": 1,
-        "r": 5
-      },
-      "terrain": "mountains",
-      "discoveryDate": "2026-01-03T21:00:00.000Z",
+      "discoveryDate": "2026-01-02T19:00:00.000Z",
       "discoveredBy": "Parthenius's Band",
       "effect": "prophetic-hint",
       "knownBy": [
@@ -3361,96 +3591,129 @@
       ]
     },
     {
-      "id": "landmark-1767653046965-691",
-      "name": "The Crystalline Cave",
-      "description": "A crystalline cave, pulsing with a faint, rhythmic light.",
+      "id": "landmark-1767652788638-146",
+      "name": "The Cracked Cairn",
+      "description": "A cracked cairn, swallowing all sound around it.",
       "location": {
-        "q": 7,
-        "r": 0
+        "q": 1,
+        "r": 5
       },
       "terrain": "mountains",
-      "discoveryDate": "2026-01-04T07:00:00.000Z",
-      "discoveredBy": "The Grim Wolves",
-      "effect": "arcane-insight",
+      "discoveryDate": "2026-01-03T06:00:00.000Z",
+      "discoveredBy": "Parthenius's Band",
+      "effect": "treasure-clue",
       "knownBy": [
-        "The Grim Wolves"
+        "Parthenius's Band"
+      ]
+    },
+    {
+      "id": "landmark-1767652788881-196",
+      "name": "The Shadowy Pillar",
+      "description": "A shadowy pillar, surrounded by a thin, unnerving mist.",
+      "location": {
+        "q": 1,
+        "r": 5
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-03T16:00:00.000Z",
+      "discoveredBy": "Parthenius's Band",
+      "effect": "historical-knowledge",
+      "knownBy": [
+        "Parthenius's Band"
+      ]
+    },
+    {
+      "id": "landmark-1767652789008-112",
+      "name": "The Sun-bleached Altar",
+      "description": "A sun-bleached altar, swarming with spectral, blue butterflies.",
+      "location": {
+        "q": 1,
+        "r": 5
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-03T23:00:00.000Z",
+      "discoveredBy": "Parthenius's Band",
+      "effect": "prophetic-hint",
+      "knownBy": [
+        "Parthenius's Band"
       ]
     }
   ],
   "ruins": [
     {
-      "id": "ruin-1767653047153-573",
-      "name": "Forgotten Archives",
-      "description": "An ancient forgotten archives from the First Age.",
+      "id": "ruin-1767652788558-729",
+      "name": "Forgotten Bastion",
+      "description": "An ancient forgotten bastion from the Age of Wonders.",
       "location": {
         "q": 1,
         "r": 5
       },
       "rooms": [
         {
+          "type": "trap",
+          "threat": 5,
+          "loot": true,
+          "rare": "ancient-map"
+        },
+        {
           "type": "lair",
           "threat": 4,
-          "loot": false
-        },
-        {
-          "type": "trap",
-          "threat": 2,
-          "loot": true
-        },
-        {
-          "type": "treasure",
-          "threat": 3,
-          "loot": false
-        },
-        {
-          "type": "empty",
-          "threat": 3,
-          "loot": false
-        },
-        {
-          "type": "treasure",
-          "threat": 2,
-          "loot": false
-        },
-        {
-          "type": "empty",
-          "threat": 4,
-          "loot": false
-        },
-        {
-          "type": "laboratory",
-          "threat": 3,
-          "loot": false
-        },
-        {
-          "type": "treasure",
-          "threat": 2,
-          "loot": true
-        },
-        {
-          "type": "empty",
-          "threat": 4,
-          "loot": true
-        },
-        {
-          "type": "laboratory",
-          "threat": 3,
           "loot": false
         },
         {
           "type": "shrine",
           "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "trap",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 3,
           "loot": true
         },
         {
-          "type": "lair",
+          "type": "treasure",
           "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "shrine",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "shrine",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 4,
           "loot": true
         }
       ],
       "cleared": false,
-      "danger": 3,
-      "history": "Forgotten Archives was once a center of faith before its fall."
+      "danger": 4,
+      "history": "Forgotten Bastion was once a center of magic before its fall."
     }
   ],
   "nexuses": [
@@ -3530,7 +3793,7 @@
       "id": "merc-0",
       "name": "The Iron Brotherhood",
       "captainId": "npc-merc-captain-0",
-      "location": "Belfos",
+      "location": "Myrrka",
       "size": 143,
       "quality": 2,
       "monthlyRate": 198,
@@ -3540,7 +3803,7 @@
       "id": "merc-1",
       "name": "Silver Shields",
       "captainId": "npc-merc-captain-1",
-      "location": "Windleigh",
+      "location": "Myrrka",
       "size": 84,
       "quality": 6,
       "monthlyRate": 208,
@@ -3550,7 +3813,7 @@
       "id": "merc-2",
       "name": "The Golden Lions",
       "captainId": "npc-merc-captain-2",
-      "location": "Greenmist",
+      "location": "Windleigh",
       "size": 129,
       "quality": 3,
       "monthlyRate": 104,
@@ -3560,7 +3823,7 @@
       "id": "merc-3",
       "name": "Black Boars",
       "captainId": "npc-merc-captain-3",
-      "location": "Greenmist",
+      "location": "Belfos",
       "size": 55,
       "quality": 6,
       "monthlyRate": 184,
@@ -3570,7 +3833,7 @@
       "id": "merc-4",
       "name": "Red Ravagers",
       "captainId": "npc-merc-captain-4",
-      "location": "Minasfeld",
+      "location": "Azmarin",
       "size": 184,
       "quality": 4,
       "monthlyRate": 273,
@@ -3580,7 +3843,7 @@
       "id": "merc-5",
       "name": "The Free Company",
       "captainId": "npc-merc-captain-5",
-      "location": "Belfos",
+      "location": "Myrrka",
       "size": 124,
       "quality": 4,
       "monthlyRate": 264,
@@ -3590,33 +3853,26 @@
   "startedAt": "2026-01-01T00:00:00.000Z",
   "partyStates": {
     "party-0": {
-      "morale": 5,
+      "morale": 10,
       "resources": 50,
       "enemies": [],
       "allies": [],
       "questLog": [
         {
-          "id": "quest-1767653046051",
+          "id": "quest-1767652788564",
           "type": "hunt",
           "target": "Mendia",
           "reason": "End the threat of Mendia the Pallid",
           "progress": 0
         }
       ],
-      "killList": [],
-      "reputation": {},
-      "vendetta": "Mendia"
-    },
-    "band-0": {
-      "morale": 5,
-      "resources": 50,
-      "enemies": [],
-      "allies": [],
-      "questLog": [],
-      "killList": [],
+      "killList": [
+        "Mendia",
+        null
+      ],
       "reputation": {}
     },
-    "band-2": {
+    "band-0": {
       "morale": 5,
       "resources": 50,
       "enemies": [],
@@ -3645,23 +3901,23 @@
       "casusBelli": {},
       "activeOperations": [
         {
-          "id": "op-relief-1767653045860",
+          "id": "op-relief-1767652788377",
           "type": "relief",
-          "target": "Myrrka",
-          "startedAt": "2026-01-02T14:00:00.000Z",
-          "completesAt": "2026-01-09T14:00:00.000Z",
+          "target": "Belfos",
+          "startedAt": "2026-01-02T21:00:00.000Z",
+          "completesAt": "2026-01-09T21:00:00.000Z",
           "participants": [],
           "successChance": 0.9,
           "resources": 300,
           "secret": false,
-          "reason": "Aid the suffering of Myrrka"
+          "reason": "Aid the suffering of Belfos"
         },
         {
-          "id": "op-res-1767653047174",
+          "id": "op-res-1767652789425",
           "type": "resource-grab",
           "target": "Belfos",
           "startedAt": "2026-01-04T19:00:00.000Z",
-          "completesAt": "2026-01-06T05:00:00.000Z",
+          "completesAt": "2026-01-05T19:00:00.000Z",
           "participants": [],
           "successChance": 0.55,
           "resources": 16.5,
@@ -3689,7 +3945,7 @@
       "casusBelli": {},
       "activeOperations": [
         {
-          "id": "op-marriage-1767653045363",
+          "id": "op-marriage-1767652787788",
           "type": "marriage-alliance",
           "target": "The Storm Guild",
           "startedAt": "2026-01-01T20:00:00.000Z",
@@ -3699,6 +3955,18 @@
           "resources": 500,
           "secret": false,
           "reason": "Forge alliance with The Storm Guild through marriage"
+        },
+        {
+          "id": "op-res-1767652788764",
+          "type": "resource-grab",
+          "target": "Greenmist",
+          "startedAt": "2026-01-03T11:00:00.000Z",
+          "completesAt": "2026-01-05T20:00:00.000Z",
+          "participants": [],
+          "successChance": 0.55,
+          "resources": 13.65,
+          "secret": false,
+          "reason": "Secure textiles supplies from Greenmist"
         }
       ],
       "recentLosses": 0,
@@ -3707,7 +3975,9 @@
     "faction-2": {
       "power": 50,
       "territory": [],
-      "enemies": [],
+      "enemies": [
+        "faction-1"
+      ],
       "allies": [],
       "resources": 100,
       "morale": 0,
@@ -3717,10 +3987,15 @@
         "fish",
         "salt"
       ],
-      "casusBelli": {},
+      "casusBelli": {
+        "faction-1": {
+          "reason": "the robbery of their caravan near Belfos",
+          "magnitude": 5
+        }
+      },
       "activeOperations": [
         {
-          "id": "op-marriage-1767653044909",
+          "id": "op-marriage-1767652787524",
           "type": "marriage-alliance",
           "target": "The Storm Guild",
           "startedAt": "2026-01-01T05:00:00.000Z",
@@ -3732,16 +4007,16 @@
           "reason": "Forge alliance with The Storm Guild through marriage"
         },
         {
-          "id": "op-res-1767653046744",
-          "type": "resource-grab",
-          "target": "Azmarin",
-          "startedAt": "2026-01-04T01:00:00.000Z",
-          "completesAt": "2026-01-05T09:00:00.000Z",
+          "id": "op-relief-1767652788411",
+          "type": "relief",
+          "target": "Belfos",
+          "startedAt": "2026-01-02T22:00:00.000Z",
+          "completesAt": "2026-01-09T22:00:00.000Z",
           "participants": [],
-          "successChance": 0.55,
-          "resources": 10.049999999999999,
+          "successChance": 0.9,
+          "resources": 300,
           "secret": false,
-          "reason": "Secure salt supplies from Azmarin"
+          "reason": "Aid the suffering of Belfos"
         }
       ],
       "recentLosses": 0,
@@ -3766,22 +4041,34 @@
       ],
       "casusBelli": {
         "faction-1": {
-          "reason": "the robbery of their caravan near Greenmist",
+          "reason": "the robbery of their caravan near Belfos",
           "magnitude": 5
         }
       },
       "activeOperations": [
         {
-          "id": "op-marriage-1767653046053",
-          "type": "marriage-alliance",
-          "target": "The Storm Guild",
-          "startedAt": "2026-01-03T00:00:00.000Z",
-          "completesAt": "2026-02-02T00:00:00.000Z",
+          "id": "op-res-1767652788875",
+          "type": "resource-grab",
+          "target": "Belfos",
+          "startedAt": "2026-01-03T15:00:00.000Z",
+          "completesAt": "2026-01-05T06:00:00.000Z",
           "participants": [],
-          "successChance": 0.5,
-          "resources": 500,
+          "successChance": 0.55,
+          "resources": 15.6,
           "secret": false,
-          "reason": "Forge alliance with The Storm Guild through marriage"
+          "reason": "Secure textiles supplies from Belfos"
+        },
+        {
+          "id": "op-res-1767652789449",
+          "type": "resource-grab",
+          "target": "Belfos",
+          "startedAt": "2026-01-04T23:00:00.000Z",
+          "completesAt": "2026-01-07T20:00:00.000Z",
+          "participants": [],
+          "successChance": 0.55,
+          "resources": 16.05,
+          "secret": false,
+          "reason": "Secure textiles supplies from Belfos"
         }
       ],
       "recentLosses": 0,
@@ -3803,7 +4090,7 @@
       "casusBelli": {},
       "activeOperations": [
         {
-          "id": "op-marriage-1767653045158",
+          "id": "op-marriage-1767652787604",
           "type": "marriage-alliance",
           "target": "The Storm Guild",
           "startedAt": "2026-01-01T09:00:00.000Z",
@@ -3815,23 +4102,11 @@
           "reason": "Forge alliance with The Storm Guild through marriage"
         },
         {
-          "id": "op-res-1767653045623",
-          "type": "resource-grab",
-          "target": "Azmarin",
-          "startedAt": "2026-01-02T03:00:00.000Z",
-          "completesAt": "2026-01-05T01:00:00.000Z",
-          "participants": [],
-          "successChance": 0.55,
-          "resources": 13.799999999999999,
-          "secret": false,
-          "reason": "Secure salt supplies from Azmarin"
-        },
-        {
-          "id": "op-relief-1767653045673",
+          "id": "op-relief-1767652788233",
           "type": "relief",
           "target": "Myrrka",
-          "startedAt": "2026-01-02T06:00:00.000Z",
-          "completesAt": "2026-01-09T06:00:00.000Z",
+          "startedAt": "2026-01-02T10:00:00.000Z",
+          "completesAt": "2026-01-09T10:00:00.000Z",
           "participants": [],
           "successChance": 0.9,
           "resources": 300,
@@ -3845,27 +4120,53 @@
   },
   "settlementStates": {
     "Belfos": {
-      "prosperity": -2,
-      "safety": -1,
+      "prosperity": -8,
+      "safety": -13,
       "unrest": 1,
       "populationDelta": 0,
       "recentEvents": [],
       "contested": false,
       "defenseLevel": 3,
-      "quarantined": false,
-      "disease": {
-        "type": "Camp Fever",
-        "intensity": 3,
-        "spreadRate": 0.13456646190024912,
-        "discovered": true
-      }
+      "quarantined": false
     },
     "Windleigh": {
-      "prosperity": 0,
+      "prosperity": -1,
       "safety": 3,
-      "unrest": 1,
+      "unrest": 0,
       "populationDelta": 0,
       "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Azmarin": {
+      "prosperity": -3,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": -50,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Minasfeld": {
+      "prosperity": 0,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Myrrka": {
+      "prosperity": 0,
+      "safety": 2,
+      "unrest": 2,
+      "populationDelta": 0,
+      "recentEvents": [
+        "battle-1767652788574"
+      ],
       "contested": false,
       "defenseLevel": 3,
       "quarantined": false,
@@ -3876,51 +4177,9 @@
         "discovered": true
       }
     },
-    "Azmarin": {
-      "prosperity": 0,
-      "safety": 3,
-      "unrest": 1,
-      "populationDelta": 0,
-      "recentEvents": [],
-      "contested": false,
-      "defenseLevel": 3,
-      "quarantined": false,
-      "disease": {
-        "type": "Gripsha",
-        "intensity": 4,
-        "spreadRate": 0.2823420882690698,
-        "discovered": true
-      }
-    },
-    "Minasfeld": {
-      "prosperity": -1,
-      "safety": 3,
-      "unrest": 0,
-      "populationDelta": 0,
-      "recentEvents": [],
-      "contested": false,
-      "defenseLevel": 3,
-      "quarantined": false
-    },
-    "Myrrka": {
-      "prosperity": 0,
-      "safety": 3,
-      "unrest": 1,
-      "populationDelta": 0,
-      "recentEvents": [],
-      "contested": false,
-      "defenseLevel": 3,
-      "quarantined": false,
-      "disease": {
-        "type": "Camp Fever",
-        "intensity": 6,
-        "spreadRate": 0.13456646190024912,
-        "discovered": true
-      }
-    },
     "Greenmist": {
-      "prosperity": -1,
-      "safety": 3,
+      "prosperity": 0,
+      "safety": 5,
       "unrest": 0,
       "populationDelta": 0,
       "recentEvents": [],
@@ -3931,54 +4190,9 @@
   },
   "eventHistory": [
     {
-      "id": "robbery-1767653045751",
+      "id": "robbery-1767652788062",
       "type": "robbery",
-      "timestamp": "2026-01-02T09:00:00.000Z",
-      "location": "Greenmist",
-      "actors": [
-        "Sons of the Wolf"
-      ],
-      "perpetrators": [
-        "Sons of the Wolf"
-      ],
-      "magnitude": 4,
-      "witnessed": true,
-      "data": {
-        "value": 84,
-        "targetType": "caravan",
-        "factionId": "faction-3",
-        "goods": [
-          "salt",
-          "fish"
-        ]
-      }
-    },
-    {
-      "id": "robbery-1767653045812",
-      "type": "robbery",
-      "timestamp": "2026-01-02T12:00:00.000Z",
-      "location": "Minasfeld",
-      "actors": [
-        "Sons of the Wolf"
-      ],
-      "perpetrators": [
-        "Sons of the Wolf"
-      ],
-      "magnitude": 4,
-      "witnessed": true,
-      "data": {
-        "value": 59,
-        "targetType": "caravan",
-        "goods": [
-          "grain",
-          "textiles"
-        ]
-      }
-    },
-    {
-      "id": "robbery-1767653046393",
-      "type": "robbery",
-      "timestamp": "2026-01-03T13:00:00.000Z",
+      "timestamp": "2026-01-02T05:00:00.000Z",
       "location": "Belfos",
       "actors": [
         "Sons of the Wolf"
@@ -3989,7 +4203,68 @@
       "magnitude": 4,
       "witnessed": true,
       "data": {
-        "value": 95,
+        "value": 103,
+        "targetType": "caravan",
+        "factionId": "faction-3",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "battle-1767652788574",
+      "type": "battle",
+      "timestamp": "2026-01-03T02:00:00.000Z",
+      "location": "Myrrka",
+      "actors": [
+        "The Grim Wolves",
+        "Mendia"
+      ],
+      "magnitude": 6,
+      "witnessed": true,
+      "data": {
+        "victor": "The Grim Wolves",
+        "loser": "Mendia",
+        "significance": 4
+      }
+    },
+    {
+      "id": "death-1767652788574",
+      "type": "death",
+      "timestamp": "2026-01-03T02:00:00.000Z",
+      "location": "Myrrka",
+      "actors": [
+        "The Grim Wolves"
+      ],
+      "victims": [
+        "Mendia"
+      ],
+      "perpetrators": [
+        "The Grim Wolves"
+      ],
+      "magnitude": 8,
+      "witnessed": true,
+      "data": {
+        "cause": "vendetta",
+        "killedBy": "The Grim Wolves"
+      }
+    },
+    {
+      "id": "robbery-1767652788641",
+      "type": "robbery",
+      "timestamp": "2026-01-03T06:00:00.000Z",
+      "location": "Belfos",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 76,
         "targetType": "caravan",
         "goods": [
           "grain",
@@ -3998,7 +4273,141 @@
       }
     },
     {
-      "id": "robbery-1767653047235",
+      "id": "robbery-1767652788883",
+      "type": "robbery",
+      "timestamp": "2026-01-03T16:00:00.000Z",
+      "location": "Belfos",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 147,
+        "targetType": "caravan",
+        "factionId": "faction-2",
+        "goods": [
+          "livestock"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767652789164",
+      "type": "robbery",
+      "timestamp": "2026-01-04T05:00:00.000Z",
+      "location": "Windleigh",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 77,
+        "targetType": "caravan",
+        "goods": [
+          "grain",
+          "textiles"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767652789277",
+      "type": "robbery",
+      "timestamp": "2026-01-04T10:00:00.000Z",
+      "location": "Belfos",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 61,
+        "targetType": "caravan",
+        "factionId": "faction-3",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767652789293",
+      "type": "robbery",
+      "timestamp": "2026-01-04T11:00:00.000Z",
+      "location": "Belfos",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 101,
+        "targetType": "caravan",
+        "goods": [
+          "grain",
+          "textiles"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767652789373",
+      "type": "robbery",
+      "timestamp": "2026-01-04T18:00:00.000Z",
+      "location": "Belfos",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 58,
+        "targetType": "caravan",
+        "factionId": "faction-3",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767652789373",
+      "type": "robbery",
+      "timestamp": "2026-01-04T18:00:00.000Z",
+      "location": "Belfos",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 64,
+        "targetType": "caravan",
+        "goods": [
+          "grain",
+          "textiles"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767652789438",
       "type": "robbery",
       "timestamp": "2026-01-04T22:00:00.000Z",
       "location": "Belfos",
@@ -4011,11 +4420,11 @@
       "magnitude": 4,
       "witnessed": true,
       "data": {
-        "value": 73,
+        "value": 86,
         "targetType": "caravan",
+        "factionId": "faction-2",
         "goods": [
-          "grain",
-          "textiles"
+          "livestock"
         ]
       }
     }
@@ -4023,7 +4432,7 @@
   "lastTickAt": "2026-01-05T00:00:00.000Z",
   "storyThreads": [
     {
-      "id": "story-1767653044684-2681",
+      "id": "story-1767652787301-2681",
       "type": "ancient-evil",
       "title": "Seals Breaking",
       "summary": "Ancient wards fail. What they imprisoned walks again.",
@@ -4033,7 +4442,7 @@
       ],
       "location": "Windleigh",
       "startedAt": "2026-01-01T00:00:00.000Z",
-      "lastUpdated": "2026-01-03T04:00:00.000Z",
+      "lastUpdated": "2026-01-04T11:00:00.000Z",
       "tension": 2,
       "beats": [
         {
@@ -4042,8 +4451,8 @@
           "tensionChange": 1
         },
         {
-          "timestamp": "2026-01-03T04:00:00.000Z",
-          "summary": "Strange creatures appear at night.",
+          "timestamp": "2026-01-04T11:00:00.000Z",
+          "summary": "Ancient runes glow with power.",
           "tensionChange": 1
         }
       ],
@@ -4076,7 +4485,7 @@
       }
     },
     {
-      "id": "story-1767653044692-8371",
+      "id": "story-1767652787309-8371",
       "type": "ancient-evil",
       "title": "The Old Darkness Returns",
       "summary": "Engelwara races to prevent catastrophe.",
@@ -4086,7 +4495,7 @@
       ],
       "location": "Myrrka",
       "startedAt": "2026-01-01T00:00:00.000Z",
-      "lastUpdated": "2026-01-03T00:00:00.000Z",
+      "lastUpdated": "2026-01-02T08:00:00.000Z",
       "tension": 2,
       "beats": [
         {
@@ -4095,8 +4504,8 @@
           "tensionChange": 1
         },
         {
-          "timestamp": "2026-01-03T00:00:00.000Z",
-          "summary": "Dreams of darkness plague the populace.",
+          "timestamp": "2026-01-02T08:00:00.000Z",
+          "summary": "The ground becomes unstable. Engelwara remains seeks power and influence.",
           "tensionChange": 1
         }
       ],
@@ -4127,7 +4536,7 @@
       }
     },
     {
-      "id": "story-1767653044723-9930",
+      "id": "story-1767652787340-9930",
       "type": "haunting",
       "title": "Echoes of the Past",
       "summary": "The dead do not rest peacefully in Greenmist.",
@@ -4137,8 +4546,8 @@
       ],
       "location": "Greenmist",
       "startedAt": "2026-01-01T00:00:00.000Z",
-      "lastUpdated": "2026-01-02T15:00:00.000Z",
-      "tension": 2,
+      "lastUpdated": "2026-01-04T06:00:00.000Z",
+      "tension": 3,
       "beats": [
         {
           "timestamp": "2026-01-01T00:00:00.000Z",
@@ -4146,8 +4555,13 @@
           "tensionChange": 1
         },
         {
-          "timestamp": "2026-01-02T15:00:00.000Z",
-          "summary": "Lessons are learned.",
+          "timestamp": "2026-01-02T08:00:00.000Z",
+          "summary": "Resolution approaches.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-04T06:00:00.000Z",
+          "summary": "The haunting intensifies.",
           "tensionChange": 1
         }
       ],
@@ -4179,7 +4593,7 @@
       }
     },
     {
-      "id": "story-1767653044831-1598",
+      "id": "story-1767652787451-1598",
       "type": "pact",
       "title": "The Bargain",
       "summary": "Wattie made a deal with powers best left alone.",
@@ -4189,17 +4603,12 @@
       ],
       "location": "the region",
       "startedAt": "2026-01-01T02:00:00.000Z",
-      "lastUpdated": "2026-01-02T13:00:00.000Z",
-      "tension": 2,
+      "lastUpdated": "2026-01-01T02:00:00.000Z",
+      "tension": 1,
       "beats": [
         {
           "timestamp": "2026-01-01T02:00:00.000Z",
           "summary": "The Hawk Compact declares a shortage of livestock",
-          "tensionChange": 1
-        },
-        {
-          "timestamp": "2026-01-02T13:00:00.000Z",
-          "summary": "Allies emerge.",
           "tensionChange": 1
         }
       ],
@@ -4229,7 +4638,7 @@
       }
     },
     {
-      "id": "story-1767653044841-5434",
+      "id": "story-1767652787460-5434",
       "type": "hunt",
       "title": "Blood on the Trail",
       "summary": "Parthenius's Band stalks a dangerous quarry across the region.",
@@ -4239,8 +4648,8 @@
       ],
       "location": "Greenmist",
       "startedAt": "2026-01-01T03:00:00.000Z",
-      "lastUpdated": "2026-01-02T15:00:00.000Z",
-      "tension": 2,
+      "lastUpdated": "2026-01-04T06:00:00.000Z",
+      "tension": 3,
       "beats": [
         {
           "timestamp": "2026-01-01T03:00:00.000Z",
@@ -4248,8 +4657,13 @@
           "tensionChange": 1
         },
         {
-          "timestamp": "2026-01-02T15:00:00.000Z",
-          "summary": "A storm hampers the pursuit.",
+          "timestamp": "2026-01-02T23:00:00.000Z",
+          "summary": "The quarry turns the tables, becoming the Parthenius's Band. Parthenius's Band remains seeks justice and righteousness.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-04T06:00:00.000Z",
+          "summary": "Tracks are found. The quarry draws near. Parthenius's Band remains seeks justice and righteousness.",
           "tensionChange": 1
         }
       ],
@@ -4279,7 +4693,7 @@
       }
     },
     {
-      "id": "story-1767653044845-8873",
+      "id": "story-1767652787465-8873",
       "type": "raid",
       "title": "Fire in Greenmist",
       "summary": "Parthenius's Band strikes fast at Greenmist and withdraws before retaliation.",
@@ -4290,17 +4704,12 @@
       ],
       "location": "Greenmist",
       "startedAt": "2026-01-01T03:00:00.000Z",
-      "lastUpdated": "2026-01-03T00:00:00.000Z",
-      "tension": 2,
+      "lastUpdated": "2026-01-01T03:00:00.000Z",
+      "tension": 1,
       "beats": [
         {
           "timestamp": "2026-01-01T03:00:00.000Z",
           "summary": "orc raiders follow Parthenius's Band at a safe distance",
-          "tensionChange": 1
-        },
-        {
-          "timestamp": "2026-01-03T00:00:00.000Z",
-          "summary": "Local heroes organize resistance.",
           "tensionChange": 1
         }
       ],
@@ -4331,7 +4740,7 @@
       }
     },
     {
-      "id": "story-1767653045142-7982",
+      "id": "story-1767652787590-7982",
       "type": "pact",
       "title": "What Was Promised",
       "summary": "In the region, ancient bargains come due.",
@@ -4341,12 +4750,17 @@
       ],
       "location": "the region",
       "startedAt": "2026-01-01T07:00:00.000Z",
-      "lastUpdated": "2026-01-01T07:00:00.000Z",
-      "tension": 1,
+      "lastUpdated": "2026-01-02T08:00:00.000Z",
+      "tension": 2,
       "beats": [
         {
           "timestamp": "2026-01-01T07:00:00.000Z",
           "summary": "The Hawk Compact declares a shortage of grain",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-02T08:00:00.000Z",
+          "summary": "Regret grows.",
           "tensionChange": 1
         }
       ],
@@ -4377,7 +4791,7 @@
       }
     },
     {
-      "id": "story-1767653045250-9785",
+      "id": "story-1767652787701-9785",
       "type": "hunt",
       "title": "Itzia's Last Stand",
       "summary": "Itzia stalks a dangerous quarry across the region.",
@@ -4387,12 +4801,17 @@
       ],
       "location": "hex:7,7",
       "startedAt": "2026-01-01T14:00:00.000Z",
-      "lastUpdated": "2026-01-01T14:00:00.000Z",
-      "tension": 1,
+      "lastUpdated": "2026-01-04T06:00:00.000Z",
+      "tension": 2,
       "beats": [
         {
           "timestamp": "2026-01-01T14:00:00.000Z",
           "summary": "rust-monster and chaos-beast tensions rise",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-04T06:00:00.000Z",
+          "summary": "A witness points the way.",
           "tensionChange": 1
         }
       ],
@@ -4426,20 +4845,20 @@
   ],
   "antagonists": [
     {
-      "id": "antagonist-1767653044609-2381",
+      "id": "antagonist-1767652787227-2381",
       "name": "Mendia",
       "epithet": "the Pallid",
       "type": "dark-wizard",
       "threat": 3,
       "territory": "Myrrka",
       "motivation": "Ascending to godhood",
-      "notoriety": 5,
+      "notoriety": 2,
       "defeats": 0,
       "victories": 0,
       "nemeses": [],
-      "followers": 67,
-      "treasure": 339,
-      "alive": true,
+      "followers": 23,
+      "treasure": 317,
+      "alive": false,
       "traits": [
         "always prepared",
         "speaks in riddles"
@@ -4448,7 +4867,7 @@
         "obsessive over research",
         "spells require preparation"
       ],
-      "lastSeen": "2026-01-05T00:00:00.000Z"
+      "lastSeen": "2026-01-02T03:00:00.000Z"
     }
   ]
 }

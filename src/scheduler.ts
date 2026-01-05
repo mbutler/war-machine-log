@@ -33,7 +33,16 @@ export class Scheduler {
     // Calculate initial turnIndex based on how much world time has passed
     const worldTimeElapsedMs = this.startWorldTime.getTime() - config.startWorldTime.getTime();
     const turnMs = config.turnMinutes * 60 * 1000;
-    this.turnIndex = Math.floor(worldTimeElapsedMs / turnMs);
+
+    // If we have a recent lastRealTickAt, we're transitioning from batch mode to real-time
+    // Reset turnIndex to avoid huge numbers from historical world time
+    const existingLastRealTickAt = (world as any).lastRealTickAt;
+    const timeSinceLastRealTick = existingLastRealTickAt ? Date.now() - new Date(existingLastRealTickAt).getTime() : Infinity;
+    if (timeSinceLastRealTick < 60000) { // Less than 1 minute ago
+      this.turnIndex = 0; // Start fresh for real-time mode
+    } else {
+      this.turnIndex = Math.floor(worldTimeElapsedMs / turnMs);
+    }
   }
 
   start(): void {

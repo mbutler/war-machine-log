@@ -1,0 +1,3012 @@
+{
+  "seed": "test-bundle",
+  "archetype": "Golden Age",
+  "hexes": [
+    {
+      "coord": {
+        "q": 0,
+        "r": 0
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 1
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 2
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 3
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 4
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 5
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 7
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 8
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 9
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 0
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 2
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 3
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 4
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 5
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 7
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 8
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 9
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 0
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 2
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 3
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 4
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 5
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 7
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 8
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 9
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 0
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 1
+      },
+      "terrain": "desert"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 2
+      },
+      "terrain": "desert"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 3
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 4
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 5
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 7
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 8
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 9
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 0
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 3
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 4
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 5
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 7
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 8
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 9
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 0
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 3
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 4
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 7
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 8
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 9
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 0
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 4
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 7
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 8
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 9
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 0
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 2
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 4
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 5
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 6
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 7
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 8
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 9
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 0
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 1
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 2
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 4
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 5
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 6
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 7
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 8
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 9
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 0
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 1
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 2
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 4
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 5
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 6
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 8
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 9
+      },
+      "terrain": "ocean"
+    }
+  ],
+  "width": 10,
+  "height": 10,
+  "settlements": [
+    {
+      "id": "settlement-0",
+      "name": "Mensfield",
+      "population": 1620,
+      "type": "town",
+      "coord": {
+        "q": 4,
+        "r": 3
+      },
+      "supply": {
+        "grain": 2,
+        "timber": 1,
+        "ore": -2,
+        "textiles": -2,
+        "salt": 2,
+        "fish": 2,
+        "livestock": 3
+      },
+      "mood": 1,
+      "priceTrends": {
+        "grain": "low",
+        "timber": "normal",
+        "ore": "high",
+        "textiles": "high",
+        "salt": "low",
+        "fish": "low",
+        "livestock": "low"
+      },
+      "lastTownLogDay": "2026-01-05"
+    },
+    {
+      "id": "settlement-1",
+      "name": "Rochdale",
+      "population": 2658,
+      "type": "village",
+      "coord": {
+        "q": 5,
+        "r": 3
+      },
+      "supply": {
+        "grain": 2,
+        "timber": -1,
+        "ore": -1,
+        "textiles": -3,
+        "salt": 0,
+        "fish": -1,
+        "livestock": 2
+      },
+      "mood": 1,
+      "priceTrends": {
+        "grain": "low",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "high",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "low"
+      },
+      "lastTownLogDay": "2026-01-05"
+    },
+    {
+      "id": "settlement-2",
+      "name": "Finham Hill",
+      "population": 2767,
+      "type": "village",
+      "coord": {
+        "q": 2,
+        "r": 5
+      },
+      "supply": {
+        "grain": 3,
+        "timber": -1,
+        "ore": 2,
+        "textiles": 0,
+        "salt": -1,
+        "fish": 2,
+        "livestock": -3
+      },
+      "mood": 1,
+      "priceTrends": {
+        "grain": "low",
+        "timber": "normal",
+        "ore": "low",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "low",
+        "livestock": "high"
+      },
+      "lastTownLogDay": "2026-01-05"
+    },
+    {
+      "id": "settlement-3",
+      "name": "Pontingham",
+      "population": 2476,
+      "type": "village",
+      "coord": {
+        "q": 7,
+        "r": 6
+      },
+      "supply": {
+        "grain": 1,
+        "timber": -2,
+        "ore": -1,
+        "textiles": 1,
+        "salt": -1,
+        "fish": -2,
+        "livestock": -2
+      },
+      "mood": 1,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "high",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "high",
+        "livestock": "high"
+      },
+      "lastTownLogDay": "2026-01-05"
+    },
+    {
+      "id": "settlement-4",
+      "name": "Newwald",
+      "population": 2627,
+      "type": "village",
+      "coord": {
+        "q": 6,
+        "r": 7
+      },
+      "supply": {
+        "grain": 2,
+        "timber": 0,
+        "ore": 2,
+        "textiles": 2,
+        "salt": -1,
+        "fish": -2,
+        "livestock": -1
+      },
+      "mood": 1,
+      "priceTrends": {
+        "grain": "low",
+        "timber": "normal",
+        "ore": "low",
+        "textiles": "low",
+        "salt": "normal",
+        "fish": "high",
+        "livestock": "normal"
+      },
+      "lastTownLogDay": "2026-01-05"
+    },
+    {
+      "id": "settlement-5",
+      "name": "Waterhedge",
+      "population": 1714,
+      "type": "village",
+      "coord": {
+        "q": 0,
+        "r": 7
+      },
+      "supply": {
+        "grain": 3,
+        "timber": 0,
+        "ore": -1,
+        "textiles": -1,
+        "salt": 2,
+        "fish": 0,
+        "livestock": 1
+      },
+      "mood": 3,
+      "priceTrends": {
+        "grain": "low",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "low",
+        "fish": "normal",
+        "livestock": "normal"
+      },
+      "lastTownLogDay": "2026-01-05"
+    },
+    {
+      "id": "settlement-6",
+      "name": "Norsay",
+      "population": 1039,
+      "type": "village",
+      "coord": {
+        "q": 5,
+        "r": 0
+      },
+      "supply": {
+        "grain": 3,
+        "timber": 2,
+        "ore": 1,
+        "textiles": 2,
+        "salt": -1,
+        "fish": -1,
+        "livestock": 0
+      },
+      "mood": 1,
+      "priceTrends": {
+        "grain": "low",
+        "timber": "low",
+        "ore": "normal",
+        "textiles": "low",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "normal"
+      },
+      "lastTownLogDay": "2026-01-05"
+    }
+  ],
+  "parties": [
+    {
+      "id": "party-0",
+      "name": "The Lancaster Shields",
+      "members": [
+        {
+          "name": "Emelote",
+          "class": "Fighter",
+          "level": 1,
+          "hp": 20,
+          "maxHp": 20
+        },
+        {
+          "name": "Monime",
+          "class": "Cleric",
+          "level": 2,
+          "hp": 15,
+          "maxHp": 15
+        },
+        {
+          "name": "Petronas",
+          "class": "Magic-User",
+          "level": 3,
+          "hp": 10,
+          "maxHp": 10
+        }
+      ],
+      "location": "Mensfield",
+      "status": "idle",
+      "xp": 0,
+      "goal": {
+        "kind": "travel-to",
+        "target": "Mensfield",
+        "sourceRumorId": "rumor-1767649593811-693552"
+      },
+      "fame": 0,
+      "fatigue": 0
+    },
+    {
+      "id": "band-0",
+      "name": "Jossy's Blades",
+      "members": [
+        {
+          "name": "Artor",
+          "class": "Thief",
+          "level": 2,
+          "hp": 12,
+          "maxHp": 12
+        },
+        {
+          "name": "Aubri",
+          "class": "Elf",
+          "level": 2,
+          "hp": 14,
+          "maxHp": 14
+        }
+      ],
+      "location": "Norsay",
+      "status": "travel",
+      "xp": 0,
+      "goal": {
+        "kind": "travel-to",
+        "target": "Mensfield",
+        "sourceRumorId": "rumor-1767649593811-693552"
+      },
+      "travel": {
+        "destination": "Mensfield",
+        "terrain": "road",
+        "milesRemaining": 18,
+        "milesPerHour": 1.5
+      },
+      "fame": 0,
+      "fatigue": 0
+    }
+  ],
+  "roads": [
+    [
+      "settlement-0",
+      "settlement-1"
+    ],
+    [
+      "settlement-0",
+      "settlement-2"
+    ],
+    [
+      "settlement-0",
+      "settlement-3"
+    ],
+    [
+      "settlement-0",
+      "settlement-4"
+    ],
+    [
+      "settlement-0",
+      "settlement-5"
+    ],
+    [
+      "settlement-0",
+      "settlement-6"
+    ],
+    [
+      "settlement-0",
+      "settlement-2"
+    ]
+  ],
+  "dungeons": [
+    {
+      "id": "dungeon-0",
+      "name": "The Echoes Depths",
+      "coord": {
+        "q": 6,
+        "r": 3
+      },
+      "depth": 7,
+      "danger": 4,
+      "rooms": [
+        {
+          "type": "laboratory",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "empty",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "shrine",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "treasure",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "shrine",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "shrine",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 5,
+          "loot": false
+        }
+      ],
+      "explored": 0
+    },
+    {
+      "id": "dungeon-1",
+      "name": "Ruins of Despair",
+      "coord": {
+        "q": 4,
+        "r": 7
+      },
+      "depth": 7,
+      "danger": 4,
+      "rooms": [
+        {
+          "type": "empty",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "laboratory",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "lair",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "laboratory",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "treasure",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": false
+        }
+      ],
+      "explored": 0
+    },
+    {
+      "id": "dungeon-2",
+      "name": "Crumbling Citadel of Aroonshire",
+      "coord": {
+        "q": 5,
+        "r": 7
+      },
+      "depth": 7,
+      "danger": 3,
+      "rooms": [
+        {
+          "type": "trap",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "shrine",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 2,
+          "loot": true
+        },
+        {
+          "type": "trap",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 2,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 2,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "shrine",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "laboratory",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "trap",
+          "threat": 3,
+          "loot": false
+        }
+      ],
+      "explored": 0
+    }
+  ],
+  "activeRumors": [
+    {
+      "id": "rumor-1767649593811-693552",
+      "kind": "threat",
+      "text": "Travelers speak of Oianko Silvertongue. Ascending to royalty.",
+      "target": "Mensfield",
+      "origin": "Mensfield",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767649593843-964003",
+      "kind": "mystery",
+      "text": "Levies rumored to secure textiles; officials say caravans delayed.",
+      "target": "Mensfield",
+      "origin": "Mensfield",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767649593843-282831",
+      "kind": "feud",
+      "text": "Merciful Council of Langton watches the markets quietly.",
+      "target": "Mensfield",
+      "origin": "Mensfield",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767649593843-873769",
+      "kind": "feud",
+      "text": "Sons of the Wheel watches the markets quietly.",
+      "target": "Mensfield",
+      "origin": "Mensfield",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767649593843-652600",
+      "kind": "feud",
+      "text": "The Steadfast Covenant watches the markets quietly.",
+      "target": "Mensfield",
+      "origin": "Mensfield",
+      "freshness": 8
+    },
+    {
+      "id": "rumor-1767649593843-763961",
+      "kind": "feud",
+      "text": "Keepers of the Chalice watches the markets quietly.",
+      "target": "Mensfield",
+      "origin": "Mensfield",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767649593843-943058",
+      "kind": "feud",
+      "text": "Guild of Lions watches the markets quietly.",
+      "target": "Mensfield",
+      "origin": "Mensfield",
+      "freshness": 8
+    },
+    {
+      "id": "rumor-1767649593843-745429",
+      "kind": "mystery",
+      "text": "Levies rumored to secure textiles; officials say caravans delayed.",
+      "target": "Rochdale",
+      "origin": "Rochdale",
+      "freshness": 8
+    },
+    {
+      "id": "rumor-1767649593843-181197",
+      "kind": "feud",
+      "text": "Guild of Lions watches the markets quietly.",
+      "target": "Rochdale",
+      "origin": "Rochdale",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767649593843-880203",
+      "kind": "mystery",
+      "text": "Levies rumored to secure livestock; officials say caravans delayed.",
+      "target": "Finham Hill",
+      "origin": "Finham Hill",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767649593843-771090",
+      "kind": "mystery",
+      "text": "Levies rumored to secure livestock; officials say caravans delayed.",
+      "target": "Pontingham",
+      "origin": "Pontingham",
+      "freshness": 8
+    },
+    {
+      "id": "rumor-1767649593843-113295",
+      "kind": "feud",
+      "text": "Sons of the Wheel watches the markets quietly.",
+      "target": "Pontingham",
+      "origin": "Pontingham",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767649593843-62953",
+      "kind": "mystery",
+      "text": "Levies rumored to secure fish; officials say caravans delayed.",
+      "target": "Newwald",
+      "origin": "Newwald",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767649593843-429153",
+      "kind": "feud",
+      "text": "Merciful Council of Langton watches the markets quietly.",
+      "target": "Newwald",
+      "origin": "Newwald",
+      "freshness": 8
+    },
+    {
+      "id": "rumor-1767649593843-780846",
+      "kind": "mystery",
+      "text": "Bargain prices on salt; traders racing to Waterhedge.",
+      "target": "Waterhedge",
+      "origin": "Waterhedge",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767649593843-217391",
+      "kind": "feud",
+      "text": "Merciful Council of Langton watches the markets quietly.",
+      "target": "Waterhedge",
+      "origin": "Waterhedge",
+      "freshness": 6
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc-0",
+      "name": "Gazeta",
+      "role": "merchant",
+      "home": "settlement-4",
+      "location": "Newwald",
+      "reputation": 1,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 4,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "cunning",
+          "cruel"
+        ],
+        "background": "hedge-wizard",
+        "motivation": "love",
+        "secretMotivation": "home",
+        "relationships": [
+          {
+            "targetId": "npc-2",
+            "targetName": "Adula",
+            "type": "debtor",
+            "strength": 5,
+            "history": "The debt was financial; the cost was higher."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Gui",
+            "type": "ally",
+            "strength": 1,
+            "history": "Shared a cell, or a foxhole, or both."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "laughs at inappropriate moments",
+          "collects small bones"
+        ]
+      },
+      "age": 51,
+      "title": "Master",
+      "appearance": "graying at the temples despite apparent youth",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "birthDate": "1997-01-12T21:46:33.691Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-14",
+      "marriedAt": "2024-01-06T21:46:33.691Z"
+    },
+    {
+      "id": "npc-1",
+      "name": "Genofeva",
+      "role": "merchant",
+      "home": "settlement-5",
+      "location": "Waterhedge",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 7,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "honorable",
+          "cowardly",
+          "naive"
+        ],
+        "background": "farmhand-turned-guard",
+        "motivation": "home",
+        "secretMotivation": "fame",
+        "relationships": [
+          {
+            "targetId": "npc-7",
+            "targetName": "Hique",
+            "type": "ally",
+            "strength": 3,
+            "history": "Survived a dangerous journey together."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Gui",
+            "type": "ally",
+            "strength": 1,
+            "history": "Owe each other debts that gold cannot repay."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "always knows which way is north",
+          "sleeps with a blade in hand",
+          "constantly counts coins"
+        ]
+      },
+      "age": 63,
+      "title": "Master",
+      "appearance": "ink-stained fingers of a scholar",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-2",
+      "bloodlineId": "bloodline-1767649593759-6895",
+      "birthDate": "1996-01-13T21:46:33.691Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-2",
+      "name": "Adula",
+      "role": "priest",
+      "home": "settlement-0",
+      "location": "Mensfield",
+      "reputation": 0,
+      "fame": 0,
+      "alive": true,
+      "class": "Cleric",
+      "level": 10,
+      "xp": 0,
+      "spells": [
+        "Cure Light Wounds"
+      ],
+      "depth": {
+        "traits": [
+          "cautious",
+          "treacherous"
+        ],
+        "background": "hedge-wizard",
+        "motivation": "redemption",
+        "relationships": [
+          {
+            "targetId": "npc-0",
+            "targetName": "Gazeta",
+            "type": "creditor",
+            "strength": 5,
+            "history": "The debt was financial; the cost was higher."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Gui",
+            "type": "rival",
+            "strength": 5,
+            "history": "Competed for the same position in Mensfield."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "constantly counts coins"
+        ]
+      },
+      "age": 60,
+      "title": "Brother",
+      "appearance": "a limp from an old wound",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 10,
+          "description": "Establish a seat of power"
+        },
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 16,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "bloodlineId": "bloodline-1767649593759-5502",
+      "birthDate": "2000-01-12T21:46:33.691Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-3",
+      "name": "Jilfte",
+      "role": "bard",
+      "home": "settlement-0",
+      "location": "Mensfield",
+      "reputation": -2,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 3,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "cunning",
+          "cowardly"
+        ],
+        "background": "reformed-bandit",
+        "motivation": "home",
+        "secretMotivation": "revenge",
+        "relationships": [
+          {
+            "targetId": "npc-13",
+            "targetName": "Aaliz",
+            "type": "enemy",
+            "strength": 5,
+            "history": "Only one of them can have what they both want."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Gui",
+            "type": "enemy",
+            "strength": 2,
+            "history": "Words were said that cannot be unsaid."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "collects small bones"
+        ]
+      },
+      "age": 59,
+      "title": "Skald",
+      "appearance": "a nervous tic in the left eye",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1959-01-22T21:46:33.691Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "frail",
+      "widowed": false,
+      "divorces": 0,
+      "lastHealthCheck": "2026-01-05T21:46:33.691Z"
+    },
+    {
+      "id": "npc-4",
+      "name": "Ximena",
+      "role": "scout",
+      "home": "settlement-0",
+      "location": "Mensfield",
+      "reputation": -1,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 1,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "brave",
+          "pragmatic"
+        ],
+        "background": "foreign-exile",
+        "motivation": "fame",
+        "secretMotivation": "revenge",
+        "relationships": [
+          {
+            "targetId": "npc-14",
+            "targetName": "Methodios",
+            "type": "enemy",
+            "strength": 2,
+            "history": "Blood spilled between them in Mensfield."
+          },
+          {
+            "targetId": "npc-9",
+            "targetName": "Ratier",
+            "type": "debtor",
+            "strength": 1,
+            "history": "Interest compounds, and so does resentment."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "keeps a journal in cipher"
+        ]
+      },
+      "age": 26,
+      "title": "Path-Finder",
+      "appearance": "weathered hands that speak of hard labor",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1983-01-16T21:46:33.691Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-5",
+      "name": "Wally",
+      "role": "bard",
+      "home": "settlement-2",
+      "location": "Finham Hill",
+      "reputation": -3,
+      "fame": 0,
+      "alive": true,
+      "class": "Magic-User",
+      "level": 9,
+      "xp": 0,
+      "spells": [
+        "Read Magic",
+        "Sleep"
+      ],
+      "depth": {
+        "traits": [
+          "naive",
+          "charitable"
+        ],
+        "background": "foreign-exile",
+        "motivation": "power",
+        "secretMotivation": "fame",
+        "relationships": [
+          {
+            "targetId": "npc-1",
+            "targetName": "Genofeva",
+            "type": "student",
+            "strength": 5,
+            "history": "The most promising pupil in years."
+          },
+          {
+            "targetId": "npc-12",
+            "targetName": "Cheldric",
+            "type": "betrayer",
+            "strength": 1,
+            "history": "Sold them out for gold, or fear, or both."
+          },
+          {
+            "targetId": "npc-7",
+            "targetName": "Hique",
+            "type": "betrayer",
+            "strength": 2,
+            "history": "Watches old friends with new suspicion."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "sleeps with a blade in hand",
+          "always wears a lucky charm"
+        ]
+      },
+      "age": 66,
+      "title": "Rhapsode",
+      "appearance": "an aristocratic bearing despite rough clothes",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 4,
+          "description": "Establish a seat of power"
+        },
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 5,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-2",
+      "bloodlineId": "bloodline-1767649593759-8667",
+      "birthDate": "1971-01-19T21:46:33.691Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-6",
+      "name": "Syagria",
+      "role": "scout",
+      "home": "settlement-0",
+      "location": "Mensfield",
+      "reputation": 2,
+      "fame": 0,
+      "alive": true,
+      "class": "Elf",
+      "level": 8,
+      "xp": 0,
+      "spells": [
+        "Read Magic"
+      ],
+      "depth": {
+        "traits": [
+          "pious",
+          "loyal"
+        ],
+        "background": "reformed-bandit",
+        "motivation": "wealth",
+        "relationships": [
+          {
+            "targetId": "npc-13",
+            "targetName": "Aaliz",
+            "type": "ally",
+            "strength": 5,
+            "history": "Survived a dangerous journey together."
+          },
+          {
+            "targetId": "npc-14",
+            "targetName": "Methodios",
+            "type": "student",
+            "strength": 2,
+            "history": "Still learning, still surprising."
+          },
+          {
+            "targetId": "npc-9",
+            "targetName": "Ratier",
+            "type": "debtor",
+            "strength": 5,
+            "history": "Expects repayment, with interest."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "sleeps with a blade in hand"
+        ]
+      },
+      "age": 29,
+      "title": "Outrider",
+      "appearance": "missing two fingers on the left hand",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 23,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "birthDate": "1971-01-19T21:46:33.691Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-9",
+      "marriedAt": "2012-01-09T21:46:33.691Z"
+    },
+    {
+      "id": "npc-7",
+      "name": "Hique",
+      "role": "scout",
+      "home": "settlement-6",
+      "location": "Norsay",
+      "reputation": -2,
+      "fame": 0,
+      "alive": true,
+      "class": "Halfling",
+      "level": 10,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "cowardly",
+          "treacherous"
+        ],
+        "background": "veteran-soldier",
+        "motivation": "justice",
+        "relationships": [
+          {
+            "targetId": "npc-1",
+            "targetName": "Genofeva",
+            "type": "ally",
+            "strength": 3,
+            "history": "Survived a dangerous journey together."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Gui",
+            "type": "betrayer",
+            "strength": 4,
+            "history": "Sold them out for gold, or fear, or both."
+          },
+          {
+            "targetId": "npc-3",
+            "targetName": "Jilfte",
+            "type": "creditor",
+            "strength": 1,
+            "history": "Expects repayment, with interest."
+          },
+          {
+            "targetId": "npc-5",
+            "targetName": "Wally",
+            "type": "betrayed",
+            "strength": 2,
+            "history": "Watches old friends with new suspicion."
+          },
+          {
+            "targetId": "npc-13",
+            "targetName": "Aaliz",
+            "type": "debtor",
+            "strength": 5,
+            "history": "Extended credit when no one else would."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "hums old war songs",
+          "prays before every meal",
+          "quotes ancient philosophers"
+        ]
+      },
+      "age": 18,
+      "title": "Outrider",
+      "appearance": "ink-stained fingers of a scholar",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 3,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-2",
+      "birthDate": "1975-01-18T21:46:33.691Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-10",
+      "marriedAt": "2015-01-08T21:46:33.691Z"
+    },
+    {
+      "id": "npc-8",
+      "name": "Athelflead",
+      "role": "scout",
+      "home": "settlement-2",
+      "location": "Finham Hill",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 6,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "cruel",
+          "cautious"
+        ],
+        "background": "wandering-bard",
+        "motivation": "home",
+        "secretMotivation": "knowledge",
+        "relationships": [
+          {
+            "targetId": "npc-6",
+            "targetName": "Syagria",
+            "type": "ally",
+            "strength": 4,
+            "history": "Shared a cell, or a foxhole, or both."
+          },
+          {
+            "targetId": "npc-11",
+            "targetName": "Phillida",
+            "type": "betrayer",
+            "strength": 3,
+            "history": "Watches old friends with new suspicion."
+          },
+          {
+            "targetId": "npc-13",
+            "targetName": "Aaliz",
+            "type": "student",
+            "strength": 2,
+            "history": "Saw potential where others saw nothing."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "refuses to eat meat"
+        ]
+      },
+      "age": 24,
+      "title": "Ranger",
+      "appearance": "ink-stained fingers of a scholar",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "birthDate": "1983-01-16T21:46:33.691Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-9",
+      "name": "Ratier",
+      "role": "bard",
+      "home": "settlement-0",
+      "location": "Mensfield",
+      "reputation": 2,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 1,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "naive",
+          "romantic",
+          "brave"
+        ],
+        "background": "orphan-thief",
+        "motivation": "duty",
+        "relationships": [
+          {
+            "targetId": "npc-4",
+            "targetName": "Ximena",
+            "type": "creditor",
+            "strength": 1,
+            "history": "Interest compounds, and so does resentment."
+          },
+          {
+            "targetId": "npc-6",
+            "targetName": "Syagria",
+            "type": "creditor",
+            "strength": 5,
+            "history": "Expects repayment, with interest."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Gui",
+            "type": "ally",
+            "strength": 5,
+            "history": "Owe each other debts that gold cannot repay."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "always knows which way is north"
+        ]
+      },
+      "age": 55,
+      "title": "Minstrel",
+      "appearance": "a limp from an old wound",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1982-01-16T21:46:33.691Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-6",
+      "marriedAt": "2012-01-09T21:46:33.691Z"
+    },
+    {
+      "id": "npc-10",
+      "name": "Gui",
+      "role": "scout",
+      "home": "settlement-6",
+      "location": "Norsay",
+      "reputation": 2,
+      "fame": 0,
+      "alive": true,
+      "class": "Halfling",
+      "level": 6,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "honorable",
+          "skeptical",
+          "pious"
+        ],
+        "background": "guild-dropout",
+        "motivation": "freedom",
+        "relationships": [
+          {
+            "targetId": "npc-2",
+            "targetName": "Adula",
+            "type": "rival",
+            "strength": 5,
+            "history": "Competed for the same position in Mensfield."
+          },
+          {
+            "targetId": "npc-0",
+            "targetName": "Gazeta",
+            "type": "ally",
+            "strength": 1,
+            "history": "Shared a cell, or a foxhole, or both."
+          },
+          {
+            "targetId": "npc-3",
+            "targetName": "Jilfte",
+            "type": "enemy",
+            "strength": 2,
+            "history": "Words were said that cannot be unsaid."
+          },
+          {
+            "targetId": "npc-1",
+            "targetName": "Genofeva",
+            "type": "ally",
+            "strength": 1,
+            "history": "Owe each other debts that gold cannot repay."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "never sits with back to door",
+          "refuses to eat meat"
+        ]
+      },
+      "age": 26,
+      "title": "Ranger",
+      "appearance": "an aristocratic bearing despite rough clothes",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "bloodlineId": "bloodline-1767649593759-3716",
+      "birthDate": "1990-01-14T21:46:33.691Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-7",
+      "marriedAt": "2015-01-08T21:46:33.691Z"
+    },
+    {
+      "id": "npc-11",
+      "name": "Phillida",
+      "role": "laborer",
+      "home": "settlement-6",
+      "location": "Norsay",
+      "reputation": 1,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 11,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "skeptical",
+          "loyal"
+        ],
+        "background": "plague-orphan",
+        "motivation": "revenge",
+        "relationships": [
+          {
+            "targetId": "npc-8",
+            "targetName": "Athelflead",
+            "type": "betrayed",
+            "strength": 3,
+            "history": "Watches old friends with new suspicion."
+          },
+          {
+            "targetId": "npc-12",
+            "targetName": "Cheldric",
+            "type": "creditor",
+            "strength": 3,
+            "history": "Expects repayment, with interest."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "trusts no one who smiles too easily",
+          "quotes ancient philosophers",
+          "never reveals their true name"
+        ]
+      },
+      "age": 23,
+      "title": "Goodman",
+      "appearance": "an aristocratic bearing despite rough clothes",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 9,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1967-01-20T21:46:33.691Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "lastHealthCheck": "2026-01-05T21:46:33.691Z"
+    },
+    {
+      "id": "npc-12",
+      "name": "Cheldric",
+      "role": "laborer",
+      "home": "settlement-3",
+      "location": "Pontingham",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Dwarf",
+      "level": 9,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "pragmatic",
+          "honorable"
+        ],
+        "background": "noble-exile",
+        "motivation": "home",
+        "secretMotivation": "home",
+        "relationships": [
+          {
+            "targetId": "npc-4",
+            "targetName": "Ximena",
+            "type": "ally",
+            "strength": 5,
+            "history": "Shared a cell, or a foxhole, or both."
+          },
+          {
+            "targetId": "npc-1",
+            "targetName": "Genofeva",
+            "type": "mentor",
+            "strength": 1,
+            "history": "Saw potential where others saw nothing."
+          },
+          {
+            "targetId": "npc-15",
+            "targetName": "Agenor",
+            "type": "ally",
+            "strength": 1,
+            "history": "Owe each other debts that gold cannot repay."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "hums old war songs",
+          "always wears a lucky charm"
+        ]
+      },
+      "age": 40,
+      "title": "Digger",
+      "appearance": "a brand mark, poorly concealed",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 5,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "bloodlineId": "bloodline-1767649593759-7583",
+      "birthDate": "1990-01-14T21:46:33.691Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-15",
+      "marriedAt": "2015-01-08T21:46:33.691Z"
+    },
+    {
+      "id": "npc-13",
+      "name": "Aaliz",
+      "role": "guard",
+      "home": "settlement-2",
+      "location": "Finham Hill",
+      "reputation": 2,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 2,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "ambitious",
+          "loyal",
+          "pious"
+        ],
+        "background": "failed-merchant",
+        "motivation": "survival",
+        "relationships": [
+          {
+            "targetId": "npc-3",
+            "targetName": "Jilfte",
+            "type": "enemy",
+            "strength": 5,
+            "history": "Only one of them can have what they both want."
+          },
+          {
+            "targetId": "npc-6",
+            "targetName": "Syagria",
+            "type": "ally",
+            "strength": 5,
+            "history": "Survived a dangerous journey together."
+          },
+          {
+            "targetId": "npc-8",
+            "targetName": "Athelflead",
+            "type": "mentor",
+            "strength": 2,
+            "history": "Saw potential where others saw nothing."
+          },
+          {
+            "targetId": "npc-14",
+            "targetName": "Methodios",
+            "type": "rival",
+            "strength": 4,
+            "history": "An old grudge over a matter of honor."
+          },
+          {
+            "targetId": "npc-7",
+            "targetName": "Hique",
+            "type": "creditor",
+            "strength": 5,
+            "history": "Extended credit when no one else would."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "speaks in proverbs",
+          "cannot resist a wager"
+        ]
+      },
+      "age": 43,
+      "title": "Corporal",
+      "appearance": "surprisingly young features",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "birthDate": "2000-01-12T21:46:33.691Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-14",
+      "name": "Methodios",
+      "role": "priest",
+      "home": "settlement-4",
+      "location": "Newwald",
+      "reputation": -2,
+      "fame": 0,
+      "alive": true,
+      "class": "Elf",
+      "level": 8,
+      "xp": 0,
+      "spells": [
+        "Read Magic",
+        "Sleep"
+      ],
+      "depth": {
+        "traits": [
+          "pious",
+          "cunning",
+          "ambitious"
+        ],
+        "background": "disgraced-priest",
+        "motivation": "love",
+        "secretMotivation": "wealth",
+        "relationships": [
+          {
+            "targetId": "npc-6",
+            "targetName": "Syagria",
+            "type": "mentor",
+            "strength": 2,
+            "history": "Still learning, still surprising."
+          },
+          {
+            "targetId": "npc-1",
+            "targetName": "Genofeva",
+            "type": "mentor",
+            "strength": 2,
+            "history": "Taught them everything worth knowing."
+          },
+          {
+            "targetId": "npc-0",
+            "targetName": "Gazeta",
+            "type": "rival",
+            "strength": 5,
+            "history": "Both loved the same person, once."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "keeps a journal in cipher",
+          "prays before every meal"
+        ]
+      },
+      "age": 32,
+      "title": "Brother",
+      "appearance": "an aristocratic bearing despite rough clothes",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 12,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1968-01-20T21:46:33.691Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-0",
+      "marriedAt": "2024-01-06T21:46:33.691Z"
+    },
+    {
+      "id": "npc-15",
+      "name": "Agenor",
+      "role": "bard",
+      "home": "settlement-3",
+      "location": "Pontingham",
+      "reputation": -3,
+      "fame": 0,
+      "alive": true,
+      "class": "Magic-User",
+      "level": 3,
+      "xp": 0,
+      "spells": [
+        "Read Magic",
+        "Sleep"
+      ],
+      "depth": {
+        "traits": [
+          "romantic",
+          "treacherous",
+          "ambitious"
+        ],
+        "background": "reformed-bandit",
+        "motivation": "power",
+        "secretMotivation": "home",
+        "relationships": [
+          {
+            "targetId": "npc-12",
+            "targetName": "Cheldric",
+            "type": "ally",
+            "strength": 1,
+            "history": "Owe each other debts that gold cannot repay."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "sleeps with a blade in hand",
+          "cannot resist a wager"
+        ]
+      },
+      "age": 40,
+      "title": "Skald",
+      "appearance": "scarred face and knowing eyes",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 15,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "birthDate": "1973-01-18T21:46:33.691Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-12",
+      "marriedAt": "2015-01-08T21:46:33.691Z"
+    }
+  ],
+  "factions": [
+    {
+      "id": "faction-0",
+      "name": "Merciful Council of Langton",
+      "attitude": {},
+      "wealth": 269,
+      "focus": "trade",
+      "lastNoted": "Waterhedge"
+    },
+    {
+      "id": "faction-1",
+      "name": "Sons of the Wheel",
+      "attitude": {},
+      "wealth": 223,
+      "focus": "martial",
+      "lastNoted": "Pontingham"
+    },
+    {
+      "id": "faction-2",
+      "name": "The Steadfast Covenant",
+      "attitude": {},
+      "wealth": 263,
+      "focus": "pious",
+      "lastNoted": "Mensfield"
+    },
+    {
+      "id": "faction-3",
+      "name": "Keepers of the Chalice",
+      "attitude": {},
+      "wealth": 229,
+      "focus": "arcane",
+      "lastNoted": "Mensfield"
+    },
+    {
+      "id": "faction-4",
+      "name": "Guild of Lions",
+      "attitude": {},
+      "wealth": 284,
+      "focus": "trade",
+      "lastNoted": "Rochdale"
+    }
+  ],
+  "caravans": [
+    {
+      "id": "caravan-0",
+      "name": "Doete's Wagons",
+      "route": [
+        "settlement-0",
+        "settlement-6"
+      ],
+      "goods": [
+        "salt",
+        "fish"
+      ],
+      "location": "Mensfield",
+      "progressHours": 1,
+      "direction": "outbound",
+      "escorts": [
+        "npc-6"
+      ],
+      "factionId": "faction-2",
+      "merchantId": "npc-5"
+    },
+    {
+      "id": "caravan-1",
+      "name": "Hairdump Merchants",
+      "route": [
+        "settlement-0",
+        "settlement-4"
+      ],
+      "goods": [
+        "grain",
+        "textiles"
+      ],
+      "location": "Mensfield",
+      "progressHours": 1,
+      "direction": "outbound",
+      "escorts": [
+        "npc-7"
+      ],
+      "merchantId": "npc-15"
+    },
+    {
+      "id": "caravan-2",
+      "name": "Onditz & Sons",
+      "route": [
+        "settlement-0",
+        "settlement-1"
+      ],
+      "goods": [
+        "grain",
+        "textiles"
+      ],
+      "location": "Mensfield",
+      "progressHours": 1,
+      "direction": "outbound",
+      "escorts": [
+        "npc-13"
+      ],
+      "merchantId": "npc-1"
+    },
+    {
+      "id": "caravan-3",
+      "name": "Antso & Sons",
+      "route": [
+        "settlement-0",
+        "settlement-5"
+      ],
+      "goods": [
+        "ore",
+        "timber"
+      ],
+      "location": "Mensfield",
+      "progressHours": 1,
+      "direction": "outbound",
+      "escorts": [
+        "npc-4"
+      ],
+      "merchantId": "npc-3"
+    },
+    {
+      "id": "caravan-4",
+      "name": "The Wandering Traders",
+      "route": [
+        "settlement-0",
+        "settlement-2"
+      ],
+      "goods": [
+        "ore",
+        "timber"
+      ],
+      "location": "Mensfield",
+      "progressHours": 1,
+      "direction": "outbound",
+      "escorts": [
+        "npc-10"
+      ],
+      "merchantId": "npc-9"
+    }
+  ],
+  "strongholds": [],
+  "armies": [],
+  "landmarks": [],
+  "ruins": [],
+  "nexuses": [
+    {
+      "id": "nexus-0",
+      "name": "Whispering Nexus of Bones",
+      "location": {
+        "q": 7,
+        "r": 1
+      },
+      "powerType": "Primal",
+      "intensity": 6
+    },
+    {
+      "id": "nexus-1",
+      "name": "Eternal Nexus of Time",
+      "location": {
+        "q": 0,
+        "r": 9
+      },
+      "powerType": "Arcane",
+      "intensity": 7
+    },
+    {
+      "id": "nexus-2",
+      "name": "Shattered Nexus of Bones",
+      "location": {
+        "q": 7,
+        "r": 9
+      },
+      "powerType": "Shadow",
+      "intensity": 6
+    },
+    {
+      "id": "nexus-3",
+      "name": "Whispering Nexus of Void",
+      "location": {
+        "q": 2,
+        "r": 4
+      },
+      "powerType": "Primal",
+      "intensity": 9
+    },
+    {
+      "id": "nexus-4",
+      "name": "Golden Nexus of Life",
+      "location": {
+        "q": 5,
+        "r": 6
+      },
+      "powerType": "Arcane",
+      "intensity": 9
+    }
+  ],
+  "mercenaries": [
+    {
+      "id": "merc-0",
+      "name": "The Iron Brotherhood",
+      "captainId": "npc-merc-captain-0",
+      "location": "Finham Hill",
+      "size": 179,
+      "quality": 2,
+      "monthlyRate": 351,
+      "loyalty": 7
+    },
+    {
+      "id": "merc-1",
+      "name": "Silver Shields",
+      "captainId": "npc-merc-captain-1",
+      "location": "Pontingham",
+      "size": 77,
+      "quality": 5,
+      "monthlyRate": 169,
+      "loyalty": 9
+    },
+    {
+      "id": "merc-2",
+      "name": "The Golden Lions",
+      "captainId": "npc-merc-captain-2",
+      "location": "Pontingham",
+      "size": 126,
+      "quality": 5,
+      "monthlyRate": 359,
+      "loyalty": 8
+    },
+    {
+      "id": "merc-3",
+      "name": "Black Boars",
+      "captainId": "npc-merc-captain-3",
+      "location": "Pontingham",
+      "size": 166,
+      "quality": 4,
+      "monthlyRate": 338,
+      "loyalty": 8
+    },
+    {
+      "id": "merc-4",
+      "name": "Red Ravagers",
+      "captainId": "npc-merc-captain-4",
+      "location": "Finham Hill",
+      "size": 107,
+      "quality": 6,
+      "monthlyRate": 422,
+      "loyalty": 9
+    },
+    {
+      "id": "merc-5",
+      "name": "The Free Company",
+      "captainId": "npc-merc-captain-5",
+      "location": "Rochdale",
+      "size": 174,
+      "quality": 2,
+      "monthlyRate": 186,
+      "loyalty": 8
+    }
+  ],
+  "startedAt": "2026-01-05T21:46:33.691Z",
+  "partyStates": {
+    "party-0": {
+      "morale": 5,
+      "resources": 50,
+      "enemies": [],
+      "allies": [],
+      "questLog": [],
+      "killList": [],
+      "reputation": {}
+    },
+    "band-0": {
+      "morale": 5,
+      "resources": 50,
+      "enemies": [],
+      "allies": [],
+      "questLog": [],
+      "killList": [],
+      "reputation": {}
+    }
+  },
+  "factionStates": {
+    "faction-0": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [],
+      "casusBelli": {},
+      "activeOperations": [],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-1": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [],
+      "casusBelli": {},
+      "activeOperations": [],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-2": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [],
+      "casusBelli": {},
+      "activeOperations": [],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-3": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [],
+      "casusBelli": {},
+      "activeOperations": [],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-4": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [],
+      "casusBelli": {},
+      "activeOperations": [],
+      "recentLosses": 0,
+      "recentWins": 0
+    }
+  },
+  "settlementStates": {
+    "Mensfield": {
+      "prosperity": 0,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Rochdale": {
+      "prosperity": 0,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Finham Hill": {
+      "prosperity": 0,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Pontingham": {
+      "prosperity": 0,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Newwald": {
+      "prosperity": 0,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Waterhedge": {
+      "prosperity": 0,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Norsay": {
+      "prosperity": 0,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    }
+  },
+  "lastTickAt": "2026-01-05T21:48:00.091Z",
+  "lastRealTickAt": "2026-01-05T21:46:49.865Z",
+  "storyThreads": [],
+  "antagonists": [
+    {
+      "id": "antagonist-1767649593696-7421",
+      "name": "Utsune",
+      "epithet": "of the Charnel House",
+      "type": "necromancer",
+      "threat": 2,
+      "territory": "Pontingham",
+      "motivation": "Conquering death itself",
+      "notoriety": 3,
+      "defeats": 0,
+      "victories": 0,
+      "nemeses": [],
+      "followers": 16,
+      "treasure": 391,
+      "alive": true,
+      "traits": [
+        "once was idealistic"
+      ],
+      "weaknesses": [
+        "consecrated ground",
+        "destroy the phylactery"
+      ]
+    },
+    {
+      "id": "antagonist-1767649593696-253",
+      "name": "Oianko",
+      "epithet": "Silvertongue",
+      "type": "corrupt-noble",
+      "threat": 5,
+      "territory": "Mensfield",
+      "motivation": "Ascending to royalty",
+      "notoriety": 1,
+      "defeats": 0,
+      "victories": 0,
+      "nemeses": [],
+      "followers": 29,
+      "treasure": 757,
+      "alive": true,
+      "traits": [
+        "never gets hands dirty"
+      ],
+      "weaknesses": [
+        "cowardly in person",
+        "enemies at court"
+      ]
+    }
+  ],
+  "schemaVersion": 2
+}

@@ -50,7 +50,7 @@ async function runStressTest() {
   world.npcs = world.npcs.map((npc) => deepenNPC(rng, npc));
   seedRelationships(rng, world.npcs as DeepNPC[], world);
   let calendar = getCalendarFromDate(startWorldTime);
-  calendar.weather = generateWeather(rng, getSeason(calendar.month));
+  calendar.weather = generateWeather(rng, getSeason(new Date().getUTCMonth()));
   let antagonists = seedAntagonists(rng, world);
   let storyThreads: StoryThread[] = [];
   let legendaryState = createLegendaryState();
@@ -194,7 +194,7 @@ async function runStressTest() {
       dailyTownTick(world, rng, event.worldTime);
       tickDomains(world, rng, event.worldTime);
       maybeLegendarySpike(rng, world, event.worldTime, legendaryState);
-      tickNavalDaily(navalState, world, rng, event.worldTime, calendar.weather, getSeason(calendar.month));
+      tickNavalDaily(navalState, world, rng, event.worldTime, calendar.weather, getSeason(event.worldTime.getUTCMonth()));
       
       // Decay rumors
       decayRumors(world);
@@ -231,7 +231,7 @@ async function runStressTest() {
   console.log('========================================\n');
   
   console.log(`Simulated: ${SIMULATED_DAYS} days (${Math.floor(SIMULATED_DAYS/30)} months)`);
-  console.log(`Final Season: ${getSeason(calendar.month)}`);
+  console.log(`Final Season: ${getSeason(new Date().getUTCMonth())}`);
   console.log(`Final Weather: ${calendar.weather}\n`);
   
   console.log(`Core World State:

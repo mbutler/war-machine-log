@@ -65,11 +65,9 @@ SIM_SEED=$NEW_SEED SIM_START_WORLD_TIME="$JAN1" bun run build
 echo "🚀 Running batch mode to simulate $DAYS days (no gaps in logs)..."
 SIM_SEED=$NEW_SEED SIM_START_WORLD_TIME="$JAN1" SIM_BATCH_DAYS=$DAYS node dist/fantasy-log.js
 
-# Start normal real-time mode
-echo "✅ Catch-up complete! Starting real-time simulation..."
-SIM_SEED=$NEW_SEED SIM_START_WORLD_TIME="$JAN1" bun run build
-nohup ./restart-wrapper.sh > simulation.log 2>&1 &
-
-echo "🎉 Done! World started from Jan 1, 2026 and caught up to present."
-echo "📊 Check logs: tail -f simulation.log"
+# World is ready for upload - do NOT start real-time simulation locally
+echo "✅ Catch-up complete! World state created and ready for upload."
+echo "📁 Upload world.json and logs/ to your server"
+echo "🚀 Then start real-time simulation on server with:"
+echo "   SIM_SEED=$NEW_SEED SIM_START_WORLD_TIME=\"$JAN1\" ./restart-wrapper.sh"
 

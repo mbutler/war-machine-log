@@ -1,0 +1,3191 @@
+{
+  "seed": "test-catchup",
+  "archetype": "Arcane Bloom",
+  "hexes": [
+    {
+      "coord": {
+        "q": 0,
+        "r": 0
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 1
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 3
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 4
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 5
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 6
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 7
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 8
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 9
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 0
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 1
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 3
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 4
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 5
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 6
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 7
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 8
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 9
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 0
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 3
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 4
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 5
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 6
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 7
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 8
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 9
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 0
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 3
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 4
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 5
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 7
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 8
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 9
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 0
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 1
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 3
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 4
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 5
+      },
+      "terrain": "desert"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 6
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 8
+      },
+      "terrain": "desert"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 9
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 0
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 1
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 3
+      },
+      "terrain": "desert"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 4
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 5
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 8
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 9
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 0
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 3
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 4
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 5
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 8
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 9
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 0
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 3
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 4
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 8
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 9
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 0
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 1
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 4
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 8
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 9
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 0
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 1
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 2
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 3
+      },
+      "terrain": "swamp"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 4
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 6
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 7
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 8
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 9
+      },
+      "terrain": "hills"
+    }
+  ],
+  "width": 10,
+  "height": 10,
+  "settlements": [
+    {
+      "id": "settlement-0",
+      "name": "Bournemouth",
+      "population": 1482,
+      "type": "town",
+      "coord": {
+        "q": 0,
+        "r": 2
+      },
+      "supply": {
+        "grain": 1,
+        "timber": -2,
+        "ore": -1,
+        "textiles": -1,
+        "salt": 0,
+        "fish": 0,
+        "livestock": 0
+      },
+      "mood": -1,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "high",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "normal"
+      },
+      "lastTownLogDay": "2026-01-05"
+    },
+    {
+      "id": "settlement-1",
+      "name": "Haling Cove",
+      "population": 710,
+      "type": "town",
+      "coord": {
+        "q": 8,
+        "r": 8
+      },
+      "supply": {
+        "grain": -1,
+        "timber": -2,
+        "ore": -1,
+        "textiles": -1,
+        "salt": 0,
+        "fish": 1,
+        "livestock": 1
+      },
+      "mood": 0,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "high",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "normal"
+      },
+      "lastTownLogDay": "2026-01-05"
+    },
+    {
+      "id": "settlement-2",
+      "name": "Ufora",
+      "population": 1551,
+      "type": "village",
+      "coord": {
+        "q": 4,
+        "r": 5
+      },
+      "supply": {
+        "grain": 0,
+        "timber": -2,
+        "ore": -1,
+        "textiles": 1,
+        "salt": 0,
+        "fish": -2,
+        "livestock": 2
+      },
+      "mood": 2,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "high",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "high",
+        "livestock": "low"
+      },
+      "lastTownLogDay": "2026-01-05"
+    },
+    {
+      "id": "settlement-3",
+      "name": "Farnworth",
+      "population": 1071,
+      "type": "village",
+      "coord": {
+        "q": 1,
+        "r": 1
+      },
+      "supply": {
+        "grain": 1,
+        "timber": -1,
+        "ore": 2,
+        "textiles": -1,
+        "salt": -2,
+        "fish": -2,
+        "livestock": -1
+      },
+      "mood": 2,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "normal",
+        "ore": "low",
+        "textiles": "normal",
+        "salt": "high",
+        "fish": "high",
+        "livestock": "normal"
+      },
+      "isPort": true,
+      "portSize": "minor",
+      "shipyard": false,
+      "lighthouse": false,
+      "lastTownLogDay": "2026-01-05"
+    },
+    {
+      "id": "settlement-4",
+      "name": "South Macington",
+      "population": 692,
+      "type": "town",
+      "coord": {
+        "q": 5,
+        "r": 9
+      },
+      "supply": {
+        "grain": -1,
+        "timber": -2,
+        "ore": 0,
+        "textiles": 1,
+        "salt": 0,
+        "fish": -1,
+        "livestock": 0
+      },
+      "mood": 0,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "high",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "normal"
+      },
+      "lastTownLogDay": "2026-01-05"
+    },
+    {
+      "id": "settlement-5",
+      "name": "Cromer",
+      "population": 1785,
+      "type": "village",
+      "coord": {
+        "q": 0,
+        "r": 7
+      },
+      "supply": {
+        "grain": -2,
+        "timber": -2,
+        "ore": -2,
+        "textiles": 1,
+        "salt": -1,
+        "fish": 0,
+        "livestock": -2
+      },
+      "mood": 0,
+      "priceTrends": {
+        "grain": "high",
+        "timber": "high",
+        "ore": "high",
+        "textiles": "normal",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "high"
+      },
+      "lastTownLogDay": "2026-01-05"
+    },
+    {
+      "id": "settlement-6",
+      "name": "Strathkeld",
+      "population": 1115,
+      "type": "village",
+      "coord": {
+        "q": 4,
+        "r": 4
+      },
+      "supply": {
+        "grain": -2,
+        "timber": 3,
+        "ore": -1,
+        "textiles": 1,
+        "salt": -2,
+        "fish": -1,
+        "livestock": 1
+      },
+      "mood": 2,
+      "priceTrends": {
+        "grain": "high",
+        "timber": "low",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "high",
+        "fish": "normal",
+        "livestock": "normal"
+      },
+      "lastTownLogDay": "2026-01-05"
+    }
+  ],
+  "parties": [
+    {
+      "id": "party-0",
+      "name": "Fridebraht's Wolves",
+      "members": [
+        {
+          "name": "Vacho",
+          "class": "Fighter",
+          "level": 3,
+          "hp": 20,
+          "maxHp": 20
+        },
+        {
+          "name": "Eskuin",
+          "class": "Cleric",
+          "level": 3,
+          "hp": 15,
+          "maxHp": 15
+        },
+        {
+          "name": "Auveray",
+          "class": "Magic-User",
+          "level": 1,
+          "hp": 10,
+          "maxHp": 10
+        }
+      ],
+      "location": "Bournemouth",
+      "status": "travel",
+      "xp": 0,
+      "travel": {
+        "destination": "Ufora",
+        "terrain": "road",
+        "milesRemaining": 42,
+        "milesPerHour": 1.5
+      }
+    },
+    {
+      "id": "band-0",
+      "name": "Alesandese's Band",
+      "members": [
+        {
+          "name": "Edborough",
+          "class": "Thief",
+          "level": 2,
+          "hp": 12,
+          "maxHp": 12
+        },
+        {
+          "name": "Guillote",
+          "class": "Elf",
+          "level": 2,
+          "hp": 14,
+          "maxHp": 14
+        }
+      ],
+      "location": "Strathkeld",
+      "status": "travel",
+      "xp": 0,
+      "travel": {
+        "destination": "South Macington",
+        "terrain": "forest",
+        "milesRemaining": 36,
+        "milesPerHour": 0.6666666666666666
+      }
+    }
+  ],
+  "roads": [
+    [
+      "settlement-0",
+      "settlement-1"
+    ],
+    [
+      "settlement-0",
+      "settlement-2"
+    ],
+    [
+      "settlement-0",
+      "settlement-3"
+    ],
+    [
+      "settlement-0",
+      "settlement-4"
+    ],
+    [
+      "settlement-0",
+      "settlement-5"
+    ],
+    [
+      "settlement-0",
+      "settlement-6"
+    ],
+    [
+      "settlement-1",
+      "settlement-2"
+    ]
+  ],
+  "dungeons": [
+    {
+      "id": "dungeon-0",
+      "name": "The Death Barrow",
+      "coord": {
+        "q": 0,
+        "r": 9
+      },
+      "depth": 7,
+      "danger": 4,
+      "rooms": [
+        {
+          "type": "laboratory",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "trap",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 3,
+          "loot": true
+        }
+      ],
+      "explored": 0
+    },
+    {
+      "id": "dungeon-1",
+      "name": "The Bones Ruins",
+      "coord": {
+        "q": 0,
+        "r": 1
+      },
+      "depth": 6,
+      "danger": 3,
+      "rooms": [
+        {
+          "type": "laboratory",
+          "threat": 2,
+          "loot": true
+        },
+        {
+          "type": "lair",
+          "threat": 2,
+          "loot": true
+        },
+        {
+          "type": "laboratory",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "laboratory",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 3,
+          "loot": true,
+          "rare": "relic"
+        }
+      ],
+      "explored": 0
+    },
+    {
+      "id": "dungeon-2",
+      "name": "Gisellee's Depths",
+      "coord": {
+        "q": 6,
+        "r": 8
+      },
+      "depth": 7,
+      "danger": 2,
+      "rooms": [
+        {
+          "type": "shrine",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "shrine",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 1,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 2,
+          "loot": true,
+          "rare": "ancient-map"
+        },
+        {
+          "type": "treasure",
+          "threat": 1,
+          "loot": true
+        },
+        {
+          "type": "shrine",
+          "threat": 1,
+          "loot": true
+        },
+        {
+          "type": "laboratory",
+          "threat": 2,
+          "loot": true,
+          "rare": "relic"
+        },
+        {
+          "type": "empty",
+          "threat": 1,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 2,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 2,
+          "loot": false
+        }
+      ],
+      "explored": 0
+    }
+  ],
+  "activeRumors": [
+    {
+      "id": "rumor-1767649253410-402573",
+      "kind": "mystery",
+      "text": "Levies rumored to secure timber; officials say caravans delayed.",
+      "target": "Bournemouth",
+      "origin": "Bournemouth",
+      "freshness": 8
+    },
+    {
+      "id": "rumor-1767649253410-706406",
+      "kind": "feud",
+      "text": "The Lion Compact watches the markets quietly.",
+      "target": "Bournemouth",
+      "origin": "Bournemouth",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767649253410-215182",
+      "kind": "feud",
+      "text": "Brotherhood of the Oak watches the markets quietly.",
+      "target": "Bournemouth",
+      "origin": "Bournemouth",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767649253410-298920",
+      "kind": "feud",
+      "text": "The Vigilant Covenant watches the markets quietly.",
+      "target": "Bournemouth",
+      "origin": "Bournemouth",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767649253410-35208",
+      "kind": "feud",
+      "text": "Keepers of the Shield watches the markets quietly.",
+      "target": "Bournemouth",
+      "origin": "Bournemouth",
+      "freshness": 8
+    },
+    {
+      "id": "rumor-1767649253410-528379",
+      "kind": "feud",
+      "text": "whispered plot: a caravan guard says Orable heard of beasts refusing to cross the old road (from Haling Cove).",
+      "target": "Bournemouth",
+      "origin": "Haling Cove",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767649253410-104496",
+      "kind": "mystery",
+      "text": "Bargain prices on ore; traders racing to Farnworth.",
+      "target": "Farnworth",
+      "origin": "Farnworth",
+      "freshness": 8
+    },
+    {
+      "id": "rumor-1767649253410-774039",
+      "kind": "feud",
+      "text": "Keepers of the Shield watches the markets quietly.",
+      "target": "Farnworth",
+      "origin": "Farnworth",
+      "freshness": 8
+    },
+    {
+      "id": "rumor-1767649253410-259164",
+      "kind": "mystery",
+      "text": "Levies rumored to secure timber; officials say caravans delayed.",
+      "target": "South Macington",
+      "origin": "South Macington",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767649253410-363766",
+      "kind": "feud",
+      "text": "Brotherhood of the Oak watches the markets quietly.",
+      "target": "South Macington",
+      "origin": "South Macington",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767649253410-399034",
+      "kind": "mystery",
+      "text": "Levies rumored to secure timber; officials say caravans delayed.",
+      "target": "Cromer",
+      "origin": "Cromer",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767649253410-587279",
+      "kind": "mystery",
+      "text": "Bargain prices on timber; traders racing to Strathkeld.",
+      "target": "Strathkeld",
+      "origin": "Strathkeld",
+      "freshness": 7
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc-0",
+      "name": "Nolly",
+      "role": "laborer",
+      "home": "settlement-2",
+      "location": "Ufora",
+      "reputation": -1,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 5,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "loyal",
+          "ambitious",
+          "romantic"
+        ],
+        "background": "veteran-soldier",
+        "motivation": "justice",
+        "relationships": [
+          {
+            "targetId": "npc-13",
+            "targetName": "Ingran",
+            "type": "ally",
+            "strength": 5,
+            "history": "Survived a dangerous journey together."
+          },
+          {
+            "targetId": "npc-9",
+            "targetName": "Armin",
+            "type": "mentor",
+            "strength": 1,
+            "history": "Will surpass the master, given time."
+          },
+          {
+            "targetId": "npc-14",
+            "targetName": "Marider",
+            "type": "rival",
+            "strength": 1,
+            "history": "An old grudge over a matter of honor."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "speaks in proverbs",
+          "prays before every meal",
+          "hums old war songs"
+        ]
+      },
+      "age": 56,
+      "title": "Dockhand",
+      "appearance": "a limp from an old wound",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "bloodlineId": "bloodline-1767649253288-7674",
+      "birthDate": "2001-01-11T21:40:53.219Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-1",
+      "name": "Lambert",
+      "role": "priest",
+      "home": "settlement-3",
+      "location": "Farnworth",
+      "reputation": 2,
+      "fame": 0,
+      "alive": true,
+      "class": "Cleric",
+      "level": 8,
+      "xp": 0,
+      "spells": [
+        "Cure Light Wounds",
+        "Protection from Evil"
+      ],
+      "depth": {
+        "traits": [
+          "skeptical",
+          "loyal"
+        ],
+        "background": "failed-merchant",
+        "motivation": "home",
+        "relationships": [
+          {
+            "targetId": "npc-2",
+            "targetName": "Danburga",
+            "type": "student",
+            "strength": 5,
+            "history": "The most promising pupil in years."
+          },
+          {
+            "targetId": "npc-15",
+            "targetName": "Aldyet",
+            "type": "creditor",
+            "strength": 2,
+            "history": "Expects repayment, with interest."
+          },
+          {
+            "targetId": "npc-7",
+            "targetName": "Amke",
+            "type": "debtor",
+            "strength": 2,
+            "history": "Gold is owed, and gold will be had."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "hums old war songs"
+        ]
+      },
+      "age": 67,
+      "title": "Deacon",
+      "appearance": "a brand mark, poorly concealed",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 19,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "bloodlineId": "bloodline-1767649253288-3187",
+      "birthDate": "1977-01-17T21:40:53.219Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-6",
+      "marriedAt": "2017-01-07T21:40:53.219Z"
+    },
+    {
+      "id": "npc-2",
+      "name": "Danburga",
+      "role": "scout",
+      "home": "settlement-0",
+      "location": "Bournemouth",
+      "reputation": -3,
+      "fame": 0,
+      "alive": true,
+      "class": "Elf",
+      "level": 12,
+      "xp": 0,
+      "spells": [
+        "Read Magic",
+        "Sleep"
+      ],
+      "depth": {
+        "traits": [
+          "pragmatic",
+          "romantic"
+        ],
+        "background": "farmhand-turned-guard",
+        "motivation": "fame",
+        "relationships": [
+          {
+            "targetId": "npc-9",
+            "targetName": "Armin",
+            "type": "betrayed",
+            "strength": 4,
+            "history": "Watches old friends with new suspicion."
+          },
+          {
+            "targetId": "npc-14",
+            "targetName": "Marider",
+            "type": "betrayed",
+            "strength": 4,
+            "history": "Watches old friends with new suspicion."
+          },
+          {
+            "targetId": "npc-13",
+            "targetName": "Ingran",
+            "type": "enemy",
+            "strength": 5,
+            "history": "Blood spilled between them in Cromer."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "speaks to animals as if they understand",
+          "has recurring nightmares"
+        ]
+      },
+      "age": 41,
+      "title": "Ranger",
+      "appearance": "graying at the temples despite apparent youth",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 28,
+          "description": "Establish a seat of power"
+        },
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 26,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "bloodlineId": "bloodline-1767649253288-1950",
+      "birthDate": "1964-01-21T21:40:53.219Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-3",
+      "name": "Ekhie",
+      "role": "priest",
+      "home": "settlement-3",
+      "location": "Farnworth",
+      "reputation": -1,
+      "fame": 0,
+      "alive": true,
+      "class": "Cleric",
+      "level": 7,
+      "xp": 0,
+      "spells": [
+        "Cure Light Wounds",
+        "Protection from Evil"
+      ],
+      "depth": {
+        "traits": [
+          "brave",
+          "naive"
+        ],
+        "background": "foreign-exile",
+        "motivation": "fame",
+        "relationships": [
+          {
+            "targetId": "npc-7",
+            "targetName": "Amke",
+            "type": "rival",
+            "strength": 1,
+            "history": "Competed for the same position in Farnworth."
+          },
+          {
+            "targetId": "npc-9",
+            "targetName": "Armin",
+            "type": "debtor",
+            "strength": 5,
+            "history": "The debt was financial; the cost was higher."
+          },
+          {
+            "targetId": "npc-6",
+            "targetName": "Apellicon",
+            "type": "betrayer",
+            "strength": 4,
+            "history": "Watches old friends with new suspicion."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Guimart",
+            "type": "mentor",
+            "strength": 4,
+            "history": "Will surpass the master, given time."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "has recurring nightmares"
+        ]
+      },
+      "age": 23,
+      "title": "Prior",
+      "appearance": "an aristocratic bearing despite rough clothes",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 10,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "birthDate": "2001-01-11T21:40:53.219Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-12",
+      "marriedAt": "2022-01-06T21:40:53.219Z"
+    },
+    {
+      "id": "npc-4",
+      "name": "Elie",
+      "role": "guard",
+      "home": "settlement-6",
+      "location": "Strathkeld",
+      "reputation": 2,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 11,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "brave",
+          "cunning"
+        ],
+        "background": "plague-orphan",
+        "motivation": "revenge",
+        "secretMotivation": "freedom",
+        "relationships": [
+          {
+            "targetId": "npc-6",
+            "targetName": "Apellicon",
+            "type": "student",
+            "strength": 5,
+            "history": "Still learning, still surprising."
+          },
+          {
+            "targetId": "npc-14",
+            "targetName": "Marider",
+            "type": "mentor",
+            "strength": 2,
+            "history": "The old ways, passed down in secret."
+          },
+          {
+            "targetId": "npc-5",
+            "targetName": "Kasos",
+            "type": "ally",
+            "strength": 1,
+            "history": "Shared a cell, or a foxhole, or both."
+          },
+          {
+            "targetId": "npc-9",
+            "targetName": "Armin",
+            "type": "betrayer",
+            "strength": 4,
+            "history": "Watches old friends with new suspicion."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "tells the same three stories"
+        ]
+      },
+      "age": 19,
+      "title": "Guardsman",
+      "appearance": "calluses of a lifetime of sword work",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 12,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "birthDate": "1968-01-20T21:40:53.219Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "frail",
+      "widowed": false,
+      "divorces": 0,
+      "lastHealthCheck": "2026-01-05T21:40:53.219Z"
+    },
+    {
+      "id": "npc-5",
+      "name": "Kasos",
+      "role": "scout",
+      "home": "settlement-1",
+      "location": "Haling Cove",
+      "reputation": 0,
+      "fame": 0,
+      "alive": true,
+      "class": "Halfling",
+      "level": 1,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "greedy",
+          "pious"
+        ],
+        "background": "retired-adventurer",
+        "motivation": "wealth",
+        "relationships": [
+          {
+            "targetId": "npc-10",
+            "targetName": "Guimart",
+            "type": "enemy",
+            "strength": 4,
+            "history": "Blood spilled between them in Haling Cove."
+          },
+          {
+            "targetId": "npc-4",
+            "targetName": "Elie",
+            "type": "ally",
+            "strength": 1,
+            "history": "Shared a cell, or a foxhole, or both."
+          },
+          {
+            "targetId": "npc-12",
+            "targetName": "Juerg",
+            "type": "rival",
+            "strength": 3,
+            "history": "Competed for the same position in Haling Cove."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "trusts no one who smiles too easily"
+        ]
+      },
+      "age": 54,
+      "title": "Tracker",
+      "appearance": "weathered hands that speak of hard labor",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "birthDate": "1994-01-13T21:40:53.219Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-6",
+      "name": "Apellicon",
+      "role": "scout",
+      "home": "settlement-3",
+      "location": "Farnworth",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 5,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "naive",
+          "charitable"
+        ],
+        "background": "plague-orphan",
+        "motivation": "home",
+        "relationships": [
+          {
+            "targetId": "npc-4",
+            "targetName": "Elie",
+            "type": "mentor",
+            "strength": 5,
+            "history": "Still learning, still surprising."
+          },
+          {
+            "targetId": "npc-13",
+            "targetName": "Ingran",
+            "type": "betrayed",
+            "strength": 4,
+            "history": "Forgiveness is not forthcoming."
+          },
+          {
+            "targetId": "npc-3",
+            "targetName": "Ekhie",
+            "type": "betrayed",
+            "strength": 4,
+            "history": "Watches old friends with new suspicion."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Guimart",
+            "type": "ally",
+            "strength": 3,
+            "history": "Shared a cell, or a foxhole, or both."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "constantly counts coins",
+          "refuses to eat meat",
+          "always wears a lucky charm"
+        ]
+      },
+      "age": 49,
+      "title": "Outrider",
+      "appearance": "scarred face and knowing eyes",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "birthDate": "1983-01-16T21:40:53.219Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-1",
+      "marriedAt": "2017-01-07T21:40:53.219Z"
+    },
+    {
+      "id": "npc-7",
+      "name": "Amke",
+      "role": "priest",
+      "home": "settlement-2",
+      "location": "Ufora",
+      "reputation": -1,
+      "fame": 0,
+      "alive": true,
+      "class": "Elf",
+      "level": 7,
+      "xp": 0,
+      "spells": [
+        "Read Magic",
+        "Sleep"
+      ],
+      "depth": {
+        "traits": [
+          "romantic",
+          "charitable"
+        ],
+        "background": "plague-orphan",
+        "motivation": "home",
+        "secretMotivation": "power",
+        "relationships": [
+          {
+            "targetId": "npc-3",
+            "targetName": "Ekhie",
+            "type": "rival",
+            "strength": 1,
+            "history": "Competed for the same position in Farnworth."
+          },
+          {
+            "targetId": "npc-4",
+            "targetName": "Elie",
+            "type": "betrayed",
+            "strength": 3,
+            "history": "Still bears the scars of misplaced faith."
+          },
+          {
+            "targetId": "npc-1",
+            "targetName": "Lambert",
+            "type": "creditor",
+            "strength": 2,
+            "history": "Gold is owed, and gold will be had."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "trusts no one who smiles too easily",
+          "fears deep water",
+          "laughs at inappropriate moments"
+        ]
+      },
+      "age": 42,
+      "title": "Sister",
+      "appearance": "surprisingly young features",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 27,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-2",
+      "bloodlineId": "bloodline-1767649253288-309",
+      "birthDate": "1964-01-21T21:40:53.219Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-8",
+      "name": "Emmanaia",
+      "role": "scout",
+      "home": "settlement-5",
+      "location": "Cromer",
+      "reputation": 2,
+      "fame": 0,
+      "alive": true,
+      "class": "Elf",
+      "level": 9,
+      "xp": 0,
+      "spells": [
+        "Read Magic"
+      ],
+      "depth": {
+        "traits": [
+          "treacherous"
+        ],
+        "background": "veteran-soldier",
+        "motivation": "survival",
+        "relationships": [
+          {
+            "targetId": "npc-13",
+            "targetName": "Ingran",
+            "type": "enemy",
+            "strength": 5,
+            "history": "Only one of them can have what they both want."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "refuses to eat meat",
+          "trusts no one who smiles too easily"
+        ]
+      },
+      "age": 57,
+      "title": "Woods-Guide",
+      "appearance": "eyes of mismatched color",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 1,
+          "description": "Establish a seat of power"
+        },
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 24,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "bloodlineId": "bloodline-1767649253288-2911",
+      "birthDate": "1964-01-21T21:40:53.219Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-9",
+      "name": "Armin",
+      "role": "laborer",
+      "home": "settlement-2",
+      "location": "Ufora",
+      "reputation": 1,
+      "fame": 0,
+      "alive": true,
+      "class": "Dwarf",
+      "level": 5,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "greedy",
+          "cunning",
+          "pious"
+        ],
+        "background": "shipwreck-survivor",
+        "motivation": "justice",
+        "relationships": [
+          {
+            "targetId": "npc-2",
+            "targetName": "Danburga",
+            "type": "betrayer",
+            "strength": 4,
+            "history": "Watches old friends with new suspicion."
+          },
+          {
+            "targetId": "npc-0",
+            "targetName": "Nolly",
+            "type": "student",
+            "strength": 1,
+            "history": "Will surpass the master, given time."
+          },
+          {
+            "targetId": "npc-4",
+            "targetName": "Elie",
+            "type": "betrayed",
+            "strength": 4,
+            "history": "Watches old friends with new suspicion."
+          },
+          {
+            "targetId": "npc-15",
+            "targetName": "Aldyet",
+            "type": "betrayer",
+            "strength": 3,
+            "history": "Forgiveness is not forthcoming."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "hums old war songs"
+        ]
+      },
+      "age": 57,
+      "title": "Hauler",
+      "appearance": "an aristocratic bearing despite rough clothes",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1964-01-21T21:40:53.219Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-10",
+      "name": "Guimart",
+      "role": "guard",
+      "home": "settlement-2",
+      "location": "Ufora",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 12,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "naive",
+          "pragmatic"
+        ],
+        "background": "reformed-bandit",
+        "motivation": "fame",
+        "relationships": [
+          {
+            "targetId": "npc-3",
+            "targetName": "Ekhie",
+            "type": "student",
+            "strength": 4,
+            "history": "Will surpass the master, given time."
+          },
+          {
+            "targetId": "npc-13",
+            "targetName": "Ingran",
+            "type": "creditor",
+            "strength": 3,
+            "history": "Expects repayment, with interest."
+          },
+          {
+            "targetId": "npc-14",
+            "targetName": "Marider",
+            "type": "mentor",
+            "strength": 5,
+            "history": "Will surpass the master, given time."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "trusts no one who smiles too easily",
+          "collects small bones",
+          "prays before every meal"
+        ]
+      },
+      "age": 24,
+      "title": "Watch-Captain",
+      "appearance": "the bearing of one who has worn armor",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 35,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "birthDate": "1964-01-21T21:40:53.219Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "lastHealthCheck": "2026-01-05T21:40:53.219Z"
+    },
+    {
+      "id": "npc-11",
+      "name": "Gunzelinus",
+      "role": "scout",
+      "home": "settlement-0",
+      "location": "Bournemouth",
+      "reputation": 1,
+      "fame": 0,
+      "alive": true,
+      "class": "Halfling",
+      "level": 6,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "cunning",
+          "ambitious"
+        ],
+        "background": "guild-dropout",
+        "motivation": "freedom",
+        "relationships": [
+          {
+            "targetId": "npc-7",
+            "targetName": "Amke",
+            "type": "rival",
+            "strength": 4,
+            "history": "Both loved the same person, once."
+          },
+          {
+            "targetId": "npc-12",
+            "targetName": "Juerg",
+            "type": "student",
+            "strength": 5,
+            "history": "Taught them everything worth knowing."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "constantly counts coins",
+          "hums old war songs",
+          "sleeps with a blade in hand"
+        ]
+      },
+      "age": 22,
+      "title": "Ranger",
+      "appearance": "surprisingly young features",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1982-01-16T21:40:53.219Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-12",
+      "name": "Juerg",
+      "role": "bard",
+      "home": "settlement-3",
+      "location": "Farnworth",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 9,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "brave",
+          "cowardly",
+          "greedy"
+        ],
+        "background": "wandering-bard",
+        "motivation": "fame",
+        "secretMotivation": "fame",
+        "relationships": [
+          {
+            "targetId": "npc-11",
+            "targetName": "Gunzelinus",
+            "type": "mentor",
+            "strength": 5,
+            "history": "Taught them everything worth knowing."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "has recurring nightmares",
+          "always knows which way is north"
+        ]
+      },
+      "age": 61,
+      "title": "Troubadour",
+      "appearance": "graying at the temples despite apparent youth",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 12,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "bloodlineId": "bloodline-1767649253288-6302",
+      "birthDate": "1998-01-12T21:40:53.219Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-3",
+      "marriedAt": "2022-01-06T21:40:53.219Z"
+    },
+    {
+      "id": "npc-13",
+      "name": "Ingran",
+      "role": "scout",
+      "home": "settlement-5",
+      "location": "Cromer",
+      "reputation": 2,
+      "fame": 0,
+      "alive": true,
+      "class": "Elf",
+      "level": 5,
+      "xp": 0,
+      "spells": [
+        "Read Magic",
+        "Sleep"
+      ],
+      "depth": {
+        "traits": [
+          "cautious",
+          "ambitious"
+        ],
+        "background": "veteran-soldier",
+        "motivation": "home",
+        "relationships": [
+          {
+            "targetId": "npc-0",
+            "targetName": "Nolly",
+            "type": "ally",
+            "strength": 5,
+            "history": "Survived a dangerous journey together."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Guimart",
+            "type": "debtor",
+            "strength": 3,
+            "history": "Expects repayment, with interest."
+          },
+          {
+            "targetId": "npc-2",
+            "targetName": "Danburga",
+            "type": "enemy",
+            "strength": 5,
+            "history": "Blood spilled between them in Cromer."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "fears deep water"
+        ]
+      },
+      "age": 66,
+      "title": "Outrider",
+      "appearance": "missing two fingers on the left hand",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 22,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "bloodlineId": "bloodline-1767649253288-1418",
+      "birthDate": "1963-01-21T21:40:53.219Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-14",
+      "name": "Marider",
+      "role": "merchant",
+      "home": "settlement-5",
+      "location": "Cromer",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 9,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "romantic",
+          "cowardly"
+        ],
+        "background": "escaped-slave",
+        "motivation": "freedom",
+        "secretMotivation": "justice",
+        "relationships": [
+          {
+            "targetId": "npc-2",
+            "targetName": "Danburga",
+            "type": "betrayer",
+            "strength": 4,
+            "history": "Watches old friends with new suspicion."
+          },
+          {
+            "targetId": "npc-4",
+            "targetName": "Elie",
+            "type": "student",
+            "strength": 2,
+            "history": "The old ways, passed down in secret."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Guimart",
+            "type": "student",
+            "strength": 5,
+            "history": "Will surpass the master, given time."
+          },
+          {
+            "targetId": "npc-0",
+            "targetName": "Nolly",
+            "type": "rival",
+            "strength": 1,
+            "history": "An old grudge over a matter of honor."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "has recurring nightmares"
+        ]
+      },
+      "age": 36,
+      "title": "Chandler",
+      "appearance": "a brand mark, poorly concealed",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 23,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "bloodlineId": "bloodline-1767649253288-2100",
+      "birthDate": "1967-01-20T21:40:53.219Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "lastHealthCheck": "2026-01-05T21:40:53.219Z"
+    },
+    {
+      "id": "npc-15",
+      "name": "Aldyet",
+      "role": "guard",
+      "home": "settlement-1",
+      "location": "Haling Cove",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Halfling",
+      "level": 11,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "pragmatic",
+          "cautious"
+        ],
+        "background": "reformed-bandit",
+        "motivation": "fame",
+        "secretMotivation": "revenge",
+        "relationships": [
+          {
+            "targetId": "npc-1",
+            "targetName": "Lambert",
+            "type": "debtor",
+            "strength": 2,
+            "history": "Expects repayment, with interest."
+          },
+          {
+            "targetId": "npc-9",
+            "targetName": "Armin",
+            "type": "betrayed",
+            "strength": 3,
+            "history": "Forgiveness is not forthcoming."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "trusts no one who smiles too easily"
+        ]
+      },
+      "age": 61,
+      "title": "Sergeant",
+      "appearance": "eyes of mismatched color",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 28,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "bloodlineId": "bloodline-1767649253288-7773",
+      "birthDate": "2001-01-11T21:40:53.219Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    }
+  ],
+  "factions": [
+    {
+      "id": "faction-0",
+      "name": "The Lion Compact",
+      "attitude": {},
+      "wealth": 89,
+      "focus": "arcane",
+      "lastNoted": "Bournemouth"
+    },
+    {
+      "id": "faction-1",
+      "name": "Brotherhood of the Oak",
+      "attitude": {},
+      "wealth": 115,
+      "focus": "martial",
+      "lastNoted": "South Macington"
+    },
+    {
+      "id": "faction-2",
+      "name": "The Vigilant Covenant",
+      "attitude": {},
+      "wealth": 140,
+      "focus": "pious",
+      "lastNoted": "Bournemouth"
+    },
+    {
+      "id": "faction-3",
+      "name": "Keepers of the Shield",
+      "attitude": {},
+      "wealth": 62,
+      "focus": "arcane",
+      "lastNoted": "Farnworth"
+    }
+  ],
+  "caravans": [
+    {
+      "id": "caravan-0",
+      "name": "Gobblesfolly Mountain Traders",
+      "route": [
+        "settlement-0",
+        "settlement-1"
+      ],
+      "goods": [
+        "ore",
+        "timber"
+      ],
+      "location": "Bournemouth",
+      "progressHours": 1,
+      "direction": "outbound",
+      "escorts": [
+        "npc-6"
+      ],
+      "factionId": "faction-2",
+      "merchantId": "npc-12"
+    },
+    {
+      "id": "caravan-1",
+      "name": "Adeliz's Wagons",
+      "route": [
+        "settlement-1",
+        "settlement-2"
+      ],
+      "goods": [
+        "salt",
+        "fish"
+      ],
+      "location": "Haling Cove",
+      "progressHours": 1,
+      "direction": "outbound",
+      "escorts": [
+        "npc-8"
+      ],
+      "factionId": "faction-3",
+      "merchantId": "npc-14"
+    },
+    {
+      "id": "caravan-2",
+      "name": "Guille & Sons",
+      "route": [
+        "settlement-0",
+        "settlement-2"
+      ],
+      "goods": [
+        "grain",
+        "textiles"
+      ],
+      "location": "Bournemouth",
+      "progressHours": 1,
+      "direction": "outbound",
+      "escorts": [
+        "npc-10"
+      ],
+      "factionId": "faction-2"
+    },
+    {
+      "id": "caravan-3",
+      "name": "Faure & Sons",
+      "route": [
+        "settlement-0",
+        "settlement-3"
+      ],
+      "goods": [
+        "ore",
+        "timber"
+      ],
+      "location": "Bournemouth",
+      "progressHours": 1,
+      "direction": "outbound",
+      "escorts": [
+        "npc-4"
+      ],
+      "factionId": "faction-0"
+    },
+    {
+      "id": "caravan-4",
+      "name": "Roumiet's Wagons",
+      "route": [
+        "settlement-0",
+        "settlement-4"
+      ],
+      "goods": [
+        "salt",
+        "fish"
+      ],
+      "location": "Bournemouth",
+      "progressHours": 1,
+      "direction": "outbound",
+      "escorts": [
+        "npc-13"
+      ],
+      "factionId": "faction-0"
+    }
+  ],
+  "strongholds": [],
+  "armies": [],
+  "landmarks": [],
+  "ruins": [],
+  "nexuses": [
+    {
+      "id": "nexus-0",
+      "name": "Whispering Nexus of Stars",
+      "location": {
+        "q": 4,
+        "r": 5
+      },
+      "powerType": "Arcane",
+      "intensity": 9
+    },
+    {
+      "id": "nexus-1",
+      "name": "Shattered Nexus of Stars",
+      "location": {
+        "q": 1,
+        "r": 9
+      },
+      "powerType": "Primal",
+      "intensity": 6
+    },
+    {
+      "id": "nexus-2",
+      "name": "Shattered Nexus of Life",
+      "location": {
+        "q": 4,
+        "r": 0
+      },
+      "powerType": "Primal",
+      "intensity": 5
+    },
+    {
+      "id": "nexus-3",
+      "name": "Shattered Nexus of Stars",
+      "location": {
+        "q": 1,
+        "r": 4
+      },
+      "powerType": "Shadow",
+      "intensity": 8
+    },
+    {
+      "id": "nexus-4",
+      "name": "Whispering Nexus of Bones",
+      "location": {
+        "q": 4,
+        "r": 9
+      },
+      "powerType": "Primal",
+      "intensity": 6
+    },
+    {
+      "id": "nexus-5",
+      "name": "Whispering Nexus of Time",
+      "location": {
+        "q": 1,
+        "r": 4
+      },
+      "powerType": "Shadow",
+      "intensity": 5
+    },
+    {
+      "id": "nexus-6",
+      "name": "Shattered Nexus of Stars",
+      "location": {
+        "q": 8,
+        "r": 6
+      },
+      "powerType": "Primal",
+      "intensity": 6
+    },
+    {
+      "id": "nexus-7",
+      "name": "Whispering Nexus of Time",
+      "location": {
+        "q": 8,
+        "r": 8
+      },
+      "powerType": "Arcane",
+      "intensity": 8
+    },
+    {
+      "id": "nexus-8",
+      "name": "Deep Nexus of Time",
+      "location": {
+        "q": 1,
+        "r": 5
+      },
+      "powerType": "Divine",
+      "intensity": 7
+    },
+    {
+      "id": "nexus-9",
+      "name": "Eternal Nexus of Time",
+      "location": {
+        "q": 5,
+        "r": 4
+      },
+      "powerType": "Primal",
+      "intensity": 5
+    },
+    {
+      "id": "nexus-10",
+      "name": "Eternal Nexus of Stars",
+      "location": {
+        "q": 5,
+        "r": 6
+      },
+      "powerType": "Arcane",
+      "intensity": 7
+    }
+  ],
+  "mercenaries": [
+    {
+      "id": "merc-0",
+      "name": "The Iron Brotherhood",
+      "captainId": "npc-merc-captain-0",
+      "location": "Ufora",
+      "size": 51,
+      "quality": 2,
+      "monthlyRate": 449,
+      "loyalty": 9
+    },
+    {
+      "id": "merc-1",
+      "name": "Silver Shields",
+      "captainId": "npc-merc-captain-1",
+      "location": "Haling Cove",
+      "size": 136,
+      "quality": 3,
+      "monthlyRate": 481,
+      "loyalty": 8
+    },
+    {
+      "id": "merc-2",
+      "name": "The Golden Lions",
+      "captainId": "npc-merc-captain-2",
+      "location": "Strathkeld",
+      "size": 66,
+      "quality": 6,
+      "monthlyRate": 399,
+      "loyalty": 9
+    },
+    {
+      "id": "merc-3",
+      "name": "Black Boars",
+      "captainId": "npc-merc-captain-3",
+      "location": "Farnworth",
+      "size": 192,
+      "quality": 5,
+      "monthlyRate": 259,
+      "loyalty": 8
+    },
+    {
+      "id": "merc-4",
+      "name": "Red Ravagers",
+      "captainId": "npc-merc-captain-4",
+      "location": "Strathkeld",
+      "size": 64,
+      "quality": 6,
+      "monthlyRate": 185,
+      "loyalty": 9
+    },
+    {
+      "id": "merc-5",
+      "name": "The Free Company",
+      "captainId": "npc-merc-captain-5",
+      "location": "Bournemouth",
+      "size": 72,
+      "quality": 6,
+      "monthlyRate": 242,
+      "loyalty": 7
+    }
+  ],
+  "startedAt": "2026-01-05T21:40:53.219Z",
+  "partyStates": {
+    "party-0": {
+      "morale": 5,
+      "resources": 50,
+      "enemies": [],
+      "allies": [],
+      "questLog": [],
+      "killList": [],
+      "reputation": {}
+    },
+    "band-0": {
+      "morale": 5,
+      "resources": 50,
+      "enemies": [],
+      "allies": [],
+      "questLog": [],
+      "killList": [],
+      "reputation": {}
+    }
+  },
+  "factionStates": {
+    "faction-0": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [],
+      "casusBelli": {},
+      "activeOperations": [],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-1": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [],
+      "casusBelli": {},
+      "activeOperations": [],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-2": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [],
+      "casusBelli": {},
+      "activeOperations": [],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-3": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [],
+      "casusBelli": {},
+      "activeOperations": [],
+      "recentLosses": 0,
+      "recentWins": 0
+    }
+  },
+  "settlementStates": {
+    "Bournemouth": {
+      "prosperity": 0,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Haling Cove": {
+      "prosperity": 0,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Ufora": {
+      "prosperity": -3,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": -50,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Farnworth": {
+      "prosperity": 0,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "South Macington": {
+      "prosperity": 0,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Cromer": {
+      "prosperity": 0,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Strathkeld": {
+      "prosperity": 0,
+      "safety": 5,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    }
+  },
+  "lastTickAt": "2026-01-05T21:55:17.219Z",
+  "lastRealTickAt": "2026-01-05T21:40:53.511Z",
+  "storyThreads": [
+    {
+      "id": "story-1767649253307-9766",
+      "type": "ancient-evil",
+      "title": "The Old Darkness Returns",
+      "summary": "Ancient wards fail. What they imprisoned walks again.",
+      "phase": "inciting",
+      "actors": [
+        "Binhildis"
+      ],
+      "location": "Bournemouth",
+      "startedAt": "2026-01-05T21:40:53.219Z",
+      "lastUpdated": "2026-01-05T21:40:53.219Z",
+      "tension": 1,
+      "beats": [
+        {
+          "timestamp": "2026-01-05T21:40:53.219Z",
+          "summary": "Bournemouth stirs to life",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The evil is resealed, but weakened watchers remain.",
+        "The evil is destroyed at tremendous cost.",
+        "The evil proves to be misunderstood—not evil at all.",
+        "The evil escapes and begins its conquest.",
+        "A bargain is struck with the awakened power."
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "Bournemouth"
+        ],
+        "themes": [
+          "doom",
+          "salvation"
+        ],
+        "motivations": {
+          "Binhildis": "seeks wealth and riches"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    },
+    {
+      "id": "story-1767649253321-361",
+      "type": "ancient-evil",
+      "title": "What Sleeps Beneath Haling Cove",
+      "summary": "Ancient wards fail. What they imprisoned walks again.",
+      "phase": "inciting",
+      "actors": [
+        "Gabrielius"
+      ],
+      "location": "Haling Cove",
+      "startedAt": "2026-01-05T21:40:53.219Z",
+      "lastUpdated": "2026-01-05T21:40:53.219Z",
+      "tension": 1,
+      "beats": [
+        {
+          "timestamp": "2026-01-05T21:40:53.219Z",
+          "summary": "Haling Cove stirs to life",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The evil is resealed, but weakened watchers remain.",
+        "The evil is destroyed at tremendous cost.",
+        "The evil proves to be misunderstood—not evil at all.",
+        "The evil escapes and begins its conquest.",
+        "A bargain is struck with the awakened power."
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "Haling Cove",
+          "hidden grove"
+        ],
+        "themes": [
+          "doom",
+          "corruption"
+        ],
+        "motivations": {
+          "Gabrielius": "motivated by fear and survival"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    },
+    {
+      "id": "story-1767649253330-9448",
+      "type": "ancient-evil",
+      "title": "The Awakening",
+      "summary": "Something sealed away long ago stirs in Ufora.",
+      "phase": "inciting",
+      "actors": [
+        "Geroldin"
+      ],
+      "location": "Ufora",
+      "startedAt": "2026-01-05T21:40:53.219Z",
+      "lastUpdated": "2026-01-05T21:40:53.219Z",
+      "tension": 1,
+      "beats": [
+        {
+          "timestamp": "2026-01-05T21:40:53.219Z",
+          "summary": "Ufora stirs to life",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The evil is resealed, but weakened watchers remain.",
+        "The evil is destroyed at tremendous cost.",
+        "The evil proves to be misunderstood—not evil at all.",
+        "The evil escapes and begins its conquest.",
+        "A bargain is struck with the awakened power."
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "Ufora"
+        ],
+        "themes": [
+          "corruption",
+          "doom",
+          "salvation"
+        ],
+        "motivations": {
+          "Geroldin": "motivated by duty and honor"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    }
+  ],
+  "antagonists": [
+    {
+      "id": "antagonist-1767649253227-2057",
+      "name": "Dorythye",
+      "epithet": "Silvertongue",
+      "type": "corrupt-noble",
+      "threat": 4,
+      "territory": "Haling Cove",
+      "motivation": "Wealth beyond counting",
+      "notoriety": 3,
+      "defeats": 0,
+      "victories": 0,
+      "nemeses": [],
+      "followers": 5,
+      "treasure": 665,
+      "alive": true,
+      "traits": [
+        "politically connected",
+        "never gets hands dirty"
+      ],
+      "weaknesses": [
+        "paper trail of crimes"
+      ]
+    },
+    {
+      "id": "antagonist-1767649253227-6746",
+      "name": "Gylbart",
+      "epithet": "the Reborn",
+      "type": "cult-leader",
+      "threat": 3,
+      "territory": "Bournemouth",
+      "motivation": "Preparing the world for transformation",
+      "notoriety": 3,
+      "defeats": 0,
+      "victories": 0,
+      "nemeses": [],
+      "followers": 24,
+      "treasure": 309,
+      "alive": true,
+      "traits": [
+        "truly believes",
+        "protects the inner circle"
+      ],
+      "weaknesses": [
+        "the prophecy has flaws"
+      ]
+    }
+  ]
+}

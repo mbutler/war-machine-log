@@ -12,129 +12,80 @@ import { Random } from './rng.ts';
 import { WorldState, LogEntry, Settlement, Terrain } from './types.ts';
 import { weatherNarrative, capitalize } from './prose.ts';
 
-// Fantasy calendar
-export const MONTHS = [
-  { name: 'Deepwinter', season: 'winter', days: 30 },
-  { name: 'Thawmoon', season: 'winter', days: 30 },
-  { name: 'Sowingtime', season: 'spring', days: 31 },
-  { name: 'Rainmoon', season: 'spring', days: 30 },
-  { name: 'Brightening', season: 'spring', days: 31 },
-  { name: 'Highsun', season: 'summer', days: 30 },
-  { name: 'Summerpeak', season: 'summer', days: 31 },
-  { name: 'Harvestide', season: 'autumn', days: 30 },
-  { name: 'Leaffall', season: 'autumn', days: 31 },
-  { name: 'Mistmoon', season: 'autumn', days: 30 },
-  { name: 'Frostfall', season: 'winter', days: 30 },
-  { name: 'Longnight', season: 'winter', days: 31 },
+// Real calendar - seasons based on real months
+export const MONTH_NAMES = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
 ] as const;
 
 export type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 export type WeatherCondition = 'clear' | 'cloudy' | 'rain' | 'storm' | 'snow' | 'fog';
 export type MoonPhase = 'new' | 'waxing' | 'full' | 'waning';
 
-// Festivals - story opportunities throughout the year
-export interface Festival {
+// Real calendar holidays (simplified)
+export interface Holiday {
   name: string;
   month: number; // 0-indexed
-  dayStart: number;
-  duration: number; // days
+  day: number;
   description: string;
   effects: {
     moodBonus?: number;
     tradeBonus?: boolean;
-    dangerReduction?: boolean;
     magicPotent?: boolean;
   };
 }
 
-export const FESTIVALS: Festival[] = [
+export const HOLIDAYS: Holiday[] = [
   {
-    name: 'Candlemas',
-    month: 1, // Thawmoon
-    dayStart: 15,
-    duration: 1,
-    description: 'Candles are lit against the dark; folk pray for the return of light.',
+    name: 'New Year',
+    month: 0, // January
+    day: 1,
+    description: 'The start of a new year brings hope and renewal.',
     effects: { moodBonus: 1 },
   },
   {
-    name: 'First Planting',
-    month: 2, // Sowingtime
-    dayStart: 1,
-    duration: 3,
-    description: 'Seeds are blessed and the first furrows cut. A time of hope.',
-    effects: { moodBonus: 1, dangerReduction: true },
+    name: 'Valentine\'s Day',
+    month: 1, // February
+    day: 14,
+    description: 'A day of love and affection.',
+    effects: { moodBonus: 1 },
   },
   {
-    name: 'Beltane',
-    month: 4, // Brightening
-    dayStart: 1,
-    duration: 2,
-    description: 'Great fires are lit. Young lovers dance. The veil thins.',
-    effects: { moodBonus: 2, magicPotent: true },
+    name: 'April Fools',
+    month: 3, // April
+    day: 1,
+    description: 'Pranks and jokes fill the air.',
+    effects: { moodBonus: 1 },
   },
   {
-    name: 'Midsummer',
-    month: 5, // Highsun
-    dayStart: 21,
-    duration: 3,
-    description: 'The longest day. Grand markets, tournaments, and revelry.',
-    effects: { moodBonus: 2, tradeBonus: true },
-  },
-  {
-    name: 'Harvest Home',
-    month: 7, // Harvestide
-    dayStart: 20,
-    duration: 5,
-    description: 'The crops are in. Feasting, drinking, and thanksgiving.',
-    effects: { moodBonus: 2, tradeBonus: true },
-  },
-  {
-    name: 'Allhallows',
-    month: 9, // Mistmoon
-    dayStart: 31,
-    duration: 1,
-    description: 'The dead walk close. Masks are worn. Wards are strengthened.',
+    name: 'Halloween',
+    month: 9, // October
+    day: 31,
+    description: 'The veil between worlds thins. Ghosts and ghouls roam.',
     effects: { magicPotent: true },
   },
   {
-    name: 'Winternight',
-    month: 11, // Longnight
-    dayStart: 21,
-    duration: 3,
-    description: 'The longest night. Gifts are exchanged. Oaths renewed.',
-    effects: { moodBonus: 1 },
+    name: 'Christmas',
+    month: 11, // December
+    day: 25,
+    description: 'Gifts are exchanged and families gather.',
+    effects: { moodBonus: 2, tradeBonus: true },
   },
 ];
 
 export interface CalendarState {
-  year: number;
-  month: number; // 0-11
-  day: number; // 1-based
   weather: WeatherCondition;
   weatherDuration: number; // hours remaining
   moonPhase: MoonPhase;
   activeEffects: {
-    festival?: Festival;
     eclipse?: boolean;
     omens?: string[];
   };
 }
 
 // Get calendar state from world time
-// For 1:1 time: simple mapping - real calendar month -> fantasy month name
-// January = Deepwinter, February = Thawmoon, etc. Same day number, same year.
+// Uses real calendar dates
 export function getCalendarFromDate(date: Date, weather?: WeatherCondition): CalendarState {
-  // Simple 1:1 mapping: real calendar -> fantasy calendar
-  // January (0) = Deepwinter (0), February (1) = Thawmoon (1), etc.
-  const realMonth = date.getUTCMonth(); // 0-11
-  const realDay = date.getUTCDate();    // 1-31
-  const realYear = date.getUTCFullYear();
-
-  // Map real month to fantasy month (same index)
-  const month = realMonth; // 0-11 maps directly to MONTHS array
-  const day = realDay;     // Same day number
-  const year = realYear;   // Same year
-
   // Moon phase - ~29.5 day cycle based on real date
   const daysSinceEpoch = Math.floor(date.getTime() / (24 * 60 * 60 * 1000));
   const moonCycleDay = daysSinceEpoch % 30;
@@ -145,9 +96,6 @@ export function getCalendarFromDate(date: Date, weather?: WeatherCondition): Cal
   else moonPhase = 'waning';
 
   return {
-    year,
-    month,
-    day,
     weather: weather ?? 'clear',
     weatherDuration: 12,
     moonPhase,
@@ -155,21 +103,28 @@ export function getCalendarFromDate(date: Date, weather?: WeatherCondition): Cal
   };
 }
 
-// Get season from month
+// Get season from month (real calendar)
 export function getSeason(month: number): Season {
-  return MONTHS[month % 12].season;
+  // Spring: March-May (2-4), Summer: June-Aug (5-7),
+  // Autumn: Sep-Nov (8-10), Winter: Dec-Feb (11,0,1)
+  if (month >= 2 && month <= 4) return 'spring';
+  if (month >= 5 && month <= 7) return 'summer';
+  if (month >= 8 && month <= 10) return 'autumn';
+  return 'winter';
 }
 
-// Get month name
+// Get month name (real calendar)
 export function getMonthName(month: number): string {
-  return MONTHS[month % 12].name;
+  return MONTH_NAMES[month % 12];
 }
 
-// Format date nicely
-export function formatDate(calendar: CalendarState): string {
-  const monthName = getMonthName(calendar.month);
-  const ordinal = getOrdinal(calendar.day);
-  return `${calendar.day}${ordinal} of ${monthName}, Year ${calendar.year}`;
+// Format date nicely (real calendar)
+export function formatDate(date: Date): string {
+  const monthName = getMonthName(date.getUTCMonth());
+  const day = date.getUTCDate();
+  const year = date.getUTCFullYear();
+  const ordinal = getOrdinal(day);
+  return `${monthName} ${day}${ordinal}, ${year}`;
 }
 
 function getOrdinal(n: number): string {
@@ -178,12 +133,14 @@ function getOrdinal(n: number): string {
   return s[(v - 20) % 10] || s[v] || s[0];
 }
 
-// Check for active festival
-export function getActiveFestival(calendar: CalendarState): Festival | undefined {
-  for (const festival of FESTIVALS) {
-    if (calendar.month !== festival.month) continue;
-    if (calendar.day >= festival.dayStart && calendar.day < festival.dayStart + festival.duration) {
-      return festival;
+// Check for active holiday
+export function getActiveHoliday(date: Date): Holiday | undefined {
+  const month = date.getUTCMonth();
+  const day = date.getUTCDate();
+
+  for (const holiday of HOLIDAYS) {
+    if (month === holiday.month && day === holiday.day) {
+      return holiday;
     }
   }
   return undefined;
@@ -437,80 +394,80 @@ export function generateSeasonalEvent(
   seed: string,
 ): LogEntry | null {
   const effects = getSeasonalEffects(season);
-  
+
   // Only generate occasionally
   if (!rng.chance(0.05)) return null;
-  
+
   const SEASONAL_EVENTS: Record<Season, { summaries: string[]; details: string[] }> = {
     spring: {
       summaries: [
-        `Spring floods threaten ${settlement.name}`,
-        `Young lovers elope from ${settlement.name}`,
-        `The first caravans of spring reach ${settlement.name}`,
-        `Planting begins in earnest near ${settlement.name}`,
-        `Wildlife returns to the fields around ${settlement.name}`,
+        `Spring rains flood areas near ${settlement.name}`,
+        `Young couples celebrate romance in ${settlement.name}`,
+        `Fresh spring produce arrives in ${settlement.name}`,
+        `Gardening begins in earnest near ${settlement.name}`,
+        `Wildflowers bloom around ${settlement.name}`,
       ],
       details: [
-        'The rivers run high. Cellars flood. Roads turn to mud.',
-        'Families rage, but the heart wants what it wants.',
-        'Fresh goods and fresher news arrive after the long winter.',
-        'The earth is turned. Seeds are blessed. Hope is planted.',
-        'Birds return. Deer are spotted. The hunters sharpen their bows.',
+        'Heavy rains cause flooding. Some areas become impassable.',
+        'Love is in the air as spring brings renewal and hope.',
+        'Fresh fruits and vegetables arrive from nearby farms.',
+        'The earth awakens. Gardens are planted and tended.',
+        'Colorful wildflowers carpet the meadows and hills.',
       ],
     },
     summer: {
       summaries: [
-        `Heat wave grips ${settlement.name}`,
-        `Travelers crowd the roads near ${settlement.name}`,
-        `A great tournament is announced in ${settlement.name}`,
-        `Drought threatens crops around ${settlement.name}`,
-        `Tempers flare in ${settlement.name}'s markets`,
+        `Heat wave affects ${settlement.name}`,
+        `Summer travelers arrive in ${settlement.name}`,
+        `Local festival announced in ${settlement.name}`,
+        `Dry conditions worry farmers near ${settlement.name}`,
+        `Busy market days in ${settlement.name}`,
       ],
       details: [
-        'Wells run low. Folk sleep outdoors. Work halts in the hottest hours.',
-        'The roads are thick with pilgrims, merchants, and less savory types.',
-        'Knights and champions gather. Glory awaits. So do broken bones.',
-        'The sun beats down without mercy. Prayers for rain go unanswered.',
-        'A fistfight breaks out. Old grudges surface in the heat.',
+        'The sun beats down relentlessly. People seek shade and water.',
+        'The roads fill with merchants, pilgrims, and adventurers.',
+        'Community events bring people together for celebration.',
+        'Lack of rain threatens crops. Farmers watch the skies anxiously.',
+        'Trade flourishes as people buy and sell in the warm weather.',
       ],
     },
     autumn: {
       summaries: [
-        `The harvest begins in ${settlement.name}`,
-        `Ghosts are sighted near ${settlement.name}`,
-        `A cold snap catches ${settlement.name} off guard`,
-        `Animals gather stores before winter near ${settlement.name}`,
-        `The veil thins around ${settlement.name}`,
+        `Harvest season peaks in ${settlement.name}`,
+        `Mysterious occurrences near ${settlement.name}`,
+        `Cool weather arrives in ${settlement.name}`,
+        `Animals prepare for winter near ${settlement.name}`,
+        `Fall colors surround ${settlement.name}`,
       ],
       details: [
-        'All hands work the fields. The size of the harvest will determine the winter.',
-        'The dead do not rest easy as the nights grow long.',
-        'Frost comes early. Crops are damaged. Worry sets in.',
-        'Bears grow bold. Wolves range far. The wise stay indoors after dark.',
-        'Dreams grow strange. Omens multiply. The priests are busy.',
+        'Crops are gathered. The harvest determines winter prosperity.',
+        'Strange sightings and sounds as the veil thins.',
+        'Temperatures drop. People prepare for colder months.',
+        'Wildlife grows more active before hibernation.',
+        'Trees display brilliant colors before winter dormancy.',
       ],
     },
     winter: {
       summaries: [
-        `A blizzard blankets ${settlement.name}`,
-        `Supplies run low in ${settlement.name}`,
-        `Cabin fever grips ${settlement.name}`,
-        `A fire breaks out in ${settlement.name}`,
-        `The frozen roads isolate ${settlement.name}`,
+        `Snowfall covers ${settlement.name}`,
+        `Winter supplies monitored in ${settlement.name}`,
+        `Indoor activities flourish in ${settlement.name}`,
+        `Fire breaks out in ${settlement.name}`,
+        `Cold weather isolates ${settlement.name}`,
       ],
       details: [
-        'Snow piles high. Travel is impossible. The world shrinks to four walls.',
-        'Rations are cut. The granaries are watched. Theft becomes tempting.',
-        'Trapped together, old tensions boil over. A fight erupts.',
-        'In the dry winter air, flames spread fast. Buckets form a chain.',
-        'No word in or out. What happens in the settlement, stays there.',
+        'Snow blankets everything. Travel becomes difficult.',
+        'Food stores are carefully managed for the long winter.',
+        'People gather indoors for warmth and entertainment.',
+        'Dry conditions make fires more dangerous.',
+        'Heavy snow and cold limit movement and communication.',
       ],
     },
   };
-  
+
   const events = SEASONAL_EVENTS[season];
   const index = rng.int(events.summaries.length);
-  
+
   return {
     category: 'weather',
     summary: events.summaries[index],
@@ -620,33 +577,33 @@ export function getWeatherEncounterContext(
   };
 }
 
-// Generate festival event
-export function festivalEvent(
+// Generate holiday event
+export function holidayEvent(
   rng: Random,
   settlement: Settlement,
-  festival: Festival,
+  holiday: Holiday,
   worldTime: Date,
   seed: string,
 ): LogEntry {
-  const FESTIVAL_SCENES = [
-    `${festival.name} transforms ${settlement.name}`,
-    `${settlement.name} celebrates ${festival.name}`,
-    `The spirit of ${festival.name} fills ${settlement.name}`,
+  const HOLIDAY_SCENES = [
+    `${holiday.name} celebrations in ${settlement.name}`,
+    `${settlement.name} observes ${holiday.name}`,
+    `The spirit of ${holiday.name} fills ${settlement.name}`,
   ];
 
   const CELEBRATION_DETAILS = [
-    'Bonfires blaze in the squares, and music fills the night.',
-    'Merchants offer festival prices; the air smells of roasting meat.',
-    'Children in costume run through the streets, chased by laughter.',
-    'The temples are full. The taverns are fuller.',
-    'Old grudges are set aside, at least until the morrow.',
-    'Travelers are welcomed with unusual warmth.',
+    'Festivities fill the streets with joy and merriment.',
+    'Merchants offer special deals; the air smells of celebration.',
+    'People gather to mark this special occasion.',
+    'The community comes together in celebration.',
+    'Old traditions are honored and new memories made.',
+    'Visitors are welcomed with festive cheer.',
   ];
 
   return {
     category: 'town',
-    summary: rng.pick(FESTIVAL_SCENES),
-    details: `${festival.description} ${rng.pick(CELEBRATION_DETAILS)}`,
+    summary: rng.pick(HOLIDAY_SCENES),
+    details: `${holiday.description} ${rng.pick(CELEBRATION_DETAILS)}`,
     location: settlement.name,
     worldTime,
     realTime: new Date(),
@@ -654,7 +611,7 @@ export function festivalEvent(
   };
 }
 
-// Daily calendar tick - weather changes, festival starts, etc.
+// Daily calendar tick - weather changes, holiday events, etc.
 export function dailyCalendarTick(
   world: WorldState,
   rng: Random,
@@ -663,36 +620,39 @@ export function dailyCalendarTick(
 ): { logs: LogEntry[]; newCalendar: CalendarState } {
   const logs: LogEntry[] = [];
 
-  // For 1:1 time: recalculate calendar from worldTime (don't increment)
+  // For real time: recalculate calendar from worldTime (don't increment)
   const newCalendar = getCalendarFromDate(worldTime, currentCalendar.weather);
-  let { year, month, day } = newCalendar;
-  
-  // Check if day/month/year changed (for event logging)
-  const oldDay = currentCalendar.day;
-  const oldMonth = currentCalendar.month;
-  const oldYear = currentCalendar.year;
-  
-  // Detect if we crossed into a new month or year
-  if (day === 1 && oldDay > 1) {
-    // New month
-    if (month === 0 && oldMonth === 11) {
-      // New Year!
 
-      // New Year event!
+  // Check if day changed (for event logging)
+  const currentDay = worldTime.getUTCDate();
+  const currentMonth = worldTime.getUTCMonth();
+  const currentYear = worldTime.getUTCFullYear();
+
+  // Get previous day's date for comparison
+  const prevTime = new Date(worldTime.getTime() - 24 * 60 * 60 * 1000);
+  const prevDay = prevTime.getUTCDate();
+  const prevMonth = prevTime.getUTCMonth();
+  const prevYear = prevTime.getUTCFullYear();
+
+  // Detect if we crossed into a new month or year
+  if (currentDay === 1 && prevDay > 1) {
+    // New month
+    if (currentMonth === 0 && prevMonth === 11) {
+      // New Year!
       logs.push({
         category: 'town',
-        summary: `The new year dawns: Year ${year}`,
+        summary: `Happy New Year: ${currentYear}`,
         details: 'Church bells ring across the land. A fresh page turns in the chronicle.',
         worldTime,
         realTime: new Date(),
         seed: world.seed,
       });
-    } else if (month !== oldMonth) {
+    } else if (currentMonth !== prevMonth) {
       // New month (but not new year)
       logs.push({
         category: 'town',
-        summary: `The month of ${getMonthName(month)} begins`,
-        details: `${capitalize(getSeason(month))} ${month < 6 ? 'strengthens its grip' : 'settles over the land'}.`,
+        summary: `The month of ${getMonthName(currentMonth)} begins`,
+        details: `${capitalize(getSeason(currentMonth))} ${currentMonth < 6 ? 'strengthens its grip' : 'settles over the land'}.`,
         worldTime,
         realTime: new Date(),
         seed: world.seed,
@@ -722,20 +682,16 @@ export function dailyCalendarTick(
   // Update weather in calendar
   newCalendar.weather = newWeather;
 
-  // Check for festivals
-  const festival = getActiveFestival(newCalendar);
-  if (festival) {
-    newCalendar.activeEffects.festival = festival;
+  // Check for holidays
+  const holiday = getActiveHoliday(worldTime);
+  if (holiday) {
+    // Holiday event for all settlements
+    for (const settlement of world.settlements) {
+      logs.push(holidayEvent(rng, settlement, holiday, worldTime, world.seed));
 
-    // First day of festival gets announcements
-    if (day === festival.dayStart) {
-      for (const settlement of world.settlements) {
-        logs.push(festivalEvent(rng, settlement, festival, worldTime, world.seed));
-
-        // Apply festival mood bonus
-        if (festival.effects.moodBonus) {
-          settlement.mood = Math.min(3, settlement.mood + festival.effects.moodBonus);
-        }
+      // Apply holiday mood bonus
+      if (holiday.effects.moodBonus) {
+        settlement.mood = Math.min(3, settlement.mood + holiday.effects.moodBonus);
       }
     }
   }
@@ -870,12 +826,14 @@ export function dailyCalendarTick(
   
   // === SEASONAL TRANSITION EVENTS ===
   // First day of a new season
-  const prevSeason = getSeason((month - 1 + 12) % 12);
-  if (day === 1 && season !== prevSeason) {
+  const transitionCurrentMonth = worldTime.getUTCMonth();
+  const transitionPrevMonth = new Date(worldTime.getTime() - 24 * 60 * 60 * 1000).getUTCMonth();
+  const transitionPrevSeason = getSeason(transitionPrevMonth);
+  if (transitionCurrentMonth !== transitionPrevMonth && season !== transitionPrevSeason) {
     logs.push({
       category: 'weather',
       summary: `${capitalize(season)} arrives`,
-      details: getSeasonTransitionNarrative(rng, season, prevSeason),
+      details: getSeasonTransitionNarrative(rng, season, transitionPrevSeason),
       worldTime,
       realTime: new Date(),
       seed: world.seed,
@@ -889,31 +847,31 @@ export function dailyCalendarTick(
 function getSeasonTransitionNarrative(rng: Random, newSeason: Season, oldSeason: Season): string {
   const TRANSITIONS: Record<Season, string[]> = {
     spring: [
-      'The snows melt. Rivers swell. Green returns to the land.',
-      'Birds return from the south. The first flowers bloom. Hope stirs.',
-      'The earth awakens from its frozen slumber. Life begins anew.',
-      'Farmers eye their fields with anticipation. The planting season approaches.',
+      'Spring arrives with melting snow and swelling rivers.',
+      'Birds return and flowers bloom as winter finally releases its grip.',
+      'The earth awakens from its long slumber. Life begins anew.',
+      'Warmer weather brings anticipation. Gardens and fields prepare for growth.',
     ],
     summer: [
-      'The days grow long and hot. The roads dry. Travelers multiply.',
-      'The sun reigns supreme. Crops grow tall. So do tempers.',
-      'Campaign season begins. Armies stir. Diplomacy falters.',
-      'The heat settles in. Work shifts to dawn and dusk. Midday belongs to shade.',
+      'Summer heat builds as days grow longer and hotter.',
+      'The sun dominates the sky. Crops flourish in the warmth.',
+      'Travel increases as roads dry and weather improves.',
+      'Hot days bring both opportunity and the need for caution.',
     ],
     autumn: [
-      'The leaves turn. The harvest begins. Winter preparations commence.',
-      'The days shorten. The nights grow teeth. The veil thins.',
-      'Granaries fill. Woodpiles grow. The wise prepare for the cold.',
-      'Animals fatten. Hunters range far. The land offers its bounty—and its dangers.',
+      'Fall colors emerge as temperatures begin to cool.',
+      'Harvest season brings bounty and the preparation for winter.',
+      'Days shorten and nights grow longer. A time of change approaches.',
+      'The land shows its autumn finery before winter\'s approach.',
     ],
     winter: [
-      'The first frost arrives. The land hardens. The cold settles in.',
-      'Snow blankets the world. Roads close. Communities turn inward.',
-      'The long nights begin. Fires become precious. Stories pass the time.',
-      'The world sleeps under white. Only the desperate or the bold venture far.',
+      'Winter arrives with the first frosts and cooling winds.',
+      'Snow begins to fall, covering the world in white.',
+      'Cold weather drives people indoors. Communities huddle together.',
+      'The long winter nights bring reflection and storytelling.',
     ],
   };
-  
+
   return rng.pick(TRANSITIONS[newSeason]);
 }
 
