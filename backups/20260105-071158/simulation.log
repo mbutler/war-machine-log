@@ -1,0 +1,47 @@
+Sun Jan  4 16:13:25 CST 2026: Starting fantasy-log simulation with auto-restart...
+Sun Jan  4 16:13:25 CST 2026: Launching process...
+Sun Jan  4 16:13:25 CST 2026: Using bun...
+📦 Migrating world from schema v1 to v2...
+✓ World loaded successfully (schema v2)
+⏰ World is current (world time: 2026-01-04T00:00:00.000Z)
+
+╔════════════════════════════════════════════════════════════════╗
+║  BECMI Real-Time Simulator                                     ║
+║  18th of Deepwinter, Year 1056                                 ║
+╠════════════════════════════════════════════════════════════════╣
+║  Seed: gator                                                   ║
+║  Time Scale: 1x (turn every 600000ms)                          ║
+║  Settlements: 6   Parties: 2   Antagonists: 1                  ║
+║  Active Stories: 8                                             ║
+╚════════════════════════════════════════════════════════════════╝
+
+2026-01-04T00:25:18.475Z [system] The world turns (18th of Deepwinter, Year 1056) — 2 parties traveling, 0 resting. 1 threats lurk.
+2026-01-04T00:25:18.475Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves spot goblins and avoid notice — They detour carefully, leaving only faint tracks.
+2026-01-04T00:25:18.475Z [road] @ Minasfeld The New Caravan makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-04T00:25:18.475Z [town] @ Belfos [Eurydamus, Irantzu] Eurydamus takes Irantzu under their wing — The student shows promise—or perhaps stubborn foolishness.
+2026-01-04T01:52:55.225Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — A cairn of skulls marks a territorial boundary.
+2026-01-04T01:52:55.225Z [road] @ Myrrka [The Wandering Merchants, Sons of the Wolf] The Wandering Merchants is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-04T01:52:55.225Z [town] @ Myrrka Trade routes near Myrrka grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-04T01:52:55.225Z [faction] @ Greenmist [Circle of the Dawn] Circle of the Dawn eyes Greenmist for its grain — Desperate for grain, the faction has decided to take the settlement by force.
+2026-01-04T03:20:08.815Z [faction] @ Myrrka [Mendia the Pallid] Agents of Mendia gather components — Graverobbing. Herb theft. Missing children.
+2026-01-04T04:51:45.972Z [road] @ Minasfeld [The New Caravan, Sons of the Wolf] The New Caravan is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-04T04:51:45.972Z [town] @ Minasfeld Trade routes near Minasfeld grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-04T06:02:34.727Z [system] The world turns (18th of Deepwinter, Year 1056) — 2 parties traveling, 0 resting. 1 threats lurk.
+2026-01-04T06:02:34.727Z [dungeon] @ Azmarin [The Grim Wolves] The Grim Wolves discovers Shattered Archives — While dew pearled on grass and stone They have found An ancient shattered archives from the First Age. Shattered Archives was once a center of faith before its fall.
+2026-01-04T07:18:05.191Z [road] @ Greenmist [Parthenius's Band, orc raiders] Parthenius's Band aid injured orc raiders with healing herbs — As folk went about their labors thin cold air hung in the air. The peaks gleam with eternal snow. A few disciplined orc raiders, dragging captives. The exchange of gifts sealed the temporary truce.
+2026-01-04T07:18:05.191Z [town] @ Belfos [Ilene] Construction continues on Ilene's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2026-01-04T07:18:05.191Z [town] @ Minasfeld [Wantelien] Magical mist chokes Minasfeld — A toxic green cloud, conjured by Wantelien, rolls through the streets. Panic ensues.
+2026-01-04T07:18:05.191Z [town] @ Windleigh Gripsha fades in Windleigh — The worst of the sickness has passed. The bells ring in celebration.
+2026-01-04T08:49:21.636Z [road] @ Minasfeld [The New Caravan, Sons of the Wolf] The New Caravan is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-04T08:49:21.636Z [town] @ Minasfeld Trade routes near Minasfeld grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-04T08:49:21.636Z [town] @ Greenmist [Eadmund, Cybele] Cybele presses Eadmund for payment — Gold owed sits heavy on both parties.
+2026-01-04T08:49:21.636Z [town] @ Minasfeld [Wantelien] Magical mist chokes Minasfeld — A toxic green cloud, conjured by Wantelien, rolls through the streets. Panic ensues.
+2026-01-04T10:19:23.064Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves discovers The Obsidian Cave — With the sun climbing steadily the crack of splitting rock. A obsidian cave, smelling of summer rain and ozone. The party feels a surge of mental clarity.
+2026-01-04T10:19:23.064Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — A cairn of skulls marks a territorial boundary.
+2026-01-04T11:53:23.359Z [faction] @ Myrrka A new band appears near Myrrka — Tribunas's Band takes to the byways.
+2026-01-04T11:53:23.359Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves spot orc raiders and avoid notice — They detour carefully, leaving only faint tracks.
+2026-01-04T11:53:23.359Z [town] @ Azmarin Word spreads in Azmarin — Thieves struck near Minasfeld. The roads grow dangerous.
+2026-01-04T11:53:23.359Z [faction] @ Belfos [The Hawk Compact] The Hawk Compact sends relief to Belfos — Wagons of grain and medicine roll toward the suffering. Compassion—or calculated politics?
+2026-01-04T13:22:24.914Z [road] @ Azmarin [The Grim Wolves] The Grim Wolves spot signs of danger — The ruins of a dwarven waystation, recently looted.
+2026-01-04T13:22:24.914Z [road] @ Greenmist [Parthenius's Band, orc raiders] Parthenius's Band hunt down marauding orc raiders — While sensible folk sought shade mountain goats leaping between boulders. A few frenzied orc raiders, quarreling over spoils. They exploited a momentary weakness in the enemy line. Condors circling high overhead marked the scene. A well-timed spell from their caster turned the tide. The victors claim 46 coin worth of plunder.
+2026-01-04T14:48:49.520Z [town] @ Minasfeld Word spreads in Minasfeld — Thieves struck near Myrrka. The roads grow dangerous.

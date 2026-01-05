@@ -16,6 +16,9 @@ function normalize(world: WorldState): WorldState {
   // Add schema version if missing
   if (!world.schemaVersion) world.schemaVersion = 1;
   
+  // CRITICAL: Never overwrite world.seed - it must be preserved
+  // The seed is set when the world is created and should never change
+  
   if (!world.activeRumors) world.activeRumors = [];
   if (!world.dungeons) world.dungeons = [];
   if (!world.roads) world.roads = [];

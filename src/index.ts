@@ -48,7 +48,7 @@ import { NavalState, seedNavalState, tickNavalHourly, tickNavalDaily, markSettle
 import { exploreDungeonTick } from './dungeon.ts';
 
 const bus = new EventBus();
-const rng = makeRandom(config.seed);
+let rng = makeRandom(config.seed);
 const logger = new Logger(config.logDir);
 
 // Enhanced world state
@@ -136,7 +136,7 @@ async function log(entry: Omit<LogEntry, 'realTime'>) {
         location: newStory.location,
         actors: newStory.actors,
         worldTime: entry.worldTime,
-        seed: config.seed,
+        seed: world.seed ?? config.seed,
       });
     }
 
@@ -149,6 +149,22 @@ async function initWorld(): Promise<void> {
   const loaded = await loadWorld();
   if (loaded) {
     world = loaded as EnhancedWorldState;
+
+    // Use world's seed if it exists (for existing worlds)
+    // CRITICAL: Always use world.seed if it exists, never overwrite it with config.seed
+    if (world.seed) {
+      if (world.seed !== config.seed) {
+        console.log(`🔄 Using world seed: "${world.seed}" (config had: "${config.seed}")`);
+      }
+      rng = makeRandom(world.seed);
+      // Update config to match world for consistency (but don't overwrite world.seed)
+      (config as any).seed = world.seed;
+    } else {
+      // Old world without seed - preserve it by setting it from config
+      console.log(`⚠️  World missing seed, setting to: "${config.seed}"`);
+      world.seed = config.seed;
+      rng = makeRandom(config.seed);
+    }
 
     // Restore enhanced state if present
     if (world.consequenceQueue) {
@@ -187,7 +203,10 @@ async function initWorld(): Promise<void> {
     navalState = world.navalState ?? { ships: [], seaRoutes: [], pirates: [], recentShipwrecks: [], portActivity: {}, distantLands: [], distantFigures: [] };
   } else {
     // Fresh world
+    // For new worlds, use config.seed (which may have been updated to match an existing world)
     world = createInitialWorld(rng, config.seed, config.startWorldTime) as EnhancedWorldState;
+    // Ensure world.seed is set (createInitialWorld should set it, but be explicit)
+    if (!world.seed) world.seed = config.seed;
 
     // Deepen all NPCs with rich character details
     world.npcs = world.npcs.map((npc) => deepenNPC(rng, npc));
@@ -219,7 +238,7 @@ async function initWorld(): Promise<void> {
       summary: `The chronicle begins: ${world.archetype}`,
       details: `${formatDate(calendar)}. The simulation awakens in an era known as the ${world.archetype}.`,
       worldTime: config.startWorldTime,
-      seed: config.seed,
+      seed: world.seed ?? config.seed,
     });
 
     // Introduce initial settlements
@@ -231,7 +250,7 @@ async function initWorld(): Promise<void> {
         details: scene,
         location: settlement.name,
         worldTime: config.startWorldTime,
-        seed: config.seed,
+        seed: world.seed ?? config.seed,
       });
     }
 
@@ -264,7 +283,7 @@ function onHourTick(event: TickEvent): void {
         details: `${activeParties} parties traveling, ${idleParties} resting. ${antagonists.filter(a => a.alive).length} threats lurk.`,
         worldTime: event.worldTime,
         realTime: new Date(),
-        seed: config.seed,
+        seed: world.seed ?? config.seed,
       });
     }
 
@@ -510,7 +529,7 @@ function onDayTick(event: TickEvent): void {
           details: beat.details,
           location: settlement.name,
           worldTime: event.worldTime,
-          seed: config.seed,
+          seed: world.seed ?? config.seed,
         });
       }
     }
@@ -667,7 +686,7 @@ async function runBatchMode(days: number): Promise<void> {
   
   console.log(`\n═══════════════════════════════════════════`);
   console.log(`  BATCH MODE: ${days} days (${TOTAL_TICKS} turns)`);
-  console.log(`  Seed: ${config.seed}`);
+  console.log(`  Seed: ${world.seed ?? config.seed}`);
   console.log(`  Start: ${config.startWorldTime.toISOString()}`);
   console.log(`  End: ${new Date(config.startWorldTime.getTime() + days * 24 * 60 * 60 * 1000).toISOString()}`);
   console.log(`═══════════════════════════════════════════\n`);
@@ -846,7 +865,7 @@ async function runBatchMode(days: number): Promise<void> {
             details: beat.details,
             location: settlement.name,
             worldTime,
-            seed: config.seed,
+            seed: world.seed ?? config.seed,
           });
         }
       }
@@ -930,7 +949,7 @@ async function main() {
     pad('BECMI Real-Time Simulator') + '\n' +
     pad(formatDate(calendar)) + '\n' +
     `╠${'═'.repeat(64)}╣\n` +
-    pad(`Seed: ${config.seed}`) + '\n' +
+    pad(`Seed: ${world.seed ?? config.seed}`) + '\n' +
     pad(`Time Scale: ${config.timeScale}x (turn every ${turnMs}ms)`) + '\n' +
     pad(statsLine) + '\n' +
     pad(`Active Stories: ${activeStories}`) + '\n' +

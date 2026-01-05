@@ -995,15 +995,39 @@ function formatTime($iso) {
 
 function formatWorldDate($iso) {
     $dt = new DateTime($iso);
-    // Fantasy calendar approximation
-    $dayOfYear = (int)$dt->format('z') + 1;
-    $month = floor($dayOfYear / 30) + 1;
-    $day = ($dayOfYear % 30) ?: 30;
-    $months = ['', 'Deepwinter', 'Icemelt', 'Mudmonth', 'Rainmoon', 'Greengrass', 
-               'Highsun', 'Summertide', 'Harvestmoon', 'Leaffall', 'Rotting', 
-               'Darkening', 'Yearsend'];
-    $monthName = $months[min($month, 12)] ?? 'Unknown';
-    return "$day $monthName, " . $dt->format('H:i');
+    
+    // Simple 1:1 mapping: real calendar month -> fantasy month name
+    // January = Deepwinter, February = Thawmoon, etc.
+    $monthMap = [
+        1 => 'Deepwinter',    // January
+        2 => 'Thawmoon',      // February
+        3 => 'Sowingtime',    // March
+        4 => 'Rainmoon',      // April
+        5 => 'Brightening',   // May
+        6 => 'Highsun',       // June
+        7 => 'Summerpeak',    // July
+        8 => 'Harvestide',    // August
+        9 => 'Leaffall',      // September
+        10 => 'Mistmoon',     // October
+        11 => 'Frostfall',    // November
+        12 => 'Longnight',    // December
+    ];
+    
+    $realMonth = (int)$dt->format('n'); // 1-12
+    $realDay = (int)$dt->format('j');   // 1-31
+    $realYear = (int)$dt->format('Y');
+    
+    $monthName = $monthMap[$realMonth] ?? 'Unknown';
+    $ordinal = getOrdinal($realDay);
+    
+    // For 1:1 time: if it's Jan 5, 2026 in real time, show "5th of Deepwinter"
+    return "$realDay$ordinal of $monthName, Year $realYear " . $dt->format('H:i');
+}
+
+function getOrdinal($n) {
+    $s = ['th', 'st', 'nd', 'rd'];
+    $v = $n % 100;
+    return $s[($v - 20) % 10] ?? $s[$v] ?? $s[0];
 }
 ?>
 <!DOCTYPE html>

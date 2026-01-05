@@ -121,30 +121,22 @@ export interface CalendarState {
 }
 
 // Get calendar state from world time
+// For 1:1 time: simple mapping - real calendar month -> fantasy month name
+// January = Deepwinter, February = Thawmoon, etc. Same day number, same year.
 export function getCalendarFromDate(date: Date, weather?: WeatherCondition): CalendarState {
-  // Use a fantasy epoch - year 1 = 1000 AD equivalent
-  const baseYear = 1000;
-  const msPerDay = 24 * 60 * 60 * 1000;
-  const daysSinceEpoch = Math.floor(date.getTime() / msPerDay);
+  // Simple 1:1 mapping: real calendar -> fantasy calendar
+  // January (0) = Deepwinter (0), February (1) = Thawmoon (1), etc.
+  const realMonth = date.getUTCMonth(); // 0-11
+  const realDay = date.getUTCDate();    // 1-31
+  const realYear = date.getUTCFullYear();
 
-  // Calculate year and day within year
-  const daysPerYear = MONTHS.reduce((sum, m) => sum + m.days, 0); // 365 days
-  const year = baseYear + Math.floor(daysSinceEpoch / daysPerYear);
-  let dayOfYear = daysSinceEpoch % daysPerYear;
+  // Map real month to fantasy month (same index)
+  const month = realMonth; // 0-11 maps directly to MONTHS array
+  const day = realDay;     // Same day number
+  const year = realYear;   // Same year
 
-  // Find month and day
-  let month = 0;
-  let day = 1;
-  for (let m = 0; m < MONTHS.length; m++) {
-    if (dayOfYear < MONTHS[m].days) {
-      month = m;
-      day = dayOfYear + 1;
-      break;
-    }
-    dayOfYear -= MONTHS[m].days;
-  }
-
-  // Moon phase - ~29.5 day cycle
+  // Moon phase - ~29.5 day cycle based on real date
+  const daysSinceEpoch = Math.floor(date.getTime() / (24 * 60 * 60 * 1000));
   const moonCycleDay = daysSinceEpoch % 30;
   let moonPhase: MoonPhase;
   if (moonCycleDay < 7) moonPhase = 'new';
@@ -671,15 +663,20 @@ export function dailyCalendarTick(
 ): { logs: LogEntry[]; newCalendar: CalendarState } {
   const logs: LogEntry[] = [];
 
-  // Update calendar to new day
-  let { year, month, day } = currentCalendar;
-  day += 1;
-  if (day > MONTHS[month].days) {
-    day = 1;
-    month += 1;
-    if (month >= 12) {
-      month = 0;
-      year += 1;
+  // For 1:1 time: recalculate calendar from worldTime (don't increment)
+  const newCalendar = getCalendarFromDate(worldTime, currentCalendar.weather);
+  let { year, month, day } = newCalendar;
+  
+  // Check if day/month/year changed (for event logging)
+  const oldDay = currentCalendar.day;
+  const oldMonth = currentCalendar.month;
+  const oldYear = currentCalendar.year;
+  
+  // Detect if we crossed into a new month or year
+  if (day === 1 && oldDay > 1) {
+    // New month
+    if (month === 0 && oldMonth === 11) {
+      // New Year!
 
       // New Year event!
       logs.push({
@@ -690,21 +687,21 @@ export function dailyCalendarTick(
         realTime: new Date(),
         seed: world.seed,
       });
+    } else if (month !== oldMonth) {
+      // New month (but not new year)
+      logs.push({
+        category: 'town',
+        summary: `The month of ${getMonthName(month)} begins`,
+        details: `${capitalize(getSeason(month))} ${month < 6 ? 'strengthens its grip' : 'settles over the land'}.`,
+        worldTime,
+        realTime: new Date(),
+        seed: world.seed,
+      });
     }
-
-    // New month announcement
-    logs.push({
-      category: 'town',
-      summary: `The month of ${getMonthName(month)} begins`,
-      details: `${capitalize(getSeason(month))} ${month < 6 ? 'strengthens its grip' : 'settles over the land'}.`,
-      worldTime,
-      realTime: new Date(),
-      seed: world.seed,
-    });
   }
 
-  // Generate new weather
-  const season = getSeason(month);
+  // Generate new weather (use new calendar state)
+  const season = getSeason(newCalendar.month);
   const newWeather = generateWeather(rng, season, currentCalendar.weather);
 
   // Log significant weather changes
@@ -722,8 +719,7 @@ export function dailyCalendarTick(
     });
   }
 
-  // Moon phase update
-  const newCalendar = getCalendarFromDate(worldTime, newWeather);
+  // Update weather in calendar
   newCalendar.weather = newWeather;
 
   // Check for festivals
