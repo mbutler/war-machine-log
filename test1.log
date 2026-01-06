@@ -7,6 +7,14 @@
 2026-01-01T00:00:00.000Z [town] @ Grotarmpit Grotarmpit stirs to life — Children gathered to hear a pedlar's tales while decent folk lay sleeping.
 2026-01-01T00:00:00.000Z [faction] @ Shitettin [Sibragtus Packmaster] Word spreads of Sibragtus Packmaster — The forests grow dangerous. Animals attack without provocation.
 2026-01-01T00:00:00.000Z [faction] @ Moringham [Grimoald Bloodaxe] Word spreads of Grimoald Bloodaxe — Orc banners have been seen where they were not seen before.
+
+═══════════════════════════════════════════
+  BATCH MODE: 1 days (144 turns)
+  Seed: test-deterministic
+  Start: 2026-01-01T00:00:00.000Z
+  End: 2026-01-02T00:00:00.000Z
+═══════════════════════════════════════════
+
 2026-01-01T00:00:00.000Z [faction] The Vengeful Circle declares a shortage of livestock — Their stockpiles are low. They will seek livestock by any means necessary.
 2026-01-01T00:00:00.000Z [faction] The Hidden Order declares a shortage of fish — Their stockpiles are low. They will seek fish by any means necessary.
 2026-01-01T00:00:00.000Z [road] @ hex:2,1 gnoll begin migration — A pack of 26 gnolls departs, seeking warmer territories for winter. They will travel for approximately 22 days.
@@ -162,3 +170,16 @@
 2026-01-02T00:00:00.000Z [town] @ Shitettin Rumor in Shitettin — The Vengeful Circle watches the markets quietly.
 2026-01-02T00:00:00.000Z [town] @ Grotarmpit Grotarmpit tempers frayed — Shortages in grain.
 2026-01-02T00:00:00.000Z [town] @ Grotarmpit Rumor in Grotarmpit — The Hidden Order watches the markets quietly.
+
+═══════════════════════════════════════════
+  BATCH COMPLETE in 0.6s
+═══════════════════════════════════════════
+  Total events: 153
+  Final parties: 2
+  Living NPCs: 12
+  Active antagonists: 1
+  Resolved stories: 0
+  Active stories: 3
+
+Output: logs/events.log
+

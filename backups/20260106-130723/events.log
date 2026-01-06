@@ -1,0 +1,675 @@
+2026-01-01T00:00:00.000Z [system] The chronicle begins: Standard — January 1st, 2026. The simulation awakens in an era known as the Standard.
+2026-01-01T00:00:00.000Z [town] @ Belfos Belfos stirs to life — Guild banners snapped in the breeze while decent folk lay sleeping.
+2026-01-01T00:00:00.000Z [town] @ Windleigh Windleigh stirs to life — Guild banners snapped in the breeze in the hush of late night.
+2026-01-01T00:00:00.000Z [faction] @ Windleigh [Dionysios] A new tale begins: "Seals Breaking" — Ancient wards fail. What they imprisoned walks again.
+2026-01-01T00:00:00.000Z [town] @ Azmarin Azmarin stirs to life — A crier announced the day's proclamations in the hush of late night.
+2026-01-01T00:00:00.000Z [town] @ Minasfeld Minasfeld stirs to life — Children chased each other through muddy lanes while decent folk lay sleeping.
+2026-01-01T00:00:00.000Z [town] @ Myrrka Myrrka stirs to life — A crier announced the day's proclamations with only moonlight for company.
+2026-01-01T00:00:00.000Z [faction] @ Myrrka [Engelwara] A new tale begins: "The Old Darkness Returns" — Engelwara races to prevent catastrophe.
+2026-01-01T00:00:00.000Z [town] @ Greenmist Greenmist stirs to life — Chickens scattered before approaching travelers as owls hunted in darkness.
+2026-01-01T00:00:00.000Z [faction] @ Myrrka [Mendia the Pallid] The shadow of Mendia the Pallid falls over the region — Wizards whisper of forbidden arts practiced in secret.
+2026-01-01T00:00:00.000Z [town] Happy New Year: 2026 — Church bells ring across the land. A fresh page turns in the chronicle.
+2026-01-01T00:00:00.000Z [town] @ Belfos The spirit of New Year fills Belfos — The start of a new year brings hope and renewal. The community comes together in celebration.
+2026-01-01T00:00:00.000Z [town] @ Windleigh Windleigh observes New Year — The start of a new year brings hope and renewal. Visitors are welcomed with festive cheer.
+2026-01-01T00:00:00.000Z [town] @ Azmarin Azmarin observes New Year — The start of a new year brings hope and renewal. People gather to mark this special occasion.
+2026-01-01T00:00:00.000Z [town] @ Minasfeld New Year celebrations in Minasfeld — The start of a new year brings hope and renewal. Merchants offer special deals; the air smells of celebration.
+2026-01-01T00:00:00.000Z [town] @ Myrrka New Year celebrations in Myrrka — The start of a new year brings hope and renewal. Visitors are welcomed with festive cheer.
+2026-01-01T00:00:00.000Z [town] @ Greenmist The spirit of New Year fills Greenmist — The start of a new year brings hope and renewal. People gather to mark this special occasion.
+2026-01-01T00:00:00.000Z [faction] @ Greenmist [Kreon] A new tale begins: "Echoes of the Past" — The dead do not rest peacefully in Greenmist.
+2026-01-01T00:00:00.000Z [weather] @ Myrrka Snowfall covers Myrrka — Snow blankets everything. Travel becomes difficult.
+2026-01-01T00:00:00.000Z [road] @ Belfos [The Grim Wolves] The Grim Wolves departs Belfos — Bound for Myrrka across road (~42 miles).
+2026-01-01T00:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band departs Greenmist — Bound for Myrrka across mountains (~36 miles).
+2026-01-01T00:00:00.000Z [town] @ Belfos Peli seen in Belfos markets — priest haggles and swaps news.
+2026-01-01T00:00:00.000Z [town] @ Belfos Izot seen in Belfos markets — bard haggles and swaps news.
+2026-01-01T00:00:00.000Z [town] @ Belfos Belfos folk watchful — Shortages in grain/ore.
+2026-01-01T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Levies rumored to secure ore; officials say caravans delayed.
+2026-01-01T00:00:00.000Z [town] @ Belfos Rumor in Belfos — The Storm Guild watches the markets quietly.
+2026-01-01T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Sons of the Wolf watches the markets quietly.
+2026-01-01T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Order of the Hawk watches the markets quietly.
+2026-01-01T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Circle of the Dawn watches the markets quietly.
+2026-01-01T00:00:00.000Z [town] @ Belfos Rumor in Belfos — The Hawk Compact watches the markets quietly.
+2026-01-01T00:00:00.000Z [town] @ Windleigh Windleigh folk watchful — Surplus ore/fish and shortages in textiles/salt.
+2026-01-01T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Bargain prices on fish; traders racing to Windleigh.
+2026-01-01T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Order of the Hawk watches the markets quietly.
+2026-01-01T00:00:00.000Z [town] @ Azmarin Mainardus seen in Azmarin markets — scout haggles and swaps news.
+2026-01-01T00:00:00.000Z [town] @ Azmarin Azmarin spirits high — Surplus textiles/salt and shortages in ore/livestock.
+2026-01-01T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — whispered mystery: a bard fresh from the road says Millesenta heard of whispers of depth 3 halls (from Azmarin).
+2026-01-01T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Sons of the Wolf watches the markets quietly.
+2026-01-01T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — The Hawk Compact watches the markets quietly.
+2026-01-01T00:00:00.000Z [town] @ Minasfeld Minasfeld folk watchful — Surplus textiles/livestock.
+2026-01-01T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Circle of the Dawn watches the markets quietly.
+2026-01-01T00:00:00.000Z [town] @ Myrrka Myrrka folk watchful — Surplus textiles and shortages in salt/livestock.
+2026-01-01T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — The Hawk Compact watches the markets quietly.
+2026-01-01T00:00:00.000Z [town] @ Greenmist Greenmist folk watchful — Surplus grain/textiles and shortages in salt/fish.
+2026-01-01T01:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — Travelers speak of Mendia the Pallid. Ascending to godhood.
+2026-01-01T01:00:00.000Z [town] @ Myrrka Mood darkens in Myrrka — Following recent events, the people's spirit sinks.
+2026-01-01T01:00:00.000Z [faction] The Storm Guild declares a shortage of fish — Their stockpiles are low. They will seek fish by any means necessary.
+2026-01-01T01:00:00.000Z [faction] Circle of the Dawn declares a shortage of grain — Their stockpiles are low. They will seek grain by any means necessary.
+2026-01-01T01:00:00.000Z [road] @ hex:0,9 glabrezu and giant-centipede tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T01:00:00.000Z [road] @ hex:4,5 drow and goblin tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T01:00:00.000Z [road] @ hex:7,6 su-monster and goblin tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T02:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Eagle cries echo, but no birds are visible.
+2026-01-01T02:00:00.000Z [town] @ Minasfeld [Hans-Ruedi, Cybele] Hans-Ruedi grows impatient with Cybele's excuses — The ledger must balance, one way or another.
+2026-01-01T02:00:00.000Z [faction] The Storm Guild declares a shortage of grain — Their stockpiles are low. They will seek grain by any means necessary.
+2026-01-01T02:00:00.000Z [faction] The Hawk Compact declares a shortage of livestock — Their stockpiles are low. They will seek livestock by any means necessary.
+2026-01-01T02:00:00.000Z [faction] @ the region [Wattie] A new tale begins: "The Bargain" — Wattie made a deal with powers best left alone.
+2026-01-01T02:00:00.000Z [road] @ hex:3,2 bear and skeleton tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T02:00:00.000Z [road] @ hex:3,7 giant-snake and bear tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T03:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Giant footprints in the snow, each as long as a man is tall.
+2026-01-01T03:00:00.000Z [faction] @ Greenmist [Parthenius's Band] A new tale begins: "Blood on the Trail" — Parthenius's Band stalks a dangerous quarry across the region.
+2026-01-01T03:00:00.000Z [road] @ Greenmist [Parthenius's Band, orc raiders] orc raiders follow Parthenius's Band at a safe distance — In the witching hour Clouds obscure all but the lowest slopes. A group of frenzied orc raiders, performing war rituals. They established rules for future encounters. Eagles soaring on thermal winds marked the scene.
+2026-01-01T03:00:00.000Z [faction] @ Greenmist [Parthenius's Band, orc raiders] A new tale begins: "Fire in Greenmist" — Parthenius's Band strikes fast at Greenmist and withdraws before retaliation.
+2026-01-01T03:00:00.000Z [faction] Sons of the Wolf declares a shortage of ore — Their stockpiles are low. They will seek ore by any means necessary.
+2026-01-01T03:00:00.000Z [faction] The Hawk Compact declares a shortage of textiles — Their stockpiles are low. They will seek textiles by any means necessary.
+2026-01-01T03:00:00.000Z [road] @ hex:3,9 bear and orc tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T04:00:00.000Z [road] @ Belfos [The Grim Wolves] The Grim Wolves discovers The Cracked Statue — When shadows grew deepest the creak of wagon wheels. A cracked statue, whispering in an unknown, melodic tongue. A sudden vision of what is to come flashes before them.
+2026-01-01T04:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Giant footprints in the snow, each as long as a man is tall.
+2026-01-01T04:00:00.000Z [faction] The Storm Guild declares a shortage of textiles — Their stockpiles are low. They will seek textiles by any means necessary.
+2026-01-01T04:00:00.000Z [faction] Order of the Hawk declares a shortage of timber — Their stockpiles are low. They will seek timber by any means necessary.
+2026-01-01T04:00:00.000Z [faction] The Hawk Compact declares a shortage of salt — Their stockpiles are low. They will seek salt by any means necessary.
+2026-01-01T04:00:00.000Z [road] @ hex:5,3 giant-raven and skeleton tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T05:00:00.000Z [road] @ Greenmist [Parthenius's Band, giant eagles] giant eagles share hunting tips with Parthenius's Band — As rose light crept across the land bridges spanning raging torrents. A horde of dangerous giant eagles, apparently startled. They established rules for future encounters.
+2026-01-01T05:00:00.000Z [faction] [Order of the Hawk, The Storm Guild] Order of the Hawk proposes marriage alliance with The Storm Guild — Envoys are sent. Dowries discussed. A political wedding could reshape alliances.
+2026-01-01T05:00:00.000Z [faction] The Storm Guild declares a shortage of livestock — Their stockpiles are low. They will seek livestock by any means necessary.
+2026-01-01T05:00:00.000Z [faction] Circle of the Dawn declares a shortage of livestock — Their stockpiles are low. They will seek livestock by any means necessary.
+2026-01-01T05:00:00.000Z [road] @ hex:3,7 giant-snake and goblin tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T05:00:00.000Z [road] @ hex:4,8 rakshasa and pegasus tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T05:00:00.000Z [road] @ hex:7,8 pyrolisk and revenant tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T06:00:00.000Z [road] @ Greenmist [Parthenius's Band, dwarven patrols] Parthenius's Band keep their distance from armed dwarven patrols — As mist still clung to low places the crack of splitting rock. A solitary shadow-cloaked dwarven patrols, blocking the path. They traded information as valuable as gold.
+2026-01-01T06:00:00.000Z [faction] Order of the Hawk declares a shortage of ore — Their stockpiles are low. They will seek ore by any means necessary.
+2026-01-01T06:00:00.000Z [road] @ hex:9,0 sea-drake and giant-eel tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T07:00:00.000Z [road] @ Belfos The New Caravan makes camp under escort — Road to Minasfeld (road) quiet tonight.
+2026-01-01T07:00:00.000Z [faction] The Storm Guild declares a shortage of timber — Their stockpiles are low. They will seek timber by any means necessary.
+2026-01-01T07:00:00.000Z [faction] Sons of the Wolf declares a shortage of salt — Their stockpiles are low. They will seek salt by any means necessary.
+2026-01-01T07:00:00.000Z [faction] The Hawk Compact declares a shortage of grain — Their stockpiles are low. They will seek grain by any means necessary.
+2026-01-01T07:00:00.000Z [faction] @ the region [Epistor] A new tale begins: "What Was Promised" — In the region, ancient bargains come due.
+2026-01-01T08:00:00.000Z [road] @ Belfos [The Grim Wolves, bandits] bandits launch arrows at The Grim Wolves from hiding — As folk went about their labors a hanging sign creaking in the wind. Several desperate bandits, demanding toll. The foe's weapons glanced off enchanted armor. A well-timed spell from their caster turned the tide.
+2026-01-01T08:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — The ruins of a dwarven waystation, recently looted.
+2026-01-01T08:00:00.000Z [faction] Circle of the Dawn declares a shortage of ore — Their stockpiles are low. They will seek ore by any means necessary.
+2026-01-01T08:00:00.000Z [road] @ hex:3,7 giant-snake and drow tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T09:00:00.000Z [road] @ Belfos [The Grim Wolves] The Grim Wolves spot signs of danger — Crows gather ahead. They scatter at your approach.
+2026-01-01T09:00:00.000Z [faction] [The Hawk Compact, The Storm Guild] The Hawk Compact proposes marriage alliance with The Storm Guild — Envoys are sent. Dowries discussed. A political wedding could reshape alliances.
+2026-01-01T10:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Giant footprints in the snow, each as long as a man is tall.
+2026-01-01T10:00:00.000Z [town] @ Minasfeld [Theodric, Eadmund] Theodric instructs Eadmund — Wisdom passed from one generation to the next.
+2026-01-01T11:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band parley with ogre — Trade news and share a quick meal before parting ways.
+2026-01-01T11:00:00.000Z [faction] Order of the Hawk declares a shortage of fish — Their stockpiles are low. They will seek fish by any means necessary.
+2026-01-01T11:00:00.000Z [faction] Circle of the Dawn declares a shortage of timber — Their stockpiles are low. They will seek timber by any means necessary.
+2026-01-01T11:00:00.000Z [town] @ Azmarin [The Shadow Hand, Zemarchus] The Shadow Hand plans a job against The Wandering Peddlers — The rulers of the shadows have set their sights on a caravan. Zemarchus leads the planning. It will take approximately 2 days to prepare.
+2026-01-01T11:00:00.000Z [road] @ hex:2,7 golem-stone and chimera tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T12:00:00.000Z [faction] Circle of the Dawn declares a shortage of fish — Their stockpiles are low. They will seek fish by any means necessary.
+2026-01-01T12:00:00.000Z [road] @ hex:2,5 giant-raven and giant-centipede tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T12:00:00.000Z [road] @ hex:3,7 giant-snake and sylph clash — Territorial war erupts! The sylph triumph, but 2 fall. The giant-snake lose 17 and retreat.
+2026-01-01T13:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band discovers The Sun-bleached Altar — As the bell tolled the sixth hour vast chasms with no visible bottom. A sun-bleached altar, whispering in an unknown, melodic tongue. They uncover a fragment of lost history.
+2026-01-01T13:00:00.000Z [road] @ hex:0,9 glabrezu and giant-centipede clash — Territorial war erupts! The glabrezu triumph, but 3 fall. The giant-centipede lose 16 and retreat.
+2026-01-01T13:00:00.000Z [road] @ hex:5,3 giant-raven and skeleton clash — Territorial war erupts! The skeleton triumph, but 4 fall. The giant-raven lose 11 and retreat.
+2026-01-01T14:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — The ruins of a dwarven waystation, recently looted.
+2026-01-01T14:00:00.000Z [faction] The Storm Guild declares a shortage of ore — Their stockpiles are low. They will seek ore by any means necessary.
+2026-01-01T14:00:00.000Z [faction] Order of the Hawk declares a shortage of salt — Their stockpiles are low. They will seek salt by any means necessary.
+2026-01-01T14:00:00.000Z [town] @ Myrrka [Guinemat, The Dead Man's Purse] Merchant refuses The Dead Man's Purse's "protection" — Guinemat stands up to the guild. A brave but perhaps foolish act.
+2026-01-01T14:00:00.000Z [road] @ hex:3,4 living-statue and nightwalker tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T14:00:00.000Z [road] @ hex:4,5 drow and pyrohydra tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T14:00:00.000Z [road] @ hex:7,7 rust-monster and chaos-beast tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T14:00:00.000Z [faction] @ hex:7,7 [Itzia] A new tale begins: "Itzia's Last Stand" — Itzia stalks a dangerous quarry across the region.
+2026-01-01T15:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band shadowed by orc raiders — Tense standoff; both sides withdraw before blades are drawn.
+2026-01-01T15:00:00.000Z [town] @ Belfos Word spreads in Belfos — Explorers speak of a strange discovery near Belfos.
+2026-01-01T15:00:00.000Z [road] @ hex:2,7 giant-centipede and golem-stone clash — Territorial war erupts! The golem-stone triumph, but 1 fall. The giant-centipede lose 13 and retreat.
+2026-01-01T15:00:00.000Z [road] @ hex:3,4 living-statue and drow tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T15:00:00.000Z [road] @ hex:4,8 rakshasa and pegasus tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T16:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Eagle cries echo, but no birds are visible.
+2026-01-01T16:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot goblins and avoid notice — They detour carefully, leaving only faint tracks.
+2026-01-01T16:00:00.000Z [road] @ Windleigh Northbeach Traders makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-01T16:00:00.000Z [faction] Sons of the Wolf declares a shortage of textiles — Their stockpiles are low. They will seek textiles by any means necessary.
+2026-01-01T16:00:00.000Z [road] @ hex:9,7 nereid and giant-eel tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T17:00:00.000Z [town] @ Belfos [Peli] Construction continues on Peli's stronghold — Masons and laborers work tirelessly. The foundations are deep and the walls rise.
+2026-01-01T17:00:00.000Z [road] @ hex:4,3 nightwalker and skeleton tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T18:00:00.000Z [road] @ Greenmist [Parthenius's Band, goblins] Parthenius's Band hide their valuables from view — As lanterns were kindled A band of sneaky goblins, arguing among themselves. The negotiation revealed unexpected shared values.
+2026-01-01T18:00:00.000Z [road] @ Belfos The Wandering Peddlers makes camp under escort — Road to Azmarin (road) quiet tonight.
+2026-01-01T18:00:00.000Z [town] @ Belfos [Izot, Theodric] Izot seeks guidance from Theodric — The lessons take root.
+2026-01-01T18:00:00.000Z [road] @ hex:3,9 bear and orc clash — Territorial war erupts! The orc triumph, but 5 fall. The bear lose 1 and retreat.
+2026-01-01T18:00:00.000Z [road] @ hex:7,8 pyrolisk and giant-eel tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T18:00:00.000Z [road] @ hex:7,8 chaos-beast and giant-eel clash — Territorial war erupts! The chaos-beast triumph, but 1 fall. The giant-eel lose 15 and retreat.
+2026-01-01T18:00:00.000Z [road] @ hex:9,2 giant-eel and kelpie clash — Territorial war erupts! The kelpie triumph, but 0 fall. The giant-eel lose 5 and retreat.
+2026-01-01T19:00:00.000Z [road] @ hex:2,7 giant-centipede and chimera tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T20:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band discovers The Cracked Cave — As the stars emerged one by one the faint metallic tang of ore hung in the air. A cracked cave, humming a low, vibrating note. The party feels a surge of mental clarity.
+2026-01-01T20:00:00.000Z [town] @ Minasfeld [Theodric, Eadmund] Theodric takes Eadmund under their wing — The student shows promise—or perhaps stubborn foolishness.
+2026-01-01T20:00:00.000Z [faction] [Sons of the Wolf, The Storm Guild] Sons of the Wolf proposes marriage alliance with The Storm Guild — Envoys are sent. Dowries discussed. A political wedding could reshape alliances.
+2026-01-01T20:00:00.000Z [road] @ hex:5,6 sylph and phantom tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T21:00:00.000Z [faction] Sons of the Wolf declares a shortage of fish — Their stockpiles are low. They will seek fish by any means necessary.
+2026-01-01T21:00:00.000Z [faction] Circle of the Dawn declares a shortage of textiles — Their stockpiles are low. They will seek textiles by any means necessary.
+2026-01-01T21:00:00.000Z [road] @ hex:3,9 bear and rakshasa clash — Territorial war erupts! The rakshasa triumph, but 2 fall. The bear lose 1 and retreat.
+2026-01-01T21:00:00.000Z [road] @ hex:3,9 bear submit to rakshasa — The beaten bear now serve their conquerors.
+2026-01-01T21:00:00.000Z [road] @ hex:7,7 rust-monster and pyrolisk tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T21:00:00.000Z [road] @ hex:7,8 pyrolisk and chaos-beast tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T21:00:00.000Z [road] @ hex:9,0 sea-drake and giant-eel clash — Territorial war erupts! The sea-drake triumph, but 0 fall. The giant-eel lose 7 and retreat.
+2026-01-01T22:00:00.000Z [road] @ Greenmist [Parthenius's Band, giant eagles] giant eagles poison Parthenius's Band's water supply — With ale flowing in taprooms condors circling high overhead. Clouds obscure all but the lowest slopes. A handful of red-eyed in the dark giant eagles, watching warily. A decisive strike ended the conflict before it could escalate. The victors claim 40 coin worth of plunder.
+2026-01-01T22:00:00.000Z [faction] Sons of the Wolf declares a shortage of livestock — Their stockpiles are low. They will seek livestock by any means necessary.
+2026-01-01T22:00:00.000Z [road] @ hex:4,5 drow and grell clash — Territorial war erupts! The drow triumph, but 0 fall. The grell lose 1 and retreat.
+2026-01-01T22:00:00.000Z [road] @ hex:4,8 rakshasa and goblin clash — Territorial war erupts! The rakshasa triumph, but 1 fall. The goblin lose 16 and retreat.
+2026-01-01T23:00:00.000Z [road] @ hex:2,8 chimera and giant-snake clash — Territorial war erupts! The chimera triumph, but 0 fall. The giant-snake lose 5 and retreat.
+2026-01-01T23:00:00.000Z [road] @ hex:3,1 half-orc-bandit and skeleton tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-01T23:00:00.000Z [road] @ hex:5,3 giant-raven and grell clash — Territorial war erupts! The grell triumph, but 0 fall. The giant-raven lose 8 and retreat.
+2026-01-02T00:00:00.000Z [road] @ Belfos [The Grim Wolves] The Grim Wolves spot signs of danger — Crows gather ahead. They scatter at your approach.
+2026-01-02T00:00:00.000Z [town] @ Greenmist Word spreads in Greenmist — Explorers speak of a strange discovery near Greenmist.
+2026-01-02T00:00:00.000Z [town] @ Azmarin [The Shadow Hand, Heromenes] The Shadow Hand plans a job against The Wandering Peddlers — The rulers of the shadows have set their sights on a caravan. Heromenes leads the planning. It will take approximately 2 days to prepare.
+2026-01-02T00:00:00.000Z [road] @ hex:1,8 glabrezu and chimera tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T00:00:00.000Z [road] @ hex:5,8 pegasus and goblin clash — Territorial war erupts! The pegasus triumph, but 1 fall. The goblin lose 15 and retreat.
+2026-01-02T00:00:00.000Z [road] @ hex:4,5 drow wiped out in hex:4,5 — The last of the drow have fallen. The region grows quieter—for now.
+2026-01-02T00:00:00.000Z [town] @ Minasfeld [Theodric] Theodric falls ill — The scout takes to their bed. Healers are summoned.
+2026-01-02T00:00:00.000Z [town] @ Belfos Belfos folk watchful — Shortages in grain/ore.
+2026-01-02T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Levies rumored to secure grain; officials say caravans delayed.
+2026-01-02T00:00:00.000Z [town] @ Belfos Rumor in Belfos — The Storm Guild watches the markets quietly.
+2026-01-02T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Sons of the Wolf watches the markets quietly.
+2026-01-02T00:00:00.000Z [town] @ Windleigh Windleigh folk watchful — Surplus ore/fish and shortages in textiles/salt.
+2026-01-02T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Circle of the Dawn watches the markets quietly.
+2026-01-02T00:00:00.000Z [town] @ Azmarin Mainardus seen in Azmarin markets — scout haggles and swaps news.
+2026-01-02T00:00:00.000Z [town] @ Azmarin Azmarin spirits high — Surplus textiles/salt and shortages in ore/livestock.
+2026-01-02T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Levies rumored to secure livestock; officials say caravans delayed.
+2026-01-02T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Circle of the Dawn watches the markets quietly.
+2026-01-02T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — The Hawk Compact watches the markets quietly.
+2026-01-02T00:00:00.000Z [town] @ Minasfeld Theodric seen in Minasfeld markets — scout haggles and swaps news.
+2026-01-02T00:00:00.000Z [town] @ Minasfeld Hans-Ruedi seen in Minasfeld markets — laborer haggles and swaps news.
+2026-01-02T00:00:00.000Z [town] @ Minasfeld Minasfeld folk watchful — Surplus textiles/livestock.
+2026-01-02T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — whispered threat: a frantic merchant says Audrey heard of strange lights near Windleigh (from Minasfeld).
+2026-01-02T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Sons of the Wolf watches the markets quietly.
+2026-01-02T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Circle of the Dawn watches the markets quietly.
+2026-01-02T00:00:00.000Z [town] @ Myrrka Katixa seen in Myrrka markets — guard haggles and swaps news.
+2026-01-02T00:00:00.000Z [town] @ Myrrka Molora seen in Myrrka markets — scout haggles and swaps news.
+2026-01-02T00:00:00.000Z [town] @ Myrrka Myrrka folk watchful — Surplus textiles and shortages in salt/livestock.
+2026-01-02T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — cryptic missing: a frantic merchant says Babitt heard of villagers hearing chanting at dusk (from Myrrka).
+2026-01-02T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — The Storm Guild watches the markets quietly.
+2026-01-02T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Circle of the Dawn watches the markets quietly.
+2026-01-02T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — The Hawk Compact watches the markets quietly.
+2026-01-02T00:00:00.000Z [town] @ Greenmist Greenmist folk watchful — Surplus grain/textiles and shortages in salt/fish/livestock.
+2026-01-02T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Levies rumored to secure fish; officials say caravans delayed.
+2026-01-02T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Order of the Hawk watches the markets quietly.
+2026-01-02T01:00:00.000Z [road] @ Belfos [The Grim Wolves] The Grim Wolves spot signs of danger — Crows gather ahead. They scatter at your approach.
+2026-01-02T01:00:00.000Z [road] @ Belfos [The Grim Wolves, the merchants called Searl] The Grim Wolves clash with the merchants called Searl — With only moonlight for company a stone bridge arching over a muddy stream. Two or three night-hunting merchants, blocking the path. Courage and quick thinking saved the day. A well-timed spell from their caster turned the tide.
+2026-01-02T01:00:00.000Z [road] @ Greenmist [Parthenius's Band, goblins] Parthenius's Band watch goblins warily from cover — In the hush of late night thunder echoing between peaks. A group of mangy goblins, tracking something. An uneasy bargain was struck beneath wary eyes.
+2026-01-02T01:00:00.000Z [road] @ hex:0,9 glabrezu and giant-centipede tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T01:00:00.000Z [road] @ hex:2,5 giant-raven and giant-centipede clash — Territorial war erupts! The giant-raven triumph, but 1 fall. The giant-centipede lose 17 and retreat.
+2026-01-02T02:00:00.000Z [road] @ Greenmist [Parthenius's Band, yeti] Parthenius's Band storm yeti's stronghold — As even the taverns fell silent a frozen waterfall. Clouds obscure all but the lowest slopes. A lone shadow-cloaked yeti, moving with purpose. They pressed their advantage until the enemy fled.
+2026-01-02T02:00:00.000Z [town] @ Minasfeld Mood darkens in Minasfeld — Following recent events, the people's spirit sinks.
+2026-01-02T02:00:00.000Z [town] @ Belfos Mood darkens in Belfos — Following recent events, the people's spirit sinks.
+2026-01-02T02:00:00.000Z [town] @ Belfos Mood darkens in Belfos — Following recent events, the people's spirit sinks.
+2026-01-02T02:00:00.000Z [faction] @ Azmarin [Sons of the Wolf] Sons of the Wolf eyes Azmarin for its textiles — Desperate for textiles, the faction has decided to take the settlement by force.
+2026-01-02T02:00:00.000Z [road] @ hex:2,7 giant-centipede and worg tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T02:00:00.000Z [road] @ hex:3,7 giant-snake and goblin clash — Territorial war erupts! The giant-snake triumph, but 3 fall. The goblin lose 9 and retreat.
+2026-01-02T03:00:00.000Z [faction] @ Azmarin [The Hawk Compact] The Hawk Compact eyes Azmarin for its salt — Desperate for salt, the faction has decided to take the settlement by force.
+2026-01-02T03:00:00.000Z [road] @ hex:7,8 pyrolisk and chaos-beast clash — Territorial war erupts! The chaos-beast triumph, but 0 fall. The pyrolisk lose 3 and retreat.
+2026-01-02T04:00:00.000Z [road] @ Greenmist [Parthenius's Band, dwarven patrols] Parthenius's Band observe dwarven patrols from a distance — When shadows grew deepest wind whistling through cave entrances. Clouds obscure all but the lowest slopes. Two or three shadow-cloaked dwarven patrols, watching warily. Cultural misunderstandings were resolved through patience.
+2026-01-02T04:00:00.000Z [road] @ Myrrka [The Grim Wolves] The Grim Wolves arrives at Myrrka — They slip through the gates as lanterns are lit.
+2026-01-02T04:00:00.000Z [road] @ Belfos The New Caravan makes camp under escort — Road to Minasfeld (road) quiet tonight.
+2026-01-02T04:00:00.000Z [faction] @ Myrrka [Mendia] skeleton rally to Mendia — The skeleton of The Sanctum of Blighted Death swear allegiance to Mendia the Pallid. Their numbers swell the villain's forces.
+2026-01-02T05:00:00.000Z [road] @ Belfos The New Caravan makes camp under escort — Road to Minasfeld (road) quiet tonight.
+2026-01-02T05:00:00.000Z [road] @ hex:3,9 bear and orc tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T05:00:00.000Z [road] @ hex:4,8 orc and goblin clash — Territorial war erupts! The orc triumph, but 4 fall. The goblin lose 3 and retreat.
+2026-01-02T05:00:00.000Z [road] @ The Whispers Tower goblin submit to orc — The beaten goblin now serve their conquerors.
+2026-01-02T06:00:00.000Z [road] @ Greenmist [Parthenius's Band, Elizamendi's dwarven patrols] Elizamendi's dwarven patrols test Parthenius's Band's resolve with challenges — While dew pearled on grass and stone the distant toll of monastery bells. Clouds obscure all but the lowest slopes. A handful of red-eyed in the dark dwarven patrols, blocking the path. Words proved mightier than steel on this occasion.
+2026-01-02T06:00:00.000Z [faction] @ Myrrka [The Hawk Compact] The Hawk Compact sends relief to Myrrka — Wagons of grain and medicine roll toward the suffering. Compassion—or calculated politics?
+2026-01-02T06:00:00.000Z [road] @ hex:2,7 giant-centipede and chimera clash — Territorial war erupts! The chimera triumph, but 1 fall. The giant-centipede lose 4 and retreat.
+2026-01-02T06:00:00.000Z [road] @ hex:6,1 golem-bronze and skeleton tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T07:00:00.000Z [town] @ Myrrka The Wandering Merchants arrives at Myrrka — Bringing livestock from Belfos with escorts under banner of Order of the Hawk.
+2026-01-02T07:00:00.000Z [town] @ Myrrka Theodric arrives in Myrrka — scout from Minasfeld
+2026-01-02T07:00:00.000Z [town] @ Myrrka Izot arrives in Myrrka — bard from Belfos
+2026-01-02T07:00:00.000Z [town] @ Minasfeld The New Caravan arrives at Minasfeld — Bringing grain/textiles from Belfos with escorts.
+2026-01-02T07:00:00.000Z [town] @ Minasfeld Cybele arrives in Minasfeld — guard from Windleigh
+2026-01-02T07:00:00.000Z [town] @ Minasfeld Wantelien arrives in Minasfeld — bard from Minasfeld
+2026-01-02T07:00:00.000Z [town] @ Belfos Northbeach Traders arrives at Belfos — Bringing grain/textiles from Windleigh with escorts.
+2026-01-02T07:00:00.000Z [town] @ Belfos Emlyn arrives in Belfos — scout from Minasfeld
+2026-01-02T07:00:00.000Z [town] @ Belfos Ilene arrives in Belfos — bard from Windleigh
+2026-01-02T07:00:00.000Z [town] @ Greenmist Beroldus's Wagons arrives at Greenmist — Bringing salt/fish from Belfos with escorts under banner of Circle of the Dawn.
+2026-01-02T07:00:00.000Z [town] @ Greenmist Mainardus arrives in Greenmist — scout from Azmarin
+2026-01-02T07:00:00.000Z [town] @ Greenmist Eurydamus arrives in Greenmist — merchant from Windleigh
+2026-01-02T07:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Word spreads that Beroldus's Wagons of Circle of the Dawn reached Greenmist with salt/fish.
+2026-01-02T07:00:00.000Z [town] @ Azmarin The Wandering Peddlers arrives at Azmarin — Bringing grain/textiles from Belfos with escorts.
+2026-01-02T07:00:00.000Z [town] @ Azmarin Katixa arrives in Azmarin — guard from Myrrka
+2026-01-02T07:00:00.000Z [town] @ Azmarin Gawyne arrives in Azmarin — bard from Myrrka
+2026-01-02T07:00:00.000Z [faction] @ Myrrka [Mendia the Pallid] Mendia conducts a dark ritual — Strange lights in the sky. Animals flee.
+2026-01-02T07:00:00.000Z [road] @ hex:5,4 pyrohydra and grell clash — Territorial war erupts! The pyrohydra triumph, but 0 fall. The grell lose 0 and retreat.
+2026-01-02T08:00:00.000Z [road] @ Greenmist [Parthenius's Band, goblins] goblins share hunting tips with Parthenius's Band — With the sun climbing steadily wind chimes made of bone. A handful of mangy goblins, tracking something. They parted as wary allies rather than bitter enemies.
+2026-01-02T08:00:00.000Z [road] @ hex:5,3 giant-raven and phantom clash — Territorial war erupts! The giant-raven triumph, but 1 fall. The phantom lose 22 and retreat.
+2026-01-02T08:00:00.000Z [road] @ hex:7,8 pyrolisk and revenant tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T09:00:00.000Z [road] @ Greenmist [Beroldus's Wagons, Sons of the Wolf] Beroldus's Wagons is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-02T09:00:00.000Z [town] @ Greenmist Trade routes near Greenmist grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-02T09:00:00.000Z [town] @ Myrrka Mood darkens in Myrrka — Following recent events, the people's spirit sinks.
+2026-01-02T09:00:00.000Z [road] @ hex:6,4 phantom and goblin clash — Territorial war erupts! The goblin triumph, but 0 fall. The phantom lose 17 and retreat.
+2026-01-02T10:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Giant footprints in the snow, each as long as a man is tall.
+2026-01-02T10:00:00.000Z [road] @ Greenmist [Parthenius's Band, dwarven patrols] Parthenius's Band duel dwarven patrols champions — As folk went about their labors avalanche scars on rocky faces. Several shadow-cloaked dwarven patrols, apparently startled. Steel rang and blood was spilled, but they prevailed.
+2026-01-02T10:00:00.000Z [road] @ hex:7,9 revenant and giant-eel tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T11:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band shadowed by orc raiders — Tense standoff; both sides withdraw before blades are drawn.
+2026-01-02T11:00:00.000Z [road] @ hex:1,8 glabrezu and chimera clash — Territorial war erupts! The chimera triumph, but 0 fall. The glabrezu lose 7 and retreat.
+2026-01-02T11:00:00.000Z [road] @ hex:7,6 su-monster and giant-eel tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T12:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot giant bats and avoid notice — They detour carefully, leaving only faint tracks.
+2026-01-02T12:00:00.000Z [road] @ Minasfeld [The New Caravan, Sons of the Wolf] The New Caravan is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-02T12:00:00.000Z [town] @ Minasfeld Trade routes near Minasfeld grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-02T12:00:00.000Z [road] @ hex:9,3 kelpie and giant-eel clash — Territorial war erupts! The kelpie triumph, but 1 fall. The giant-eel lose 12 and retreat.
+2026-01-02T13:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band shadowed by orc raiders — Tense standoff; both sides withdraw before blades are drawn.
+2026-01-02T13:00:00.000Z [faction] [The Storm Guild, Sons of the Wolf] The Storm Guild proposes marriage alliance with Sons of the Wolf — Envoys are sent. Dowries discussed. A political wedding could reshape alliances.
+2026-01-02T13:00:00.000Z [town] @ Belfos [Peli] Divine blessing upon Belfos — Peli performs a grand ritual of sanctification. A sense of peace fills the air.
+2026-01-02T13:00:00.000Z [road] @ hex:3,7 giant-snake and sylph clash — Territorial war erupts! The sylph triumph, but 0 fall. The giant-snake lose 2 and retreat.
+2026-01-02T13:00:00.000Z [road] @ hex:7,6 su-monster and goblin tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T13:00:00.000Z [road] @ hex:7,7 rust-monster and pyrolisk tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T13:00:00.000Z [road] @ hex:7,8 pyrolisk and chaos-beast tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T14:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Eagle cries echo, but no birds are visible.
+2026-01-02T14:00:00.000Z [road] @ Greenmist Beroldus's Wagons makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-02T14:00:00.000Z [road] @ hex:7,8 chaos-beast and revenant clash — Territorial war erupts! The revenant triumph, but 5 fall. The chaos-beast lose 2 and retreat.
+2026-01-02T15:00:00.000Z [town] @ Belfos Word spreads in Belfos — Thieves struck near Greenmist. The roads grow dangerous.
+2026-01-02T15:00:00.000Z [faction] @ Azmarin [Circle of the Dawn] Circle of the Dawn eyes Azmarin for its textiles — Desperate for textiles, the faction has decided to take the settlement by force.
+2026-01-02T15:00:00.000Z [road] @ hex:2,7 golem-stone and giant-snake tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T15:00:00.000Z [road] @ hex:3,4 living-statue and giant-raven tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T15:00:00.000Z [road] @ hex:5,4 pyrohydra and phantom tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T15:00:00.000Z [road] @ hex:7,8 chaos-beast and giant-eel clash — Territorial war erupts! The chaos-beast triumph, but 1 fall. The giant-eel lose 7 and retreat.
+2026-01-02T16:00:00.000Z [road] @ Greenmist [Parthenius's Band, giant eagles] giant eagles block the path but allow passage — As the day wore on eagles screaming overhead. A handful of night-hunting giant eagles, apparently startled. The meeting ended with mutual respect, if not friendship.
+2026-01-02T16:00:00.000Z [road] @ Belfos [Northbeach Traders, Sons of the Wolf] Northbeach Traders is raided! — Sons of the Wolf forces have intercepted the caravan en route to Windleigh.
+2026-01-02T16:00:00.000Z [town] @ Belfos Trade routes near Belfos grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-02T16:00:00.000Z [road] @ hex:3,1 half-orc-bandit and skeleton clash — Territorial war erupts! The skeleton triumph, but 4 fall. The half-orc-bandit lose 7 and retreat.
+2026-01-02T16:00:00.000Z [road] @ hex:3,1 half-orc-bandit submit to skeleton — The beaten half-orc-bandit now serve their conquerors.
+2026-01-02T17:00:00.000Z [road] @ Greenmist [Parthenius's Band, goblins] goblins provide shelter from the weather — With the setting of the sun the distant toll of monastery bells. Clouds obscure all but the lowest slopes. A company of night-hunting goblins, setting crude traps. They parted as wary allies rather than bitter enemies. Condors circling high overhead marked the scene.
+2026-01-02T17:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — A valuable shipment was lost near Minasfeld.
+2026-01-02T17:00:00.000Z [town] @ Myrrka Disease outbreak in Myrrka! — Local healers have identified Camp Fever among the populace. Fear spreads as quickly as the sickness.
+2026-01-02T18:00:00.000Z [town] @ Belfos [Emlyn, Wantelien] Emlyn and Wantelien exchange pointed words — Onlookers sensed violence in the air, barely held back.
+2026-01-02T18:00:00.000Z [faction] @ Windleigh [Dionysios] Seals Breaking: Scholars debate the signs. Dionysios remains seeks wealth and riches. — Ancient wards fail. What they imprisoned walks again.
+2026-01-02T18:00:00.000Z [faction] @ hex:7,7 [Itzia] Itzia's Last Stand: Ancient ruins hold clues to the prey's location. — Itzia stalks a dangerous quarry across the region.
+2026-01-02T18:00:00.000Z [road] @ hex:3,7 giant-snake and goblin tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T18:00:00.000Z [road] @ hex:5,9 golem-stone and revenant clash — Territorial war erupts! The revenant triumph, but 2 fall. The golem-stone lose 3 and retreat.
+2026-01-02T18:00:00.000Z [road] @ hex:5,9 golem-stone submit to revenant — The beaten golem-stone now serve their conquerors.
+2026-01-02T18:00:00.000Z [road] @ hex:9,2 giant-eel and kelpie clash — Territorial war erupts! The kelpie triumph, but 3 fall. The giant-eel lose 1 and retreat.
+2026-01-02T19:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Eagle cries echo, but no birds are visible.
+2026-01-02T19:00:00.000Z [road] @ Greenmist [Parthenius's Band, dwarven patrols] dwarven patrols offer Parthenius's Band aid on the road — As lanterns were kindled mountain goats leaping between boulders. Clouds obscure all but the lowest slopes. Many shadow-cloaked dwarven patrols, blocking the path. They found common ground in their mutual interests.
+2026-01-02T19:00:00.000Z [faction] @ Greenmist [Parthenius's Band, orc raiders] Fire in Greenmist: Livestock is driven off in the night. — Parthenius's Band strikes fast at Greenmist and withdraws before retaliation.
+2026-01-02T20:00:00.000Z [road] @ Greenmist [Beroldus's Wagons, Sons of the Wolf] Beroldus's Wagons is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-02T20:00:00.000Z [town] @ Greenmist Trade routes near Greenmist grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-02T21:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Giant footprints in the snow, each as long as a man is tall.
+2026-01-02T21:00:00.000Z [road] @ hex:2,7 golem-stone and chimera tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T22:00:00.000Z [road] @ hex:5,3 giant-raven and grell tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-02T23:00:00.000Z [road] @ Greenmist [Parthenius's Band, trolls] trolls blockade Parthenius's Band's route — In the hush of late night meteor impact craters on peaks. One shadow-cloaked trolls, watching warily. Courage and quick thinking saved the day. A well-timed spell from their caster turned the tide.
+2026-01-02T23:00:00.000Z [road] @ hex:2,7 giant-centipede and chimera clash — Territorial war erupts! The chimera triumph, but 1 fall. The giant-centipede lose 2 and retreat.
+2026-01-02T23:00:00.000Z [road] @ hex:2,9 worg and giant-snake clash — Territorial war erupts! The worg triumph, but 0 fall. The giant-snake lose 4 and retreat.
+2026-01-02T23:00:00.000Z [road] @ hex:9,7 nereid and giant-eel clash — Territorial war erupts! The nereid triumph, but 0 fall. The giant-eel lose 5 and retreat.
+2026-01-03T00:00:00.000Z [road] @ Myrrka [The Grim Wolves] The Grim Wolves completes rest — Ready to travel again.
+2026-01-03T00:00:00.000Z [road] @ Myrrka [The Grim Wolves, Mendia] The Grim Wolves decides to confront Mendia — Mendia the Pallid's reign of terror must end. They prepare for battle.
+2026-01-03T00:00:00.000Z [faction] @ Azmarin [Order of the Hawk] Order of the Hawk eyes Azmarin for its salt — Desperate for salt, the faction has decided to take the settlement by force.
+2026-01-03T00:00:00.000Z [town] @ Greenmist [Mainardus] Magical mist chokes Greenmist — A toxic green cloud, conjured by Mainardus, rolls through the streets. Panic ensues.
+2026-01-03T00:00:00.000Z [road] @ Myrrka The Grim Wolves falls ill in Myrrka — The Camp Fever has claimed members of the company. They must rest to recover.
+2026-01-03T00:00:00.000Z [town] @ Myrrka [Theodric] Theodric is dying — The end approaches for the scout. Family and rivals alike watch and wait.
+2026-01-03T00:00:00.000Z [town] @ Belfos Peli seen in Belfos markets — priest haggles and swaps news.
+2026-01-03T00:00:00.000Z [town] @ Belfos Ilene seen in Belfos markets — bard haggles and swaps news.
+2026-01-03T00:00:00.000Z [town] @ Belfos Belfos folk watchful — Shortages in ore.
+2026-01-03T00:00:00.000Z [town] @ Belfos Rumor in Belfos — whispered mystery: a wandering priest says Esdert heard of a sealed door that hums at night (from Belfos).
+2026-01-03T00:00:00.000Z [town] @ Windleigh Windleigh folk watchful — Surplus ore/fish and shortages in textiles.
+2026-01-03T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Bargain prices on fish; traders racing to Windleigh.
+2026-01-03T00:00:00.000Z [town] @ Azmarin Azmarin spirits high — Surplus textiles/salt and shortages in ore/livestock.
+2026-01-03T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — The Storm Guild watches the markets quietly.
+2026-01-03T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Circle of the Dawn watches the markets quietly.
+2026-01-03T00:00:00.000Z [town] @ Minasfeld Cybele seen in Minasfeld markets — guard haggles and swaps news.
+2026-01-03T00:00:00.000Z [town] @ Minasfeld Hans-Ruedi seen in Minasfeld markets — laborer haggles and swaps news.
+2026-01-03T00:00:00.000Z [town] @ Minasfeld Minasfeld tempers frayed — Surplus grain/textiles/livestock.
+2026-01-03T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — The Storm Guild watches the markets quietly.
+2026-01-03T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Sons of the Wolf watches the markets quietly.
+2026-01-03T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Order of the Hawk watches the markets quietly.
+2026-01-03T00:00:00.000Z [town] @ Myrrka Theodric seen in Myrrka markets — scout haggles and swaps news.
+2026-01-03T00:00:00.000Z [town] @ Myrrka Molora seen in Myrrka markets — scout haggles and swaps news.
+2026-01-03T00:00:00.000Z [town] @ Myrrka Myrrka tempers frayed — Surplus textiles/fish and shortages in salt.
+2026-01-03T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — The Storm Guild watches the markets quietly.
+2026-01-03T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Circle of the Dawn watches the markets quietly.
+2026-01-03T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — The Hawk Compact watches the markets quietly.
+2026-01-03T00:00:00.000Z [town] @ Greenmist Mainardus seen in Greenmist markets — scout haggles and swaps news.
+2026-01-03T00:00:00.000Z [town] @ Greenmist Eurydamus seen in Greenmist markets — merchant haggles and swaps news.
+2026-01-03T00:00:00.000Z [town] @ Greenmist Greenmist folk watchful — Surplus grain/textiles and shortages in livestock.
+2026-01-03T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Levies rumored to secure livestock; officials say caravans delayed.
+2026-01-03T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Circle of the Dawn watches the markets quietly.
+2026-01-03T01:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band discovers The Blood-stained Cave — While decent folk lay sleeping avalanches rumbling in the distance. A blood-stained cave, pulsing with a faint, rhythmic light. The party feels a surge of mental clarity.
+2026-01-03T01:00:00.000Z [road] @ hex:2,7 giant-centipede and worg clash — Territorial war erupts! The worg triumph, but 0 fall. The giant-centipede lose 1 and retreat.
+2026-01-03T01:00:00.000Z [road] @ hex:7,8 pyrolisk and chaos-beast clash — Territorial war erupts! The chaos-beast triumph, but 0 fall. The pyrolisk lose 3 and retreat.
+2026-01-03T02:00:00.000Z [road] @ Greenmist [Parthenius's Band, goblins] Parthenius's Band band together with goblins against a common threat — In the cold hours before dawn eagles soaring on thermal winds. Two or three night-hunting goblins, carrying plunder. They reached an accommodation that served both sides.
+2026-01-03T02:00:00.000Z [town] @ Windleigh Word spreads in Windleigh — A valuable shipment was lost near Greenmist.
+2026-01-03T02:00:00.000Z [road] @ hex:4,8 rakshasa and orc clash — Territorial war erupts! The orc triumph, but 4 fall. The rakshasa lose 1 and retreat.
+2026-01-03T02:00:00.000Z [road] @ hex:4,8 rakshasa submit to orc — The beaten rakshasa now serve their conquerors.
+2026-01-03T03:00:00.000Z [road] @ Greenmist [Parthenius's Band, dwarven patrols] dwarven patrols guide Parthenius's Band to a hidden spring — As even the taverns fell silent switchback paths climbing steep slopes. Clouds obscure all but the lowest slopes. A single wary dwarven patrols, blocking the path. Words proved mightier than steel on this occasion.
+2026-01-03T03:00:00.000Z [road] @ hex:7,7 rust-monster and chaos-beast tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-03T03:00:00.000Z [road] @ hex:7,8 chaos-beast and revenant tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-03T04:00:00.000Z [road] @ hex:3,4 living-statue and giant-raven clash — Territorial war erupts! The living-statue triumph, but 2 fall. The giant-raven lose 3 and retreat.
+2026-01-03T04:00:00.000Z [road] @ hex:5,6 sylph and orc clash — Territorial war erupts! The orc triumph, but 5 fall. The sylph lose 5 and retreat.
+2026-01-03T05:00:00.000Z [road] @ Greenmist [Parthenius's Band, giant eagles] giant eagles display weapons as a warning — As the world stirred from slumber ancient petroglyphs on cliff walls. Many night-hunting giant eagles, emerging from concealment. They established rules for future encounters. Waterfalls plunging into deep pools marked the scene.
+2026-01-03T05:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot ogre and avoid notice — They detour carefully, leaving only faint tracks.
+2026-01-03T05:00:00.000Z [road] @ Greenmist [Beroldus's Wagons, Sons of the Wolf] Beroldus's Wagons is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-03T05:00:00.000Z [town] @ Greenmist Trade routes near Greenmist grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-03T05:00:00.000Z [faction] @ Greenmist [Parthenius's Band] Blood on the Trail: Supplies dwindle; the hunt becomes desperate. — Parthenius's Band stalks a dangerous quarry across the region.
+2026-01-03T06:00:00.000Z [faction] @ Myrrka [Engelwara] The Old Darkness Returns: Animals flee the area. — Engelwara races to prevent catastrophe.
+2026-01-03T06:00:00.000Z [faction] @ Myrrka [Mendia] half-orc-bandit rally to Mendia — The half-orc-bandit of hex:3,1 swear allegiance to Mendia the Pallid. Their numbers swell the villain's forces.
+2026-01-03T07:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-03T07:00:00.000Z [town] @ Belfos Word spreads in Belfos — A valuable shipment was lost near Minasfeld.
+2026-01-03T07:00:00.000Z [road] @ hex:5,3 giant-raven and golem-bronze tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-03T07:00:00.000Z [road] @ hex:9,3 kelpie and giant-eel clash — Territorial war erupts! The kelpie triumph, but 2 fall. The giant-eel lose 13 and retreat.
+2026-01-03T08:00:00.000Z [town] @ Greenmist [Mainardus] Magical mist chokes Greenmist — A toxic green cloud, conjured by Mainardus, rolls through the streets. Panic ensues.
+2026-01-03T08:00:00.000Z [road] @ hex:7,9 revenant and nereid clash — Territorial war erupts! The revenant triumph, but 2 fall. The nereid lose 1 and retreat.
+2026-01-03T09:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — The ruins of a dwarven waystation, recently looted.
+2026-01-03T09:00:00.000Z [town] @ Myrrka Guinemat's shop burns — A midnight fire. No one is surprised. The message is clear.
+2026-01-03T09:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — A valuable shipment was lost near Greenmist.
+2026-01-03T09:00:00.000Z [town] @ Greenmist [Mainardus] Magical mist chokes Greenmist — A toxic green cloud, conjured by Mainardus, rolls through the streets. Panic ensues.
+2026-01-03T09:00:00.000Z [road] @ hex:5,6 sylph and phantom tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-03T09:00:00.000Z [road] @ hex:7,8 pyrolisk and giant-eel clash — Territorial war erupts! The pyrolisk triumph, but 0 fall. The giant-eel lose 4 and retreat.
+2026-01-03T10:00:00.000Z [road] @ Minasfeld [The New Caravan, Sons of the Wolf] The New Caravan is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-03T10:00:00.000Z [town] @ Minasfeld Trade routes near Minasfeld grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-03T10:00:00.000Z [road] @ hex:2,5 giant-raven and giant-centipede clash — Territorial war erupts! The giant-centipede triumph, but 0 fall. The giant-raven lose 7 and retreat.
+2026-01-03T10:00:00.000Z [road] @ hex:3,7 giant-snake and sylph clash — Territorial war erupts! The sylph triumph, but 0 fall. The giant-snake lose 2 and retreat.
+2026-01-03T11:00:00.000Z [road] @ Greenmist [Parthenius's Band, trolls] Parthenius's Band battle trolls for control of the path — In the drowsy heat of noon wildflowers blooming briefly hung in the air. A single night-hunting trolls, emerging from concealment. The foe's weapons glanced off enchanted armor. A well-timed spell from their caster turned the tide.
+2026-01-03T11:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band grows in power! — Through hardship and battle, the members of Parthenius's Band have reached level 2.
+2026-01-03T11:00:00.000Z [road] @ hex:2,7 giant-centipede and chimera tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-03T11:00:00.000Z [road] @ hex:7,6 su-monster and rust-monster tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-03T12:00:00.000Z [town] @ Greenmist Mood darkens in Greenmist — Following recent events, the people's spirit sinks.
+2026-01-03T12:00:00.000Z [town] @ Greenmist Mood darkens in Greenmist — Following recent events, the people's spirit sinks.
+2026-01-03T12:00:00.000Z [faction] @ Myrrka [The Storm Guild] The Storm Guild sends relief to Myrrka — Wagons of grain and medicine roll toward the suffering. Compassion—or calculated politics?
+2026-01-03T12:00:00.000Z [road] @ hex:5,8 pegasus and golem-stone clash — Territorial war erupts! The pegasus triumph, but 1 fall. The golem-stone lose 1 and retreat.
+2026-01-03T12:00:00.000Z [faction] @ Myrrka [Mendia] golem-bronze rally to Mendia — The golem-bronze of hex:6,1 swear allegiance to Mendia the Pallid. Their numbers swell the villain's forces.
+2026-01-03T13:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — The ruins of a dwarven waystation, recently looted.
+2026-01-03T13:00:00.000Z [town] @ Belfos Word spreads in Belfos — Thieves struck near Greenmist. The roads grow dangerous.
+2026-01-03T13:00:00.000Z [town] @ Myrrka [Izot] Magical mist chokes Myrrka — A toxic green cloud, conjured by Izot, rolls through the streets. Panic ensues.
+2026-01-03T14:00:00.000Z [town] @ Belfos Word spreads in Belfos — Thieves struck near Greenmist. The roads grow dangerous.
+2026-01-03T14:00:00.000Z [faction] @ Greenmist [Kreon] Echoes of the Past: The haunted reflect. Kreon remains seeks knowledge and wisdom. — The dead do not rest peacefully in Greenmist.
+2026-01-03T14:00:00.000Z [faction] @ the region [Wattie] The Bargain: Costs become apparent. — Wattie made a deal with powers best left alone.
+2026-01-03T15:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band clash with goblins — Brief skirmish; foes driven off with minor bruises.
+2026-01-03T15:00:00.000Z [town] @ Belfos The Wandering Merchants arrives at Belfos — Bringing livestock from Myrrka with escorts under banner of Order of the Hawk.
+2026-01-03T15:00:00.000Z [town] @ Belfos Theodric arrives in Belfos — scout from Minasfeld
+2026-01-03T15:00:00.000Z [town] @ Belfos Izot arrives in Belfos — bard from Belfos
+2026-01-03T15:00:00.000Z [town] @ Belfos The Wandering Peddlers arrives at Belfos — Bringing grain/textiles from Azmarin with escorts.
+2026-01-03T15:00:00.000Z [town] @ Belfos Katixa arrives in Belfos — guard from Myrrka
+2026-01-03T15:00:00.000Z [town] @ Belfos Gawyne arrives in Belfos — bard from Myrrka
+2026-01-03T15:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — A valuable shipment was lost near Greenmist.
+2026-01-03T15:00:00.000Z [road] @ hex:2,8 chimera and giant-snake clash — Territorial war erupts! The chimera triumph, but 0 fall. The giant-snake lose 1 and retreat.
+2026-01-03T16:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band ambushed by ogre — Forced retreat; they fall back to regroup.
+2026-01-03T16:00:00.000Z [town] @ Minasfeld Word spreads in Minasfeld — Thieves struck near Greenmist. The roads grow dangerous.
+2026-01-03T16:00:00.000Z [road] @ hex:3,7 giant-snake and bear clash — Territorial war erupts! The giant-snake triumph, but 0 fall. The bear lose 1 and retreat.
+2026-01-03T17:00:00.000Z [road] @ Belfos The Wandering Peddlers makes camp under escort — Road to Azmarin (road) quiet tonight.
+2026-01-03T18:00:00.000Z [town] @ Azmarin [The Shadow Hand] The Shadow Hand pulls off a heist on The Wandering Peddlers — 147 gold worth of goods vanish in the night. The perpetrators leave no trace.
+2026-01-03T18:00:00.000Z [road] @ hex:1,8 glabrezu and giant-snake clash — Territorial war erupts! The giant-snake triumph, but 0 fall. The glabrezu lose 3 and retreat.
+2026-01-03T18:00:00.000Z [road] @ hex:2,5 giant-raven and nightwalker tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-03T18:00:00.000Z [road] @ hex:9,2 giant-eel and kelpie clash — Territorial war erupts! The kelpie triumph, but 1 fall. The giant-eel lose 2 and retreat.
+2026-01-03T19:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — A valuable shipment was lost near Belfos.
+2026-01-03T19:00:00.000Z [town] @ Belfos [Peli, Hans-Ruedi] Peli demonstrates new skills learned from Hans-Ruedi — Not every student surpasses the master, but hope remains.
+2026-01-03T19:00:00.000Z [road] @ hex:1,8 glabrezu and giant-centipede tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-03T19:00:00.000Z [road] @ hex:5,3 giant-raven and golem-bronze clash — Territorial war erupts! The golem-bronze triumph, but 3 fall. The giant-raven lose 2 and retreat.
+2026-01-03T19:00:00.000Z [road] @ hex:5,3 giant-raven and skeleton clash — Territorial war erupts! The skeleton triumph, but 4 fall. The giant-raven lose 0 and retreat.
+2026-01-03T19:00:00.000Z [road] @ hex:5,3 giant-raven submit to skeleton — The beaten giant-raven now serve their conquerors.
+2026-01-03T19:00:00.000Z [road] @ hex:7,8 pyrolisk and chaos-beast clash — Territorial war erupts! The chaos-beast triumph, but 0 fall. The pyrolisk lose 1 and retreat.
+2026-01-03T20:00:00.000Z [road] @ Greenmist [Parthenius's Band, wyverns] wyverns attack Parthenius's Band without warning — Under an indigo sky mountain goats leaping between boulders. A band of night-hunting wyverns, moving with purpose. Though wounds were taken, the day was won. A well-timed spell from their caster turned the tide.
+2026-01-03T20:00:00.000Z [town] @ Myrrka Word spreads in Myrrka — Thieves struck near Greenmist. The roads grow dangerous.
+2026-01-03T20:00:00.000Z [town] @ Belfos [Izot] Izot masters a new spell: Hold Portal — After weeks of intense study and meditation, the bard has unlocked new power.
+2026-01-03T20:00:00.000Z [road] @ hex:3,1 half-orc-bandit and bear tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-03T21:00:00.000Z [town] @ Greenmist [Eryalus, Irantzu] Eryalus takes Irantzu under their wing — Wisdom passed from one generation to the next. Amidst the growing danger in Greenmist, their mentor feels all the more pressing.
+2026-01-03T21:00:00.000Z [road] @ hex:3,2 bear and skeleton clash — Territorial war erupts! The skeleton triumph, but 3 fall. The bear lose 0 and retreat.
+2026-01-03T21:00:00.000Z [road] @ hex:3,2 bear submit to skeleton — The beaten bear now serve their conquerors.
+2026-01-03T21:00:00.000Z [road] @ hex:5,3 giant-raven and grell clash — Territorial war erupts! The grell triumph, but 0 fall. The giant-raven lose 1 and retreat.
+2026-01-03T21:00:00.000Z [road] @ hex:5,9 golem-stone and orc clash — Territorial war erupts! The golem-stone triumph, but 0 fall. The orc lose 9 and retreat.
+2026-01-03T22:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band completes rest — Ready to travel again.
+2026-01-03T23:00:00.000Z [road] @ Greenmist [Beroldus's Wagons, Sons of the Wolf] Beroldus's Wagons is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-03T23:00:00.000Z [town] @ Greenmist Trade routes near Greenmist grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-03T23:00:00.000Z [town] @ Belfos Word spreads in Belfos — A valuable shipment was lost near Minasfeld.
+2026-01-03T23:00:00.000Z [faction] @ Myrrka [Order of the Hawk] Order of the Hawk sends relief to Myrrka — Wagons of grain and medicine roll toward the suffering. Compassion—or calculated politics?
+2026-01-03T23:00:00.000Z [road] @ hex:3,9 bear and orc tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-03T23:00:00.000Z [road] @ hex:5,3 giant-raven and golem-bronze tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T00:00:00.000Z [road] @ Greenmist [Parthenius's Band, the giant eagles called Philotas] the giant eagles called Philotas eye Parthenius's Band suspiciously — With only moonlight for company Clouds obscure all but the lowest slopes. A single night-hunting giant eagles, blocking the path. A fighting withdrawal, but a withdrawal nonetheless.
+2026-01-04T00:00:00.000Z [town] @ Windleigh Northbeach Traders arrives at Windleigh — Bringing grain/textiles from Belfos with escorts.
+2026-01-04T00:00:00.000Z [town] @ Windleigh Emlyn arrives in Windleigh — scout from Minasfeld
+2026-01-04T00:00:00.000Z [town] @ Windleigh Ilene arrives in Windleigh — bard from Windleigh
+2026-01-04T00:00:00.000Z [town] @ Belfos [Theodric] Theodric has died — The scout passes away from old age. The House of Firestone mourns.
+2026-01-04T00:00:00.000Z [faction] @ Windleigh [Emlyn, Theodric] Emlyn becomes head of House Firestone — Following the death of Theodric, Emlyn assumes leadership of the bloodline.
+2026-01-04T00:00:00.000Z [weather] @ Greenmist Snowfall covers Greenmist — Snow blankets everything. Travel becomes difficult.
+2026-01-04T00:00:00.000Z [town] @ Belfos Peli seen in Belfos markets — priest haggles and swaps news.
+2026-01-04T00:00:00.000Z [town] @ Belfos Katixa seen in Belfos markets — guard haggles and swaps news.
+2026-01-04T00:00:00.000Z [town] @ Belfos Belfos folk watchful — Surplus textiles/livestock and shortages in ore.
+2026-01-04T00:00:00.000Z [town] @ Belfos Rumor in Belfos — The Hawk Compact watches the markets quietly.
+2026-01-04T00:00:00.000Z [town] @ Windleigh Ilene seen in Windleigh markets — bard haggles and swaps news.
+2026-01-04T00:00:00.000Z [town] @ Windleigh Emlyn seen in Windleigh markets — scout haggles and swaps news.
+2026-01-04T00:00:00.000Z [town] @ Windleigh Windleigh folk watchful — Surplus grain/ore/fish and shortages in textiles.
+2026-01-04T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Levies rumored to secure textiles; officials say caravans delayed.
+2026-01-04T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Sons of the Wolf watches the markets quietly.
+2026-01-04T00:00:00.000Z [town] @ Azmarin Azmarin folk watchful — Surplus textiles/salt and shortages in ore/livestock.
+2026-01-04T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Levies rumored to secure ore; officials say caravans delayed.
+2026-01-04T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — The Storm Guild watches the markets quietly.
+2026-01-04T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Circle of the Dawn watches the markets quietly.
+2026-01-04T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — The Hawk Compact watches the markets quietly.
+2026-01-04T00:00:00.000Z [town] @ Minasfeld Cybele seen in Minasfeld markets — guard haggles and swaps news.
+2026-01-04T00:00:00.000Z [town] @ Minasfeld Hans-Ruedi seen in Minasfeld markets — laborer haggles and swaps news.
+2026-01-04T00:00:00.000Z [town] @ Minasfeld Minasfeld tempers frayed — Surplus grain/textiles/livestock.
+2026-01-04T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Sons of the Wolf watches the markets quietly.
+2026-01-04T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Circle of the Dawn watches the markets quietly.
+2026-01-04T00:00:00.000Z [town] @ Myrrka Myrrka tempers frayed — Surplus textiles/fish and shortages in timber/salt.
+2026-01-04T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — cryptic treasure: a wounded messenger says Bonifacius heard of signs of danger tier 4 (from Myrrka).
+2026-01-04T00:00:00.000Z [town] @ Greenmist Mainardus seen in Greenmist markets — scout haggles and swaps news.
+2026-01-04T00:00:00.000Z [town] @ Greenmist Eurydamus seen in Greenmist markets — merchant haggles and swaps news.
+2026-01-04T00:00:00.000Z [town] @ Greenmist Greenmist tempers frayed — Surplus grain/textiles and shortages in salt/livestock.
+2026-01-04T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Levies rumored to secure salt; officials say caravans delayed.
+2026-01-04T01:00:00.000Z [road] @ Greenmist [Parthenius's Band, ogres] ogres teach Parthenius's Band a useful survival skill — Under a canopy of stars avalanche scars on rocky faces. Clouds obscure all but the lowest slopes. A swarm of kin to giants ogres, emerging from concealment. Cultural misunderstandings were resolved through patience.
+2026-01-04T01:00:00.000Z [road] @ hex:1,8 glabrezu and giant-snake tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T02:00:00.000Z [faction] @ Azmarin [Circle of the Dawn] Circle of the Dawn eyes Azmarin for its textiles — Desperate for textiles, the faction has decided to take the settlement by force.
+2026-01-04T02:00:00.000Z [road] @ hex:7,8 chaos-beast and giant-eel clash — Territorial war erupts! The chaos-beast triumph, but 0 fall. The giant-eel lose 3 and retreat.
+2026-01-04T03:00:00.000Z [road] @ Greenmist [Parthenius's Band, ogres] Parthenius's Band offer small gifts to appease ogres — As even the taverns fell silent glaciers carving valleys below. Clouds obscure all but the lowest slopes. A swarm of dim-witted ogres, moving with purpose. The exchange of gifts sealed the temporary truce. Glaciers carving valleys below marked the scene.
+2026-01-04T03:00:00.000Z [town] @ Azmarin [The Shadow Hand] The Shadow Hand pulls off a heist on The Wandering Peddlers — 212 gold worth of goods vanish in the night. The perpetrators leave no trace.
+2026-01-04T04:00:00.000Z [town] @ Greenmist [Yllaria, Cybele] Yllaria backs Cybele in public dispute — Old bonds proved their worth once again.
+2026-01-04T04:00:00.000Z [road] @ hex:2,7 giant-centipede and worg tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T05:00:00.000Z [road] @ hex:5,6 sylph and phantom clash — Territorial war erupts! The sylph triumph, but 0 fall. The phantom lose 6 and retreat.
+2026-01-04T05:00:00.000Z [road] @ hex:7,8 chaos-beast and giant-eel tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T06:00:00.000Z [road] @ Belfos The Wandering Merchants makes camp under escort — Road to Myrrka (road) quiet tonight.
+2026-01-04T06:00:00.000Z [road] @ Greenmist Beroldus's Wagons makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-04T06:00:00.000Z [road] @ hex:2,8 chimera and orc clash — Territorial war erupts! The chimera triumph, but 0 fall. The orc lose 6 and retreat.
+2026-01-04T06:00:00.000Z [road] @ hex:9,2 giant-eel and kelpie tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T07:00:00.000Z [town] @ Greenmist [Yllaria, Cybele] Yllaria and Cybele seen conferring — Their alliance is noted—and envied—by others.
+2026-01-04T07:00:00.000Z [road] @ hex:3,7 giant-snake and goblin clash — Territorial war erupts! The giant-snake triumph, but 0 fall. The goblin lose 2 and retreat.
+2026-01-04T08:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Giant footprints in the snow, each as long as a man is tall.
+2026-01-04T08:00:00.000Z [road] @ Greenmist [Parthenius's Band, orc raiders] Parthenius's Band prepare defenses against potential orc raiders attack — As folk went about their labors fresh goat cheese from herds hung in the air. Clouds obscure all but the lowest slopes. Several war-painted orc raiders, dragging captives. Cultural misunderstandings were resolved through patience.
+2026-01-04T08:00:00.000Z [town] @ Belfos The New Caravan arrives at Belfos — Bringing grain/textiles from Minasfeld with escorts.
+2026-01-04T08:00:00.000Z [town] @ Belfos Cybele arrives in Belfos — guard from Windleigh
+2026-01-04T08:00:00.000Z [town] @ Belfos Wantelien arrives in Belfos — bard from Minasfeld
+2026-01-04T08:00:00.000Z [town] @ Belfos [Izot] Izot masters a new spell: Fly — After weeks of intense study and meditation, the bard has unlocked new power.
+2026-01-04T08:00:00.000Z [road] @ hex:5,4 pyrohydra and goblin tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T08:00:00.000Z [road] @ hex:7,8 pyrolisk and chaos-beast tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T09:00:00.000Z [town] @ Windleigh [Ilene, Mainardus] Ilene and Mainardus seen conferring — Old bonds proved their worth once again.
+2026-01-04T09:00:00.000Z [faction] @ Azmarin [Sons of the Wolf] Sons of the Wolf eyes Azmarin for its salt — Desperate for salt, the faction has decided to take the settlement by force.
+2026-01-04T09:00:00.000Z [town] @ Belfos [Izot] Magical mist chokes Belfos — A toxic green cloud, conjured by Izot, rolls through the streets. Panic ensues.
+2026-01-04T09:00:00.000Z [road] @ hex:2,7 giant-centipede and chimera clash — Territorial war erupts! The chimera triumph, but 1 fall. The giant-centipede lose 2 and retreat.
+2026-01-04T09:00:00.000Z [road] @ hex:5,4 pyrohydra and grell tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T09:00:00.000Z [road] @ hex:9,0 sea-drake and giant-eel tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T10:00:00.000Z [road] @ Belfos The Wandering Merchants makes camp under escort — Road to Myrrka (road) quiet tonight.
+2026-01-04T10:00:00.000Z [town] @ Windleigh Word spreads in Windleigh — A valuable shipment was lost near Minasfeld.
+2026-01-04T10:00:00.000Z [road] @ hex:3,9 bear and orc clash — Territorial war erupts! The bear triumph, but 0 fall. The orc lose 3 and retreat.
+2026-01-04T11:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band shadowed by orc raiders — Tense standoff; both sides withdraw before blades are drawn.
+2026-01-04T12:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band parley with goblins — Trade news and share a quick meal before parting ways.
+2026-01-04T12:00:00.000Z [road] @ Greenmist [Beroldus's Wagons, Sons of the Wolf] Beroldus's Wagons is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-04T12:00:00.000Z [town] @ Greenmist Trade routes near Greenmist grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-04T12:00:00.000Z [road] @ hex:2,7 giant-centipede and golem-stone clash — Territorial war erupts! The golem-stone triumph, but 0 fall. The giant-centipede lose 1 and retreat.
+2026-01-04T12:00:00.000Z [road] @ hex:2,7 giant-centipede and worg clash — Territorial war erupts! The worg triumph, but 0 fall. The giant-centipede lose 0 and retreat.
+2026-01-04T12:00:00.000Z [road] @ hex:2,7 golem-stone and chimera clash — Territorial war erupts! The chimera triumph, but 0 fall. The golem-stone lose 0 and retreat.
+2026-01-04T12:00:00.000Z [road] @ hex:2,7 golem-stone submit to chimera — The beaten golem-stone now serve their conquerors.
+2026-01-04T12:00:00.000Z [road] @ hex:4,3 nightwalker and giant-raven tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T13:00:00.000Z [faction] [Circle of the Dawn, The Storm Guild] Circle of the Dawn proposes marriage alliance with The Storm Guild — Envoys are sent. Dowries discussed. A political wedding could reshape alliances.
+2026-01-04T13:00:00.000Z [road] @ hex:1,8 glabrezu and golem-stone tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T13:00:00.000Z [road] @ hex:3,7 giant-snake and orc clash — Territorial war erupts! The orc triumph, but 0 fall. The giant-snake lose 1 and retreat.
+2026-01-04T13:00:00.000Z [road] @ hex:5,6 sylph and orc clash — Territorial war erupts! The orc triumph, but 0 fall. The sylph lose 1 and retreat.
+2026-01-04T13:00:00.000Z [road] @ hex:5,8 pegasus and golem-stone tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T14:00:00.000Z [town] @ Azmarin Word spreads in Azmarin — Thieves struck near Greenmist. The roads grow dangerous.
+2026-01-04T14:00:00.000Z [road] @ hex:2,5 giant-raven and giant-centipede tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T14:00:00.000Z [road] @ hex:5,6 sylph and orc tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T15:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Giant footprints in the snow, each as long as a man is tall.
+2026-01-04T15:00:00.000Z [town] @ Greenmist [Yllaria, Eadmund] Yllaria speaks publicly of Eadmund's treachery — The wound festers still.
+2026-01-04T15:00:00.000Z [road] @ hex:1,8 glabrezu and giant-snake clash — Territorial war erupts! The giant-snake triumph, but 0 fall. The glabrezu lose 1 and retreat.
+2026-01-04T15:00:00.000Z [road] @ hex:3,1 half-orc-bandit and bear clash — Territorial war erupts! The bear triumph, but 0 fall. The half-orc-bandit lose 3 and retreat.
+2026-01-04T16:00:00.000Z [faction] @ Myrrka [Mendia the Pallid] Agents of Mendia gather components — Graverobbing. Herb theft. Missing children.
+2026-01-04T16:00:00.000Z [road] @ hex:7,8 chaos-beast and revenant tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T17:00:00.000Z [road] @ Greenmist [Parthenius's Band, ogres] ogres surround Parthenius's Band in a coordinated attack — With the setting of the sun the groan of shifting ice. One dim-witted ogres, blocking the path. The battle raged fiercely, but their resolve never wavered. A glacier grinding slowly downward marked the scene. A well-timed spell from their caster turned the tide.
+2026-01-04T17:00:00.000Z [road] @ Greenmist Beroldus's Wagons makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-04T17:00:00.000Z [town] @ Minasfeld Word spreads in Minasfeld — Thieves struck near Greenmist. The roads grow dangerous.
+2026-01-04T18:00:00.000Z [town] @ Greenmist [Yllaria] Yllaria vows vengeance — Following Parthenius's Band ambushed by ogre, the merchant swears an oath that cannot go unanswered.
+2026-01-04T18:00:00.000Z [town] @ Azmarin [The Shadow Hand] The Shadow Hand moves stolen goods — The trade goods from The Wandering Peddlers finally finds a buyer. 66 gold changes hands in a shadowy transaction.
+2026-01-04T18:00:00.000Z [road] @ hex:5,6 sylph and goblin clash — Territorial war erupts! The sylph triumph, but 0 fall. The goblin lose 1 and retreat.
+2026-01-04T19:00:00.000Z [road] @ Greenmist [Parthenius's Band, goblins] goblins ambush Parthenius's Band — In the gloaming hour the shriek of mountain winds. Many shadow-cloaked goblins, worshipping a crude idol. A well-timed feint created the opening they needed. The victors claim 30 coin worth of plunder.
+2026-01-04T19:00:00.000Z [road] @ Belfos The Wandering Merchants makes camp under escort — Road to Myrrka (road) quiet tonight.
+2026-01-04T19:00:00.000Z [road] @ hex:3,7 giant-snake and goblin tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T20:00:00.000Z [road] @ Greenmist [Parthenius's Band, trolls] trolls blockade Parthenius's Band's route — By candlelight and hearth-glow A lone red-eyed in the dark trolls, emerging from concealment. The battle raged fiercely, but their resolve never wavered. A well-timed spell from their caster turned the tide.
+2026-01-04T20:00:00.000Z [road] @ Windleigh [Northbeach Traders, Sons of the Wolf] Northbeach Traders is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-04T20:00:00.000Z [town] @ Windleigh Trade routes near Windleigh grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-04T20:00:00.000Z [road] @ hex:3,7 giant-snake and orc tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T20:00:00.000Z [road] @ hex:6,4 phantom and goblin clash — Territorial war erupts! The goblin triumph, but 0 fall. The phantom lose 5 and retreat.
+2026-01-04T21:00:00.000Z [road] @ hex:2,8 chimera and worg clash — Territorial war erupts! The chimera triumph, but 0 fall. The worg lose 1 and retreat.
+2026-01-04T21:00:00.000Z [road] @ hex:5,8 pegasus and goblin clash — Territorial war erupts! The pegasus triumph, but 1 fall. The goblin lose 1 and retreat.
+2026-01-04T21:00:00.000Z [road] @ The Whispers Tower goblin submit to pegasus — The beaten goblin now serve their conquerors.
+2026-01-04T21:00:00.000Z [road] @ hex:7,8 pyrolisk and revenant clash — Territorial war erupts! The pyrolisk triumph, but 0 fall. The revenant lose 13 and retreat.
+2026-01-04T22:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band discovers The Cracked Monolith — Under an indigo sky ominous silence after an avalanche. A cracked monolith, swallowing all sound around it. A light heart and swift feet follow them.
+2026-01-04T22:00:00.000Z [road] @ hex:1,8 glabrezu and giant-centipede tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T22:00:00.000Z [road] @ hex:5,4 pyrohydra and goblin clash — Territorial war erupts! The pyrohydra triumph, but 0 fall. The goblin lose 1 and retreat.
+2026-01-04T22:00:00.000Z [road] @ hex:5,6 sylph and phantom tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T22:00:00.000Z [road] @ hex:5,3 giant-raven wiped out in hex:5,3 — The last of the giant-raven have fallen. The region grows quieter—for now.
+2026-01-04T23:00:00.000Z [town] @ Myrrka The Wandering Merchants arrives at Myrrka — Bringing livestock from Belfos with escorts under banner of Order of the Hawk.
+2026-01-04T23:00:00.000Z [town] @ Myrrka Izot arrives in Myrrka — bard from Belfos
+2026-01-04T23:00:00.000Z [town] @ Azmarin The Wandering Peddlers arrives at Azmarin — Bringing grain/textiles from Belfos with escorts.
+2026-01-04T23:00:00.000Z [town] @ Azmarin Katixa arrives in Azmarin — guard from Myrrka
+2026-01-04T23:00:00.000Z [town] @ Azmarin Gawyne arrives in Azmarin — bard from Myrrka
+2026-01-04T23:00:00.000Z [road] @ hex:2,5 giant-raven and nightwalker tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-04T23:00:00.000Z [road] @ hex:9,3 kelpie and giant-eel tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-05T00:00:00.000Z [road] @ Greenmist [Parthenius's Band, wyverns] Parthenius's Band and wyverns find common cause — With only moonlight for company A swarm of shadow-cloaked wyverns, moving with purpose. A hostage exchange ensured good behavior.
+2026-01-05T00:00:00.000Z [road] @ Myrrka [The Grim Wolves] The Grim Wolves completes rest — Ready to travel again.
+2026-01-05T00:00:00.000Z [road] @ Myrrka [The Grim Wolves] The Grim Wolves completes their vendetta — Mendia falls. The oath is fulfilled.
+2026-01-05T00:00:00.000Z [town] @ Myrrka [Molora, Izot] Izot is inspired by Molora — Witnessing Molora's courage during the battle, Izot feels a new bond of loyalty.
+2026-01-05T00:00:00.000Z [road] @ Myrrka [The Grim Wolves] The Grim Wolves triumphs over Mendia! — A great victory. Their enemy lies defeated. Songs will be sung of this day.
+2026-01-05T00:00:00.000Z [road] @ Myrrka The Grim Wolves falls ill in Myrrka — The Camp Fever has claimed members of the company. They must rest to recover.
+2026-01-05T00:00:00.000Z [town] @ Belfos Peli seen in Belfos markets — priest haggles and swaps news.
+2026-01-05T00:00:00.000Z [town] @ Belfos Cybele seen in Belfos markets — guard haggles and swaps news.
+2026-01-05T00:00:00.000Z [town] @ Belfos Belfos folk watchful — Surplus textiles/livestock.
+2026-01-05T00:00:00.000Z [town] @ Belfos Rumor in Belfos — official mystery: a frantic merchant says Echekrates heard of a caravan late by two days (from Belfos).
+2026-01-05T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Order of the Hawk watches the markets quietly.
+2026-01-05T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Circle of the Dawn watches the markets quietly.
+2026-01-05T00:00:00.000Z [town] @ Windleigh Ilene seen in Windleigh markets — bard haggles and swaps news.
+2026-01-05T00:00:00.000Z [town] @ Windleigh Emlyn seen in Windleigh markets — scout haggles and swaps news.
+2026-01-05T00:00:00.000Z [town] @ Windleigh Windleigh folk watchful — Surplus grain/ore/fish and shortages in textiles.
+2026-01-05T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Levies rumored to secure textiles; officials say caravans delayed.
+2026-01-05T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — The Storm Guild watches the markets quietly.
+2026-01-05T00:00:00.000Z [town] @ Azmarin Katixa seen in Azmarin markets — guard haggles and swaps news.
+2026-01-05T00:00:00.000Z [town] @ Azmarin Gawyne seen in Azmarin markets — bard haggles and swaps news.
+2026-01-05T00:00:00.000Z [town] @ Azmarin Azmarin folk watchful — Surplus grain/textiles/salt and shortages in ore/livestock.
+2026-01-05T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Levies rumored to secure livestock; officials say caravans delayed.
+2026-01-05T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Sons of the Wolf watches the markets quietly.
+2026-01-05T00:00:00.000Z [town] @ Minasfeld Minasfeld tempers frayed — Surplus grain/textiles/livestock.
+2026-01-05T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Order of the Hawk watches the markets quietly.
+2026-01-05T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Circle of the Dawn watches the markets quietly.
+2026-01-05T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — The Hawk Compact watches the markets quietly.
+2026-01-05T00:00:00.000Z [town] @ Myrrka The Grim Wolves hailed in Myrrka — Locals toast their exploits.
+2026-01-05T00:00:00.000Z [town] @ Myrrka Myrrka tempers frayed — Surplus fish and shortages in timber/salt.
+2026-01-05T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Levies rumored to secure salt; officials say caravans delayed.
+2026-01-05T00:00:00.000Z [town] @ Greenmist Mainardus seen in Greenmist markets — scout haggles and swaps news.
+2026-01-05T00:00:00.000Z [town] @ Greenmist Eurydamus seen in Greenmist markets — merchant haggles and swaps news.
+2026-01-05T00:00:00.000Z [town] @ Greenmist Parthenius's Band hailed in Greenmist — Locals toast their exploits.
+2026-01-05T00:00:00.000Z [town] @ Greenmist Greenmist tempers frayed — Surplus grain/textiles and shortages in salt/livestock.
+2026-01-05T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Bargain prices on textiles; traders racing to Greenmist.
+2026-01-05T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Circle of the Dawn watches the markets quietly.
+2026-01-05T01:00:00.000Z [road] @ Greenmist [Parthenius's Band, goblins] goblins charge Parthenius's Band with weapons drawn — With only moonlight for company stone cairns marking safe paths. A single red-eyed in the dark goblins, worshipping a crude idol. The foe fought bravely but could not withstand the onslaught. The victors claim 16 coin worth of plunder.
+2026-01-05T01:00:00.000Z [faction] @ the region [Epistor] What Was Promised: Consequences follow. Epistor remains motivated by fear and survival. — In the region, ancient bargains come due.
+2026-01-05T01:00:00.000Z [road] @ hex:3,4 living-statue and nightwalker clash — Territorial war erupts! The nightwalker triumph, but 1 fall. The living-statue lose 2 and retreat.
+2026-01-05T01:00:00.000Z [road] @ hex:6,4 phantom and goblin tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-05T01:00:00.000Z [road] @ hex:9,0 sea-drake and giant-eel clash — Territorial war erupts! The sea-drake triumph, but 1 fall. The giant-eel lose 1 and retreat.
+2026-01-05T02:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — The ruins of a dwarven waystation, recently looted.
+2026-01-05T02:00:00.000Z [road] @ Greenmist [Parthenius's Band, goblins] Parthenius's Band defend against goblins assault — As the world held its breath the iron tang of altitude hung in the air. A horde of red-eyed in the dark goblins, tracking something. Steel rang and blood was spilled, but they prevailed. A well-timed spell from their caster turned the tide. The victors claim 44 coin worth of plunder.
+2026-01-05T02:00:00.000Z [town] @ Minasfeld Word spreads in Minasfeld — A valuable shipment was lost near Windleigh.
+2026-01-05T02:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band grows in power! — Through hardship and battle, the members of Parthenius's Band have reached level 3.
+2026-01-05T02:00:00.000Z [town] @ Belfos Disease outbreak in Belfos! — Local healers have identified Camp Fever among the populace. Fear spreads as quickly as the sickness.
+2026-01-05T02:00:00.000Z [town] @ Myrrka [The Dead Man's Purse, Arethusa] The Dead Man's Purse plans a job against The Wandering Merchants — The princes of thieves have set their sights on a caravan. Arethusa leads the planning. It will take approximately 3 days to prepare.
+2026-01-05T02:00:00.000Z [road] @ hex:2,8 chimera and giant-snake clash — Territorial war erupts! The chimera triumph, but 0 fall. The giant-snake lose 1 and retreat.
+2026-01-05T02:00:00.000Z [road] @ hex:3,1 half-orc-bandit and bear tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-05T03:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Eagle cries echo, but no birds are visible.
+2026-01-05T03:00:00.000Z [road] @ hex:2,5 giant-raven and giant-centipede tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-05T03:00:00.000Z [road] @ hex:9,2 giant-eel and kelpie clash — Territorial war erupts! The giant-eel triumph, but 0 fall. The kelpie lose 3 and retreat.
+2026-01-05T04:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — The ruins of a dwarven waystation, recently looted.
+2026-01-05T04:00:00.000Z [faction] @ Belfos [The Hawk Compact] The Hawk Compact seeks retribution — Mercantile houses of The Hawk Compact cut ties with Belfos.
+2026-01-05T04:00:00.000Z [road] @ hex:4,8 rakshasa and goblin clash — Territorial war erupts! The rakshasa triumph, but 0 fall. The goblin lose 0 and retreat.
+2026-01-05T05:00:00.000Z [faction] @ the region [Wattie] The Bargain: The story evolves. — Wattie made a deal with powers best left alone.
+2026-01-05T05:00:00.000Z [road] @ hex:2,8 chimera and worg tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-05T05:00:00.000Z [road] @ hex:6,3 grell and phantom tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-05T06:00:00.000Z [road] @ Greenmist Beroldus's Wagons makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-05T06:00:00.000Z [town] @ Belfos Word spreads in Belfos — A valuable shipment was lost near Greenmist.
+2026-01-05T06:00:00.000Z [town] @ Azmarin [The Shadow Hand] The Shadow Hand moves stolen goods — The trade goods from The Wandering Peddlers finally finds a buyer. 78 gold changes hands in a shadowy transaction.
+2026-01-05T06:00:00.000Z [road] @ hex:2,8 chimera and orc tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-05T06:00:00.000Z [road] @ hex:7,6 su-monster and rust-monster clash — Territorial war erupts! The su-monster triumph, but 0 fall. The rust-monster lose 1 and retreat.
+2026-01-05T07:00:00.000Z [faction] @ Belfos [Circle of the Dawn] Circle of the Dawn seeks retribution — Circle of the Dawn weaves curses against Belfos.
+2026-01-05T07:00:00.000Z [road] @ hex:7,9 revenant and nereid clash — Territorial war erupts! The nereid triumph, but 0 fall. The revenant lose 3 and retreat.
+2026-01-05T08:00:00.000Z [road] @ Greenmist [Parthenius's Band, trolls] Parthenius's Band siege trolls's encampment — As folk went about their labors the clean smell of glacial melt hung in the air. Two or three shadow-cloaked trolls, blocking the path. They fought like cornered lions, driving back the attackers. A glacier grinding slowly downward marked the scene. A well-timed spell from their caster turned the tide.
+2026-01-05T08:00:00.000Z [road] @ hex:5,6 sylph and goblin tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-05T08:00:00.000Z [road] @ hex:7,8 chaos-beast and giant-eel clash — Territorial war erupts! The chaos-beast triumph, but 0 fall. The giant-eel lose 0 and retreat.
+2026-01-05T09:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band spot signs of danger — Giant footprints in the snow, each as long as a man is tall.
+2026-01-05T09:00:00.000Z [dungeon] @ Greenmist [Parthenius's Band] Parthenius's Band discovers Ashen Catacombs — With the sun climbing steadily wind whistling through cave entrances. They have found An ancient ashen catacombs from the First Age. Ashen Catacombs was once a center of trade before its fall.
+2026-01-05T09:00:00.000Z [faction] @ hex:3,9 [The Hawk Compact] The Hawk Compact increases patrols — The Hawk Compact establishes toll stations to fund road security around hex:3,9.
+2026-01-05T09:00:00.000Z [road] @ hex:4,8 rakshasa and goblin tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-05T10:00:00.000Z [road] @ hex:3,7 giant-snake and rakshasa clash — Territorial war erupts! The rakshasa triumph, but 0 fall. The giant-snake lose 0 and retreat.
+2026-01-05T11:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-05T11:00:00.000Z [town] @ Windleigh Word spreads in Windleigh — A battle was fought near Myrrka. Blood stains the earth.
+2026-01-05T11:00:00.000Z [road] @ hex:2,5 giant-raven and giant-centipede clash — Territorial war erupts! The giant-centipede triumph, but 0 fall. The giant-raven lose 5 and retreat.
+2026-01-05T11:00:00.000Z [road] @ hex:3,7 giant-snake and goblin clash — Territorial war erupts! The goblin triumph, but 0 fall. The giant-snake lose 0 and retreat.
+2026-01-05T12:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band shadowed by orc raiders — Tense standoff; both sides withdraw before blades are drawn.
+2026-01-05T12:00:00.000Z [road] @ Belfos The New Caravan makes camp under escort — Road to Minasfeld (road) quiet tonight.
+2026-01-05T12:00:00.000Z [road] @ hex:2,7 giant-centipede and giant-snake clash — Territorial war erupts! The giant-centipede triumph, but 0 fall. The giant-snake lose 0 and retreat.
+2026-01-05T13:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band discovers The Eerie Pillar — While sensible folk sought shade condors circling high overhead. A eerie pillar, swallowing all sound around it. A sudden vision of what is to come flashes before them.
+2026-01-05T13:00:00.000Z [town] @ Belfos Beroldus's Wagons arrives at Belfos — Bringing salt/fish from Greenmist with escorts under banner of Circle of the Dawn.
+2026-01-05T13:00:00.000Z [town] @ Belfos Mainardus arrives in Belfos — scout from Azmarin
+2026-01-05T13:00:00.000Z [town] @ Belfos Eurydamus arrives in Belfos — merchant from Windleigh
+2026-01-05T13:00:00.000Z [faction] @ hex:0,9 [The Storm Guild] The Storm Guild seeks retribution — Mercantile houses of The Storm Guild cut ties with hex:0,9.
+2026-01-05T13:00:00.000Z [road] @ hex:2,9 worg and bear tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-05T14:00:00.000Z [road] @ Windleigh Northbeach Traders makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-05T14:00:00.000Z [faction] @ hex:0,9 [Order of the Hawk] Order of the Hawk seeks retribution — Order of the Hawk declares a crusade against the wickedness of hex:0,9.
+2026-01-05T14:00:00.000Z [road] @ hex:1,8 glabrezu and giant-snake clash — Territorial war erupts! The giant-snake triumph, but 0 fall. The glabrezu lose 1 and retreat.
+2026-01-05T14:00:00.000Z [road] @ hex:2,7 golem-stone and giant-snake tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-05T14:00:00.000Z [road] @ hex:5,8 pegasus and golem-stone tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-05T14:00:00.000Z [road] @ hex:9,7 nereid and giant-eel clash — Territorial war erupts! The giant-eel triumph, but 0 fall. The nereid lose 2 and retreat.
+2026-01-05T15:00:00.000Z [road] @ Greenmist [Parthenius's Band] Parthenius's Band discovers The Cracked Cairn — As the day wore on the ruins of a dwarven gatehouse. A cracked cairn, surrounded by a thin, unnerving mist. The party feels a surge of mental clarity.
+2026-01-05T15:00:00.000Z [road] @ Belfos The New Caravan makes camp under escort — Road to Minasfeld (road) quiet tonight.
+2026-01-05T15:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-05T15:00:00.000Z [road] @ hex:3,7 giant-snake and rakshasa tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-05T15:00:00.000Z [road] @ hex:4,3 nightwalker and skeleton tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-05T16:00:00.000Z [road] @ Greenmist [Parthenius's Band, goblins] Parthenius's Band siege goblins's encampment — In the golden afternoon light snow-capped peaks gleaming in sunlight. Clouds obscure all but the lowest slopes. Many red-eyed in the dark goblins, worshipping a crude idol. A decisive strike ended the conflict before it could escalate. Glaciers carving valleys below marked the scene. A well-timed spell from their caster turned the tide.
+2026-01-05T16:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band arrives at Myrrka — They find an inn and stable their mounts.
+2026-01-05T16:00:00.000Z [town] @ Myrrka Parthenius's Band gain renown — Locals share tales of their exploits.
+2026-01-05T16:00:00.000Z [town] @ Minasfeld The New Caravan arrives at Minasfeld — Bringing grain/textiles from Belfos with escorts.
+2026-01-05T16:00:00.000Z [town] @ Minasfeld Cybele arrives in Minasfeld — guard from Windleigh
+2026-01-05T16:00:00.000Z [town] @ Minasfeld Wantelien arrives in Minasfeld — bard from Minasfeld
+2026-01-05T16:00:00.000Z [town] @ Belfos Camp Fever fades in Belfos — The worst of the sickness has passed. The bells ring in celebration.
+2026-01-05T16:00:00.000Z [road] @ hex:7,8 pyrolisk and chaos-beast clash — Territorial war erupts! The chaos-beast triumph, but 0 fall. The pyrolisk lose 0 and retreat.
+2026-01-05T17:00:00.000Z [road] @ Azmarin [The Wandering Peddlers, Sons of the Wolf] The Wandering Peddlers is raided! — Sons of the Wolf forces have intercepted the caravan en route to Belfos.
+2026-01-05T17:00:00.000Z [town] @ Azmarin Trade routes near Azmarin grow dangerous — Merchants speak of losses. Some refuse to travel until the roads are secured.
+2026-01-05T17:00:00.000Z [road] @ hex:7,7 rust-monster and pyrolisk tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-05T18:00:00.000Z [road] @ Myrrka [Parthenius's Band] Parthenius's Band completes rest — Ready to travel again.
+2026-01-05T18:00:00.000Z [road] @ hex:0,9 glabrezu and giant-centipede clash — Territorial war erupts! The giant-centipede triumph, but 0 fall. The glabrezu lose 3 and retreat.
+2026-01-05T18:00:00.000Z [road] @ hex:4,8 rakshasa wiped out in hex:4,8 — The last of the rakshasa have fallen. The region grows quieter—for now.
+2026-01-05T19:00:00.000Z [town] @ Belfos [The Shadow Hand, Megethia] The Shadow Hand plans a job against a Belfos merchant — The rulers of the shadows have set their sights on a merchant. Megethia leads the planning. It will take approximately 4 days to prepare.
+2026-01-05T20:00:00.000Z [town] @ Belfos Northbeach Traders arrives at Belfos — Bringing grain/textiles from Windleigh with escorts.
+2026-01-05T20:00:00.000Z [town] @ Belfos Emlyn arrives in Belfos — scout from Minasfeld
+2026-01-05T20:00:00.000Z [town] @ Belfos Ilene arrives in Belfos — bard from Windleigh
+2026-01-05T20:00:00.000Z [town] @ Belfos Word spreads in Belfos — Thieves struck near Windleigh. The roads grow dangerous.
+2026-01-05T20:00:00.000Z [town] @ Belfos [Eurydamus, Molora] Eurydamus seeks guidance from Molora — The lessons take root.
+2026-01-05T20:00:00.000Z [road] @ hex:5,4 pyrohydra and grell clash — Territorial war erupts! The pyrohydra triumph, but 0 fall. The grell lose 0 and retreat.
+2026-01-05T20:00:00.000Z [road] @ hex:5,9 golem-stone and orc clash — Territorial war erupts! The golem-stone triumph, but 0 fall. The orc lose 1 and retreat.
+2026-01-05T21:00:00.000Z [road] @ hex:5,6 sylph and phantom tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-05T22:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-05T22:00:00.000Z [town] @ Minasfeld Word spreads in Minasfeld — Mendia has died at Myrrka.
+2026-01-05T22:00:00.000Z [road] @ Myrrka Parthenius's Band falls ill in Myrrka — The Camp Fever has claimed members of the company. They must rest to recover.
+2026-01-05T23:00:00.000Z [road] @ Myrrka The Wandering Merchants makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-05T23:00:00.000Z [weather] @ Myrrka [Izot] Izot alters the weather — Through ancient incantations, the Magic-User calls forth fog over the region.
+2026-01-05T23:00:00.000Z [road] @ hex:2,8 chimera and worg clash — Territorial war erupts! The worg triumph, but 0 fall. The chimera lose 2 and retreat.
+2026-01-05T23:00:00.000Z [road] @ hex:3,1 half-orc-bandit and bear clash — Territorial war erupts! The bear triumph, but 0 fall. The half-orc-bandit lose 2 and retreat.
+2026-01-06T00:00:00.000Z [road] @ Azmarin The Wandering Peddlers makes camp under escort — Road to Belfos (road) quiet tonight.
+2026-01-06T00:00:00.000Z [road] @ hex:2,5 giant-raven and giant-centipede tensions rise — Two populations eye the same territory. Conflict seems inevitable.
+2026-01-06T00:00:00.000Z [road] @ hex:2,5 giant-raven and nightwalker clash — Territorial war erupts! The nightwalker triumph, but 0 fall. The giant-raven lose 5 and retreat.
+2026-01-06T00:00:00.000Z [town] @ Belfos Belfos folk watchful — Surplus grain/textiles/livestock and shortages in ore.
+2026-01-06T00:00:00.000Z [town] @ Belfos Rumor in Belfos — Levies rumored to secure ore; officials say caravans delayed.
+2026-01-06T00:00:00.000Z [town] @ Windleigh Windleigh folk watchful — Surplus grain/ore/fish and shortages in textiles.
+2026-01-06T00:00:00.000Z [town] @ Windleigh Rumor in Windleigh — Levies rumored to secure textiles; officials say caravans delayed.
+2026-01-06T00:00:00.000Z [town] @ Azmarin Azmarin folk watchful — Surplus grain/textiles/salt and shortages in livestock.
+2026-01-06T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Levies rumored to secure livestock; officials say caravans delayed.
+2026-01-06T00:00:00.000Z [town] @ Azmarin Rumor in Azmarin — Order of the Hawk watches the markets quietly.
+2026-01-06T00:00:00.000Z [town] @ Minasfeld Minasfeld tempers frayed — Surplus grain/textiles/livestock.
+2026-01-06T00:00:00.000Z [town] @ Minasfeld Rumor in Minasfeld — Bargain prices on grain; traders racing to Minasfeld.
+2026-01-06T00:00:00.000Z [town] @ Myrrka Molora seen in Myrrka markets — scout haggles and swaps news.
+2026-01-06T00:00:00.000Z [town] @ Myrrka Izot seen in Myrrka markets — bard haggles and swaps news.
+2026-01-06T00:00:00.000Z [town] @ Myrrka Myrrka tempers frayed — Surplus fish and shortages in timber/salt.
+2026-01-06T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — Levies rumored to secure timber; officials say caravans delayed.
+2026-01-06T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — The Storm Guild watches the markets quietly.
+2026-01-06T00:00:00.000Z [town] @ Myrrka Rumor in Myrrka — The Hawk Compact watches the markets quietly.
+2026-01-06T00:00:00.000Z [town] @ Greenmist Greenmist tempers frayed — Surplus grain/textiles and shortages in salt/livestock.
+2026-01-06T00:00:00.000Z [town] @ Greenmist Rumor in Greenmist — Levies rumored to secure salt; officials say caravans delayed.
+2026-01-06T00:00:00.000Z [town] @ Windleigh Whispers of Lifegiver Doom of the Undead — A traveler speaks of a legendary staff of obsidian. Forged from the chains that bound an ancient god. 

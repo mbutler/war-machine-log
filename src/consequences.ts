@@ -12,7 +12,7 @@
  * makes stories feel connected rather than random.
  */
 
-import { Random } from './rng.ts';
+import { Random, makeRandom } from './rng.ts';
 import { WorldState, LogEntry, LogCategory, Party, Settlement, Faction, NPC, Rumor } from './types.ts';
 import { createRumor } from './rumors.ts';
 import { randomName } from './naming.ts';
@@ -54,7 +54,9 @@ export function setConsequenceQueue(queue: ConsequenceQueue): void {
 
 // Add a consequence to the queue
 export function queueConsequence(consequence: Omit<PendingConsequence, 'id'>): void {
-  const id = `conseq-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  // Use seeded randomness for deterministic IDs
+  const rng = makeRandom('consequence-seed');
+  const id = `conseq-${rng.int(1000000)}-${rng.int(1000000)}`;
   consequenceQueue.pending.push({ ...consequence, id });
 }
 

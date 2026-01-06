@@ -678,12 +678,26 @@ async function catchUpMissedTime(): Promise<void> {
   const lastWorldTime = new Date(world.lastTickAt);
   const lastRealTime = (world as any).lastRealTickAt ? new Date((world as any).lastRealTickAt) : new Date(world.startedAt);
   const now = new Date();
-  
-  // For 1:1 time: calculate how much REAL time has passed
-  const realTimeElapsedMs = now.getTime() - lastRealTime.getTime();
-  
-  // Advance world time by the same amount (1:1 ratio)
-  const targetWorldTime = new Date(lastWorldTime.getTime() + realTimeElapsedMs);
+
+  // Calculate time gap since last run
+  const timeGapMs = now.getTime() - lastRealTime.getTime();
+  const timeGapHours = timeGapMs / (1000 * 60 * 60);
+
+  // Only catch up for reasonable gaps (< 48 hours)
+  // Large gaps indicate uploaded worlds, not legitimate pauses
+  if (timeGapHours > 48) {
+    console.log(`⏰ Large time gap detected (${Math.round(timeGapHours)}h) - skipping catch-up (likely uploaded world)`);
+    return;
+  }
+
+  // For legitimate pauses: sync world time to current real time
+  // Calculate what world time should be now (maintaining the same offset from start)
+  const worldStartTime = new Date(world.startedAt);
+  const realStartTime = worldStartTime; // Assume simulation started at real time
+  const realTimeElapsedMs = now.getTime() - realStartTime.getTime();
+
+  // Target world time = world start time + real time elapsed
+  const targetWorldTime = new Date(worldStartTime.getTime() + realTimeElapsedMs);
   
   // Calculate how many turns we need to simulate
   const turnMs = config.turnMinutes * 60 * 1000;

@@ -1,0 +1,4824 @@
+{
+  "seed": "gator",
+  "archetype": "Standard",
+  "hexes": [
+    {
+      "coord": {
+        "q": 0,
+        "r": 0
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 4
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 5
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 6
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 7
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 8
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 0,
+        "r": 9
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 0
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 2
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 3
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 4
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 5
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 6
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 8
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 1,
+        "r": 9
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 0
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 2
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 3
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 4
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 5
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 7
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 8
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 2,
+        "r": 9
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 0
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 2
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 3
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 4
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 5
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 6
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 7
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 8
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 3,
+        "r": 9
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 0
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 1
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 2
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 4
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 8
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 4,
+        "r": 9
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 0
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 1
+      },
+      "terrain": "desert"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 2
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 4
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 8
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 5,
+        "r": 9
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 0
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 1
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 2
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 4
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 8
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 6,
+        "r": 9
+      },
+      "terrain": "mountains"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 0
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 1
+      },
+      "terrain": "forest"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 2
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 3
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 4
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 5
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 6
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 7
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 8
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 7,
+        "r": 9
+      },
+      "terrain": "hills"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 0
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 1
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 2
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 3
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 4
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 5
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 6
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 7
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 8
+      },
+      "terrain": "coastal"
+    },
+    {
+      "coord": {
+        "q": 8,
+        "r": 9
+      },
+      "terrain": "clear"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 0
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 1
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 2
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 3
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 4
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 5
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 6
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 7
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 8
+      },
+      "terrain": "ocean"
+    },
+    {
+      "coord": {
+        "q": 9,
+        "r": 9
+      },
+      "terrain": "ocean"
+    }
+  ],
+  "width": 10,
+  "height": 10,
+  "settlements": [
+    {
+      "id": "settlement-0",
+      "name": "Belfos",
+      "population": 550,
+      "type": "town",
+      "coord": {
+        "q": 5,
+        "r": 7
+      },
+      "supply": {
+        "grain": 2,
+        "timber": 1,
+        "ore": -2,
+        "textiles": 4,
+        "salt": 0,
+        "fish": 0,
+        "livestock": 2
+      },
+      "mood": 1,
+      "priceTrends": {
+        "grain": "low",
+        "timber": "normal",
+        "ore": "high",
+        "textiles": "low",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "low"
+      },
+      "lastTownLogDay": "2026-01-06"
+    },
+    {
+      "id": "settlement-1",
+      "name": "Windleigh",
+      "population": 1312,
+      "type": "town",
+      "coord": {
+        "q": 4,
+        "r": 6
+      },
+      "supply": {
+        "grain": 2,
+        "timber": 0,
+        "ore": 2,
+        "textiles": -3,
+        "salt": 0,
+        "fish": 2,
+        "livestock": -1
+      },
+      "mood": 0,
+      "priceTrends": {
+        "grain": "low",
+        "timber": "normal",
+        "ore": "low",
+        "textiles": "high",
+        "salt": "normal",
+        "fish": "low",
+        "livestock": "normal"
+      },
+      "lastTownLogDay": "2026-01-06"
+    },
+    {
+      "id": "settlement-2",
+      "name": "Azmarin",
+      "population": 359,
+      "type": "town",
+      "coord": {
+        "q": 6,
+        "r": 5
+      },
+      "supply": {
+        "grain": 3,
+        "timber": -1,
+        "ore": -1,
+        "textiles": 4,
+        "salt": 3,
+        "fish": -1,
+        "livestock": -2
+      },
+      "mood": 0,
+      "priceTrends": {
+        "grain": "low",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "low",
+        "salt": "low",
+        "fish": "normal",
+        "livestock": "high"
+      },
+      "lastTownLogDay": "2026-01-06"
+    },
+    {
+      "id": "settlement-3",
+      "name": "Minasfeld",
+      "population": 627,
+      "type": "village",
+      "coord": {
+        "q": 3,
+        "r": 6
+      },
+      "supply": {
+        "grain": 3,
+        "timber": 0,
+        "ore": -1,
+        "textiles": 4,
+        "salt": -1,
+        "fish": 1,
+        "livestock": 2
+      },
+      "mood": -3,
+      "priceTrends": {
+        "grain": "low",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "low",
+        "salt": "normal",
+        "fish": "normal",
+        "livestock": "low"
+      },
+      "lastTownLogDay": "2026-01-06"
+    },
+    {
+      "id": "settlement-4",
+      "name": "Myrrka",
+      "population": 1191,
+      "type": "town",
+      "coord": {
+        "q": 7,
+        "r": 0
+      },
+      "supply": {
+        "grain": -1,
+        "timber": -2,
+        "ore": 1,
+        "textiles": 1,
+        "salt": -2,
+        "fish": 2,
+        "livestock": 0
+      },
+      "mood": -3,
+      "priceTrends": {
+        "grain": "normal",
+        "timber": "high",
+        "ore": "normal",
+        "textiles": "normal",
+        "salt": "high",
+        "fish": "low",
+        "livestock": "normal"
+      },
+      "lastTownLogDay": "2026-01-06"
+    },
+    {
+      "id": "settlement-5",
+      "name": "Greenmist",
+      "population": 1647,
+      "type": "village",
+      "coord": {
+        "q": 1,
+        "r": 5
+      },
+      "supply": {
+        "grain": 2,
+        "timber": 1,
+        "ore": 0,
+        "textiles": 2,
+        "salt": -3,
+        "fish": -1,
+        "livestock": -3
+      },
+      "mood": -3,
+      "priceTrends": {
+        "grain": "low",
+        "timber": "normal",
+        "ore": "normal",
+        "textiles": "low",
+        "salt": "high",
+        "fish": "normal",
+        "livestock": "high"
+      },
+      "lastTownLogDay": "2026-01-06"
+    }
+  ],
+  "parties": [
+    {
+      "id": "party-0",
+      "name": "The Grim Wolves",
+      "members": [
+        {
+          "name": "Jumel",
+          "class": "Fighter",
+          "level": 1,
+          "hp": 20,
+          "maxHp": 20
+        },
+        {
+          "name": "Mauricius",
+          "class": "Cleric",
+          "level": 1,
+          "hp": 15,
+          "maxHp": 15
+        },
+        {
+          "name": "Aizkorri",
+          "class": "Magic-User",
+          "level": 2,
+          "hp": 10,
+          "maxHp": 10
+        }
+      ],
+      "location": "Myrrka",
+      "status": "idle",
+      "xp": 361,
+      "fame": 12,
+      "wounded": true,
+      "restHoursRemaining": 24
+    },
+    {
+      "id": "band-0",
+      "name": "Parthenius's Band",
+      "members": [
+        {
+          "name": "Gonilda",
+          "class": "Thief",
+          "level": 3,
+          "hp": 21,
+          "maxHp": 21
+        },
+        {
+          "name": "Marjer",
+          "class": "Elf",
+          "level": 4,
+          "hp": 23,
+          "maxHp": 23
+        }
+      ],
+      "location": "Myrrka",
+      "status": "idle",
+      "xp": 5137,
+      "fame": 50,
+      "fatigue": -1,
+      "wounded": true,
+      "restHoursRemaining": 46
+    }
+  ],
+  "roads": [
+    [
+      "settlement-0",
+      "settlement-1"
+    ],
+    [
+      "settlement-0",
+      "settlement-2"
+    ],
+    [
+      "settlement-0",
+      "settlement-3"
+    ],
+    [
+      "settlement-0",
+      "settlement-4"
+    ],
+    [
+      "settlement-0",
+      "settlement-5"
+    ],
+    [
+      "settlement-1",
+      "settlement-0"
+    ]
+  ],
+  "dungeons": [
+    {
+      "id": "dungeon-0",
+      "name": "Wealdlock Crypt",
+      "coord": {
+        "q": 4,
+        "r": 8
+      },
+      "depth": 4,
+      "danger": 4,
+      "rooms": [
+        {
+          "type": "laboratory",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "lair",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "trap",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": true
+        }
+      ],
+      "explored": 0
+    },
+    {
+      "id": "dungeon-1",
+      "name": "The Sanctum of Blighted Death",
+      "coord": {
+        "q": 5,
+        "r": 1
+      },
+      "depth": 3,
+      "danger": 3,
+      "rooms": [
+        {
+          "type": "treasure",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "trap",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "empty",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "treasure",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "treasure",
+          "threat": 2,
+          "loot": true
+        },
+        {
+          "type": "trap",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "lair",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 2,
+          "loot": true
+        },
+        {
+          "type": "treasure",
+          "threat": 2,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 4,
+          "loot": false
+        }
+      ],
+      "explored": 0
+    },
+    {
+      "id": "dungeon-2",
+      "name": "The Whispers Tower",
+      "coord": {
+        "q": 5,
+        "r": 6
+      },
+      "depth": 3,
+      "danger": 4,
+      "rooms": [
+        {
+          "type": "trap",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "trap",
+          "threat": 4,
+          "loot": true,
+          "rare": "relic"
+        },
+        {
+          "type": "shrine",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 4,
+          "loot": true
+        },
+        {
+          "type": "trap",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "trap",
+          "threat": 5,
+          "loot": true
+        },
+        {
+          "type": "treasure",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 5,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": true,
+          "rare": "artifact"
+        },
+        {
+          "type": "laboratory",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": false
+        }
+      ],
+      "explored": 0
+    }
+  ],
+  "activeRumors": [
+    {
+      "id": "rumor-1767726399203-254305",
+      "kind": "mystery",
+      "text": "Levies rumored to secure ore; officials say caravans delayed.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767726399203-727156",
+      "kind": "feud",
+      "text": "The Storm Guild watches the markets quietly.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767726399203-138204",
+      "kind": "feud",
+      "text": "Sons of the Wolf watches the markets quietly.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767726399203-897340",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767726399203-214210",
+      "kind": "feud",
+      "text": "The Hawk Compact watches the markets quietly.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767726399203-910637",
+      "kind": "feud",
+      "text": "Order of the Hawk watches the markets quietly.",
+      "target": "Windleigh",
+      "origin": "Windleigh",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767726399203-496987",
+      "kind": "dungeon",
+      "text": "whispered mystery: a bard fresh from the road says Millesenta heard of whispers of depth 3 halls (from Azmarin).",
+      "target": "The Whispers Tower",
+      "origin": "Azmarin",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767726399203-974498",
+      "kind": "feud",
+      "text": "Sons of the Wolf watches the markets quietly.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767726399203-87927",
+      "kind": "feud",
+      "text": "The Hawk Compact watches the markets quietly.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767726399204-476487",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Minasfeld",
+      "origin": "Minasfeld",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767726399204-541123",
+      "kind": "feud",
+      "text": "The Hawk Compact watches the markets quietly.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767726399277-444113",
+      "kind": "threat",
+      "text": "Travelers speak of Mendia the Pallid. Ascending to godhood.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767726399566-769919",
+      "kind": "omen",
+      "text": "Explorers speak of a strange discovery near Belfos.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767726399767-393319",
+      "kind": "mystery",
+      "text": "Explorers speak of a strange discovery near Greenmist.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767726399781-836343",
+      "kind": "mystery",
+      "text": "Levies rumored to secure grain; officials say caravans delayed.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767726399781-721229",
+      "kind": "feud",
+      "text": "The Storm Guild watches the markets quietly.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767726399781-464628",
+      "kind": "feud",
+      "text": "Sons of the Wolf watches the markets quietly.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726399781-388176",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Windleigh",
+      "origin": "Windleigh",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726399781-572279",
+      "kind": "mystery",
+      "text": "Levies rumored to secure livestock; officials say caravans delayed.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767726399781-226215",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726399781-657983",
+      "kind": "feud",
+      "text": "The Hawk Compact watches the markets quietly.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767726399781-506185",
+      "kind": "feud",
+      "text": "whispered threat: a frantic merchant says Audrey heard of strange lights near Windleigh (from Minasfeld).",
+      "target": "Windleigh",
+      "origin": "Minasfeld",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767726399781-207099",
+      "kind": "feud",
+      "text": "Sons of the Wolf watches the markets quietly.",
+      "target": "Minasfeld",
+      "origin": "Minasfeld",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767726399781-17",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Minasfeld",
+      "origin": "Minasfeld",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726399781-404599",
+      "kind": "dungeon",
+      "text": "cryptic missing: a frantic merchant says Babitt heard of villagers hearing chanting at dusk (from Myrrka).",
+      "target": "The Whispers Tower",
+      "origin": "Myrrka",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767726399781-889681",
+      "kind": "feud",
+      "text": "The Storm Guild watches the markets quietly.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767726399781-864722",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767726399781-337809",
+      "kind": "feud",
+      "text": "The Hawk Compact watches the markets quietly.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726399781-187456",
+      "kind": "mystery",
+      "text": "Levies rumored to secure fish; officials say caravans delayed.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767726399781-320234",
+      "kind": "feud",
+      "text": "Order of the Hawk watches the markets quietly.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767726400002-779969",
+      "kind": "feud",
+      "text": "Word spreads that Beroldus's Wagons of Circle of the Dawn reached Greenmist with salt/fish.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
+      "freshness": 1
+    },
+    {
+      "id": "rumor-1767726400202-817889",
+      "kind": "mystery",
+      "text": "Thieves struck near Greenmist. The roads grow dangerous.",
+      "target": "Greenmist",
+      "origin": "Belfos",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767726400256-223281",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Minasfeld.",
+      "target": "Minasfeld",
+      "origin": "Myrrka",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767726400358-359671",
+      "kind": "dungeon",
+      "text": "whispered mystery: a wandering priest says Esdert heard of a sealed door that hums at night (from Belfos).",
+      "target": "Wealdlock Crypt",
+      "origin": "Belfos",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767726400359-793038",
+      "kind": "mystery",
+      "text": "Bargain prices on fish; traders racing to Windleigh.",
+      "target": "Windleigh",
+      "origin": "Windleigh",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767726400359-187498",
+      "kind": "feud",
+      "text": "The Storm Guild watches the markets quietly.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767726400359-693943",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767726400359-428574",
+      "kind": "feud",
+      "text": "The Storm Guild watches the markets quietly.",
+      "target": "Minasfeld",
+      "origin": "Minasfeld",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767726400359-480852",
+      "kind": "feud",
+      "text": "Sons of the Wolf watches the markets quietly.",
+      "target": "Minasfeld",
+      "origin": "Minasfeld",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767726400359-64842",
+      "kind": "feud",
+      "text": "Order of the Hawk watches the markets quietly.",
+      "target": "Minasfeld",
+      "origin": "Minasfeld",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767726400359-193268",
+      "kind": "feud",
+      "text": "The Storm Guild watches the markets quietly.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767726400359-56960",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726400359-934302",
+      "kind": "feud",
+      "text": "The Hawk Compact watches the markets quietly.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767726400359-514426",
+      "kind": "mystery",
+      "text": "Levies rumored to secure livestock; officials say caravans delayed.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767726400359-876448",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767726400505-593215",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Greenmist.",
+      "target": "Greenmist",
+      "origin": "Windleigh",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726400544-271896",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Minasfeld.",
+      "target": "Minasfeld",
+      "origin": "Belfos",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726400591-975316",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Greenmist.",
+      "target": "Greenmist",
+      "origin": "Myrrka",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767726400699-924173",
+      "kind": "mystery",
+      "text": "Thieves struck near Greenmist. The roads grow dangerous.",
+      "target": "Greenmist",
+      "origin": "Belfos",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726400708-737012",
+      "kind": "mystery",
+      "text": "Thieves struck near Greenmist. The roads grow dangerous.",
+      "target": "Greenmist",
+      "origin": "Belfos",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767726400764-443008",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Greenmist.",
+      "target": "Greenmist",
+      "origin": "Myrrka",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726400781-276386",
+      "kind": "mystery",
+      "text": "Thieves struck near Greenmist. The roads grow dangerous.",
+      "target": "Greenmist",
+      "origin": "Minasfeld",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767726400800-129832",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Belfos.",
+      "target": "Belfos",
+      "origin": "Myrrka",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767726400845-809554",
+      "kind": "mystery",
+      "text": "Thieves struck near Greenmist. The roads grow dangerous.",
+      "target": "Greenmist",
+      "origin": "Myrrka",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726400883-751730",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Minasfeld.",
+      "target": "Minasfeld",
+      "origin": "Belfos",
+      "freshness": 2
+    },
+    {
+      "id": "rumor-1767726400937-30347",
+      "kind": "feud",
+      "text": "The Hawk Compact watches the markets quietly.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767726400937-466725",
+      "kind": "mystery",
+      "text": "Levies rumored to secure textiles; officials say caravans delayed.",
+      "target": "Windleigh",
+      "origin": "Windleigh",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767726400937-537968",
+      "kind": "feud",
+      "text": "Sons of the Wolf watches the markets quietly.",
+      "target": "Windleigh",
+      "origin": "Windleigh",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767726400937-390321",
+      "kind": "mystery",
+      "text": "Levies rumored to secure ore; officials say caravans delayed.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767726400937-232097",
+      "kind": "feud",
+      "text": "The Storm Guild watches the markets quietly.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767726400937-102066",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767726400937-53883",
+      "kind": "feud",
+      "text": "The Hawk Compact watches the markets quietly.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767726400937-750769",
+      "kind": "feud",
+      "text": "Sons of the Wolf watches the markets quietly.",
+      "target": "Minasfeld",
+      "origin": "Minasfeld",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767726400937-66836",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Minasfeld",
+      "origin": "Minasfeld",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767726400938-788397",
+      "kind": "dungeon",
+      "text": "cryptic treasure: a wounded messenger says Bonifacius heard of signs of danger tier 4 (from Myrrka).",
+      "target": "The Whispers Tower",
+      "origin": "Myrrka",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726400938-47767",
+      "kind": "mystery",
+      "text": "Levies rumored to secure salt; officials say caravans delayed.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
+      "freshness": 3
+    },
+    {
+      "id": "rumor-1767726401247-842102",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Minasfeld.",
+      "target": "Minasfeld",
+      "origin": "Windleigh",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726401313-897044",
+      "kind": "mystery",
+      "text": "Thieves struck near Greenmist. The roads grow dangerous.",
+      "target": "Greenmist",
+      "origin": "Azmarin",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726401370-435327",
+      "kind": "mystery",
+      "text": "Thieves struck near Greenmist. The roads grow dangerous.",
+      "target": "Greenmist",
+      "origin": "Minasfeld",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726401507-230701",
+      "kind": "feud",
+      "text": "official mystery: a frantic merchant says Echekrates heard of a caravan late by two days (from Belfos).",
+      "target": "Minasfeld",
+      "origin": "Belfos",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767726401507-387360",
+      "kind": "feud",
+      "text": "Order of the Hawk watches the markets quietly.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767726401507-341329",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726401507-10035",
+      "kind": "mystery",
+      "text": "Levies rumored to secure textiles; officials say caravans delayed.",
+      "target": "Windleigh",
+      "origin": "Windleigh",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767726401507-249236",
+      "kind": "feud",
+      "text": "The Storm Guild watches the markets quietly.",
+      "target": "Windleigh",
+      "origin": "Windleigh",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767726401507-729310",
+      "kind": "mystery",
+      "text": "Levies rumored to secure livestock; officials say caravans delayed.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767726401507-710089",
+      "kind": "feud",
+      "text": "Sons of the Wolf watches the markets quietly.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726401507-926980",
+      "kind": "feud",
+      "text": "Order of the Hawk watches the markets quietly.",
+      "target": "Minasfeld",
+      "origin": "Minasfeld",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767726401507-951442",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Minasfeld",
+      "origin": "Minasfeld",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767726401507-727956",
+      "kind": "feud",
+      "text": "The Hawk Compact watches the markets quietly.",
+      "target": "Minasfeld",
+      "origin": "Minasfeld",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726401507-832705",
+      "kind": "mystery",
+      "text": "Levies rumored to secure salt; officials say caravans delayed.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767726401507-956004",
+      "kind": "mystery",
+      "text": "Bargain prices on textiles; traders racing to Greenmist.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726401507-648991",
+      "kind": "feud",
+      "text": "Circle of the Dawn watches the markets quietly.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767726401656-69352",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Windleigh.",
+      "target": "Windleigh",
+      "origin": "Minasfeld",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767726401758-761697",
+      "kind": "mystery",
+      "text": "A valuable shipment was lost near Greenmist.",
+      "target": "Greenmist",
+      "origin": "Belfos",
+      "freshness": 4
+    },
+    {
+      "id": "rumor-1767726401820-100747",
+      "kind": "mystery",
+      "text": "A battle was fought near Myrrka. Blood stains the earth.",
+      "target": "Myrrka",
+      "origin": "Windleigh",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767726401983-245909",
+      "kind": "mystery",
+      "text": "Thieves struck near Windleigh. The roads grow dangerous.",
+      "target": "Windleigh",
+      "origin": "Belfos",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767726402022-869271",
+      "kind": "mystery",
+      "text": "Mendia has died at Myrrka.",
+      "target": "Myrrka",
+      "origin": "Minasfeld",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767726402054-887484",
+      "kind": "mystery",
+      "text": "Levies rumored to secure ore; officials say caravans delayed.",
+      "target": "Belfos",
+      "origin": "Belfos",
+      "freshness": 8
+    },
+    {
+      "id": "rumor-1767726402054-785315",
+      "kind": "mystery",
+      "text": "Levies rumored to secure textiles; officials say caravans delayed.",
+      "target": "Windleigh",
+      "origin": "Windleigh",
+      "freshness": 8
+    },
+    {
+      "id": "rumor-1767726402054-713997",
+      "kind": "mystery",
+      "text": "Levies rumored to secure livestock; officials say caravans delayed.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767726402054-724258",
+      "kind": "feud",
+      "text": "Order of the Hawk watches the markets quietly.",
+      "target": "Azmarin",
+      "origin": "Azmarin",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767726402054-559562",
+      "kind": "mystery",
+      "text": "Bargain prices on grain; traders racing to Minasfeld.",
+      "target": "Minasfeld",
+      "origin": "Minasfeld",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767726402054-647518",
+      "kind": "mystery",
+      "text": "Levies rumored to secure timber; officials say caravans delayed.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 5
+    },
+    {
+      "id": "rumor-1767726402054-291105",
+      "kind": "feud",
+      "text": "The Storm Guild watches the markets quietly.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 6
+    },
+    {
+      "id": "rumor-1767726402054-71794",
+      "kind": "feud",
+      "text": "The Hawk Compact watches the markets quietly.",
+      "target": "Myrrka",
+      "origin": "Myrrka",
+      "freshness": 7
+    },
+    {
+      "id": "rumor-1767726402054-729781",
+      "kind": "mystery",
+      "text": "Levies rumored to secure salt; officials say caravans delayed.",
+      "target": "Greenmist",
+      "origin": "Greenmist",
+      "freshness": 5
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc-0",
+      "name": "Peli",
+      "role": "priest",
+      "home": "settlement-0",
+      "location": "Belfos",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Cleric",
+      "level": 12,
+      "xp": 0,
+      "spells": [
+        "Cure Light Wounds",
+        "Protection from Evil"
+      ],
+      "depth": {
+        "traits": [
+          "cunning",
+          "pious"
+        ],
+        "background": "noble-exile",
+        "motivation": "justice",
+        "relationships": [
+          {
+            "targetId": "npc-4",
+            "targetName": "Hans-Ruedi",
+            "type": "student",
+            "strength": 2,
+            "history": "The most promising pupil in years."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "tells the same three stories",
+          "prays before every meal"
+        ]
+      },
+      "age": 63,
+      "title": "Sister",
+      "appearance": "missing two fingers on the left hand",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 40.14009176585823,
+          "description": "Establish a seat of power"
+        },
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 17,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "bloodlineId": "bloodline-1767726399143-1871",
+      "birthDate": "1973-01-14T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-2",
+      "name": "Mainardus",
+      "role": "scout",
+      "home": "settlement-2",
+      "location": "Belfos",
+      "reputation": 1,
+      "fame": 0,
+      "alive": true,
+      "class": "Elf",
+      "level": 10,
+      "xp": 0,
+      "spells": [
+        "Read Magic"
+      ],
+      "depth": {
+        "traits": [
+          "skeptical",
+          "romantic",
+          "naive"
+        ],
+        "background": "orphan-thief",
+        "motivation": "power",
+        "relationships": [
+          {
+            "targetId": "npc-9",
+            "targetName": "Eryalus",
+            "type": "mentor",
+            "strength": 1,
+            "history": "Saw potential where others saw nothing."
+          },
+          {
+            "targetId": "npc-12",
+            "targetName": "Molora",
+            "type": "enemy",
+            "strength": 2,
+            "history": "Only one of them can have what they both want."
+          },
+          {
+            "targetId": "npc-5",
+            "targetName": "Ilene",
+            "type": "ally",
+            "strength": 5,
+            "history": "Survived a dangerous journey together."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Eadmund",
+            "type": "lover",
+            "strength": 3,
+            "history": "Met under strange circumstances; love was stranger still."
+          },
+          {
+            "targetId": "npc-15",
+            "targetName": "Gawyne",
+            "type": "lover",
+            "strength": 1,
+            "history": "Some say the affair still smolders."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "trusts no one who smiles too easily",
+          "fears deep water",
+          "speaks in proverbs"
+        ]
+      },
+      "age": 59,
+      "title": "Woods-Guide",
+      "appearance": "a limp from an old wound",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-54490-170867",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-02T09:00:00.000Z",
+          "location": "Greenmist",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.1200000000000188,
+          "acted": false,
+          "narrative": "saw Sons of the Wolf clash",
+          "secret": false
+        }
+      ],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 35.15617878191638,
+          "description": "Establish a seat of power"
+        },
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 6,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-2",
+      "birthDate": "1975-01-14T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-3",
+      "name": "Cybele",
+      "role": "guard",
+      "home": "settlement-1",
+      "location": "Minasfeld",
+      "reputation": -3,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 1,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "loyal",
+          "charitable",
+          "ambitious"
+        ],
+        "background": "failed-merchant",
+        "motivation": "justice",
+        "relationships": [
+          {
+            "targetId": "npc-16",
+            "targetName": "Yllaria",
+            "type": "ally",
+            "strength": 1,
+            "history": "Owe each other debts that gold cannot repay."
+          },
+          {
+            "targetId": "npc-4",
+            "targetName": "Hans-Ruedi",
+            "type": "debtor",
+            "strength": 4,
+            "history": "The debt was financial; the cost was higher."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Eadmund",
+            "type": "creditor",
+            "strength": 1,
+            "history": "Borrowed gold at the worst possible moment."
+          },
+          {
+            "targetId": "npc-14",
+            "targetName": "Irantzu",
+            "type": "enemy",
+            "strength": 5,
+            "history": "Only one of them can have what they both want."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "fears deep water",
+          "hums old war songs",
+          "tells the same three stories"
+        ]
+      },
+      "age": 26,
+      "title": "Sergeant",
+      "appearance": "ink-stained fingers of a scholar",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1980-01-13T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-4",
+      "name": "Hans-Ruedi",
+      "role": "laborer",
+      "home": "settlement-3",
+      "location": "Minasfeld",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Dwarf",
+      "level": 11,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "skeptical",
+          "cunning"
+        ],
+        "background": "guild-dropout",
+        "motivation": "duty",
+        "relationships": [
+          {
+            "targetId": "npc-0",
+            "targetName": "Peli",
+            "type": "mentor",
+            "strength": 2,
+            "history": "The most promising pupil in years."
+          },
+          {
+            "targetId": "npc-3",
+            "targetName": "Cybele",
+            "type": "creditor",
+            "strength": 4,
+            "history": "The debt was financial; the cost was higher."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Eadmund",
+            "type": "student",
+            "strength": 5,
+            "history": "Still learning, still surprising."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "hums old war songs",
+          "sleeps with a blade in hand"
+        ]
+      },
+      "age": 22,
+      "title": "Dockhand",
+      "appearance": "calluses of a lifetime of sword work",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 48.21088562745368,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "birthDate": "1975-01-14T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-11",
+      "marriedAt": "2009-01-05T00:00:00.000Z"
+    },
+    {
+      "id": "npc-5",
+      "name": "Ilene",
+      "role": "bard",
+      "home": "settlement-1",
+      "location": "Belfos",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 9,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "pious",
+          "romantic"
+        ],
+        "background": "farmhand-turned-guard",
+        "motivation": "home",
+        "relationships": [
+          {
+            "targetId": "npc-2",
+            "targetName": "Mainardus",
+            "type": "ally",
+            "strength": 5,
+            "history": "Survived a dangerous journey together."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "laughs at inappropriate moments",
+          "always wears a lucky charm",
+          "refuses to eat meat"
+        ]
+      },
+      "age": 57,
+      "title": "Rhapsode",
+      "appearance": "the cautious movements of one used to danger",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 40.200892337935514,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "birthDate": "1997-01-08T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-7",
+      "marriedAt": "2019-01-03T00:00:00.000Z"
+    },
+    {
+      "id": "npc-6",
+      "name": "Katixa",
+      "role": "guard",
+      "home": "settlement-4",
+      "location": "Azmarin",
+      "reputation": -2,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 9,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "loyal",
+          "greedy",
+          "cunning"
+        ],
+        "background": "foreign-exile",
+        "motivation": "power",
+        "relationships": [
+          {
+            "targetId": "npc-3",
+            "targetName": "Cybele",
+            "type": "debtor",
+            "strength": 5,
+            "history": "Interest compounds, and so does resentment."
+          },
+          {
+            "targetId": "npc-14",
+            "targetName": "Irantzu",
+            "type": "enemy",
+            "strength": 5,
+            "history": "Only one of them can have what they both want."
+          },
+          {
+            "targetId": "npc-8",
+            "targetName": "Emlyn",
+            "type": "creditor",
+            "strength": 1,
+            "history": "Expects repayment, with interest."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "speaks to animals as if they understand",
+          "refuses to eat meat"
+        ]
+      },
+      "age": 29,
+      "title": "Sergeant",
+      "appearance": "the bearing of one who has worn armor",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-54490-170867",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-05T17:00:00.000Z",
+          "location": "Azmarin",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.9200000000000017,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        }
+      ],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 20.081466040872037,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "bloodlineId": "bloodline-1767726399143-5794",
+      "birthDate": "1993-01-09T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-7",
+      "name": "Eurydamus",
+      "role": "merchant",
+      "home": "settlement-1",
+      "location": "Belfos",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 8,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "cautious",
+          "greedy"
+        ],
+        "background": "retired-adventurer",
+        "motivation": "duty",
+        "secretMotivation": "power",
+        "relationships": [
+          {
+            "targetId": "npc-14",
+            "targetName": "Irantzu",
+            "type": "mentor",
+            "strength": 1,
+            "history": "The old ways, passed down in secret."
+          },
+          {
+            "targetId": "npc-12",
+            "targetName": "Molora",
+            "type": "student",
+            "strength": 5,
+            "history": "Saw potential where others saw nothing."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "keeps a journal in cipher",
+          "always wears a lucky charm"
+        ]
+      },
+      "age": 35,
+      "title": "Master",
+      "appearance": "a nervous tic in the left eye",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-54490-170867",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-03T05:00:00.000Z",
+          "location": "Greenmist",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.3200000000000145,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        },
+        {
+          "id": "mem-54490-170867",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-03T23:00:00.000Z",
+          "location": "Greenmist",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.5000000000000107,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        }
+      ],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-2",
+      "bloodlineId": "bloodline-1767726399143-6626",
+      "birthDate": "1997-01-08T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-5",
+      "marriedAt": "2019-01-03T00:00:00.000Z"
+    },
+    {
+      "id": "npc-8",
+      "name": "Emlyn",
+      "role": "scout",
+      "home": "settlement-3",
+      "location": "Belfos",
+      "reputation": -1,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 2,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "pious",
+          "cowardly"
+        ],
+        "background": "retired-adventurer",
+        "motivation": "home",
+        "secretMotivation": "knowledge",
+        "relationships": [
+          {
+            "targetId": "npc-6",
+            "targetName": "Katixa",
+            "type": "debtor",
+            "strength": 1,
+            "history": "Expects repayment, with interest."
+          },
+          {
+            "targetId": "npc-11",
+            "targetName": "Wantelien",
+            "type": "rival",
+            "strength": 3,
+            "history": "Competed for the same position in Minasfeld."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "quotes ancient philosophers",
+          "always wears a lucky charm",
+          "always knows which way is north"
+        ]
+      },
+      "age": 41,
+      "title": "Ranger",
+      "appearance": "a brand mark, poorly concealed",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-54490-170867",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-04T20:00:00.000Z",
+          "location": "Windleigh",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.710000000000006,
+          "acted": false,
+          "narrative": "survived the battle at Windleigh",
+          "secret": false
+        }
+      ],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "birthDate": "1986-01-11T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": true,
+      "divorces": 0,
+      "marriedAt": "2007-01-06T00:00:00.000Z"
+    },
+    {
+      "id": "npc-9",
+      "name": "Eryalus",
+      "role": "laborer",
+      "home": "settlement-5",
+      "location": "Greenmist",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Dwarf",
+      "level": 10,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "cowardly",
+          "pragmatic"
+        ],
+        "background": "guild-dropout",
+        "motivation": "duty",
+        "relationships": [
+          {
+            "targetId": "npc-14",
+            "targetName": "Irantzu",
+            "type": "mentor",
+            "strength": 1,
+            "history": "Taught them everything worth knowing."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "prays before every meal"
+        ]
+      },
+      "age": 29,
+      "title": "Dockhand",
+      "appearance": "ink-stained fingers of a scholar",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 40.232446901379156,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1987-01-11T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-10",
+      "marriedAt": "2024-01-02T00:00:00.000Z"
+    },
+    {
+      "id": "npc-10",
+      "name": "Eadmund",
+      "role": "laborer",
+      "home": "settlement-5",
+      "location": "Greenmist",
+      "reputation": -3,
+      "fame": 0,
+      "alive": true,
+      "class": "Fighter",
+      "level": 6,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "greedy",
+          "cruel"
+        ],
+        "background": "guild-dropout",
+        "motivation": "freedom",
+        "relationships": [
+          {
+            "targetId": "npc-1",
+            "targetName": "Theodric",
+            "type": "student",
+            "strength": 4,
+            "history": "Saw potential where others saw nothing."
+          },
+          {
+            "targetId": "npc-4",
+            "targetName": "Hans-Ruedi",
+            "type": "mentor",
+            "strength": 5,
+            "history": "Still learning, still surprising."
+          },
+          {
+            "targetId": "npc-16",
+            "targetName": "Yllaria",
+            "type": "betrayer",
+            "strength": 4,
+            "history": "The knife came from behind, as always."
+          },
+          {
+            "targetId": "npc-2",
+            "targetName": "Mainardus",
+            "type": "lover",
+            "strength": 3,
+            "history": "Met under strange circumstances; love was stranger still."
+          },
+          {
+            "targetId": "npc-3",
+            "targetName": "Cybele",
+            "type": "debtor",
+            "strength": 1,
+            "history": "Borrowed gold at the worst possible moment."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "speaks to animals as if they understand",
+          "trusts no one who smiles too easily",
+          "never sits with back to door"
+        ]
+      },
+      "age": 29,
+      "title": "Porter",
+      "appearance": "a limp from an old wound",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-54490-170867",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-03T05:00:00.000Z",
+          "location": "Greenmist",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.3200000000000145,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        },
+        {
+          "id": "mem-54490-170867",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-03T23:00:00.000Z",
+          "location": "Greenmist",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.5000000000000107,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        },
+        {
+          "id": "mem-54490-170867",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-04T12:00:00.000Z",
+          "location": "Greenmist",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.630000000000008,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        }
+      ],
+      "agendas": [],
+      "morale": 0,
+      "bloodlineId": "bloodline-1767726399143-2227",
+      "birthDate": "1971-01-15T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-9",
+      "marriedAt": "2024-01-02T00:00:00.000Z"
+    },
+    {
+      "id": "npc-11",
+      "name": "Wantelien",
+      "role": "bard",
+      "home": "settlement-3",
+      "location": "Minasfeld",
+      "reputation": 1,
+      "fame": 0,
+      "alive": true,
+      "class": "Magic-User",
+      "level": 9,
+      "xp": 0,
+      "spells": [
+        "Read Magic"
+      ],
+      "depth": {
+        "traits": [
+          "honorable",
+          "ambitious"
+        ],
+        "background": "failed-merchant",
+        "motivation": "fame",
+        "relationships": [
+          {
+            "targetId": "npc-16",
+            "targetName": "Yllaria",
+            "type": "creditor",
+            "strength": 4,
+            "history": "Expects repayment, with interest."
+          },
+          {
+            "targetId": "npc-2",
+            "targetName": "Mainardus",
+            "type": "enemy",
+            "strength": 3,
+            "history": "Blood spilled between them in Minasfeld."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "trusts no one who smiles too easily",
+          "speaks in proverbs",
+          "tells the same three stories"
+        ]
+      },
+      "age": 65,
+      "title": "Cantor",
+      "appearance": "a limp from an old wound",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-54490-170867",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-02T12:00:00.000Z",
+          "location": "Minasfeld",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.150000000000018,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        },
+        {
+          "id": "mem-54490-170867",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-03T10:00:00.000Z",
+          "location": "Minasfeld",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.3700000000000134,
+          "acted": false,
+          "narrative": "survived the battle at Minasfeld",
+          "secret": false
+        }
+      ],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 8.232563705754,
+          "description": "Establish a seat of power"
+        },
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 7,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1969-01-15T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0,
+      "spouseId": "npc-4",
+      "marriedAt": "2009-01-05T00:00:00.000Z"
+    },
+    {
+      "id": "npc-12",
+      "name": "Molora",
+      "role": "scout",
+      "home": "settlement-4",
+      "location": "Myrrka",
+      "reputation": -3,
+      "fame": 0,
+      "alive": true,
+      "class": "Halfling",
+      "level": 1,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "brave",
+          "skeptical",
+          "pious"
+        ],
+        "background": "escaped-slave",
+        "motivation": "survival",
+        "relationships": [
+          {
+            "targetId": "npc-7",
+            "targetName": "Eurydamus",
+            "type": "mentor",
+            "strength": 5,
+            "history": "Saw potential where others saw nothing."
+          },
+          {
+            "targetId": "npc-14",
+            "targetName": "Irantzu",
+            "type": "creditor",
+            "strength": 1,
+            "history": "Gold is owed, and gold will be had."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "keeps a journal in cipher",
+          "never reveals their true name",
+          "laughs at inappropriate moments"
+        ]
+      },
+      "age": 47,
+      "title": "Woods-Guide",
+      "appearance": "ink-stained fingers of a scholar",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-54490-170867",
+          "category": "witnessed-death",
+          "eventType": "death",
+          "timestamp": "2026-01-05T00:00:00.000Z",
+          "location": "Myrrka",
+          "emotion": "grieving",
+          "target": "The Grim Wolves",
+          "intensity": 7.760000000000005,
+          "acted": false,
+          "narrative": "carries the memory of The Grim Wolves",
+          "secret": false
+        }
+      ],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "1986-01-11T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-13",
+      "name": "Izot",
+      "role": "bard",
+      "home": "settlement-0",
+      "location": "Myrrka",
+      "reputation": 1,
+      "fame": 0,
+      "alive": true,
+      "class": "Magic-User",
+      "level": 6,
+      "xp": 0,
+      "spells": [
+        "Read Magic",
+        "Hold Portal",
+        "Fly"
+      ],
+      "depth": {
+        "traits": [
+          "romantic",
+          "cunning",
+          "charitable"
+        ],
+        "background": "guild-dropout",
+        "motivation": "love",
+        "relationships": [
+          {
+            "targetId": "npc-1",
+            "targetName": "Theodric",
+            "type": "student",
+            "strength": 3,
+            "history": "The most promising pupil in years."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "never sits with back to door"
+        ]
+      },
+      "age": 20,
+      "title": "Cantor",
+      "appearance": "a limp from an old wound",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-54490-170867",
+          "category": "witnessed-battle",
+          "eventType": "battle",
+          "timestamp": "2026-01-05T00:00:00.000Z",
+          "location": "Myrrka",
+          "emotion": "proud",
+          "target": "The Grim Wolves",
+          "secondaryTarget": "Mendia",
+          "intensity": 5.760000000000005,
+          "acted": false,
+          "narrative": "saw The Grim Wolves clash",
+          "secret": false
+        }
+      ],
+      "agendas": [
+        {
+          "type": "research",
+          "priority": 5,
+          "progress": 100,
+          "description": "Unlock deeper magical secrets"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "bloodlineId": "bloodline-1767726399143-4533",
+      "birthDate": "1974-01-14T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-14",
+      "name": "Irantzu",
+      "role": "guard",
+      "home": "settlement-4",
+      "location": "Myrrka",
+      "reputation": -3,
+      "fame": 0,
+      "alive": true,
+      "class": "Halfling",
+      "level": 8,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "cunning",
+          "brave"
+        ],
+        "background": "reformed-bandit",
+        "motivation": "duty",
+        "relationships": [
+          {
+            "targetId": "npc-6",
+            "targetName": "Katixa",
+            "type": "enemy",
+            "strength": 5,
+            "history": "Only one of them can have what they both want."
+          },
+          {
+            "targetId": "npc-7",
+            "targetName": "Eurydamus",
+            "type": "student",
+            "strength": 1,
+            "history": "The old ways, passed down in secret."
+          },
+          {
+            "targetId": "npc-9",
+            "targetName": "Eryalus",
+            "type": "student",
+            "strength": 1,
+            "history": "Taught them everything worth knowing."
+          },
+          {
+            "targetId": "npc-12",
+            "targetName": "Molora",
+            "type": "debtor",
+            "strength": 1,
+            "history": "Gold is owed, and gold will be had."
+          },
+          {
+            "targetId": "npc-3",
+            "targetName": "Cybele",
+            "type": "enemy",
+            "strength": 5,
+            "history": "Only one of them can have what they both want."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "never reveals their true name",
+          "quotes ancient philosophers"
+        ]
+      },
+      "age": 58,
+      "title": "Watch-Captain",
+      "appearance": "elaborate tattoos visible at wrist and neck",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-0",
+      "bloodlineId": "bloodline-1767726399143-6311",
+      "birthDate": "1988-01-11T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [
+        "Esquire"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-15",
+      "name": "Gawyne",
+      "role": "bard",
+      "home": "settlement-4",
+      "location": "Azmarin",
+      "reputation": 3,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 11,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "pious",
+          "honorable",
+          "brave"
+        ],
+        "background": "guild-dropout",
+        "motivation": "duty",
+        "secretMotivation": "redemption",
+        "relationships": [
+          {
+            "targetId": "npc-2",
+            "targetName": "Mainardus",
+            "type": "lover",
+            "strength": 1,
+            "history": "Some say the affair still smolders."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "laughs at inappropriate moments",
+          "speaks in proverbs"
+        ]
+      },
+      "age": 30,
+      "title": "Rhapsode",
+      "appearance": "ink-stained fingers of a scholar",
+      "secretsKnown": [],
+      "memories": [],
+      "agendas": [
+        {
+          "type": "stronghold",
+          "priority": 8,
+          "progress": 48.23199973256095,
+          "description": "Establish a seat of power"
+        }
+      ],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "bloodlineId": "bloodline-1767726399143-4227",
+      "birthDate": "1976-01-14T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [
+        "Lord"
+      ],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    },
+    {
+      "id": "npc-16",
+      "name": "Yllaria",
+      "role": "merchant",
+      "home": "settlement-5",
+      "location": "Greenmist",
+      "reputation": 1,
+      "fame": 0,
+      "alive": true,
+      "class": "Thief",
+      "level": 3,
+      "xp": 0,
+      "depth": {
+        "traits": [
+          "cautious",
+          "ambitious",
+          "cruel"
+        ],
+        "background": "failed-merchant",
+        "motivation": "duty",
+        "relationships": [
+          {
+            "targetId": "npc-3",
+            "targetName": "Cybele",
+            "type": "ally",
+            "strength": 1,
+            "history": "Owe each other debts that gold cannot repay."
+          },
+          {
+            "targetId": "npc-10",
+            "targetName": "Eadmund",
+            "type": "betrayed",
+            "strength": 4,
+            "history": "The knife came from behind, as always."
+          },
+          {
+            "targetId": "npc-11",
+            "targetName": "Wantelien",
+            "type": "debtor",
+            "strength": 4,
+            "history": "Expects repayment, with interest."
+          },
+          {
+            "targetId": "npc-4",
+            "targetName": "Hans-Ruedi",
+            "type": "debtor",
+            "strength": 1,
+            "history": "Interest compounds, and so does resentment."
+          }
+        ],
+        "memories": [],
+        "quirks": [
+          "always knows which way is north"
+        ]
+      },
+      "age": 38,
+      "title": "Master",
+      "appearance": "surprisingly young features",
+      "secretsKnown": [],
+      "memories": [
+        {
+          "id": "mem-54490-170867",
+          "category": "witnessed-battle",
+          "eventType": "robbery",
+          "timestamp": "2026-01-04T12:00:00.000Z",
+          "location": "Greenmist",
+          "emotion": "suspicious",
+          "target": "Sons of the Wolf",
+          "intensity": 3.630000000000008,
+          "acted": false,
+          "narrative": "knows the chaos of combat firsthand",
+          "secret": false
+        }
+      ],
+      "agendas": [],
+      "morale": 0,
+      "loyalty": "faction-1",
+      "birthDate": "2008-01-06T00:00:00.000Z",
+      "childrenIds": [],
+      "titles": [],
+      "claims": [],
+      "legitimate": true,
+      "acknowledged": true,
+      "healthCondition": "healthy",
+      "widowed": false,
+      "divorces": 0
+    }
+  ],
+  "factions": [
+    {
+      "id": "faction-0",
+      "name": "The Storm Guild",
+      "attitude": {},
+      "wealth": 110,
+      "focus": "trade",
+      "lastNoted": "Myrrka"
+    },
+    {
+      "id": "faction-1",
+      "name": "Sons of the Wolf",
+      "attitude": {},
+      "wealth": 91,
+      "focus": "martial",
+      "lastNoted": "Azmarin"
+    },
+    {
+      "id": "faction-2",
+      "name": "Order of the Hawk",
+      "attitude": {
+        "Myrrka": 2,
+        "Belfos": 1
+      },
+      "wealth": 74,
+      "focus": "pious",
+      "lastNoted": "Azmarin"
+    },
+    {
+      "id": "faction-3",
+      "name": "Circle of the Dawn",
+      "attitude": {
+        "Greenmist": 1,
+        "Belfos": 1
+      },
+      "wealth": 107,
+      "focus": "arcane",
+      "lastNoted": "Greenmist"
+    },
+    {
+      "id": "faction-4",
+      "name": "The Hawk Compact",
+      "attitude": {
+        "hex:3,9": 1
+      },
+      "wealth": 92,
+      "focus": "trade",
+      "lastNoted": "Myrrka"
+    }
+  ],
+  "caravans": [
+    {
+      "id": "caravan-0",
+      "name": "The Wandering Merchants",
+      "route": [
+        "settlement-0",
+        "settlement-4"
+      ],
+      "goods": [
+        "livestock"
+      ],
+      "location": "Myrrka",
+      "progressHours": 25,
+      "direction": "inbound",
+      "escorts": [
+        "npc-1"
+      ],
+      "factionId": "faction-2",
+      "merchantId": "npc-13"
+    },
+    {
+      "id": "caravan-1",
+      "name": "The New Caravan",
+      "route": [
+        "settlement-0",
+        "settlement-3"
+      ],
+      "goods": [
+        "grain",
+        "textiles"
+      ],
+      "location": "Minasfeld",
+      "progressHours": 8,
+      "direction": "inbound",
+      "escorts": [
+        "npc-3"
+      ],
+      "merchantId": "npc-11"
+    },
+    {
+      "id": "caravan-2",
+      "name": "Northbeach Traders",
+      "route": [
+        "settlement-1",
+        "settlement-0"
+      ],
+      "goods": [
+        "grain",
+        "textiles"
+      ],
+      "location": "Belfos",
+      "progressHours": 4,
+      "direction": "inbound",
+      "escorts": [
+        "npc-8"
+      ],
+      "merchantId": "npc-5"
+    },
+    {
+      "id": "caravan-3",
+      "name": "Beroldus's Wagons",
+      "route": [
+        "settlement-0",
+        "settlement-5"
+      ],
+      "goods": [
+        "salt",
+        "fish"
+      ],
+      "location": "Belfos",
+      "progressHours": 11,
+      "direction": "outbound",
+      "escorts": [
+        "npc-2"
+      ],
+      "factionId": "faction-3",
+      "merchantId": "npc-7"
+    },
+    {
+      "id": "caravan-4",
+      "name": "The Wandering Peddlers",
+      "route": [
+        "settlement-0",
+        "settlement-2"
+      ],
+      "goods": [
+        "grain",
+        "textiles"
+      ],
+      "location": "Azmarin",
+      "progressHours": 13,
+      "direction": "inbound",
+      "escorts": [
+        "npc-6"
+      ],
+      "merchantId": "npc-15"
+    }
+  ],
+  "strongholds": [],
+  "armies": [],
+  "landmarks": [
+    {
+      "id": "landmark-1767726399345-55",
+      "name": "The Cracked Statue",
+      "description": "A cracked statue, whispering in an unknown, melodic tongue.",
+      "location": {
+        "q": 5,
+        "r": 7
+      },
+      "terrain": "road",
+      "discoveryDate": "2026-01-01T04:00:00.000Z",
+      "discoveredBy": "The Grim Wolves",
+      "effect": "prophetic-hint",
+      "knownBy": [
+        "The Grim Wolves"
+      ]
+    },
+    {
+      "id": "landmark-1767726399519-825",
+      "name": "The Sun-bleached Altar",
+      "description": "A sun-bleached altar, whispering in an unknown, melodic tongue.",
+      "location": {
+        "q": 1,
+        "r": 5
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-01T13:00:00.000Z",
+      "discoveredBy": "Parthenius's Band",
+      "effect": "historical-knowledge",
+      "knownBy": [
+        "Parthenius's Band"
+      ]
+    },
+    {
+      "id": "landmark-1767726399681-127",
+      "name": "The Cracked Cave",
+      "description": "A cracked cave, humming a low, vibrating note.",
+      "location": {
+        "q": 1,
+        "r": 5
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-01T20:00:00.000Z",
+      "discoveredBy": "Parthenius's Band",
+      "effect": "arcane-insight",
+      "knownBy": [
+        "Parthenius's Band"
+      ]
+    },
+    {
+      "id": "landmark-1767726400472-307",
+      "name": "The Blood-stained Cave",
+      "description": "A blood-stained cave, pulsing with a faint, rhythmic light.",
+      "location": {
+        "q": 1,
+        "r": 5
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-03T01:00:00.000Z",
+      "discoveredBy": "Parthenius's Band",
+      "effect": "arcane-insight",
+      "knownBy": [
+        "Parthenius's Band"
+      ]
+    },
+    {
+      "id": "landmark-1767726401437-400",
+      "name": "The Cracked Monolith",
+      "description": "A cracked monolith, swallowing all sound around it.",
+      "location": {
+        "q": 1,
+        "r": 5
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-04T22:00:00.000Z",
+      "discoveredBy": "Parthenius's Band",
+      "effect": "fey-blessing",
+      "knownBy": [
+        "Parthenius's Band"
+      ]
+    },
+    {
+      "id": "landmark-1767726401850-765",
+      "name": "The Eerie Pillar",
+      "description": "A eerie pillar, swallowing all sound around it.",
+      "location": {
+        "q": 1,
+        "r": 5
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-05T13:00:00.000Z",
+      "discoveredBy": "Parthenius's Band",
+      "effect": "prophetic-hint",
+      "knownBy": [
+        "Parthenius's Band"
+      ]
+    },
+    {
+      "id": "landmark-1767726401900-337",
+      "name": "The Cracked Cairn",
+      "description": "A cracked cairn, surrounded by a thin, unnerving mist.",
+      "location": {
+        "q": 1,
+        "r": 5
+      },
+      "terrain": "mountains",
+      "discoveryDate": "2026-01-05T15:00:00.000Z",
+      "discoveredBy": "Parthenius's Band",
+      "effect": "arcane-insight",
+      "knownBy": [
+        "Parthenius's Band"
+      ]
+    }
+  ],
+  "ruins": [
+    {
+      "id": "ruin-1767726401790-66",
+      "name": "Ashen Catacombs",
+      "description": "An ancient ashen catacombs from the First Age.",
+      "location": {
+        "q": 1,
+        "r": 5
+      },
+      "rooms": [
+        {
+          "type": "treasure",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "treasure",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "lair",
+          "threat": 3,
+          "loot": true
+        },
+        {
+          "type": "laboratory",
+          "threat": 3,
+          "loot": false
+        },
+        {
+          "type": "lair",
+          "threat": 2,
+          "loot": false
+        },
+        {
+          "type": "laboratory",
+          "threat": 4,
+          "loot": false
+        },
+        {
+          "type": "trap",
+          "threat": 2,
+          "loot": true
+        },
+        {
+          "type": "lair",
+          "threat": 2,
+          "loot": false
+        },
+        {
+          "type": "empty",
+          "threat": 2,
+          "loot": false
+        },
+        {
+          "type": "shrine",
+          "threat": 2,
+          "loot": true
+        }
+      ],
+      "cleared": false,
+      "danger": 3,
+      "history": "Ashen Catacombs was once a center of trade before its fall."
+    }
+  ],
+  "nexuses": [
+    {
+      "id": "nexus-0",
+      "name": "Whispering Nexus of Life",
+      "location": {
+        "q": 4,
+        "r": 9
+      },
+      "powerType": "Arcane",
+      "intensity": 9
+    },
+    {
+      "id": "nexus-1",
+      "name": "Golden Nexus of Stars",
+      "location": {
+        "q": 8,
+        "r": 8
+      },
+      "powerType": "Primal",
+      "intensity": 8
+    },
+    {
+      "id": "nexus-2",
+      "name": "Whispering Nexus of Stars",
+      "location": {
+        "q": 0,
+        "r": 6
+      },
+      "powerType": "Arcane",
+      "intensity": 8
+    },
+    {
+      "id": "nexus-3",
+      "name": "Whispering Nexus of Time",
+      "location": {
+        "q": 2,
+        "r": 0
+      },
+      "powerType": "Shadow",
+      "intensity": 5
+    },
+    {
+      "id": "nexus-4",
+      "name": "Shattered Nexus of Life",
+      "location": {
+        "q": 0,
+        "r": 2
+      },
+      "powerType": "Arcane",
+      "intensity": 6
+    },
+    {
+      "id": "nexus-5",
+      "name": "Deep Nexus of Void",
+      "location": {
+        "q": 0,
+        "r": 8
+      },
+      "powerType": "Divine",
+      "intensity": 7
+    },
+    {
+      "id": "nexus-6",
+      "name": "Whispering Nexus of Time",
+      "location": {
+        "q": 1,
+        "r": 6
+      },
+      "powerType": "Divine",
+      "intensity": 9
+    }
+  ],
+  "mercenaries": [
+    {
+      "id": "merc-0",
+      "name": "The Iron Brotherhood",
+      "captainId": "npc-merc-captain-0",
+      "location": "Windleigh",
+      "size": 143,
+      "quality": 2,
+      "monthlyRate": 198,
+      "loyalty": 8
+    },
+    {
+      "id": "merc-1",
+      "name": "Silver Shields",
+      "captainId": "npc-merc-captain-1",
+      "location": "Greenmist",
+      "size": 84,
+      "quality": 6,
+      "monthlyRate": 208,
+      "loyalty": 9
+    },
+    {
+      "id": "merc-2",
+      "name": "The Golden Lions",
+      "captainId": "npc-merc-captain-2",
+      "location": "Belfos",
+      "size": 129,
+      "quality": 3,
+      "monthlyRate": 104,
+      "loyalty": 9
+    },
+    {
+      "id": "merc-3",
+      "name": "Black Boars",
+      "captainId": "npc-merc-captain-3",
+      "location": "Greenmist",
+      "size": 55,
+      "quality": 6,
+      "monthlyRate": 184,
+      "loyalty": 7
+    },
+    {
+      "id": "merc-4",
+      "name": "Red Ravagers",
+      "captainId": "npc-merc-captain-4",
+      "location": "Belfos",
+      "size": 184,
+      "quality": 4,
+      "monthlyRate": 273,
+      "loyalty": 8
+    },
+    {
+      "id": "merc-5",
+      "name": "The Free Company",
+      "captainId": "npc-merc-captain-5",
+      "location": "Minasfeld",
+      "size": 124,
+      "quality": 4,
+      "monthlyRate": 264,
+      "loyalty": 7
+    }
+  ],
+  "startedAt": "2026-01-01T00:00:00.000Z",
+  "partyStates": {
+    "party-0": {
+      "morale": 10,
+      "resources": 50,
+      "enemies": [],
+      "allies": [],
+      "questLog": [
+        {
+          "id": "quest-1767726400346",
+          "type": "hunt",
+          "target": "Mendia",
+          "reason": "End the threat of Mendia the Pallid",
+          "progress": 0
+        }
+      ],
+      "killList": [
+        "Mendia",
+        null
+      ],
+      "reputation": {}
+    },
+    "band-0": {
+      "morale": 5,
+      "resources": 50,
+      "enemies": [],
+      "allies": [],
+      "questLog": [],
+      "killList": [],
+      "reputation": {}
+    }
+  },
+  "factionStates": {
+    "faction-0": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [
+        "fish",
+        "grain",
+        "textiles",
+        "livestock",
+        "timber",
+        "ore"
+      ],
+      "casusBelli": {},
+      "activeOperations": [
+        {
+          "id": "op-marriage-1767726400156",
+          "type": "marriage-alliance",
+          "target": "Sons of the Wolf",
+          "startedAt": "2026-01-02T13:00:00.000Z",
+          "completesAt": "2026-02-01T13:00:00.000Z",
+          "participants": [],
+          "successChance": 0.5,
+          "resources": 500,
+          "secret": false,
+          "reason": "Forge alliance with Sons of the Wolf through marriage"
+        },
+        {
+          "id": "op-relief-1767726400657",
+          "type": "relief",
+          "target": "Myrrka",
+          "startedAt": "2026-01-03T12:00:00.000Z",
+          "completesAt": "2026-01-10T12:00:00.000Z",
+          "participants": [],
+          "successChance": 0.9,
+          "resources": 300,
+          "secret": false,
+          "reason": "Aid the suffering of Myrrka"
+        }
+      ],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-1": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [
+        "ore",
+        "salt",
+        "textiles",
+        "fish",
+        "livestock"
+      ],
+      "casusBelli": {},
+      "activeOperations": [
+        {
+          "id": "op-marriage-1767726399686",
+          "type": "marriage-alliance",
+          "target": "The Storm Guild",
+          "startedAt": "2026-01-01T20:00:00.000Z",
+          "completesAt": "2026-01-31T20:00:00.000Z",
+          "participants": [],
+          "successChance": 0.5,
+          "resources": 500,
+          "secret": false,
+          "reason": "Forge alliance with The Storm Guild through marriage"
+        },
+        {
+          "id": "op-res-1767726401206",
+          "type": "resource-grab",
+          "target": "Azmarin",
+          "startedAt": "2026-01-04T09:00:00.000Z",
+          "completesAt": "2026-01-06T20:00:00.000Z",
+          "participants": [],
+          "successChance": 0.55,
+          "resources": 13.65,
+          "secret": false,
+          "reason": "Secure salt supplies from Azmarin"
+        }
+      ],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-2": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [
+        "timber",
+        "ore",
+        "fish",
+        "salt"
+      ],
+      "casusBelli": {},
+      "activeOperations": [
+        {
+          "id": "op-marriage-1767726399387",
+          "type": "marriage-alliance",
+          "target": "The Storm Guild",
+          "startedAt": "2026-01-01T05:00:00.000Z",
+          "completesAt": "2026-01-31T05:00:00.000Z",
+          "participants": [],
+          "successChance": 0.5,
+          "resources": 500,
+          "secret": false,
+          "reason": "Forge alliance with The Storm Guild through marriage"
+        },
+        {
+          "id": "op-relief-1767726400885",
+          "type": "relief",
+          "target": "Myrrka",
+          "startedAt": "2026-01-03T23:00:00.000Z",
+          "completesAt": "2026-01-10T23:00:00.000Z",
+          "participants": [],
+          "successChance": 0.9,
+          "resources": 300,
+          "secret": false,
+          "reason": "Aid the suffering of Myrrka"
+        }
+      ],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-3": {
+      "power": 50,
+      "territory": [],
+      "enemies": [
+        "faction-1"
+      ],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [
+        "grain",
+        "livestock",
+        "ore",
+        "timber",
+        "fish",
+        "textiles"
+      ],
+      "casusBelli": {
+        "faction-1": {
+          "reason": "the robbery of their caravan near Greenmist",
+          "magnitude": 5
+        }
+      },
+      "activeOperations": [
+        {
+          "id": "op-res-1767726401124",
+          "type": "resource-grab",
+          "target": "Azmarin",
+          "startedAt": "2026-01-04T02:00:00.000Z",
+          "completesAt": "2026-01-06T14:00:00.000Z",
+          "participants": [],
+          "successChance": 0.55,
+          "resources": 15.6,
+          "secret": false,
+          "reason": "Secure textiles supplies from Azmarin"
+        },
+        {
+          "id": "op-marriage-1767726401276",
+          "type": "marriage-alliance",
+          "target": "The Storm Guild",
+          "startedAt": "2026-01-04T13:00:00.000Z",
+          "completesAt": "2026-02-03T13:00:00.000Z",
+          "participants": [],
+          "successChance": 0.5,
+          "resources": 500,
+          "secret": false,
+          "reason": "Forge alliance with The Storm Guild through marriage"
+        }
+      ],
+      "recentLosses": 0,
+      "recentWins": 0
+    },
+    "faction-4": {
+      "power": 50,
+      "territory": [],
+      "enemies": [],
+      "allies": [],
+      "resources": 100,
+      "morale": 0,
+      "resourceNeeds": [
+        "livestock",
+        "textiles",
+        "salt",
+        "grain"
+      ],
+      "casusBelli": {},
+      "activeOperations": [
+        {
+          "id": "op-marriage-1767726399475",
+          "type": "marriage-alliance",
+          "target": "The Storm Guild",
+          "startedAt": "2026-01-01T09:00:00.000Z",
+          "completesAt": "2026-01-31T09:00:00.000Z",
+          "participants": [],
+          "successChance": 0.5,
+          "resources": 500,
+          "secret": false,
+          "reason": "Forge alliance with The Storm Guild through marriage"
+        },
+        {
+          "id": "op-relief-1767726399993",
+          "type": "relief",
+          "target": "Myrrka",
+          "startedAt": "2026-01-02T06:00:00.000Z",
+          "completesAt": "2026-01-09T06:00:00.000Z",
+          "participants": [],
+          "successChance": 0.9,
+          "resources": 300,
+          "secret": false,
+          "reason": "Aid the suffering of Myrrka"
+        }
+      ],
+      "recentLosses": 0,
+      "recentWins": 0
+    }
+  },
+  "settlementStates": {
+    "Belfos": {
+      "prosperity": -4,
+      "safety": 3,
+      "unrest": 1,
+      "populationDelta": -50,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Windleigh": {
+      "prosperity": -1,
+      "safety": 3,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Azmarin": {
+      "prosperity": -1,
+      "safety": 3,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Minasfeld": {
+      "prosperity": -2,
+      "safety": 1,
+      "unrest": 0,
+      "populationDelta": 0,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    },
+    "Myrrka": {
+      "prosperity": -3,
+      "safety": 2,
+      "unrest": 2,
+      "populationDelta": -50,
+      "recentEvents": [
+        "battle-1767726401497"
+      ],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false,
+      "disease": {
+        "type": "Camp Fever",
+        "intensity": 6,
+        "spreadRate": 0.13456646190024912,
+        "discovered": true
+      }
+    },
+    "Greenmist": {
+      "prosperity": -12,
+      "safety": -5,
+      "unrest": 0,
+      "populationDelta": -150,
+      "recentEvents": [],
+      "contested": false,
+      "defenseLevel": 3,
+      "quarantined": false
+    }
+  },
+  "eventHistory": [
+    {
+      "id": "robbery-1767726400085",
+      "type": "robbery",
+      "timestamp": "2026-01-02T09:00:00.000Z",
+      "location": "Greenmist",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 84,
+        "targetType": "caravan",
+        "factionId": "faction-3",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767726400145",
+      "type": "robbery",
+      "timestamp": "2026-01-02T12:00:00.000Z",
+      "location": "Minasfeld",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 59,
+        "targetType": "caravan",
+        "goods": [
+          "grain",
+          "textiles"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767726400218",
+      "type": "robbery",
+      "timestamp": "2026-01-02T16:00:00.000Z",
+      "location": "Belfos",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 143,
+        "targetType": "caravan",
+        "goods": [
+          "grain",
+          "textiles"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767726400287",
+      "type": "robbery",
+      "timestamp": "2026-01-02T20:00:00.000Z",
+      "location": "Greenmist",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 139,
+        "targetType": "caravan",
+        "factionId": "faction-3",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767726400528",
+      "type": "robbery",
+      "timestamp": "2026-01-03T05:00:00.000Z",
+      "location": "Greenmist",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 136,
+        "targetType": "caravan",
+        "factionId": "faction-3",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767726400603",
+      "type": "robbery",
+      "timestamp": "2026-01-03T10:00:00.000Z",
+      "location": "Minasfeld",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 73,
+        "targetType": "caravan",
+        "goods": [
+          "grain",
+          "textiles"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767726400879",
+      "type": "robbery",
+      "timestamp": "2026-01-03T23:00:00.000Z",
+      "location": "Greenmist",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 141,
+        "targetType": "caravan",
+        "factionId": "faction-3",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767726401259",
+      "type": "robbery",
+      "timestamp": "2026-01-04T12:00:00.000Z",
+      "location": "Greenmist",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 144,
+        "targetType": "caravan",
+        "factionId": "faction-3",
+        "goods": [
+          "salt",
+          "fish"
+        ]
+      }
+    },
+    {
+      "id": "robbery-1767726401417",
+      "type": "robbery",
+      "timestamp": "2026-01-04T20:00:00.000Z",
+      "location": "Windleigh",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 88,
+        "targetType": "caravan",
+        "goods": [
+          "grain",
+          "textiles"
+        ]
+      }
+    },
+    {
+      "id": "battle-1767726401497",
+      "type": "battle",
+      "timestamp": "2026-01-05T00:00:00.000Z",
+      "location": "Myrrka",
+      "actors": [
+        "The Grim Wolves",
+        "Mendia"
+      ],
+      "magnitude": 6,
+      "witnessed": true,
+      "data": {
+        "victor": "The Grim Wolves",
+        "loser": "Mendia",
+        "significance": 4
+      }
+    },
+    {
+      "id": "death-1767726401498",
+      "type": "death",
+      "timestamp": "2026-01-05T00:00:00.000Z",
+      "location": "Myrrka",
+      "actors": [
+        "The Grim Wolves"
+      ],
+      "victims": [
+        "Mendia"
+      ],
+      "perpetrators": [
+        "The Grim Wolves"
+      ],
+      "magnitude": 8,
+      "witnessed": true,
+      "data": {
+        "cause": "vendetta",
+        "killedBy": "The Grim Wolves"
+      }
+    },
+    {
+      "id": "robbery-1767726401930",
+      "type": "robbery",
+      "timestamp": "2026-01-05T17:00:00.000Z",
+      "location": "Azmarin",
+      "actors": [
+        "Sons of the Wolf"
+      ],
+      "perpetrators": [
+        "Sons of the Wolf"
+      ],
+      "magnitude": 4,
+      "witnessed": true,
+      "data": {
+        "value": 75,
+        "targetType": "caravan",
+        "goods": [
+          "grain",
+          "textiles"
+        ]
+      }
+    }
+  ],
+  "lastTickAt": "2026-01-06T00:00:00.000Z",
+  "storyThreads": [
+    {
+      "id": "story-1767726399153-2681",
+      "type": "ancient-evil",
+      "title": "Seals Breaking",
+      "summary": "Ancient wards fail. What they imprisoned walks again.",
+      "phase": "inciting",
+      "actors": [
+        "Dionysios"
+      ],
+      "location": "Windleigh",
+      "startedAt": "2026-01-01T00:00:00.000Z",
+      "lastUpdated": "2026-01-02T18:00:00.000Z",
+      "tension": 2,
+      "beats": [
+        {
+          "timestamp": "2026-01-01T00:00:00.000Z",
+          "summary": "Windleigh stirs to life",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-02T18:00:00.000Z",
+          "summary": "Scholars debate the signs. Dionysios remains seeks wealth and riches.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The evil is resealed, but weakened watchers remain.",
+        "The evil is destroyed at tremendous cost.",
+        "The evil proves to be misunderstood—not evil at all.",
+        "The evil escapes and begins its conquest.",
+        "A bargain is struck with the awakened power."
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "Windleigh",
+          "abandoned tower"
+        ],
+        "themes": [
+          "corruption",
+          "doom",
+          "salvation"
+        ],
+        "motivations": {
+          "Dionysios": "seeks wealth and riches"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    },
+    {
+      "id": "story-1767726399161-8371",
+      "type": "ancient-evil",
+      "title": "The Old Darkness Returns",
+      "summary": "Engelwara races to prevent catastrophe.",
+      "phase": "inciting",
+      "actors": [
+        "Engelwara"
+      ],
+      "location": "Myrrka",
+      "startedAt": "2026-01-01T00:00:00.000Z",
+      "lastUpdated": "2026-01-03T06:00:00.000Z",
+      "tension": 2,
+      "beats": [
+        {
+          "timestamp": "2026-01-01T00:00:00.000Z",
+          "summary": "Myrrka stirs to life",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-03T06:00:00.000Z",
+          "summary": "Animals flee the area.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The evil is resealed, but weakened watchers remain.",
+        "The evil is destroyed at tremendous cost.",
+        "The evil proves to be misunderstood—not evil at all.",
+        "The evil escapes and begins its conquest.",
+        "A bargain is struck with the awakened power."
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "Myrrka"
+        ],
+        "themes": [
+          "doom",
+          "salvation"
+        ],
+        "motivations": {
+          "Engelwara": "seeks power and influence"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    },
+    {
+      "id": "story-1767726399194-9930",
+      "type": "haunting",
+      "title": "Echoes of the Past",
+      "summary": "The dead do not rest peacefully in Greenmist.",
+      "phase": "inciting",
+      "actors": [
+        "Kreon"
+      ],
+      "location": "Greenmist",
+      "startedAt": "2026-01-01T00:00:00.000Z",
+      "lastUpdated": "2026-01-03T14:00:00.000Z",
+      "tension": 2,
+      "beats": [
+        {
+          "timestamp": "2026-01-01T00:00:00.000Z",
+          "summary": "The spirit of New Year fills Greenmist",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-03T14:00:00.000Z",
+          "summary": "The haunted reflect. Kreon remains seeks knowledge and wisdom.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The spirits are laid to rest.",
+        "The haunting intensifies to lethal levels.",
+        "Coexistence is negotiated.",
+        "The ghosts reveal crucial information.",
+        "The \"haunting\" proves to have mortal origins."
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "Greenmist"
+        ],
+        "themes": [
+          "release",
+          "supernatural",
+          "torment"
+        ],
+        "motivations": {
+          "Kreon": "seeks knowledge and wisdom"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    },
+    {
+      "id": "story-1767726399302-1598",
+      "type": "pact",
+      "title": "The Bargain",
+      "summary": "Wattie made a deal with powers best left alone.",
+      "phase": "inciting",
+      "actors": [
+        "Wattie"
+      ],
+      "location": "the region",
+      "startedAt": "2026-01-01T02:00:00.000Z",
+      "lastUpdated": "2026-01-05T05:00:00.000Z",
+      "tension": 3,
+      "beats": [
+        {
+          "timestamp": "2026-01-01T02:00:00.000Z",
+          "summary": "The Hawk Compact declares a shortage of livestock",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-03T14:00:00.000Z",
+          "summary": "Costs become apparent.",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-05T05:00:00.000Z",
+          "summary": "The story evolves.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The pact is fulfilled as agreed.",
+        "A loophole is found. The pact is broken.",
+        "The pact-maker pays the full price.",
+        "The terms are renegotiated at great cost.",
+        "The other party to the pact is destroyed."
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "the region"
+        ],
+        "themes": [
+          "power"
+        ],
+        "motivations": {
+          "Wattie": "seeks wealth and riches"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    },
+    {
+      "id": "story-1767726399328-5434",
+      "type": "hunt",
+      "title": "Blood on the Trail",
+      "summary": "Parthenius's Band stalks a dangerous quarry across the region.",
+      "phase": "inciting",
+      "actors": [
+        "Parthenius's Band"
+      ],
+      "location": "Greenmist",
+      "startedAt": "2026-01-01T03:00:00.000Z",
+      "lastUpdated": "2026-01-03T05:00:00.000Z",
+      "tension": 2,
+      "beats": [
+        {
+          "timestamp": "2026-01-01T03:00:00.000Z",
+          "summary": "Parthenius's Band spot signs of danger",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-03T05:00:00.000Z",
+          "summary": "Supplies dwindle; the hunt becomes desperate.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The quarry is slain.",
+        "The quarry escapes to parts unknown.",
+        "The hunters become the hunted.",
+        "An unexpected alliance forms.",
+        "The quarry is captured alive—but for what purpose?"
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "Greenmist"
+        ],
+        "themes": [
+          "survival"
+        ],
+        "motivations": {
+          "Parthenius's Band": "seeks justice and righteousness"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    },
+    {
+      "id": "story-1767726399333-8873",
+      "type": "raid",
+      "title": "Fire in Greenmist",
+      "summary": "Parthenius's Band strikes fast at Greenmist and withdraws before retaliation.",
+      "phase": "inciting",
+      "actors": [
+        "Parthenius's Band",
+        "orc raiders"
+      ],
+      "location": "Greenmist",
+      "startedAt": "2026-01-01T03:00:00.000Z",
+      "lastUpdated": "2026-01-02T19:00:00.000Z",
+      "tension": 2,
+      "beats": [
+        {
+          "timestamp": "2026-01-01T03:00:00.000Z",
+          "summary": "orc raiders follow Parthenius's Band at a safe distance",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-02T19:00:00.000Z",
+          "summary": "Livestock is driven off in the night.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The raid succeeds with heavy plunder.",
+        "The raiders are intercepted and destroyed.",
+        "The raid escalates into open war.",
+        "The raiders demand tribute to stop."
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "Greenmist"
+        ],
+        "themes": [
+          "greed",
+          "surprise"
+        ],
+        "motivations": {
+          "Parthenius's Band": "motivated by love and protection",
+          "orc raiders": "seeks power and influence"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    },
+    {
+      "id": "story-1767726399427-7982",
+      "type": "pact",
+      "title": "What Was Promised",
+      "summary": "In the region, ancient bargains come due.",
+      "phase": "inciting",
+      "actors": [
+        "Epistor"
+      ],
+      "location": "the region",
+      "startedAt": "2026-01-01T07:00:00.000Z",
+      "lastUpdated": "2026-01-05T01:00:00.000Z",
+      "tension": 2,
+      "beats": [
+        {
+          "timestamp": "2026-01-01T07:00:00.000Z",
+          "summary": "The Hawk Compact declares a shortage of grain",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-05T01:00:00.000Z",
+          "summary": "Consequences follow. Epistor remains motivated by fear and survival.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The pact is fulfilled as agreed.",
+        "A loophole is found. The pact is broken.",
+        "The pact-maker pays the full price.",
+        "The terms are renegotiated at great cost.",
+        "The other party to the pact is destroyed."
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "the region"
+        ],
+        "themes": [
+          "bargain",
+          "consequences"
+        ],
+        "motivations": {
+          "Epistor": "motivated by fear and survival"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    },
+    {
+      "id": "story-1767726399562-9785",
+      "type": "hunt",
+      "title": "Itzia's Last Stand",
+      "summary": "Itzia stalks a dangerous quarry across the region.",
+      "phase": "inciting",
+      "actors": [
+        "Itzia"
+      ],
+      "location": "hex:7,7",
+      "startedAt": "2026-01-01T14:00:00.000Z",
+      "lastUpdated": "2026-01-02T18:00:00.000Z",
+      "tension": 2,
+      "beats": [
+        {
+          "timestamp": "2026-01-01T14:00:00.000Z",
+          "summary": "rust-monster and chaos-beast tensions rise",
+          "tensionChange": 1
+        },
+        {
+          "timestamp": "2026-01-02T18:00:00.000Z",
+          "summary": "Ancient ruins hold clues to the prey's location.",
+          "tensionChange": 1
+        }
+      ],
+      "potentialOutcomes": [
+        "The quarry is slain.",
+        "The quarry escapes to parts unknown.",
+        "The hunters become the hunted.",
+        "An unexpected alliance forms.",
+        "The quarry is captured alive—but for what purpose?"
+      ],
+      "resolved": false,
+      "context": {
+        "actorRelationships": [],
+        "keyLocations": [
+          "hex:7,7",
+          "sacred temple"
+        ],
+        "themes": [
+          "survival",
+          "justice"
+        ],
+        "motivations": {
+          "Itzia": "driven by curiosity and discovery"
+        }
+      },
+      "branchingState": {
+        "path": "main",
+        "variables": {}
+      }
+    }
+  ],
+  "antagonists": [
+    {
+      "id": "antagonist-1767726399073-2381",
+      "name": "Mendia",
+      "epithet": "the Pallid",
+      "type": "dark-wizard",
+      "threat": 3,
+      "territory": "Myrrka",
+      "motivation": "Ascending to godhood",
+      "notoriety": 3,
+      "defeats": 0,
+      "victories": 0,
+      "nemeses": [],
+      "followers": 75,
+      "treasure": 333,
+      "alive": false,
+      "traits": [
+        "always prepared",
+        "speaks in riddles"
+      ],
+      "weaknesses": [
+        "obsessive over research",
+        "spells require preparation"
+      ],
+      "lastSeen": "2026-01-04T16:00:00.000Z"
+    }
+  ]
+}

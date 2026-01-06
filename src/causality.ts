@@ -11,7 +11,7 @@
  * 4. The world should feel alive and reactive
  */
 
-import { Random } from './rng.ts';
+import { Random, makeRandom } from './rng.ts';
 import { WorldState, LogEntry, Party, Settlement, NPC, Faction, Rumor, FactionState, FactionOperation, SettlementState, PartyState, PartyQuest, Good } from './types.ts';
 import { Antagonist } from './antagonists.ts';
 import { StoryThread } from './stories.ts';
@@ -305,6 +305,7 @@ function processRaid(
       (victim as ReactiveNPC).morale = ((victim as ReactiveNPC).morale ?? 0) - 3;
       // Add memory of the attack
       const memory = createRichMemory(
+        rng,
         'was-attacked',
         'raid',
         event.timestamp,
@@ -551,6 +552,7 @@ function processDeath(
         const deathEmotion: MemoryEmotion = rel.type === 'enemy' ? 'grateful' : 
                      (killedBy ? 'angry' : 'grieving');
         const deathMemory = createRichMemory(
+          rng,
           rel.type === 'enemy' ? 'witnessed-death' : 'lost-loved-one',
           'death',
           event.timestamp,
@@ -910,6 +912,7 @@ function processBetrayal(
   // Add intense memory and revenge agenda
   if (betrayedNpc && betrayedNpc.alive !== false) {
     const betrayalMemory = createRichMemory(
+      rng,
       'was-betrayed',
       'betrayal',
       event.timestamp,
@@ -973,11 +976,14 @@ function processBetrayal(
 // ============================================================================
 
 function generateMemoryId(): string {
-  return `mem-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  // Use seeded randomness for deterministic IDs
+  const rng = makeRandom('memory-seed');
+  return `mem-${rng.int(1000000)}-${rng.int(1000000)}`;
 }
 
 // Create a rich memory with narrative potential
 export function createRichMemory(
+  rng: Random,
   category: MemoryCategory,
   eventType: WorldEventType,
   timestamp: Date,
@@ -1204,7 +1210,7 @@ export function createRichMemory(
   };
   
   const narrativeOptions = narratives[category] ?? [`remembers something about ${target ?? 'the past'}`];
-  const narrative = narrativeOptions[Math.floor(Math.random() * narrativeOptions.length)];
+  const narrative = rng.pick(narrativeOptions);
   
   return {
     id: generateMemoryId(),
@@ -1420,6 +1426,7 @@ function createNPCMemories(event: WorldEvent, world: WorldState, rng: Random): L
       const emotion = rng.pick(emotionPool);
       
       const memory = createRichMemory(
+        rng,
         category,
         event.type,
         event.timestamp,
