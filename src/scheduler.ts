@@ -1,77 +1,186 @@
 import { EventBus } from './events.ts';
 import { SimConfig } from './config.ts';
 import { TickEvent } from './types.ts';
-import { WorldState } from './types.ts';
+
+/**
+ * Scheduler for the BECMI Real-Time Simulator
+ * 
+ * Time Model:
+ * - World time is always derived from lastTickAt + (ticks × 10 minutes)
+ * - In real-time mode: tick only when world time < real time
+ * - In catch-up mode: tick rapidly until world time >= target time
+ * - In batch mode: tick rapidly to a specific target date, then exit
+ * 
+ * The scheduler never calculates world time from elapsed real time.
+ * World time advances discretely, one tick at a time.
+ */
+
+export interface SchedulerCallbacks {
+  onTurn: (event: TickEvent) => Promise<void>;
+  onHour: (event: TickEvent) => Promise<void>;
+  onDay: (event: TickEvent) => Promise<void>;
+  onTickComplete: (worldTime: Date) => Promise<void>;
+}
+
+export interface SchedulerState {
+  lastTickAt: Date;        // Last simulated world time
+  startWorldTime: Date;    // When the world began (for turnIndex calculation)
+}
 
 export class Scheduler {
-  private interval: ReturnType<typeof setInterval> | undefined;
-  private turnIndex = 0;
-  private readonly turnIntervalMs: number;
-  private readonly startRealTime: Date;
-  private readonly startWorldTime: Date;
+  private running = false;
+  private readonly turnMs = 10 * 60 * 1000; // 10 minutes in milliseconds
+  private readonly turnsPerHour = 6;        // 6 turns = 1 hour
+  private readonly turnsPerDay = 144;       // 144 turns = 24 hours
 
   constructor(
-    private readonly bus: EventBus, 
+    private readonly callbacks: SchedulerCallbacks,
     private readonly config: SimConfig,
-    private readonly world: WorldState
-  ) {
-    this.turnIntervalMs = this.config.msPerWorldMinute * this.config.turnMinutes;
-    
-    // For 1:1 time: world time = startWorldTime + (realTime - startRealTime)
-    // Use lastTickAt as the starting world time, or startWorldTime if not set
-    this.startWorldTime = world.lastTickAt 
-      ? new Date(world.lastTickAt)
-      : new Date(config.startWorldTime);
-    
-    // Use lastRealTickAt as the starting real time, or world.startedAt if not set
-    // This ensures 1:1 mapping: world time advances at same rate as real time
-    const lastRealTickAt = (world as any).lastRealTickAt;
-    this.startRealTime = lastRealTickAt 
-      ? new Date(lastRealTickAt)
-      : new Date(world.startedAt);
-    
-    // Calculate initial turnIndex based on how much world time has passed
-    const worldTimeElapsedMs = this.startWorldTime.getTime() - config.startWorldTime.getTime();
-    const turnMs = config.turnMinutes * 60 * 1000;
+    private state: SchedulerState
+  ) {}
 
-    // If we have a recent lastRealTickAt, we're transitioning from batch mode to real-time
-    // Reset turnIndex to avoid huge numbers from historical world time
-    const existingLastRealTickAt = (world as any).lastRealTickAt;
-    const timeSinceLastRealTick = existingLastRealTickAt ? Date.now() - new Date(existingLastRealTickAt).getTime() : Infinity;
-    if (timeSinceLastRealTick < 60000) { // Less than 1 minute ago
-      this.turnIndex = 0; // Start fresh for real-time mode
-    } else {
-      this.turnIndex = Math.floor(worldTimeElapsedMs / turnMs);
+  /**
+   * Get the current world time (last tick + 0, since we tick at the END of each period)
+   */
+  get currentWorldTime(): Date {
+    return new Date(this.state.lastTickAt);
+  }
+
+  /**
+   * Calculate turnIndex from world time (for hour/day boundary detection)
+   * This is the number of turns since the world began
+   */
+  private getTurnIndex(worldTime: Date): number {
+    const elapsed = worldTime.getTime() - this.state.startWorldTime.getTime();
+    return Math.floor(elapsed / this.turnMs);
+  }
+
+  /**
+   * Execute a single tick at the given world time
+   * This is the core simulation step - completely synchronous from the scheduler's perspective
+   */
+  private async executeTick(worldTime: Date): Promise<void> {
+    const turnIndex = this.getTurnIndex(worldTime);
+    const tick: TickEvent = { kind: 'turn', worldTime, turnIndex };
+
+    // Always execute turn tick
+    await this.callbacks.onTurn(tick);
+
+    // Check for hour boundary (every 6 turns)
+    // We use turnIndex + 1 because we want to fire at the END of hours, not the start
+    // e.g., turn 6 completes the first hour, turn 12 completes the second hour
+    if ((turnIndex + 1) % this.turnsPerHour === 0) {
+      await this.callbacks.onHour({ ...tick, kind: 'hour' });
+    }
+
+    // Check for day boundary (every 144 turns)
+    if ((turnIndex + 1) % this.turnsPerDay === 0) {
+      await this.callbacks.onDay({ ...tick, kind: 'day' });
+    }
+
+    // Update state - world time has advanced
+    this.state.lastTickAt = worldTime;
+    
+    // Notify that tick is complete (for saving state)
+    await this.callbacks.onTickComplete(worldTime);
+  }
+
+  /**
+   * Advance world time by one tick (10 minutes)
+   */
+  private nextTickTime(): Date {
+    return new Date(this.state.lastTickAt.getTime() + this.turnMs);
+  }
+
+  /**
+   * Catch up from current world time to target time
+   * Used for both resuming after downtime and batch mode
+   * 
+   * @param targetTime - The time to catch up to
+   * @param speedTurnsPerSecond - How fast to simulate (0 = as fast as possible)
+   * @param onProgress - Optional callback for progress updates
+   */
+  async catchUpTo(
+    targetTime: Date,
+    speedTurnsPerSecond: number = 0,
+    onProgress?: (current: Date, target: Date, turnsDone: number, turnsTotal: number) => void
+  ): Promise<void> {
+    const startTime = this.state.lastTickAt;
+    const totalTurns = Math.floor((targetTime.getTime() - startTime.getTime()) / this.turnMs);
+    
+    if (totalTurns <= 0) {
+      return; // Already caught up
+    }
+
+    const delayMs = speedTurnsPerSecond > 0 ? 1000 / speedTurnsPerSecond : 0;
+    let turnsDone = 0;
+
+    while (this.state.lastTickAt.getTime() < targetTime.getTime()) {
+      const nextTime = this.nextTickTime();
+      
+      // Don't overshoot target
+      if (nextTime.getTime() > targetTime.getTime()) {
+        break;
+      }
+
+      await this.executeTick(nextTime);
+      turnsDone++;
+
+      // Progress callback
+      if (onProgress && turnsDone % 100 === 0) {
+        onProgress(this.state.lastTickAt, targetTime, turnsDone, totalTurns);
+      }
+
+      // Delay for pacing (if not running at max speed)
+      if (delayMs > 0) {
+        await new Promise(resolve => setTimeout(resolve, delayMs));
+      }
+    }
+
+    if (onProgress) {
+      onProgress(this.state.lastTickAt, targetTime, turnsDone, totalTurns);
     }
   }
 
-  start(): void {
-    if (this.interval) return;
-    this.interval = setInterval(() => this.emitTurn(), this.turnIntervalMs);
+  /**
+   * Run in real-time mode: tick whenever world time falls behind real time
+   * This is the main loop for continuous operation
+   */
+  async runRealTime(): Promise<void> {
+    if (this.running) return;
+    this.running = true;
+
+    console.log(`⏱️  Starting real-time simulation at ${this.state.lastTickAt.toISOString()}`);
+
+    while (this.running) {
+      const now = new Date();
+      const nextTickAt = this.nextTickTime();
+
+      if (nextTickAt.getTime() <= now.getTime()) {
+        // World time is behind real time - execute a tick
+        await this.executeTick(nextTickAt);
+      } else {
+        // World time is caught up - wait until next tick is due
+        const waitMs = nextTickAt.getTime() - now.getTime();
+        // Cap wait time to avoid issues with system clock changes
+        const cappedWaitMs = Math.min(waitMs, this.turnMs);
+        await new Promise(resolve => setTimeout(resolve, cappedWaitMs));
+      }
+    }
   }
 
+  /**
+   * Stop the real-time loop
+   */
   stop(): void {
-    if (!this.interval) return;
-    clearInterval(this.interval);
-    this.interval = undefined;
+    this.running = false;
+    console.log(`⏹️  Stopping real-time simulation at ${this.state.lastTickAt.toISOString()}`);
   }
 
-  private emitTurn(): void {
-    this.turnIndex += 1;
-    
-    // For 1:1 time: world time = startWorldTime + (current real time - startRealTime)
-    const now = new Date();
-    const realTimeElapsedMs = now.getTime() - this.startRealTime.getTime();
-    const worldTime = new Date(this.startWorldTime.getTime() + realTimeElapsedMs);
-
-    const tick: TickEvent = { kind: 'turn', worldTime, turnIndex: this.turnIndex };
-    this.bus.publish(tick);
-
-    if (this.turnIndex % this.config.hourTurns === 0) {
-      this.bus.publish({ ...tick, kind: 'hour' });
-    }
-    if (this.turnIndex % (this.config.hourTurns * this.config.dayHours) === 0) {
-      this.bus.publish({ ...tick, kind: 'day' });
-    }
+  /**
+   * Update the scheduler's state (e.g., after loading a new world)
+   */
+  updateState(newState: SchedulerState): void {
+    this.state = newState;
   }
 }

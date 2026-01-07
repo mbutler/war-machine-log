@@ -349,7 +349,7 @@ export function generateLegendaryWeapon(rng: Random, world: WorldState): Legenda
   const name = rng.pick(WEAPON_NAMES[type]);
   
   return {
-    id: `weapon-${Date.now()}-${rng.int(1000)}`,
+    id: rng.uid('weapon'),
     name,
     epithet: rng.pick(WEAPON_EPITHETS),
     type,
@@ -367,7 +367,7 @@ export function generateUniqueMonster(rng: Random, world: WorldState): UniqueMon
   const territory = rng.pick(world.settlements).name;
   
   return {
-    id: `monster-${Date.now()}-${rng.int(1000)}`,
+    id: rng.uid('monster'),
     name: rng.pick(template.names),
     epithet: rng.pick(template.epithets),
     species: template.species,
@@ -411,7 +411,7 @@ export function generateProphecy(rng: Random, world: WorldState, actors: string[
     .replace('%SIGN3%', rng.pick(OMEN_SIGNS));
   
   return {
-    id: `prophecy-${Date.now()}`,
+    id: rng.uid('prophecy'),
     text,
     interpretation: template.interpretation,
     subjects: [actor1, actor2].filter(Boolean),
@@ -425,7 +425,7 @@ export function generateLostTreasure(rng: Random, world: WorldState): LostTreasu
   const location = rng.pick(world.settlements).name;
   
   return {
-    id: `treasure-${Date.now()}`,
+    id: rng.uid('treasure'),
     name: rng.pick(template.names),
     type: template.type,
     description: rng.pick(template.descriptions),
@@ -661,7 +661,7 @@ export function checkLegendaryEncounter(
         monster.alive = false;
         
         const deathEvent: WorldEvent = {
-          id: `slayer-${Date.now()}`,
+          id: rng.uid('slayer'),
           type: 'death',
           timestamp: worldTime,
           location,
@@ -712,7 +712,7 @@ export function checkLegendaryEncounter(
       weapon.location = location;
       
       const discoveryEvent: WorldEvent = {
-        id: `discovery-${Date.now()}`,
+        id: rng.uid('discovery'),
         type: 'discovery',
         timestamp: worldTime,
         location,

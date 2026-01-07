@@ -108,18 +108,17 @@ $simLastUpdate = null;
 $simStaleMinutes = 0;
 
 // First, check if the fantasy-log process is actually running (most reliable)
-$psOutput = shell_exec('ps aux | grep "bun" | grep -v grep');
-// Debug: uncomment next line to see what ps finds
-// echo "<!-- DEBUG psOutput: " . htmlspecialchars($psOutput) . " -->";
+// Look specifically for fantasy-log.js, not just any bun process
+$psOutput = shell_exec('ps aux | grep "fantasy-log" | grep -v grep');
 
-if ($psOutput && (strpos($psOutput, 'bun') !== false || strpos($psOutput, 'fantasy-log') !== false)) {
+if ($psOutput && strpos($psOutput, 'fantasy-log') !== false) {
     // Process is running
     $simStatus = 'running';
     $simLastUpdate = date('c');
     $simStaleMinutes = 0;
 } else {
-    // Process not found
-    $simStatus = 'stopped';
+    // Process not found - fall back to checking event log timestamps
+    $simStatus = 'unknown';
 }
 
 // Fallback: Event log timestamps

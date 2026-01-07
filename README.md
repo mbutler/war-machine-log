@@ -4,20 +4,28 @@ A living fantasy world simulation that generates emergent narratives in real-tim
 
 ## Quick Start
 
+### Generate a world locally:
 ```bash
-# Install dependencies
+# Install bun if you haven't: https://bun.sh
 bun install
 
-# Build the simulator
-bun run build
-
-# Start the simulation (runs in background)
-nohup ./restart-wrapper.sh > simulation.log 2>&1 &
-
-# View the live event log
-# Open http://localhost/index.php in your browser
-# (or your server URL if deployed remotely)
+# Generate a world with seed "gator" from Jan 1 to today
+./batch.sh gator
 ```
+
+### Deploy to server:
+```bash
+# Upload files (no dist/ folder on server - files go to root):
+scp dist/fantasy-log.js dist/index.php user@server:/path/to/app/
+scp world.json start.sh user@server:/path/to/app/
+scp -r logs user@server:/path/to/app/
+
+# On server:
+cd /path/to/app
+bun run fantasy-log.js
+```
+
+That's it! The simulation will catch up any missed time and run in real-time.
 
 ## What It Does
 
@@ -33,34 +41,75 @@ Watch as:
 - Weather changes with the seasons, affecting travel and morale
 - Story threads emerge organically from world events
 
-## Output
+## Workflow
 
-### Web Interface
-**Primary way to view the simulation:**
-- Open `index.php` in your browser for a live event feed
-- Hover over events for mysterious "glimpses" behind the simulation
-- Auto-refreshes every 60 seconds
-- Shows the last 50 events (configurable via URL: `?limit=100`)
+### 1. Generate World (Local Machine)
 
-### Console Output (when running manually)
-```
-╔════════════════════════════════════════════════════════════════╗
-║  BECMI Real-Time Simulator                                     ║
-║  15th of Deepwinter, Year 1056                                 ║
-╠════════════════════════════════════════════════════════════════╣
-║  Seed: default-seed                                            ║
-║  Time Scale: 1x (turn every 600000ms)                          ║
-║  Settlements: 3   Parties: 2   Antagonists: 2                  ║
-║  Active Stories: 0                                             ║
-╚════════════════════════════════════════════════════════════════╝
+```bash
+./batch.sh gator           # Seed "gator", auto-calculate days since Jan 1
+./batch.sh gator 30        # Seed "gator", simulate 30 days
+./batch.sh                 # Auto-generate seed, auto-calculate days
 ```
 
-### Log Files
-- `logs/events.jsonl` — Machine-readable JSON Lines format (feeds the web interface)
-- `simulation.log` — Background process output and errors
+The batch script will:
+1. Build the compiled `dist/fantasy-log.js`
+2. Create a fresh world with your seed
+3. Simulate from Jan 1 to today (or specified days)
+4. Output the files you need for deployment
 
-### World State
-- `world.json` — Complete world state, persists between runs
+### 2. Upload to Server
+
+**Minimal files needed on server:**
+
+```
+/path/to/app/
+├── fantasy-log.js          # The compiled app (copy from dist/)
+├── world.json              # World state (includes the seed)
+├── start.sh                # Optional: auto-restart wrapper
+├── fantasy-log.service     # Optional: systemd service file
+├── index.php               # Optional: web interface
+└── logs/
+    ├── events.log          # Human-readable chronicle
+    └── events.jsonl        # Machine-readable log (for web interface)
+```
+
+**No `dist/` folder, no source code, no node_modules, no package.json needed!**
+
+```bash
+# Copy from dist/ to server root (no dist/ folder on server)
+scp dist/fantasy-log.js dist/index.php user@server:/path/to/app/
+scp world.json start.sh fantasy-log.service user@server:/path/to/app/
+scp -r logs user@server:/path/to/app/
+```
+
+### 3. Run on Server
+
+```bash
+# Direct run
+bun run fantasy-log.js
+
+# With auto-restart on crash
+./start.sh
+
+# Background with nohup
+nohup ./start.sh > simulation.log 2>&1 &
+```
+
+On startup, the simulation will:
+1. Load `world.json` (which contains the seed)
+2. Catch up from `lastTickAt` to current time
+3. Switch to real-time mode (1 tick per 10 minutes)
+
+## Deterministic Simulation
+
+**Same seed + same start time = identical results.**
+
+The RNG is fully seeded, so:
+- Batch mode produces reproducible logs
+- Catch-up after downtime produces the same events that "would have happened"
+- You can regenerate a world from scratch and get identical results
+
+The seed is stored in `world.json`, so you only specify it once when creating the world.
 
 ## Configuration
 
@@ -68,196 +117,130 @@ Environment variables:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `SIM_SEED` | `default-seed` | Random seed for reproducible worlds |
-| `SIM_TIME_SCALE` | `1` | Speed multiplier (1 = real-time, 60 = 1 min/sec) |
-| `SIM_CATCH_UP` | `true` | Enable catch-up mode on restart |
-| `SIM_CATCH_UP_SPEED` | `10` | Turns per second during catch-up |
+| `SIM_SEED` | auto-generated | Random seed (only needed for new worlds) |
+| `SIM_START_WORLD_TIME` | `2026-01-01T00:00:00Z` | When the world begins |
+| `SIM_BATCH_DAYS` | (none) | If set, simulate N days then exit |
+| `SIM_CATCH_UP_SPEED` | `100` | Turns per second during catch-up (0 = max) |
 | `SIM_LOG_DIR` | `logs` | Directory for log files |
 
-Example:
-```bash
-SIM_SEED=my-world SIM_TIME_SCALE=60 bun run start
-```
+## Output
+
+### Web Interface
+- Open `index.php` in your browser for a live event feed
+- Hover over events for mysterious "glimpses" behind the simulation
+- Auto-refreshes every 60 seconds
+- Shows the last 50 events (configurable via URL: `?limit=100`)
+
+### Log Files
+- `logs/events.log` — Human-readable chronicle
+- `logs/events.jsonl` — Machine-readable JSON Lines (feeds the web interface)
+
+### World State
+- `world.json` — Complete world state, persists between runs
 
 ## Process Management
 
-The simulator runs as a background process using a custom restart wrapper for reliability:
+### Recommended: systemd (Linux servers)
 
-### Starting
+The best way to run the simulation on a Linux server:
+
 ```bash
-# Build first
-bun run build
+# 1. Copy the service file to systemd
+sudo cp fantasy-log.service /etc/systemd/system/
 
-# Start in background (recommended)
-nohup ./restart-wrapper.sh > simulation.log 2>&1 &
+# 2. Edit paths to match your setup
+sudo nano /etc/systemd/system/fantasy-log.service
 
-# Check it's running
-ps aux | grep -E '(bun|fantasy-log)' | grep -v grep
+# 3. Enable and start
+sudo systemctl daemon-reload
+sudo systemctl enable fantasy-log
+sudo systemctl start fantasy-log
 ```
 
-### Stopping
-```bash
-# Find and kill the process
-ps aux | grep -E '(bun|fantasy-log)' | grep -v grep
-kill -9 <PID>
+**Benefits:**
+- Auto-restart on crash
+- Starts on server boot
+- Proper logging via journald
+- Clean stop/start commands
 
-# Or kill all at once
-pkill -f 'restart-wrapper'
-pkill -f 'fantasy-log'
+```bash
+# Commands
+sudo systemctl status fantasy-log   # Check status
+sudo systemctl stop fantasy-log     # Stop
+sudo systemctl restart fantasy-log  # Restart
+sudo journalctl -u fantasy-log -f   # View logs
 ```
 
-### Restarting
+### Alternative: nohup (simple)
+
 ```bash
-# Stop first, then restart
-pkill -f 'restart-wrapper'
-nohup ./restart-wrapper.sh > simulation.log 2>&1 &
+# Start in background
+nohup bun run fantasy-log.js > simulation.log 2>&1 &
+
+# Stop
+pkill -SIGINT -f 'fantasy-log'
+```
+
+### Alternative: start.sh (auto-restart wrapper)
+
+```bash
+nohup ./start.sh > simulation.log 2>&1 &
 ```
 
 ### Monitoring
 ```bash
-# View process status
-ps aux | grep -E '(bun|fantasy-log)' | grep -v grep
+# Check if running
+ps aux | grep fantasy-log
 
-# View recent logs
+# Watch the log
 tail -f simulation.log
 
-# Check web interface status (green = running, red = stopped)
-# Visit index.php in browser
+# Check web interface
+curl http://localhost/index.php
 ```
 
-### Troubleshooting
-```bash
-# If process keeps dying, check the log
-tail -50 simulation.log
+## Catch-Up Behavior
 
-# Restart with fresh build
-bun run build
-pkill -f 'restart-wrapper'
-nohup ./restart-wrapper.sh > simulation.log 2>&1 &
-```
+When the simulation starts, it compares `lastTickAt` in `world.json` to the current time:
 
-## Persistence & Catch-Up
-
-The world **persists** between runs via `world.json`. When you stop and restart:
-
-1. The simulator detects how much real time has passed
-2. It simulates the missed time at accelerated speed (catch-up mode)
-3. Then resumes 1:1 real-time simulation
+- **If behind**: Rapidly simulates missed time (deterministically)
+- **If current**: Runs in real-time mode immediately
 
 ```
-⏰ Catching up 2d 6h of missed time (324 turns)...
-⏰ Catch-up progress: 50% (162/324 turns)
-✓ Caught up! World time is now synchronized.
+⏳ Catching up: 324 turns (2d 6h)
+   Progress: 50% (162/324 turns) - January 3rd, 2026
+✅ Catch-up complete!
+
+🚀 Starting real-time simulation (1 tick per 10 minutes)
 ```
 
 ### Catch-Up Limits
-- **Maximum**: 7 days of catch-up (to prevent hours-long waits)
-- Beyond 7 days, the world catches up 7 days then continues
+- Default max: 30 days (configurable via `SIM_MAX_CATCH_UP_DAYS`)
+- Speed: 100 turns/second by default (configurable via `SIM_CATCH_UP_SPEED`)
 
-### Disable Catch-Up
-```bash
-# Skip catch-up, jump directly to current time
-SIM_CATCH_UP=false bun run start
-```
+## Fresh Start
 
-### Fresh Start
-To reset the world completely:
-```bash
-# Kill any running processes first
-pkill -f 'restart-wrapper'
-
-# Remove all persistent data
-rm world.json logs/events.* simulation.log
-
-# Start fresh
-bun run build
-nohup ./restart-wrapper.sh > simulation.log 2>&1 &
-```
-
-### New World with Different Names
-The seed controls procedural generation. Same seed = same towns, NPCs, and factions.
+To completely reset and start a new world:
 
 ```bash
-# Delete old world and use a new seed
-pkill -f 'restart-wrapper'
-rm world.json logs/events.* simulation.log
-SIM_SEED=my-unique-world bun run build
-nohup ./restart-wrapper.sh > simulation.log 2>&1 &
+# Local: generate new world
+rm world.json logs/events.*
+./batch.sh new-seed
 
-# Or use a random seed (timestamp)
-pkill -f 'restart-wrapper'
-rm world.json logs/events.* simulation.log
-SIM_SEED=$(date +%s) bun run build
-nohup ./restart-wrapper.sh > simulation.log 2>&1 &
+# Or on server: delete and let it create fresh
+rm world.json logs/events.*
+SIM_SEED=new-seed bun run fantasy-log.js
 ```
-
-| Scenario | Result |
-|----------|--------|
-| `world.json` exists | Loads saved world (continues simulation) |
-| `world.json` deleted, same seed | Regenerates identical world |
-| `world.json` deleted, new seed | Completely new world with different names |
-
-## Backwards Compatibility
-
-The simulator is designed to let you **make code changes while a simulation is running**. When you restart, your existing `world.json` will be migrated automatically.
-
-### Safe Changes ✅
-
-| Change | Why It's Safe |
-|--------|---------------|
-| Adding new fields to entities | Defaults are applied during load |
-| Adding new event/story types | Old stories continue unchanged |
-| Adding new subsystems | Initialized with defaults on load |
-| Tweaking probabilities | Only affects future events |
-| Adding new terrain types | Old hexes keep their terrain |
-| Bug fixes | Won't corrupt existing state |
-
-### Risky Changes ⚠️
-
-| Change | Risk | Mitigation |
-|--------|------|------------|
-| Renaming fields | Load fails | Create migration in `normalize()` |
-| Changing field types | Parse error | Add type coercion in `normalize()` |
-| Removing required fields | Undefined errors | Keep deprecated fields temporarily |
-| Changing enum values | Invalid state | Map old values to new in `normalize()` |
-
-### Schema Versioning
-
-The world file includes a `schemaVersion` field. When loading an older version:
-```
-📦 Migrating world from schema v1 to v2...
-✓ World loaded successfully (schema v2)
-```
-
-### Best Practices for Long-Running Simulations
-
-1. **Test changes with stress tests first**: `bun run src/stress-test.ts`
-2. **Back up your world**: `cp world.json world.backup.json && cp simulation.log simulation.backup.log`
-3. **Add new features with defaults**: `newField ?? defaultValue`
-4. **Don't delete old fields** — mark them deprecated instead
-5. **Monitor the process**: Check `simulation.log` regularly for errors
 
 ## Building
 
 ```bash
 # Bundle for Bun runtime (recommended)
 bun run build
+# Output: dist/fantasy-log.js
 
 # Bundle for Node.js (alternative)
 bun run build:node
-
-# Output: dist/fantasy-log.js
-# Web interface: index.php (serves logs/events.jsonl)
-```
-
-**Note:** The web interface (`index.php`) automatically serves the latest events from `logs/events.jsonl`. No additional setup required.
-
-## Stress Testing
-
-Run 90 simulated days as fast as possible to verify system stability:
-
-```bash
-bun run src/stress-test.ts
 ```
 
 ## Systems
@@ -287,47 +270,25 @@ Events in one system ripple through others:
 - Treasure discoveries spawn rumors that attract rivals
 - Weather affects travel time, naval voyages, and encounter rates
 
-## Deployment
+## Backwards Compatibility
 
-### Server Setup
-```bash
-# Upload these files to your web server:
-# - dist/fantasy-log.js (built simulator)
-# - restart-wrapper.sh (process manager)
-# - index.php (web interface)
-# - world.json (will be created)
-# - logs/ directory (will be created)
+The simulator lets you make code changes while a simulation is running. When you restart, `world.json` is migrated automatically.
 
-# Set permissions
-chmod +x restart-wrapper.sh
-chmod 755 index.php
+### Safe Changes ✅
+- Adding new fields to entities (defaults applied)
+- Adding new event/story types
+- Adding new subsystems
+- Tweaking probabilities
+- Bug fixes
 
-# Start the simulation
-nohup ./restart-wrapper.sh > simulation.log 2>&1 &
+### Schema Versioning
+
+The world file includes a `schemaVersion` field:
 ```
-
-### Remote Monitoring
-- **Web Interface**: Visit `https://your-server.com/index.php`
-- **Status Check**: Green dot = running, red dot = stopped
-- **Process Check**: `ps aux | grep fantasy-log`
-- **Log Check**: `tail -f simulation.log`
-
-### Server Management
-```bash
-# Kill all processes
-pkill -f 'restart-wrapper'
-pkill -f 'fantasy-log'
-
-# Restart after updates
-bun run build  # if making code changes
-nohup ./restart-wrapper.sh > simulation.log 2>&1 &
-
-# Backup important files
-cp world.json world.backup.json
-cp simulation.log simulation.backup.log
+📦 Migrating world from schema v1 to v2...
+✓ World loaded successfully (schema v2)
 ```
 
 ## License
 
 MIT
-

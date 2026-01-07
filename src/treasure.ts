@@ -416,7 +416,7 @@ function generateGemJewel(rng: Random, type: 'gem' | 'jewelry'): GemJewel {
   const value = Math.floor(choice.value * variance);
   
   return {
-    id: `${type}-${Date.now()}-${rng.int(10000)}`,
+    id: rng.uid(type),
     type,
     description: type === 'gem' ? `a ${choice.name}` : `a ${choice.name}`,
     value,
@@ -531,7 +531,7 @@ export function generateMagicItem(
   }
   
   return {
-    id: `magic-${Date.now()}-${rng.int(10000)}`,
+    id: rng.uid('magic'),
     name,
     category,
     rarity,
@@ -958,7 +958,7 @@ export function discoverTreasure(
   
   // Record the hoard
   const hoard: DiscoveredHoard = {
-    id: `hoard-${Date.now()}`,
+    id: rng.uid('hoard'),
     location,
     discoveredBy,
     discoveredAt: worldTime,
@@ -1028,7 +1028,7 @@ export function discoverTreasure(
   } else {
     // Large hoard - start extraction process
     const extraction: TreasureExtraction = {
-      id: `extraction-${Date.now()}`,
+      id: rng.uid('extraction'),
       hoardId: hoard.id,
       location,
       extractingParty: discoveredBy,

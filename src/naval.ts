@@ -404,7 +404,7 @@ export function generateDistantLand(rng: Random): DistantLand {
   const suffix = rng.pick(LAND_SUFFIXES[culture]);
   
   return {
-    id: `distant-land-${Date.now()}-${rng.int(10000)}`,
+    id: rng.uid('distant-land'),
     name: `the ${prefix} ${suffix}`,
     epithet: rng.pick(LAND_EPITHETS[culture]),
     culture,
@@ -425,7 +425,7 @@ export function generateDistantFigure(rng: Random, land: DistantLand): DistantFi
     : `${baseName} ${epithet}`;
   
   return {
-    id: `distant-figure-${Date.now()}-${rng.int(10000)}`,
+    id: rng.uid('distant-figure'),
     name: baseName,
     title,
     landId: land.id,

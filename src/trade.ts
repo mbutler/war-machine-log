@@ -88,7 +88,7 @@ export function advanceCaravans(world: WorldState, rng: Random, worldTime: Date)
       // Bandit attack!
       const raider = rng.pick(world.factions.filter(f => f.focus === 'martial') || [{ name: 'Bandits', id: 'bandits' }]);
       const robberyEvent: WorldEvent = {
-        id: `robbery-${Date.now()}`,
+        id: rng.uid('robbery'),
         type: 'robbery',
         timestamp: worldTime,
         location: caravan.location,

@@ -387,7 +387,7 @@ function processRaid(
       // Add quest to their log
       partyState.questLog = partyState.questLog ?? [];
       partyState.questLog.push({
-        id: `quest-${Date.now()}`,
+        id: rng.uid('quest'),
         type: 'hunt',
         target: event.perpetrators[0],
         reason: `Avenge the raid on ${settlement.name}`,

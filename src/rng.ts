@@ -4,6 +4,7 @@ export interface Random {
   pick<T>(items: readonly T[]): T;
   chance(probability: number): boolean;
   shuffle<T>(items: readonly T[]): T[];
+  uid(prefix?: string): string; // Deterministic unique ID
 }
 
 function hashSeed(seed: string): number {
@@ -29,6 +30,8 @@ function mulberry32(seed: number): () => number {
 
 export function makeRandom(seed: string): Random {
   const rng = mulberry32(hashSeed(seed));
+  let uidCounter = 0; // Deterministic counter for unique IDs
+  
   return {
     next: rng,
     int(maxExclusive: number) {
@@ -54,6 +57,11 @@ export function makeRandom(seed: string): Random {
         [result[i], result[j]] = [result[j], result[i]];
       }
       return result;
+    },
+    uid(prefix?: string): string {
+      // Deterministic unique ID using counter + RNG
+      const id = `${++uidCounter}-${this.int(100000)}`;
+      return prefix ? `${prefix}-${id}` : id;
     },
   };
 }

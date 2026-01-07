@@ -22,7 +22,7 @@ export function generateProceduralRuin(
   const danger = 2 + rng.int(5);
   
   const ruin: Ruin = {
-    id: `ruin-${Date.now()}-${rng.int(1000)}`,
+    id: rng.uid('ruin'),
     name,
     description: `An ancient ${name.toLowerCase()} from the ${rng.pick(['Age of Wonders', 'First Age', 'Empire of Dust'])}.`,
     location,

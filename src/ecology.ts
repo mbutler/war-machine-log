@@ -671,7 +671,7 @@ export function generatePopulation(
   const basePop = config.basePop.min + rng.int(config.basePop.max - config.basePop.min);
   
   return {
-    id: `pop-${species}-${Date.now()}-${rng.int(10000)}`,
+    id: rng.uid(`pop-${species}`),
     species,
     category: config.category,
     hexCoord,
@@ -1048,7 +1048,7 @@ export function tickTerritorialDisputes(
       } else if (rng.chance(0.05)) {
         // New dispute
         ecology.territorialDisputes.push({
-          id: `dispute-${Date.now()}`,
+          id: rng.uid('dispute'),
           population1Id: pop1.id,
           population2Id: pop2.id,
           contestedHex: pop1.hexCoord,

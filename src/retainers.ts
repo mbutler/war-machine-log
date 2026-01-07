@@ -202,7 +202,7 @@ export function generateRetainer(
   }
   
   return {
-    id: `retainer-${Date.now()}-${rng.int(10000)}`,
+    id: rng.uid('retainer'),
     name: randomName(rng),
     type,
     level,
@@ -242,7 +242,7 @@ export function startHiringSearch(
   const hours = searchTime.min + rng.int(searchTime.max - searchTime.min);
   
   const pendingHire: PendingHire = {
-    id: `hire-${Date.now()}`,
+    id: rng.uid('hire'),
     type,
     settlement,
     searchStarted: worldTime,

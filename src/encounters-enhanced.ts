@@ -281,7 +281,7 @@ function generateProceduralBeat(rng: Random, terrain: Terrain, party: Party, wor
   const location = settlement ? settlement.coord : { q: rng.int(world.width), r: rng.int(world.height) };
 
   return {
-    id: `landmark-${Date.now()}-${rng.int(1000)}`,
+    id: rng.uid('landmark'),
     name: beatName,
     description: `A ${descriptor} ${structure.toLowerCase()}, ${activity}.`,
     location: location,

@@ -181,12 +181,12 @@ export function generateGuild(
   const guildmasterName = randomName(rng);
   
   const guild: ThievesGuild = {
-    id: `guild-${Date.now()}-${rng.int(10000)}`,
+    id: rng.uid('guild'),
     name: `The ${name}`,
     epithet: rng.pick(GUILD_EPITHETS),
     territory: [settlement],
     headquarters: settlement,
-    guildmasterId: `guildmaster-${Date.now()}`,
+    guildmasterId: rng.uid('guildmaster'),
     lieutenants: [],
     operatives: [],
     treasury: 100 + rng.int(500),
@@ -204,7 +204,7 @@ export function generateGuild(
   const operativeCount = 5 + rng.int(8);
   for (let i = 0; i < operativeCount; i++) {
     guild.operatives.push({
-      npcId: `thief-${Date.now()}-${i}`,
+      npcId: rng.uid('thief'),
       name: randomName(rng),
       rank: i < 2 ? 'lieutenant' : (i < 5 ? 'operative' : 'apprentice'),
       specialty: rng.pick(['heist', 'pickpocket', 'burglary', 'fence', 'smuggling'] as OperationType[]),
@@ -271,7 +271,7 @@ export function planHeist(
                     4 + rng.int(4);
   
   const operation: GuildOperation = {
-    id: `op-${Date.now()}-${rng.int(10000)}`,
+    id: rng.uid('op'),
     guildId: guild.id,
     type: 'heist',
     status: 'planning',
@@ -363,7 +363,7 @@ export function executeHeist(
     
     // Add to hot goods
     guildState.hotGoods.push({
-      id: `goods-${Date.now()}`,
+      id: rng.uid('goods'),
       guildId: guild.id,
       stolenFrom: operation.targetName,
       stolenAt: worldTime,
@@ -525,7 +525,7 @@ export function discoverSecret(
   const template = rng.pick(SECRET_TYPES);
   
   return {
-    id: `secret-${Date.now()}-${rng.int(10000)}`,
+    id: rng.uid('secret'),
     targetId,
     targetName,
     type: template.type,
@@ -628,7 +628,7 @@ export function planAssassination(
   const planningHours = 168 + rng.int(336); // 7-21 days
   
   const operation: GuildOperation = {
-    id: `assassin-${Date.now()}`,
+    id: rng.uid('assassin'),
     guildId: guild.id,
     type: 'assassination',
     status: 'planning',
@@ -700,7 +700,7 @@ export function executeAssassination(
       
       // Process as assassination event
       const event: WorldEvent = {
-        id: `assassination-${Date.now()}`,
+        id: rng.uid('assassination'),
         type: 'assassination',
         timestamp: worldTime,
         location: operation.targetLocation,
@@ -1030,7 +1030,7 @@ export function tickGuilds(
             // Target a merchant
             const merchantValue = 50 + rng.int(150);
             logs.push(...planHeist(
-              rng, guild, 'merchant', `merchant-${Date.now()}`, 
+              rng, guild, 'merchant', rng.uid('merchant'), 
               `a ${territory} merchant`, territory, merchantValue, guildState, worldTime
             ));
           }

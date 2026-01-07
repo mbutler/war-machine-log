@@ -250,7 +250,7 @@ export function generateAntagonist(
   }
 
   return {
-    id: `antagonist-${Date.now()}-${rng.int(10000)}`,
+    id: rng.uid('antagonist'),
     name,
     epithet,
     type,

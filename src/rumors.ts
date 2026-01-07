@@ -60,7 +60,7 @@ function makeText(world: WorldState, rng: Random, origin: string, target: string
 export function spawnRumor(world: WorldState, rng: Random, origin: string): Rumor {
   const { target, kind } = pickTarget(world, rng);
   return {
-    id: `rumor-${Date.now()}-${rng.int(1e6)}`,
+    id: rng.uid('rumor'),
     kind,
     text: makeText(world, rng, origin, target),
     target,
@@ -85,7 +85,7 @@ export function createRumor(
   freshness = 5 + rng.int(4),
 ): Rumor {
   return {
-    id: `rumor-${Date.now()}-${rng.int(1e6)}`,
+    id: rng.uid('rumor'),
     kind,
     text,
     target,
@@ -214,7 +214,7 @@ export function createTreasureRumor(
     : 5 + rng.int(7);   // 5-12 days
   
   return {
-    id: `treasure-rumor-${Date.now()}-${rng.int(1e6)}`,
+    id: rng.uid('treasure-rumor'),
     kind: 'mystery',
     text,
     target: location,
@@ -248,7 +248,7 @@ export function spreadTreasureRumor(
   for (let i = 0; i < Math.min(spreadCount, otherSettlements.length); i++) {
     const settlement = otherSettlements[i];
     const variant = { ...baseRumor };
-    variant.id = `treasure-rumor-${Date.now()}-${rng.int(1e6)}`;
+    variant.id = rng.uid('treasure-rumor');
     variant.origin = settlement.name;
     variant.freshness = baseRumor.freshness - 1 - rng.int(3); // Slightly stale
     

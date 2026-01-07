@@ -1,0 +1,20 @@
+[Unit]
+Description=BECMI Fantasy Log Simulator
+After=network.target
+
+[Service]
+Type=simple
+User=mbutler
+WorkingDirectory=/home/mbutler/fantasy-log
+ExecStart=/home/mbutler/.bun/bin/bun run fantasy-log.js
+Restart=always
+RestartSec=5
+StandardOutput=append:/home/mbutler/fantasy-log/simulation.log
+StandardError=append:/home/mbutler/fantasy-log/simulation.log
+
+# Environment (optional - seed is in world.json)
+# Environment=SIM_LOG_DIR=logs
+
+[Install]
+WantedBy=multi-user.target
+

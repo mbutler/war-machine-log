@@ -91,7 +91,7 @@ export function createInitialStrongholdState(
   type: 'Tower' | 'Keep' | 'Temple' | 'Hideout'
 ): Stronghold {
   return {
-    id: `stronghold-${npcId}-${Date.now()}`,
+    id: rng.uid(`stronghold-${npcId}`),
     ownerId: npcId,
     name: name,
     location: location,

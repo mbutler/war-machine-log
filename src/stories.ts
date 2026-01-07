@@ -1615,7 +1615,7 @@ export function generateStoryThread(
   const branchingState = initializeBranchingState(rng, type);
 
   return {
-    id: `story-${Date.now()}-${rng.int(10000)}`,
+    id: rng.uid('story'),
     type,
     title,
     summary,

@@ -53,7 +53,7 @@ export function tickNexuses(world: WorldState, rng: Random, worldTime: Date): Lo
           if (state.power >= 60 && !state.activeOperations.some(op => op.target === nexus.name)) {
             // Faction wants the nexus!
             state.activeOperations.push({
-              id: `op-nexus-${Date.now()}`,
+              id: rng.uid('op-nexus'),
               type: 'expansion',
               target: nexus.name,
               startedAt: worldTime,
@@ -122,7 +122,7 @@ export function tickArmyRaising(world: WorldState, rng: Random, worldTime: Date)
       const location = fState.territory.length > 0 ? rng.pick(fState.territory) : world.settlements[0].name;
       
       const newArmy: Army = {
-        id: `army-${faction.id}-${Date.now()}`,
+        id: rng.uid(`army-${faction.id}`),
         ownerId: faction.id,
         location: location,
         strength: 50 + rng.int(100),
@@ -161,7 +161,7 @@ export function tickArmyRaising(world: WorldState, rng: Random, worldTime: Date)
 
       const location = world.settlements.find(s => s.coord.q === stronghold.location.q && s.coord.r === stronghold.location.r)?.name || `hex:${stronghold.location.q},${stronghold.location.r}`;
       const newArmy: Army = {
-        id: `army-${stronghold.ownerId}-${Date.now()}`,
+        id: rng.uid(`army-${stronghold.ownerId}`),
         ownerId: stronghold.ownerId,
         location,
         strength: 20 + rng.int(40),
@@ -229,7 +229,7 @@ export function tickLevelUps(world: WorldState, rng: Random, worldTime: Date): L
         const state = getPartyState(world, party.id);
         if (!state.questLog.some(q => q.type === 'stronghold')) {
           state.questLog.push({
-            id: `quest-stronghold-${Date.now()}`,
+            id: rng.uid('quest-stronghold'),
             type: 'stronghold',
             target: party.location,
             reason: 'Establish a permanent seat of power at name level',
@@ -560,7 +560,7 @@ function executeNPCAgenda(
             
             // Process death event
             const deathEvent: WorldEvent = {
-              id: `npc-revenge-${Date.now()}`,
+              id: rng.uid('npc-revenge'),
               type: 'assassination',
               timestamp: worldTime,
               location: npc.location,
@@ -820,7 +820,7 @@ function executeNPCAgenda(
           const type = npc.class === 'Magic-User' ? 'Tower' : npc.class === 'Cleric' ? 'Temple' : npc.class === 'Thief' ? 'Hideout' : 'Keep';
           
           const stronghold = {
-            id: `stronghold-${npc.id}-${Date.now()}`,
+            id: rng.uid(`stronghold-${npc.id}`),
             ownerId: npc.id,
             name: `${npc.name}'s ${type}`,
             location: location,
@@ -913,7 +913,7 @@ function executeNPCAgenda(
           if (agenda.progress >= 100) {
             // THE BETRAYAL
             const betrayalEvent: WorldEvent = {
-              id: `betrayal-${Date.now()}`,
+              id: rng.uid('betrayal'),
               type: 'betrayal',
               timestamp: worldTime,
               location: npc.location,
@@ -1019,7 +1019,7 @@ export function tickPartyAgency(
           quest.progress += 0.02 + rng.next() * 0.03;
           if (quest.progress >= 100) {
             const stronghold = {
-              id: `stronghold-${party.id}-${Date.now()}`,
+              id: rng.uid(`stronghold-${party.id}`),
               ownerId: party.id,
               name: `${party.name}'s Bastion`,
               location: world.settlements.find(s => s.name === party.location)?.coord ?? { q: 0, r: 0 },
@@ -1093,7 +1093,7 @@ export function tickPartyAgency(
                 
                 // Process as death event
                 const deathEvent: WorldEvent = {
-                  id: `quest-kill-${Date.now()}`,
+                  id: rng.uid('quest-kill'),
                   type: 'death',
                   timestamp: worldTime,
                   location: party.location,
@@ -1151,7 +1151,7 @@ export function tickPartyAgency(
         state.vendetta = threat.name;
         state.questLog = state.questLog ?? [];
         state.questLog.push({
-          id: `quest-${Date.now()}`,
+          id: rng.uid('quest'),
           type: 'hunt',
           target: threat.name,
           reason: `End the threat of ${threat.name} ${threat.epithet}`,
@@ -1244,7 +1244,7 @@ function resolvePartyConfrontation(
   
   // Create battle event
   const battleEvent: WorldEvent = {
-    id: `battle-${Date.now()}`,
+    id: rng.uid('battle'),
     type: 'battle',
     timestamp: worldTime,
     location: party.location,
@@ -1265,7 +1265,7 @@ function resolvePartyConfrontation(
       targetAntagonist.alive = false;
       
       const deathEvent: WorldEvent = {
-        id: `death-${Date.now()}`,
+        id: rng.uid('death'),
         type: 'death',
         timestamp: worldTime,
         location: party.location,
@@ -1379,7 +1379,7 @@ export function tickFactionOperations(
           const opType = hasCB ? 'conquest' : 'raid';
 
           const op: FactionOperation = {
-            id: `op-${Date.now()}`,
+            id: rng.uid('op'),
             type: opType,
             target: targetSettlement,
             startedAt: worldTime,
@@ -1409,7 +1409,7 @@ export function tickFactionOperations(
           if (!world.armies.some(a => a.ownerId === faction.id && a.location === targetSettlement)) {
             const homeBase = state.territory[0] || faction.name;
             const army: Army = {
-              id: `army-op-${Date.now()}`,
+              id: rng.uid('army-op'),
               ownerId: faction.id,
               location: homeBase,
               strength: 40 + rng.int(60),
@@ -1440,7 +1440,7 @@ export function tickFactionOperations(
         if (currentOwnerId !== faction.id) {
           // Found a settlement with the resource we need!
           const op: FactionOperation = {
-            id: `op-res-${Date.now()}`,
+            id: rng.uid('op-res'),
             type: 'resource-grab',
             target: targetSettlement.name,
             startedAt: worldTime,
@@ -1529,7 +1529,7 @@ export function tickFactionOperations(
       if (enemy && enemyState.territory.length > 0 && !state.activeOperations.some(op => op.type === 'trade-embargo')) {
         const target = rng.pick(enemyState.territory);
         const op: FactionOperation = {
-          id: `op-embargo-${Date.now()}`,
+          id: rng.uid('op-embargo'),
           type: 'trade-embargo',
           target,
           startedAt: worldTime,
@@ -1565,7 +1565,7 @@ export function tickFactionOperations(
       
       if (heretical && !state.activeOperations.some(op => op.type === 'crusade')) {
         const op: FactionOperation = {
-          id: `op-crusade-${Date.now()}`,
+          id: rng.uid('op-crusade'),
           type: 'crusade',
           target: heretical.name,
           startedAt: worldTime,
@@ -1596,7 +1596,7 @@ export function tickFactionOperations(
       const homeTerritory = state.territory[0] ?? world.settlements[0]?.name;
       if (homeTerritory && !state.activeOperations.some(op => op.type === 'propaganda')) {
         const op: FactionOperation = {
-          id: `op-prop-${Date.now()}`,
+          id: rng.uid('op-prop'),
           type: 'propaganda',
           target: homeTerritory,
           startedAt: worldTime,
@@ -1637,7 +1637,7 @@ export function tickFactionOperations(
       if (enemy && enemyLeaders.length > 0 && !state.activeOperations.some(op => op.type === 'assassination')) {
         const target = rng.pick(enemyLeaders);
         const op: FactionOperation = {
-          id: `op-assassin-${Date.now()}`,
+          id: rng.uid('op-assassin'),
           type: 'assassination',
           target: target.name,
           secondaryTarget: enemy.name,
@@ -1666,7 +1666,7 @@ export function tickFactionOperations(
       
       if (potential && !state.activeOperations.some(op => op.type === 'marriage-alliance')) {
         const op: FactionOperation = {
-          id: `op-marriage-${Date.now()}`,
+          id: rng.uid('op-marriage'),
           type: 'marriage-alliance',
           target: potential.name,
           startedAt: worldTime,
@@ -1696,7 +1696,7 @@ export function tickFactionOperations(
       const territory = state.territory[0];
       if (territory && !state.activeOperations.some(op => op.type === 'inquisition')) {
         const op: FactionOperation = {
-          id: `op-inq-${Date.now()}`,
+          id: rng.uid('op-inq'),
           type: 'inquisition',
           target: territory,
           startedAt: worldTime,
@@ -1730,7 +1730,7 @@ export function tickFactionOperations(
       if (enemyState.territory.length > 0 && !state.activeOperations.some(op => op.type === 'blockade')) {
         const target = rng.pick(enemyState.territory);
         const op: FactionOperation = {
-          id: `op-block-${Date.now()}`,
+          id: rng.uid('op-block'),
           type: 'blockade',
           target,
           startedAt: worldTime,
@@ -1765,7 +1765,7 @@ export function tickFactionOperations(
     if (crisisSettlement && (faction.focus === 'pious' || faction.focus === 'trade') && rng.chance(0.03)) {
       if (!state.activeOperations.some(op => op.type === 'relief')) {
         const op: FactionOperation = {
-          id: `op-relief-${Date.now()}`,
+          id: rng.uid('op-relief'),
           type: 'relief',
           target: crisisSettlement.name,
           startedAt: worldTime,
@@ -1928,7 +1928,7 @@ function resolveOperation(
       if (success) {
         // Create raid event
         const raidEvent: WorldEvent = {
-          id: `raid-${Date.now()}`,
+          id: rng.uid('raid'),
           type: 'raid',
           timestamp: worldTime,
           location: op.target,

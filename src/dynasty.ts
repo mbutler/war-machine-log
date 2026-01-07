@@ -214,7 +214,7 @@ export function generateBloodline(
   const familyName = rng.pick(FAMILY_NAMES);
   
   return {
-    id: `bloodline-${Date.now()}-${rng.int(10000)}`,
+    id: rng.uid('bloodline'),
     name: familyName,
     motto: rng.chance(0.7) ? rng.pick(FAMILY_MOTTOS) : undefined,
     founderId,
@@ -501,7 +501,7 @@ export function processSuccession(
   } else {
     // Succession crisis!
     const crisis: SuccessionCrisis = {
-      id: `crisis-${Date.now()}`,
+      id: rng.uid('crisis'),
       title: `Head of House ${bloodline.name}`,
       asset: bloodline.id,
       assetType: 'title',
@@ -613,7 +613,7 @@ export function processStrongholdInheritance(
   } else {
     // Contested!
     const crisis: SuccessionCrisis = {
-      id: `crisis-stronghold-${Date.now()}`,
+      id: rng.uid('crisis-stronghold'),
       title: `Lordship of ${stronghold.name}`,
       asset: stronghold.id,
       assetType: 'stronghold',
@@ -753,7 +753,7 @@ export function performMarriage(
   
   // Create marriage record
   const marriage: Marriage = {
-    id: `marriage-${Date.now()}`,
+    id: rng.uid('marriage'),
     spouse1Id: spouse1.id,
     spouse2Id: spouse2.id,
     marriedAt: worldTime,
@@ -875,7 +875,7 @@ export function tickPregnancies(
       const dueDate = new Date(worldTime.getTime() + 270 * 24 * 60 * 60 * 1000); // 9 months
       
       dynasty.pregnancies.push({
-        id: `pregnancy-${Date.now()}`,
+        id: rng.uid('pregnancy'),
         motherId: potentialMother.id,
         fatherId: potentialFather.id,
         conceivedAt: worldTime,
@@ -945,7 +945,7 @@ export function processBirth(
   for (let i = 0; i < childCount; i++) {
     const childName = randomName(rng);
     const child: DynasticNPC = {
-      id: `npc-child-${Date.now()}-${i}`,
+      id: rng.uid('npc-child'),
       name: childName,
       role: 'laborer', // Will change as they grow
       home: mother.home,
@@ -1190,7 +1190,7 @@ export function tickDynasty(
       
       if (target && !dynasty.courtships.some(c => c.suiterId === suitor.id)) {
         dynasty.courtships.push({
-          id: `courtship-${Date.now()}`,
+          id: rng.uid('courtship'),
           suiterId: suitor.id,
           targetId: target.id,
           startedAt: worldTime,
