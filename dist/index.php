@@ -107,18 +107,25 @@ $simStatus = 'unknown';
 $simLastUpdate = null;
 $simStaleMinutes = 0;
 
-// First, check if the fantasy-log process is actually running (most reliable)
-// Look specifically for fantasy-log.js, not just any bun process
-$psOutput = shell_exec('ps aux | grep "fantasy-log" | grep -v grep');
+// Check systemd service status (most reliable)
+$systemctlOutput = trim(shell_exec('systemctl is-active fantasy-log 2>/dev/null') ?? '');
 
-if ($psOutput && strpos($psOutput, 'fantasy-log') !== false) {
-    // Process is running
+if ($systemctlOutput === 'active') {
+    // Systemd service is running
     $simStatus = 'running';
     $simLastUpdate = date('c');
     $simStaleMinutes = 0;
+} elseif ($systemctlOutput === 'inactive' || $systemctlOutput === 'failed') {
+    // Service explicitly stopped or failed
+    $simStatus = 'stopped';
 } else {
-    // Process not found - fall back to checking event log timestamps
-    $simStatus = 'unknown';
+    // Fallback: check for process directly (for non-systemd setups)
+    $psOutput = shell_exec('ps aux | grep "fantasy-log" | grep -v grep');
+    if ($psOutput && strpos($psOutput, 'fantasy-log') !== false) {
+        $simStatus = 'running';
+        $simLastUpdate = date('c');
+        $simStaleMinutes = 0;
+    }
 }
 
 // Fallback: Event log timestamps
@@ -1409,11 +1416,11 @@ function getOrdinal($n) {
                 <?php endif; ?>
                 
                 <?php if ($simStatus === 'running'): ?>
-                <span class="status status-running" title="Last activity <?= $simStaleMinutes ?> min ago">● Live</span>
+                <span class="status status-running" title="systemctl: <?= $systemctlOutput ?: 'process running' ?>">● Live</span>
                 <?php elseif ($simStatus === 'stale'): ?>
-                <span class="status status-stale" title="Last activity <?= $simStaleMinutes ?> min ago">● Stale (<?= $simStaleMinutes ?>m)</span>
+                <span class="status status-stale" title="No events in <?= $simStaleMinutes ?> min - service may be idle">● Stale (<?= $simStaleMinutes ?>m)</span>
                 <?php elseif ($simStatus === 'stopped'): ?>
-                <span class="status status-stopped" title="Last activity <?= $simStaleMinutes ?> min ago">● Stopped</span>
+                <span class="status status-stopped" title="systemctl: <?= $systemctlOutput ?: 'process not found' ?>">● Stopped</span>
                 <?php endif; ?>
             </div>
         </header>

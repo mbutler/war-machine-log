@@ -59,6 +59,22 @@ The batch script will:
 
 ### 2. Upload to Server
 
+**⚠️ IMPORTANT: Stop the service before uploading!**
+
+The running simulation saves its state periodically. If you upload while it's running, 
+your new files will be overwritten by the old world state.
+
+```bash
+# On server: STOP first
+sudo systemctl stop fantasy-log
+
+# Then upload your files
+# ... (scp, FileZilla, rsync, etc.)
+
+# Then START
+sudo systemctl start fantasy-log
+```
+
 **Minimal files needed on server:**
 
 ```
@@ -166,10 +182,14 @@ sudo systemctl start fantasy-log
 ```bash
 # Commands
 sudo systemctl status fantasy-log   # Check status
-sudo systemctl stop fantasy-log     # Stop
-sudo systemctl restart fantasy-log  # Restart
+sudo systemctl stop fantasy-log     # Stop (do this before uploading new files!)
+sudo systemctl start fantasy-log    # Start
+sudo systemctl restart fantasy-log  # Restart (only if not uploading new files)
 sudo journalctl -u fantasy-log -f   # View logs
 ```
+
+**Note:** Use `stop` + upload + `start` when deploying new files. Don't use `restart` 
+because the running process will overwrite your uploaded `world.json` before stopping.
 
 ### Alternative: nohup (simple)
 
