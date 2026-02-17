@@ -1,0 +1,9 @@
+# Backup folders (temporary, from submodule migration)
+fantasy-log-backup/
+war-machine-backup/
+
+# Scripts (removed from repo)
+*.sh
+
+# OS
+.DS_Store
