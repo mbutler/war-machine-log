@@ -1,0 +1,10 @@
+.dominion-cooldown {
+  border-left: 3px solid rgba(59, 130, 246, 0.8);
+  background: rgba(59, 130, 246, 0.08);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  color: #bfdbfe;
+  margin-top: 0.5rem;
+}
+

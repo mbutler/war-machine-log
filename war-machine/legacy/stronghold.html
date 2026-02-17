@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stronghold Architect</title>
+  <style>
+    /* --- DESIGN SYSTEM (Matches War Machine Suite) --- */
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 1.5rem; font-family: system-ui, -apple-system, sans-serif; background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%); color: #e5e7eb; }
+    h1 { margin: 0 0 0.3rem 0; font-size: 1.6rem; letter-spacing: -0.02em; }
+    .tagline { font-size: 0.85rem; color: #94a3b8; margin-bottom: 1.2rem; }
+    
+    .layout-main { display: grid; grid-template-columns: 350px 1fr; gap: 1rem; margin-top: 0.75rem; }
+    @media (max-width: 900px) { .layout-main { grid-template-columns: 1fr; } }
+
+    /* Cards */
+    .card { border-radius: 0.75rem; border: 1px solid #1f2937; background: #0f172a; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem; height: fit-content; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; border-bottom: 1px solid #1e293b; margin-bottom: 0.5rem; }
+    .card-title { font-weight: 700; font-size: 1rem; color: #f8fafc; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    /* UI Elements */
+    label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 3px; }
+    input[type="text"], input[type="number"], select {
+      width: 100%; background: #020617; border: 1px solid #334155; color: #e2e8f0;
+      padding: 6px 8px; border-radius: 4px; font-size: 0.9rem;
+    }
+    input:focus, select:focus { border-color: #6366f1; outline: none; }
+    
+    .row { display: flex; gap: 8px; }
+    .row > div { flex: 1; }
+    
+    /* Buttons */
+    .btn { width: 100%; padding: 10px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .btn-primary { background: #4f46e5; color: white; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+    .btn-primary:hover { background: #4338ca; }
+    .btn-sec { background: #334155; color: #cbd5e1; font-size: 0.8rem; }
+    .btn-danger { background: #991b1b; color: white; }
+    .btn-add { background: #059669; color: white; }
+
+    /* Grid List */
+    .comp-list { display: grid; gap: 8px; }
+    .comp-item { background: #1e293b; padding: 8px 12px; border-radius: 6px; border: 1px solid #334155; display: grid; grid-template-columns: 1fr 80px 80px 40px; align-items: center; gap: 10px; }
+    .comp-name { font-weight: 600; font-size: 0.9rem; color: #e2e8f0; }
+    .comp-detail { font-size: 0.75rem; color: #94a3b8; }
+    
+    .summary-box { background: #020617; padding: 12px; border-radius: 6px; border: 1px solid #334155; margin-top: 10px; }
+    .sum-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9rem; }
+    .sum-val { font-weight: bold; color: #fff; }
+    .sum-total { border-top: 1px solid #334155; padding-top: 8px; margin-top: 8px; font-size: 1.1rem; color: #fbbf24; }
+
+    /* Icons/Badges */
+    .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; background: #334155; color: #cbd5e1; }
+  </style>
+</head>
+<body>
+
+  <h1>Stronghold Architect</h1>
+  <p class="tagline">Design fortifications and calculate construction costs per BECMI Expert Rules.</p>
+
+  <div class="layout-main">
+
+    <!-- LEFT: Controls & Summary -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Project Overview</span>
+      </div>
+      
+      <label>Stronghold Name</label>
+      <input type="text" id="projName" value="Castle Blackrock" onchange="saveData()">
+      
+      <div class="row" style="margin-top:10px">
+        <div>
+           <label>Terrain Clear?</label>
+           <select id="terrainMod" onchange="calcTotals()">
+             <option value="1.0">Clear / Normal (x1.0)</option>
+             <option value="1.1">Forest / Hills (x1.1)</option>
+             <option value="1.2">Swamp / Mountain (x1.2)</option>
+           </select>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <div class="sum-row">
+           <span style="color:#94a3b8">Base Cost:</span>
+           <span class="sum-val" id="dispBase">0 gp</span>
+        </div>
+        <div class="sum-row">
+           <span style="color:#94a3b8">Terrain Mod:</span>
+           <span class="sum-val" id="dispMod">x1.0</span>
+        </div>
+        <div class="sum-row sum-total">
+           <span>Total Cost:</span>
+           <span id="dispTotal">0 gp</span>
+        </div>
+        <div class="sum-row" style="margin-top:12px; color:#a7f3d0">
+           <span>Construction Time:</span>
+           <span class="sum-val" id="dispTime">0 days</span>
+        </div>
+        <div class="sum-row" style="color:#93c5fd">
+           <span>Engineers Needed:</span>
+           <span class="sum-val" id="dispEng">0</span>
+        </div>
+      </div>
+
+      <div style="margin-top:15px">
+        <button class="btn btn-sec" onclick="exportDesign()">Export Design (JSON)</button>
+        <button class="btn btn-sec" onclick="resetDesign()" style="margin-top:8px; background:#450a0a; color:#fca5a5">Reset Project</button>
+      </div>
+    </div>
+
+    <!-- RIGHT: Component Builder -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Construction Components</span>
+      </div>
+
+      <!-- Add New -->
+      <div style="background:#1e293b; padding:10px; border-radius:6px; border:1px solid #334155; margin-bottom:15px">
+         <div class="row">
+            <div style="flex:3">
+               <label>Component Type</label>
+               <select id="newCompType">
+                 <!-- Populated by JS -->
+               </select>
+            </div>
+            <div style="flex:1">
+               <label>Qty</label>
+               <input type="number" id="newCompQty" value="1" min="1">
+            </div>
+            <div style="flex:1">
+               <label>&nbsp;</label>
+               <button class="btn btn-add" onclick="addComponent()">Add</button>
+            </div>
+         </div>
+         <div id="compDesc" style="font-size:0.75rem; color:#94a3b8; margin-top:6px; font-style:italic"></div>
+      </div>
+
+      <!-- List -->
+      <div class="comp-list" id="compList">
+         <!-- Items go here -->
+      </div>
+      
+      <div id="emptyState" style="text-align:center; color:#64748b; padding:40px; font-style:italic">
+         No components added yet. Start building!
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // --- CONSTANTS (BECMI / Expert Rulebook p. X53) ---
+    const COMPONENTS = [
+      { id: 'wall_stone', name: 'Castle Wall (Stone)', cost: 5000, desc: "100' long, 20' high, 10' thick. Includes battlements." },
+      { id: 'wall_bl', name: 'Battlement (Add-on)', cost: 500, desc: "100' long. Add to existing walls/roofs." },
+      { id: 'tower_sm', name: 'Tower, Small Round', cost: 15000, desc: "30' high, 20' dia. 2 levels." },
+      { id: 'tower_md', name: 'Tower, Round', cost: 22500, desc: "40' high, 20' dia. 3 levels." },
+      { id: 'tower_lg', name: 'Tower, Large Round', cost: 30000, desc: "50' high, 30' dia. 4 levels." },
+      { id: 'tower_sq', name: 'Tower, Square', cost: 30000, desc: "40' high, 40' sq base. (Estimated from Keep ratio)." }, // Note: Keep is 75k for 60sq 80h. 
+      { id: 'keep_sq', name: 'Keep, Square', cost: 75000, desc: "80' high, 60' sq. The heart of the castle." },
+      { id: 'gatehouse', name: 'Gatehouse', cost: 6500, desc: "20' high, 30'x20' base. Portcullis included." },
+      { id: 'barbican', name: 'Barbican', cost: 38000, desc: "2 small towers + gatehouse + drawbridge complex." },
+      { id: 'drawbridge', name: 'Drawbridge', cost: 250, desc: "10' wide, wood. Needs Gatehouse." },
+      { id: 'moat_un', name: 'Moat (Unfilled)', cost: 400, desc: "100' long, 20' wide, 10' deep." },
+      { id: 'moat_fill', name: 'Moat (Filled)', cost: 800, desc: "100' long, 20' wide, 10' deep. Water filled." },
+      { id: 'bldg_wood', name: 'Building (Wood)', cost: 1500, desc: "30'x30' (approx 1000 sq ft). 20' high." },
+      { id: 'bldg_stone', name: 'Building (Stone)', cost: 3000, desc: "30'x30' (approx 1000 sq ft). 20' high." },
+      { id: 'palisade', name: 'Palisade (Wood)', cost: 125, desc: "100' long, 10' high. Simple defense." },
+      { id: 'rampart', name: 'Rampart (Earth)', cost: 2500, desc: "100' long, 10' high." },
+      { id: 'dungeon', name: 'Dungeon Corridor', cost: 500, desc: "10'x10'x10'. Hewn stone." },
+      { id: 'civ_door_wood', name: 'Door (Wood)', cost: 10, desc: "Standard interior/exterior." },
+      { id: 'civ_door_rein', name: 'Door (Reinforced)', cost: 20, desc: "Iron bound." },
+      { id: 'civ_door_iron', name: 'Door (Iron)', cost: 50, desc: "Solid iron." },
+      { id: 'trap_door', name: 'Trap Door (Secret)', cost: 100, desc: "Hidden entrance/exit." },
+      { id: 'arrow_slit', name: 'Arrow Slit', cost: 10, desc: "For defense." },
+      { id: 'window_bar', name: 'Window (Barred)', cost: 10, desc: "Iron bars." },
+      { id: 'shutter', name: 'Window (Shutter)', cost: 5, desc: "Wood shutter." }
+    ];
+
+    // State
+    let project = {
+      items: []
+    };
+
+    // --- DOM ELEMENTS ---
+    const elCompSelect = document.getElementById('newCompType');
+    const elCompDesc = document.getElementById('compDesc');
+    const elList = document.getElementById('compList');
+    const elEmpty = document.getElementById('emptyState');
+
+    // --- INIT ---
+    function init() {
+      // Populate Select
+      let html = '<option value="">-- Select Component --</option>';
+      COMPONENTS.forEach((c, i) => {
+        html += `<option value="${i}">${c.name} (${c.cost.toLocaleString()} gp)</option>`;
+      });
+      elCompSelect.innerHTML = html;
+
+      elCompSelect.addEventListener('change', (e) => {
+        const idx = e.target.value;
+        if(idx !== "") {
+           elCompDesc.innerText = COMPONENTS[idx].desc;
+        } else {
+           elCompDesc.innerText = "";
+        }
+      });
+
+      loadData();
+    }
+
+    // --- ACTIONS ---
+    function addComponent() {
+      const idx = elCompSelect.value;
+      const qty = parseInt(document.getElementById('newCompQty').value) || 1;
+      
+      if(idx === "") return;
+      
+      // Check if already exists, just update qty
+      const compId = COMPONENTS[idx].id;
+      const existing = project.items.find(i => i.id === compId);
+      
+      if(existing) {
+        existing.qty += qty;
+      } else {
+        project.items.push({
+          id: compId,
+          qty: qty,
+          defIdx: idx // Store index for quick lookup of static data
+        });
+      }
+      
+      saveData();
+      render();
+    }
+
+    function removeComponent(id) {
+      project.items = project.items.filter(i => i.id !== id);
+      saveData();
+      render();
+    }
+
+    function render() {
+      elList.innerHTML = '';
+      if(project.items.length === 0) {
+        elEmpty.style.display = 'block';
+      } else {
+        elEmpty.style.display = 'none';
+        project.items.forEach(item => {
+           // Lookup def
+           const def = COMPONENTS.find(c => c.id === item.id);
+           if(!def) return;
+           
+           const totalCost = def.cost * item.qty;
+           
+           const div = document.createElement('div');
+           div.className = 'comp-item';
+           div.innerHTML = `
+             <div>
+               <div class="comp-name">${def.name}</div>
+               <div class="comp-detail">${def.desc}</div>
+             </div>
+             <div style="color:#94a3b8; text-align:right">${item.qty} x ${def.cost.toLocaleString()}</div>
+             <div style="color:#fbbf24; font-weight:bold; text-align:right">${totalCost.toLocaleString()}</div>
+             <button class="btn btn-danger" style="padding:4px; width:100%" onclick="removeComponent('${item.id}')">X</button>
+           `;
+           elList.appendChild(div);
+        });
+      }
+      
+      calcTotals();
+    }
+
+    function calcTotals() {
+      let baseCost = 0;
+      project.items.forEach(item => {
+         const def = COMPONENTS.find(c => c.id === item.id);
+         if(def) baseCost += (def.cost * item.qty);
+      });
+
+      const mod = parseFloat(document.getElementById('terrainMod').value) || 1.0;
+      const totalCost = Math.ceil(baseCost * mod);
+      
+      // Time: 1 day per 500 gp (BECMI/Expert p. X53)
+      const days = Math.ceil(totalCost / 500);
+      
+      // Engineers: 1 per 100,000 gp
+      const engineers = Math.ceil(totalCost / 100000);
+
+      document.getElementById('dispBase').innerText = baseCost.toLocaleString() + " gp";
+      document.getElementById('dispMod').innerText = "x" + mod;
+      document.getElementById('dispTotal').innerText = totalCost.toLocaleString() + " gp";
+      document.getElementById('dispTime').innerText = days.toLocaleString() + " days";
+      document.getElementById('dispEng').innerText = engineers;
+    }
+
+    // --- STORAGE ---
+    function saveData() {
+      const name = document.getElementById('projName').value;
+      localStorage.setItem('stronghold_design', JSON.stringify({
+         name: name,
+         items: project.items
+      }));
+    }
+
+    function loadData() {
+      const raw = localStorage.getItem('stronghold_design');
+      if(raw) {
+         const data = JSON.parse(raw);
+         if(data.name) document.getElementById('projName').value = data.name;
+         if(data.items) project.items = data.items;
+      }
+      render();
+    }
+
+    function resetDesign() {
+      if(confirm("Clear current design?")) {
+         project.items = [];
+         saveData();
+         render();
+      }
+    }
+
+    function exportDesign() {
+      const name = document.getElementById('projName').value;
+      const total = document.getElementById('dispTotal').innerText;
+      
+      const data = {
+         name,
+         total_cost: total,
+         components: project.items.map(i => {
+            const def = COMPONENTS.find(c => c.id === i.id);
+            return { name: def.name, qty: i.qty, cost_each: def.cost };
+         })
+      };
+      
+      const dataStr = JSON.stringify(data, null, 2);
+      const blob = new Blob([dataStr], {type: "application/json"});
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${name.replace(/\s+/g, '_').toLowerCase()}_design.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    init();
+
+  </script>
+</body>
+</html>

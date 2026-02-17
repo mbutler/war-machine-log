@@ -1,0 +1,931 @@
+import { createPanel } from "../../layout/panels";
+import { showNotification } from "../../layout/notifications";
+import type { WildernessHex, WildernessState } from "../../state/schema";
+import { getModuleExportFilename, triggerDownload } from "../../utils/moduleExport";
+import {
+  canRefillWater,
+  exportWildernessData,
+  forageCurrentHex,
+  forageFullDay,
+  getWildernessState,
+  importWildernessData,
+  loadStaticMapFromJSON,
+  moveParty,
+  refillWater,
+  resetWilderness,
+  resolveWildernessEncounter,
+  setCameraOffset,
+  setClimate,
+  setPartySize,
+  setRations,
+  setStartTerrain,
+  setStaticMapMode,
+  setWater,
+  subscribeToWilderness,
+  unloadStaticMap,
+  getLightCondition,
+  type LightCondition,
+} from "./state";
+
+const HEX_SIZE = 25;
+const DIR_LABELS = ["↖", "↑", "↗", "↙", "↓", "↘"];
+const TERRAIN_COST_LABELS: Record<string, string> = {
+  clear: "6 Miles",
+  woods: "9 Miles",
+  hills: "9 Miles",
+  mountain: "12 Miles",
+  swamp: "12 Miles",
+  desert: "12 Miles",
+  city: "4 Miles",
+  river: "6 Miles",
+  ocean: "12 Miles",
+};
+
+const LIGHT_CONDITION_LABELS: Record<LightCondition, string> = {
+  clear_daylight: "Clear Daylight",
+  dim_light: "Dim Light",
+  no_light: "No Light",
+};
+
+export function renderWildernessPanel(target: HTMLElement) {
+  const { element, body } = createPanel(
+    "Wilderness",
+    "Hex exploration with weather, foraging, and encounters",
+  );
+
+  // Add mode indicator to panel title
+  const titleElement = element.querySelector('.panel-title');
+  let titleBadge: HTMLElement | null = null;
+  if (titleElement) {
+    titleBadge = document.createElement("span");
+    titleBadge.style.fontSize = "0.75rem";
+    titleBadge.style.fontWeight = "normal";
+    titleBadge.style.marginLeft = "0.5rem";
+    titleBadge.style.padding = "0.1rem 0.3rem";
+    titleBadge.style.borderRadius = "0.2rem";
+    titleElement.appendChild(titleBadge);
+  }
+
+  const grid = document.createElement("div");
+  grid.className = "wilderness-grid";
+  body.appendChild(grid);
+
+  const controlsCard = document.createElement("section");
+  controlsCard.className = "wilderness-card";
+  grid.appendChild(controlsCard);
+
+  const mapCard = document.createElement("section");
+  mapCard.className = "wilderness-card wilderness-map-card";
+  grid.appendChild(mapCard);
+
+  // Add map mode overlay for additional visual cue
+  const mapOverlay = document.createElement("div");
+  mapOverlay.style.position = "absolute";
+  mapOverlay.style.top = "0.5rem";
+  mapOverlay.style.right = "0.5rem";
+  mapOverlay.style.padding = "0.25rem 0.5rem";
+  mapOverlay.style.borderRadius = "0.3rem";
+  mapOverlay.style.fontSize = "0.7rem";
+  mapOverlay.style.fontWeight = "bold";
+  mapOverlay.style.zIndex = "10";
+  mapOverlay.style.pointerEvents = "none";
+
+  function updateMapOverlay(state = getWildernessState()) {
+    if (state.staticMapMode) {
+      mapOverlay.textContent = "STATIC MAP";
+      mapOverlay.style.background = "rgba(34, 197, 94, 0.9)";
+      mapOverlay.style.color = "white";
+      mapOverlay.style.border = "2px solid #16a34a";
+    } else {
+      mapOverlay.textContent = "PROCEDURAL";
+      mapOverlay.style.background = "rgba(59, 130, 246, 0.9)";
+      mapOverlay.style.color = "white";
+      mapOverlay.style.border = "2px solid #1d4ed8";
+    }
+  }
+
+  updateMapOverlay();
+  mapCard.style.position = "relative";
+  mapCard.appendChild(mapOverlay);
+
+  const detailsCard = document.createElement("section");
+  detailsCard.className = "wilderness-card";
+  grid.appendChild(detailsCard);
+
+  // Controls: Quartermaster
+  const partyRow = document.createElement("div");
+  partyRow.className = "stat-grid";
+
+  const partySizeInput = createNumberInput("Party Size", 1, (value) => setPartySize(value));
+  const rationsInput = createNumberInput("Rations (Days)", 0, (value) => setRations(value));
+  const waterInput = createNumberInput("Water (Skins)", 0, (value) => setWater(value));
+
+  partyRow.append(partySizeInput.wrapper, rationsInput.wrapper, waterInput.wrapper);
+  controlsCard.appendChild(partyRow);
+
+  const timeBand = document.createElement("div");
+  timeBand.style.background = "rgba(255,255,255,0.04)";
+  timeBand.style.border = "1px solid var(--panel-border)";
+  timeBand.style.borderRadius = "0.4rem";
+  timeBand.style.padding = "0.5rem";
+  timeBand.style.textAlign = "center";
+  timeBand.style.fontSize = "0.85rem";
+  controlsCard.appendChild(timeBand);
+
+  const travelBlock = document.createElement("div");
+  travelBlock.style.borderTop = "1px solid var(--panel-border)";
+  travelBlock.style.paddingTop = "0.75rem";
+  travelBlock.style.marginTop = "0.75rem";
+  controlsCard.appendChild(travelBlock);
+
+  const travelTitle = document.createElement("div");
+  travelTitle.className = "panel-heading";
+  travelTitle.textContent = "Travel";
+  travelBlock.appendChild(travelTitle);
+
+  const dpad = document.createElement("div");
+  dpad.className = "wilderness-dpad";
+  travelBlock.appendChild(dpad);
+
+  DIR_LABELS.forEach((label, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "button";
+    button.textContent = label;
+    button.addEventListener("click", () => moveParty(index));
+    dpad.appendChild(button);
+  });
+
+  const actionRow = document.createElement("div");
+  actionRow.className = "flex gap-sm";
+  actionRow.style.flexWrap = "wrap";
+  actionRow.style.marginTop = "0.5rem";
+
+  const forageButton = document.createElement("button");
+  forageButton.type = "button";
+  forageButton.className = "button";
+  forageButton.textContent = "Forage (2h)";
+  forageButton.style.flex = "1";
+  forageButton.addEventListener("click", () => forageCurrentHex());
+
+  const forageFullButton = document.createElement("button");
+  forageFullButton.type = "button";
+  forageFullButton.className = "button";
+  forageFullButton.textContent = "Forage (Full Day)";
+  forageFullButton.style.flex = "1";
+  forageFullButton.addEventListener("click", () => forageFullDay());
+
+  const refillButton = document.createElement("button");
+  refillButton.type = "button";
+  refillButton.className = "button";
+  refillButton.textContent = "Refill Water";
+  refillButton.style.flex = "1";
+  refillButton.addEventListener("click", () => refillWater());
+
+  actionRow.append(forageButton, forageFullButton, refillButton);
+  travelBlock.appendChild(actionRow);
+
+  // Combat controls
+  const combatCard = document.createElement("section");
+  combatCard.className = "wilderness-card";
+  combatCard.style.borderTop = "1px solid var(--panel-border)";
+  combatCard.style.paddingTop = "0.75rem";
+  combatCard.style.marginTop = "0.75rem";
+  combatCard.style.display = "none"; // Hidden by default
+
+  const combatTitle = document.createElement("div");
+  combatTitle.className = "panel-heading";
+  combatTitle.textContent = "Encounter";
+  combatCard.appendChild(combatTitle);
+
+  const combatInfo = document.createElement("div");
+  combatInfo.style.marginBottom = "0.5rem";
+  combatInfo.style.fontSize = "0.9rem";
+  combatCard.appendChild(combatInfo);
+
+  const combatButtons = document.createElement("div");
+  combatButtons.className = "flex gap-sm flex-wrap";
+  combatCard.appendChild(combatButtons);
+
+  const fightButton = document.createElement("button");
+  fightButton.type = "button";
+  fightButton.className = "button button-danger";
+  fightButton.textContent = "Fight";
+  fightButton.addEventListener("click", () => resolveWildernessEncounter("fight"));
+
+  const negotiateButton = document.createElement("button");
+  negotiateButton.type = "button";
+  negotiateButton.className = "button";
+  negotiateButton.textContent = "Negotiate";
+  negotiateButton.addEventListener("click", () => resolveWildernessEncounter("negotiate"));
+
+  const evadeButton = document.createElement("button");
+  evadeButton.type = "button";
+  evadeButton.className = "button";
+  evadeButton.textContent = "Evade";
+  evadeButton.addEventListener("click", () => resolveWildernessEncounter("evade"));
+
+  const pursueButton = document.createElement("button");
+  pursueButton.type = "button";
+  pursueButton.className = "button";
+  pursueButton.textContent = "Pursue";
+  pursueButton.style.display = "none"; // Hidden unless fleeing
+  pursueButton.addEventListener("click", () => resolveWildernessEncounter("pursue"));
+
+  combatButtons.append(fightButton, negotiateButton, evadeButton, pursueButton);
+  controlsCard.appendChild(combatCard);
+
+  const generatorBlock = document.createElement("div");
+  generatorBlock.style.marginTop = "auto";
+  generatorBlock.style.borderTop = "1px solid var(--panel-border)";
+  generatorBlock.style.paddingTop = "0.75rem";
+  controlsCard.appendChild(generatorBlock);
+
+  const startSelect = document.createElement("select");
+  startSelect.className = "input";
+  [
+    { value: "clear", label: "Start: Clear" },
+    { value: "woods", label: "Start: Woods" },
+    { value: "mountain", label: "Start: Mountain" },
+    { value: "city", label: "Start: City" },
+  ].forEach((option) => {
+    const node = document.createElement("option");
+    node.value = option.value;
+    node.textContent = option.label;
+    startSelect.appendChild(node);
+  });
+  startSelect.addEventListener("change", () => setStartTerrain(startSelect.value as any));
+
+  const climateSelect = document.createElement("select");
+  climateSelect.className = "input";
+  [
+    { value: "normal", label: "Climate: Temperate" },
+    { value: "cold", label: "Climate: Cold" },
+    { value: "tropic", label: "Climate: Tropical" },
+    { value: "desert", label: "Climate: Arid" },
+  ].forEach((option) => {
+    const node = document.createElement("option");
+    node.value = option.value;
+    node.textContent = option.label;
+    climateSelect.appendChild(node);
+  });
+  climateSelect.addEventListener("change", () => setClimate(climateSelect.value as any));
+
+  generatorBlock.append(startSelect, climateSelect);
+
+  const generatorButtons = document.createElement("div");
+  generatorButtons.className = "flex gap-sm";
+  generatorButtons.style.marginTop = "0.5rem";
+
+  const newMapButton = document.createElement("button");
+  newMapButton.type = "button";
+  newMapButton.className = "button";
+  newMapButton.textContent = "New Map";
+  newMapButton.addEventListener("click", () => {
+    resetWilderness({ startTerrain: startSelect.value as any, climate: climateSelect.value as any });
+    showNotification({ title: "Wilderness reset", message: "New map generated.", variant: "success" });
+  });
+
+  const exportButton = document.createElement("button");
+  exportButton.type = "button";
+  exportButton.className = "button";
+  exportButton.textContent = "Export";
+  exportButton.addEventListener("click", () => {
+    const payload = exportWildernessData();
+    triggerDownload(getModuleExportFilename("wilderness"), payload);
+  });
+
+  generatorButtons.append(newMapButton, exportButton);
+  generatorBlock.appendChild(generatorButtons);
+
+  const importLabel = document.createElement("label");
+  importLabel.className = "button";
+  importLabel.style.marginTop = "0.5rem";
+  importLabel.style.display = "inline-block";
+  importLabel.style.textAlign = "center";
+  importLabel.textContent = "Import";
+
+  const importInput = document.createElement("input");
+  importInput.type = "file";
+  importInput.accept = "application/json";
+  importInput.className = "visually-hidden";
+  importInput.addEventListener("change", () => {
+    const file = importInput.files?.[0];
+    if (!file) return;
+    file
+      .text()
+      .then((text) => {
+        try {
+          importWildernessData(text);
+          showNotification({ title: "Map imported", message: "Wilderness map loaded.", variant: "success" });
+        } catch (error) {
+          showNotification({ title: "Import failed", message: (error as Error).message, variant: "danger" });
+        }
+      })
+      .finally(() => {
+        importInput.value = "";
+      });
+  });
+  importLabel.appendChild(importInput);
+  generatorBlock.appendChild(importLabel);
+
+  // Static Map Controls
+  const staticMapBlock = document.createElement("div");
+  staticMapBlock.style.borderTop = "1px solid var(--panel-border)";
+  staticMapBlock.style.paddingTop = "0.75rem";
+  staticMapBlock.style.marginTop = "0.75rem";
+  generatorBlock.appendChild(staticMapBlock);
+
+  const staticMapTitle = document.createElement("div");
+  staticMapTitle.className = "panel-heading";
+  staticMapTitle.textContent = "Static Map";
+  staticMapBlock.appendChild(staticMapTitle);
+
+  // Mode Status Indicator - highly visible
+  const modeIndicator = document.createElement("div");
+  modeIndicator.style.padding = "0.5rem";
+  modeIndicator.style.borderRadius = "0.4rem";
+  modeIndicator.style.fontWeight = "bold";
+  modeIndicator.style.textAlign = "center";
+  modeIndicator.style.fontSize = "0.9rem";
+  modeIndicator.style.marginTop = "0.5rem";
+  modeIndicator.style.border = "2px solid";
+
+  function updateModeIndicators(state = getWildernessState()) {
+    const hasStaticData = state.staticMapData && Object.keys(state.staticMapData).length > 0;
+
+    // Update main mode indicator
+    if (state.staticMapMode && hasStaticData) {
+      modeIndicator.textContent = "🗺️ STATIC MAP MODE - Using Pre-generated Map";
+      modeIndicator.style.background = "rgba(34, 197, 94, 0.1)";
+      modeIndicator.style.borderColor = "#22c55e";
+      modeIndicator.style.color = "#16a34a";
+    } else if (state.staticMapMode && !hasStaticData) {
+      modeIndicator.textContent = "⚠️ STATIC MAP MODE - No Map Data Loaded";
+      modeIndicator.style.background = "rgba(245, 101, 101, 0.1)";
+      modeIndicator.style.borderColor = "#ef4444";
+      modeIndicator.style.color = "#dc2626";
+    } else {
+      modeIndicator.textContent = "🎲 PROCEDURAL MODE - Generating Terrain on Demand";
+      modeIndicator.style.background = "rgba(59, 130, 246, 0.1)";
+      modeIndicator.style.borderColor = "#3b82f6";
+      modeIndicator.style.color = "#1d4ed8";
+    }
+
+    // Update title badge
+    if (titleBadge) {
+      if (state.staticMapMode && hasStaticData) {
+        titleBadge.textContent = "STATIC MAP";
+        titleBadge.style.background = "rgba(34, 197, 94, 0.2)";
+        titleBadge.style.color = "#16a34a";
+        titleBadge.style.border = "1px solid #22c55e";
+      } else if (state.staticMapMode && !hasStaticData) {
+        titleBadge.textContent = "STATIC (NO DATA)";
+        titleBadge.style.background = "rgba(245, 101, 101, 0.2)";
+        titleBadge.style.color = "#dc2626";
+        titleBadge.style.border = "1px solid #ef4444";
+      } else {
+        titleBadge.textContent = "PROCEDURAL";
+        titleBadge.style.background = "rgba(59, 130, 246, 0.2)";
+        titleBadge.style.color = "#1d4ed8";
+        titleBadge.style.border = "1px solid #3b82f6";
+      }
+    }
+
+    // Update map overlay
+    if (state.staticMapMode && hasStaticData) {
+      mapOverlay.textContent = "STATIC MAP";
+      mapOverlay.style.background = "rgba(34, 197, 94, 0.9)";
+      mapOverlay.style.color = "white";
+      mapOverlay.style.border = "2px solid #16a34a";
+    } else if (state.staticMapMode && !hasStaticData) {
+      mapOverlay.textContent = "STATIC (NO DATA)";
+      mapOverlay.style.background = "rgba(245, 101, 101, 0.9)";
+      mapOverlay.style.color = "white";
+      mapOverlay.style.border = "2px solid #ef4444";
+    } else {
+      mapOverlay.textContent = "PROCEDURAL";
+      mapOverlay.style.background = "rgba(59, 130, 246, 0.9)";
+      mapOverlay.style.color = "white";
+      mapOverlay.style.border = "2px solid #1d4ed8";
+    }
+  }
+
+  updateModeIndicators();
+  staticMapBlock.appendChild(modeIndicator);
+
+  const staticMapButtons = document.createElement("div");
+  staticMapButtons.style.display = "flex";
+  staticMapButtons.style.gap = "0.5rem";
+  staticMapButtons.style.marginTop = "0.5rem";
+
+  const toggleStaticButton = document.createElement("button");
+  toggleStaticButton.type = "button";
+  toggleStaticButton.className = "button";
+  toggleStaticButton.textContent = "Toggle Static/Procedural";
+  toggleStaticButton.addEventListener("click", () => {
+    const state = getWildernessState();
+    if (state.staticMapMode) {
+      unloadStaticMap();
+      showNotification({ title: "Map mode changed", message: "Switched to procedural generation.", variant: "info" });
+    } else {
+      // Only allow static mode if static map data exists
+      if (!state.staticMapData || Object.keys(state.staticMapData).length === 0) {
+        showNotification({
+          title: "No Static Map Loaded",
+          message: "Import a static map file first before enabling static map mode.",
+          variant: "warning"
+        });
+        return;
+      }
+      setStaticMapMode(true);
+      showNotification({ title: "Map mode changed", message: "Switched to static map mode.", variant: "info" });
+    }
+  });
+
+  const importStaticLabel = document.createElement("label");
+  importStaticLabel.className = "button";
+  importStaticLabel.textContent = "Import Static Map";
+
+  const importStaticInput = document.createElement("input");
+  importStaticInput.type = "file";
+  importStaticInput.accept = "application/json";
+  importStaticInput.className = "visually-hidden";
+  importStaticInput.addEventListener("change", () => {
+    const file = importStaticInput.files?.[0];
+    if (!file) return;
+    file
+      .text()
+      .then((text) => {
+        try {
+          loadStaticMapFromJSON(text);
+          showNotification({ title: "Static map imported", message: "Python-generated world loaded.", variant: "success" });
+        } catch (error) {
+          showNotification({ title: "Import failed", message: (error as Error).message, variant: "danger" });
+        }
+      })
+      .finally(() => {
+        importStaticInput.value = "";
+      });
+  });
+  importStaticLabel.appendChild(importStaticInput);
+
+  staticMapButtons.append(toggleStaticButton, importStaticLabel);
+  staticMapBlock.appendChild(staticMapButtons);
+
+  // Map column
+  const mapWrapper = document.createElement("div");
+  mapWrapper.className = "wilderness-map-wrapper";
+  mapCard.appendChild(mapWrapper);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 640;
+  canvas.height = 520;
+  mapWrapper.appendChild(canvas);
+
+  const coordsBadge = document.createElement("div");
+  coordsBadge.className = "wilderness-map-meta";
+  coordsBadge.textContent = "0, 0";
+  mapWrapper.appendChild(coordsBadge);
+
+  const recenterBtn = document.createElement("button");
+  recenterBtn.type = "button";
+  recenterBtn.className = "button wilderness-recenter";
+  recenterBtn.textContent = "Center on Party";
+  recenterBtn.addEventListener("click", () => setCameraOffset({ x: 0, y: 0 }));
+  mapWrapper.appendChild(recenterBtn);
+
+  // Details column
+  const weatherBox = document.createElement("div");
+  weatherBox.className = "wilderness-weather";
+  detailsCard.appendChild(weatherBox);
+
+  const weatherHeader = document.createElement("div");
+  weatherHeader.className = "panel-heading";
+  weatherHeader.textContent = "Daily Weather";
+  weatherBox.prepend(weatherHeader);
+
+  const tempRow = createWeatherRow("Temp");
+  const windRow = createWeatherRow("Wind");
+  const rainRow = createWeatherRow("Precip");
+  weatherBox.append(tempRow.row, windRow.row, rainRow.row);
+
+  const statGrid = document.createElement("div");
+  statGrid.className = "wilderness-stat-grid";
+  detailsCard.appendChild(statGrid);
+
+  const terrainStat = createStatBlock("Terrain", "--");
+  const costStat = createStatBlock("Travel Cost", "1 Day");
+  statGrid.append(terrainStat.block, costStat.block);
+
+  const resourcePanel = document.createElement("div");
+  resourcePanel.className = "wilderness-resources";
+  detailsCard.appendChild(resourcePanel);
+
+  const resourceTitle = document.createElement("div");
+  resourceTitle.className = "label";
+  resourceTitle.textContent = "Dominion Resources";
+  resourcePanel.appendChild(resourceTitle);
+
+  const resourceList = document.createElement("div");
+  resourcePanel.appendChild(resourceList);
+
+  const logContainer = document.createElement("div");
+  logContainer.className = "wilderness-log";
+  detailsCard.appendChild(logContainer);
+
+  const logHeading = document.createElement("div");
+  logHeading.className = "panel-heading";
+  logHeading.textContent = "Survey Log";
+  logContainer.appendChild(logHeading);
+
+  const logList = document.createElement("div");
+  logContainer.appendChild(logList);
+
+  let ctx: CanvasRenderingContext2D | null = null;
+  try {
+    ctx = canvas.getContext("2d");
+  } catch {
+    ctx = null;
+  }
+
+  let cameraOffset = { x: 0, y: 0 };
+  let isDragging = false;
+  let activePointerId: number | null = null;
+  let lastPointer = { x: 0, y: 0 };
+
+  canvas.addEventListener("pointerdown", (event) => {
+    isDragging = true;
+    activePointerId = event.pointerId;
+    lastPointer = { x: event.clientX, y: event.clientY };
+    canvas.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  });
+
+  const stopDragging = () => {
+    if (activePointerId !== null) {
+      try {
+        canvas.releasePointerCapture(activePointerId);
+      } catch {
+        // ignore release failures
+      }
+    }
+    activePointerId = null;
+    isDragging = false;
+  };
+
+  canvas.addEventListener("pointermove", (event) => {
+    if (!isDragging) return;
+    const dx = event.clientX - lastPointer.x;
+    const dy = event.clientY - lastPointer.y;
+    lastPointer = { x: event.clientX, y: event.clientY };
+    cameraOffset = {
+      x: cameraOffset.x + dx,
+      y: cameraOffset.y + dy,
+    };
+    setCameraOffset({ ...cameraOffset });
+    event.preventDefault();
+  });
+
+  canvas.addEventListener("pointerup", stopDragging);
+  canvas.addEventListener("pointerleave", stopDragging);
+  canvas.addEventListener("pointercancel", stopDragging);
+
+  function render(state: WildernessState) {
+    partySizeInput.input.value = String(state.partySize);
+    rationsInput.input.value = String(state.rations);
+    waterInput.input.value = String(state.water);
+    startSelect.value = state.startTerrain;
+    climateSelect.value = state.climate;
+    refillButton.disabled = !canRefillWater(state);
+
+    // Update combat UI
+    if (state.encounter && state.status !== "idle") {
+      combatCard.style.display = "block";
+      combatInfo.textContent = `${state.encounter.quantity} ${state.encounter.name} (${state.encounter.hitDice} HD) at ${state.encounter.distance} yards - ${state.encounter.reaction}`;
+
+      // Show appropriate buttons based on status
+      fightButton.style.display = state.status === "encounter" ? "inline-block" : "none";
+      negotiateButton.style.display = state.status === "encounter" ? "inline-block" : "none";
+      evadeButton.style.display = state.status === "encounter" ? "inline-block" : "none";
+      pursueButton.style.display = state.status === "fleeing" ? "inline-block" : "none";
+    } else {
+      combatCard.style.display = "none";
+    }
+
+    // Update mode indicators
+    updateModeIndicators(state);
+
+    const lightCondition = getLightCondition();
+    const lightLabel = LIGHT_CONDITION_LABELS[lightCondition];
+    const milesDisplay = `${state.days} days, ${Math.floor(state.movementPoints)}/${state.maxMovementPoints} Miles · ${lightLabel}`;
+    timeBand.textContent = milesDisplay;
+
+    const position = Number.isFinite(state.currentPos?.q)
+      ? (state.currentPos as { q: number; r: number })
+      : { q: 0, r: 0 };
+    const map = state.map ?? {};
+    const currentHex = map[`${position.q},${position.r}`];
+    coordsBadge.textContent = `${position.q}, ${position.r}`;
+    if (currentHex) {
+      terrainStat.value.textContent = currentHex.feature ?? getTerrainName(currentHex.type);
+      terrainStat.value.style.color = getTerrainColor(currentHex);
+      costStat.value.textContent = TERRAIN_COST_LABELS[currentHex.type] ?? `${getTerrainCost(currentHex.type)} Miles`;
+      renderResources(currentHex, resourceList);
+    } else {
+      terrainStat.value.textContent = "--";
+      terrainStat.value.style.color = "var(--text-primary)";
+      costStat.value.textContent = "--";
+    }
+
+    const weather = state.weather ?? { temperature: "Moderate", wind: "Breeze", precipitation: "None" };
+    tempRow.value.textContent = weather.temperature;
+    windRow.value.textContent = weather.wind;
+    rainRow.value.textContent = weather.precipitation;
+
+    renderLog(state, logList);
+    cameraOffset = state.camera ?? { x: 0, y: 0 };
+    drawMap(ctx, { ...state, currentPos: position, map, weather, camera: cameraOffset }, canvas);
+  }
+
+  render(getWildernessState());
+  const unsubscribe = subscribeToWilderness(render);
+  target.appendChild(element);
+
+  return () => {
+    unsubscribe();
+  };
+}
+
+function createNumberInput(
+  label: string,
+  min: number,
+  setter: (value: number) => void,
+): { wrapper: HTMLDivElement; input: HTMLInputElement } {
+  const wrapper = document.createElement("div");
+  wrapper.className = "flex flex-col gap-sm";
+  const lbl = document.createElement("label");
+  lbl.className = "label";
+  lbl.textContent = label;
+  const input = document.createElement("input");
+  input.type = "number";
+  input.min = String(min);
+  input.className = "input";
+  input.addEventListener("change", () => {
+    const value = Number(input.value);
+    if (Number.isNaN(value)) {
+      setter(min);
+      input.value = String(min);
+    } else {
+      setter(value);
+    }
+  });
+  wrapper.append(lbl, input);
+  return { wrapper, input };
+}
+
+function createWeatherRow(label: string) {
+  const row = document.createElement("div");
+  row.className = "wilderness-weather-row";
+  const left = document.createElement("span");
+  left.textContent = label;
+  const value = document.createElement("span");
+  value.style.color = "var(--text-primary)";
+  row.append(left, value);
+  return { row, value };
+}
+
+function createStatBlock(label: string, initial: string) {
+  const block = document.createElement("div");
+  block.className = "wilderness-stat";
+  const lbl = document.createElement("div");
+  lbl.className = "stat-label";
+  lbl.textContent = label;
+  const value = document.createElement("div");
+  value.className = "stat-value";
+  value.textContent = initial;
+  block.append(lbl, value);
+  return { block, value };
+}
+
+function renderResources(hex: WildernessHex, container: HTMLElement) {
+  container.innerHTML = "";
+  if (hex.feature) {
+    const feature = document.createElement("div");
+    feature.style.color = "#fbbf24";
+    feature.style.fontWeight = "bold";
+    feature.textContent = hex.feature;
+    container.appendChild(feature);
+    if (hex.details) {
+      const details = document.createElement("div");
+      details.className = "nav-meta";
+      details.textContent = hex.details;
+      container.appendChild(details);
+    }
+  } else {
+    const empty = document.createElement("div");
+    empty.className = "nav-meta";
+    empty.textContent = "Wilderness hex";
+    container.appendChild(empty);
+  }
+
+  if (hex.resources.length) {
+    hex.resources.forEach((resource) => {
+      const row = document.createElement("div");
+      row.textContent = `• ${resource} resource`;
+      container.appendChild(row);
+    });
+  } else {
+    const none = document.createElement("div");
+    none.textContent = "No resources.";
+    container.appendChild(none);
+  }
+}
+
+function renderLog(state: WildernessState, container: HTMLElement) {
+  container.innerHTML = "";
+  const entries = Array.isArray(state.log) ? state.log : [];
+  if (!entries.length) {
+    const empty = document.createElement("p");
+    empty.className = "muted";
+    empty.style.textAlign = "center";
+    empty.textContent = "Survey log is empty...";
+    container.appendChild(empty);
+    return;
+  }
+
+  entries.forEach((entry) => {
+    const item = document.createElement("div");
+    item.className = "wilderness-log-entry";
+
+    const meta = document.createElement("div");
+    meta.className = "timestamp";
+    meta.textContent = `Day ${entry.day.toFixed(1)} [${entry.position.q},${entry.position.r}]`;
+
+    const summary = document.createElement("div");
+    summary.style.color = "var(--text-primary)";
+    summary.textContent = entry.summary;
+
+    item.append(meta, summary);
+
+    if (entry.notes) {
+      const notes = document.createElement("div");
+      notes.className = "nav-meta";
+      notes.style.color = "#fca5a5";
+      notes.textContent = entry.notes;
+      item.appendChild(notes);
+    }
+
+    container.appendChild(item);
+  });
+}
+
+function drawMap(ctx: CanvasRenderingContext2D | null, state: WildernessState, canvas: HTMLCanvasElement) {
+  if (!ctx) return;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const camera = state.camera ?? { x: 0, y: 0 };
+  const center = axialToBase(state.currentPos.q, state.currentPos.r);
+  const offsetX = canvas.width / 2 - center.x + camera.x;
+  const offsetY = canvas.height / 2 - center.y + camera.y;
+
+  const entries = state.map ? Object.entries(state.map) : [];
+  entries.forEach(([key, hex]) => {
+    const [q, r] = key.split(",").map(Number);
+    const base = axialToBase(q, r);
+    const x = base.x + offsetX;
+    const y = base.y + offsetY;
+    if (isOnScreen(x, y, canvas)) {
+      const hasStaticData = state.staticMapData && Object.keys(state.staticMapData).length > 0;
+      const isUsingStaticData = state.staticMapMode && hasStaticData && state.staticMapData[key];
+      drawHexagon(ctx, x, y, hex, isUsingStaticData);
+      if (hex.feature) {
+        ctx.beginPath();
+        ctx.arc(x, y + 10, 3, 0, Math.PI * 2);
+        ctx.fillStyle = "#fff";
+        ctx.fill();
+      }
+    }
+  });
+
+  const playerBase = axialToBase(state.currentPos.q, state.currentPos.r);
+  const px = playerBase.x + offsetX;
+  const py = playerBase.y + offsetY;
+  ctx.beginPath();
+  ctx.arc(px, py, 8, 0, Math.PI * 2);
+  ctx.fillStyle = "#ef4444";
+  ctx.fill();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "#fff";
+  ctx.stroke();
+}
+
+function axialToBase(q: number, r: number) {
+  const x = HEX_SIZE * 1.5 * q;
+  const y = HEX_SIZE * Math.sqrt(3) * (r + 0.5 * (Math.abs(q) % 2));
+  return { x, y };
+}
+
+function baseToAxial(x: number, y: number) {
+  // Convert pixel coordinates back to axial coordinates
+  const q = Math.round(x / (HEX_SIZE * 1.5));
+  const r = Math.round(y / (HEX_SIZE * Math.sqrt(3)) - 0.5 * (Math.abs(q) % 2));
+  return { q, r };
+}
+
+function drawHexagon(ctx: CanvasRenderingContext2D, x: number, y: number, hex: WildernessHex, isUsingStaticData: boolean) {
+  ctx.beginPath();
+  for (let i = 0; i < 6; i += 1) {
+    const angle = (Math.PI / 3) * i;
+    const x_i = x + HEX_SIZE * Math.cos(angle);
+    const y_i = y + HEX_SIZE * Math.sin(angle);
+    if (i === 0) ctx.moveTo(x_i, y_i);
+    else ctx.lineTo(x_i, y_i);
+  }
+  ctx.closePath();
+  ctx.fillStyle = getTerrainColor(hex);
+  ctx.fill();
+
+  // Different border for static map data
+  if (isUsingStaticData) {
+    ctx.strokeStyle = "#22c55e"; // Green border for actual static map data
+    ctx.lineWidth = 2;
+  } else {
+    ctx.strokeStyle = "#1e293b"; // Default border for procedural generation
+    ctx.lineWidth = 1;
+  }
+  ctx.stroke();
+
+  ctx.fillStyle = "rgba(0,0,0,0.25)";
+  ctx.font = "9px monospace";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(hex.visited ? "" : "?", x, y);
+}
+
+function isOnScreen(x: number, y: number, canvas: HTMLCanvasElement) {
+  return x > -80 && x < canvas.width + 80 && y > -80 && y < canvas.height + 80;
+}
+
+const terrainColors: Record<WildernessHex["type"], string> = {
+  clear: "#86efac",
+  woods: "#15803d",
+  hills: "#a1a1aa",
+  mountain: "#52525b",
+  swamp: "#047857",
+  desert: "#fdba74",
+  city: "#fcd34d",
+  river: "#3b82f6",
+  ocean: "#1e3a8a",
+};
+
+const terrainNames: Record<WildernessHex["type"], string> = {
+  clear: "Clear",
+  woods: "Woods",
+  hills: "Hills",
+  mountain: "Mountain",
+  swamp: "Swamp",
+  desert: "Desert",
+  city: "Settlement",
+  river: "River",
+  ocean: "Ocean",
+};
+
+const terrainCosts: Record<WildernessHex["type"], number> = {
+  clear: 6,
+  woods: 9,
+  hills: 9,
+  mountain: 12,
+  swamp: 12,
+  desert: 12,
+  city: 4,
+  river: 6,
+  ocean: 12,
+};
+
+function normalizeTerrainType(type?: string | null): WildernessHex["type"] | null {
+  if (!type) return null;
+  const key = type.toLowerCase() as WildernessHex["type"];
+  return key in terrainColors ? key : null;
+}
+
+function getTerrainColor(hex: WildernessHex) {
+  const normalized = normalizeTerrainType(hex?.type);
+  if (normalized) {
+    return terrainColors[normalized];
+  }
+  if (hex?.color) {
+    return hex.color;
+  }
+  return "#86efac";
+}
+
+function getTerrainName(type: WildernessHex["type"]) {
+  const normalized = normalizeTerrainType(type);
+  return normalized ? terrainNames[normalized] : "Wilderness";
+}
+
+function getTerrainCost(type: WildernessHex["type"]) {
+  const normalized = normalizeTerrainType(type);
+  return normalized ? terrainCosts[normalized] : 6;
+}
+

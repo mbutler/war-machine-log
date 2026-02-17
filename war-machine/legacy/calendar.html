@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Master Chronometer</title>
+  <style>
+    /* --- DESIGN SYSTEM (Matches War Machine Suite) --- */
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 1.5rem; font-family: system-ui, -apple-system, sans-serif; background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%); color: #e5e7eb; }
+    h1 { margin: 0 0 0.3rem 0; font-size: 1.6rem; letter-spacing: -0.02em; }
+    .tagline { font-size: 0.85rem; color: #94a3b8; margin-bottom: 1.2rem; }
+    
+    .layout-main { display: grid; grid-template-columns: 350px 1fr; gap: 1rem; margin-top: 0.75rem; }
+    @media (max-width: 900px) { .layout-main { grid-template-columns: 1fr; } }
+
+    /* Cards */
+    .card { border-radius: 0.75rem; border: 1px solid #1f2937; background: #0f172a; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem; height: fit-content; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; border-bottom: 1px solid #1e293b; margin-bottom: 0.5rem; }
+    .card-title { font-weight: 700; font-size: 1rem; color: #f8fafc; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    /* UI Elements */
+    label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 3px; }
+    input[type="text"], input[type="number"], select {
+      width: 100%; background: #020617; border: 1px solid #334155; color: #e2e8f0;
+      padding: 6px 8px; border-radius: 4px; font-size: 0.9rem;
+    }
+    input:focus, select:focus { border-color: #6366f1; outline: none; }
+    
+    .row { display: flex; gap: 8px; }
+    .row > div { flex: 1; }
+    
+    /* Buttons */
+    .btn { width: 100%; padding: 10px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .btn-primary { background: #4f46e5; color: white; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+    .btn-primary:hover { background: #4338ca; }
+    .btn-sec { background: #334155; color: #cbd5e1; font-size: 0.8rem; }
+    .btn-danger { background: #991b1b; color: white; }
+    .btn-add { background: #059669; color: white; }
+    
+    /* Time Display */
+    .time-display { text-align: center; padding: 20px; background: #1e293b; border-radius: 8px; border: 1px solid #334155; margin-bottom: 15px; }
+    .date-str { font-size: 1.4rem; color: #fff; font-weight: 700; margin-bottom: 5px; }
+    .time-str { font-size: 1.1rem; color: #60a5fa; font-family: 'Courier New', monospace; }
+    .season-badge { display: inline-block; padding: 4px 8px; border-radius: 12px; background: #0f172a; color: #94a3b8; font-size: 0.8rem; margin-top: 8px; border: 1px solid #334155; }
+
+    /* Controls Grid */
+    .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    
+    /* Log */
+    .log-container { background: #000; border: 1px solid #334155; border-radius: 8px; height: 400px; overflow-y: auto; padding: 10px; font-family: 'Courier New', monospace; font-size: 0.8rem; }
+    .log-entry { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed #333; display: flex; gap: 10px; }
+    .log-time { color: #64748b; min-width: 120px; }
+    .log-msg { color: #cbd5e1; }
+    
+    /* Trackers */
+    .tracker-list { margin-top: 10px; display: grid; gap: 8px; }
+    .tracker-item { background: #1e293b; padding: 8px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid #60a5fa; }
+    .tracker-name { font-size: 0.9rem; color: #fff; }
+    .tracker-time { font-size: 0.8rem; color: #94a3b8; }
+    
+    /* Moon */
+    .moon-phase { width: 40px; height: 40px; background: #334155; border-radius: 50%; margin: 0 auto 10px auto; position: relative; overflow: hidden; }
+    .moon-lit { position: absolute; top: 0; bottom: 0; width: 50%; background: #fbbf24; }
+  </style>
+</head>
+<body>
+
+  <h1>Master Chronometer</h1>
+  <p class="tagline">Coordinate Dungeon Turns, Wilderness Days, and Dominion Months.</p>
+
+  <div class="layout-main">
+
+    <!-- LEFT: Controls -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Time Controls</span>
+      </div>
+
+      <div class="time-display">
+         <div class="date-str" id="dispDate">1 Nuwmont, AC 1000</div>
+         <div class="time-str" id="dispTime">08:00 AM</div>
+         <div class="season-badge" id="dispSeason">Winter</div>
+         <div style="margin-top:8px; font-size:0.8rem; color:#94a3b8">Moon: <span id="dispMoon">Full</span></div>
+      </div>
+
+      <div style="margin-bottom:10px">
+        <label style="color:#60a5fa">Dungeon Scale (Tactical)</label>
+        <div class="controls-grid">
+           <button class="btn btn-sec" onclick="advanceTime('round', 1)">+1 Round (10s)</button>
+           <button class="btn btn-sec" onclick="advanceTime('turn', 1)">+1 Turn (10m)</button>
+        </div>
+      </div>
+
+      <div style="margin-bottom:10px">
+        <label style="color:#34d399">Adventure Scale (Exploration)</label>
+        <div class="controls-grid">
+           <button class="btn btn-sec" onclick="advanceTime('hour', 1)">+1 Hour</button>
+           <button class="btn btn-sec" onclick="advanceTime('watch', 4)">+1 Watch (4h)</button>
+        </div>
+      </div>
+
+      <div style="margin-bottom:10px">
+        <label style="color:#fbbf24">Campaign Scale (Strategic)</label>
+        <div class="controls-grid">
+           <button class="btn btn-sec" onclick="advanceTime('day', 1)">+1 Day</button>
+           <button class="btn btn-sec" onclick="advanceTime('week', 1)">+1 Week</button>
+           <button class="btn btn-sec" onclick="advanceTime('month', 1)">+1 Month</button>
+           <button class="btn btn-sec" onclick="advanceTime('season', 1)">+1 Season</button>
+        </div>
+      </div>
+      
+      <div style="border-top:1px solid #334155; padding-top:10px; margin-top:5px">
+         <label>Manual Set</label>
+         <div class="row">
+            <input type="number" id="setYear" value="1000" style="flex:1">
+            <select id="setMonth" style="flex:2">
+               <!-- Populated -->
+            </select>
+            <input type="number" id="setDay" value="1" min="1" max="28" style="flex:1">
+         </div>
+         <button class="btn btn-sec" onclick="manualSet()" style="margin-top:8px">Update Date</button>
+      </div>
+
+      <div style="border-top:1px solid #334155; padding-top:10px; margin-top:10px">
+         <label>Data Management</label>
+         <div class="row">
+            <button class="btn btn-primary" onclick="exportCalendarData()">Export JSON</button>
+            <label class="btn btn-sec" style="margin-bottom:0; cursor:pointer; text-align:center">
+               Import JSON
+               <input type="file" accept=".json" style="display:none" onchange="importCalendarData(this)">
+            </label>
+         </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Log & Trackers -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Active Timers & Log</span>
+      </div>
+
+      <!-- Add Tracker -->
+      <div style="background:#1e293b; padding:10px; border-radius:6px; border:1px solid #334155; margin-bottom:15px">
+         <label>New Tracker (e.g. "Torch", "Spell Research", "Healing")</label>
+         <div class="row">
+            <input type="text" id="trackName" placeholder="Event Name" style="flex:2">
+            <input type="number" id="trackDur" placeholder="Duration" style="flex:1">
+            <select id="trackUnit" style="flex:1">
+               <option value="turn">Turns</option>
+               <option value="hour">Hours</option>
+               <option value="day">Days</option>
+               <option value="week">Weeks</option>
+            </select>
+            <button class="btn btn-add" onclick="addTracker()" style="flex:0.5">+</button>
+         </div>
+      </div>
+
+      <!-- Active Trackers -->
+      <label>Active Effects</label>
+      <div class="tracker-list" id="trackerList">
+         <!-- Items -->
+      </div>
+      <div id="noTrackers" style="font-size:0.8rem; color:#64748b; text-align:center; padding:10px; display:none">No active timers.</div>
+
+      <!-- Log -->
+      <label style="margin-top:15px">Chronicle</label>
+      <div class="log-container" id="log">
+         <div style="text-align:center; color:#64748b; padding-top:40px">Time stands still...</div>
+      </div>
+      <button class="btn btn-sec" onclick="clearLog()" style="margin-top:5px">Clear Log</button>
+
+    </div>
+
+  </div>
+
+  <script>
+    // --- BECMI / MYSTARA CALENDAR ---
+    // 12 Months, 28 Days each. Total 336 Days/Year.
+    // No leap years in standard simplified rules for ease of play.
+    const MONTHS = [
+      "Nuwmont", "Vatermont", "Thaumont", "Flaurmont", 
+      "Yarthmont", "Klarmont", "Felmont", "Fyrmont", 
+      "Ambyrmont", "Sviftmont", "Eirmont", "Kaldmont"
+    ];
+    
+    // State
+    let clock = {
+      year: 1000,
+      month: 0, // 0-11
+      day: 1,   // 1-28
+      hour: 8,  // 0-23
+      minute: 0 // 0-59
+    };
+    
+    let trackers = [];
+    let logs = [];
+
+    // --- INIT ---
+    function init() {
+      const sel = document.getElementById('setMonth');
+      MONTHS.forEach((m, i) => {
+         sel.innerHTML += `<option value="${i}">${m}</option>`;
+      });
+      
+      loadData();
+      updateDisplay();
+    }
+
+    // --- CORE LOGIC ---
+    function advanceTime(unit, amount) {
+      const oldTime = formatFullDate(clock);
+      
+      if(unit === 'round') addMinutes(amount * (10/60)); // 10 seconds
+      if(unit === 'turn') addMinutes(amount * 10);
+      if(unit === 'hour') addHours(amount);
+      if(unit === 'watch') addHours(amount);
+      if(unit === 'day') addDays(amount);
+      if(unit === 'week') addDays(amount * 7);
+      if(unit === 'month') addMonths(amount);
+      if(unit === 'season') addMonths(amount * 3);
+      
+      updateTrackers(unit, amount);
+      
+      const newTime = formatFullDate(clock);
+      logEntry(`Time passed: +${amount} ${unit}(s)`, `${oldTime} -> ${newTime}`);
+      
+      saveData();
+      updateDisplay();
+    }
+
+    function addMinutes(mins) {
+      clock.minute += mins;
+      while(clock.minute >= 60) {
+        clock.minute -= 60;
+        addHours(1);
+      }
+    }
+
+    function addHours(hrs) {
+      clock.hour += hrs;
+      while(clock.hour >= 24) {
+        clock.hour -= 24;
+        addDays(1);
+      }
+    }
+
+    function addDays(days) {
+      clock.day += days;
+      while(clock.day > 28) {
+        clock.day -= 28;
+        addMonths(1);
+      }
+    }
+
+    function addMonths(mons) {
+      clock.month += mons;
+      while(clock.month >= 12) {
+        clock.month -= 12;
+        clock.year++;
+      }
+    }
+
+    // --- TRACKERS ---
+    function addTracker() {
+      const name = document.getElementById('trackName').value;
+      const dur = parseInt(document.getElementById('trackDur').value);
+      const unit = document.getElementById('trackUnit').value;
+      
+      if(!name || !dur) return;
+      
+      // Convert everything to Minutes for internal tracking? 
+      // Or store unit. Storing total minutes is safer.
+      let totalMinutes = 0;
+      if(unit === 'turn') totalMinutes = dur * 10;
+      if(unit === 'hour') totalMinutes = dur * 60;
+      if(unit === 'day') totalMinutes = dur * 1440; // 24 * 60
+      if(unit === 'week') totalMinutes = dur * 10080;
+      
+      trackers.push({
+        id: Date.now(),
+        name: name,
+        remaining: totalMinutes,
+        initial: totalMinutes
+      });
+      
+      document.getElementById('trackName').value = '';
+      saveData();
+      renderTrackers();
+    }
+
+    function updateTrackers(unit, amount) {
+      let passedMin = 0;
+      if(unit === 'round') passedMin = amount * (1/6);
+      if(unit === 'turn') passedMin = amount * 10;
+      if(unit === 'hour') passedMin = amount * 60;
+      if(unit === 'watch') passedMin = amount * 240;
+      if(unit === 'day') passedMin = amount * 1440;
+      if(unit === 'week') passedMin = amount * 10080;
+      if(unit === 'month') passedMin = amount * 40320; // 28 days
+      if(unit === 'season') passedMin = amount * 120960;
+
+      // Update
+      let expired = [];
+      trackers.forEach(t => {
+         if(t.remaining > 0) {
+            t.remaining -= passedMin;
+            if(t.remaining <= 0) {
+               t.remaining = 0;
+               expired.push(t.name);
+            }
+         }
+      });
+      
+      if(expired.length > 0) {
+         alert("Timers Expired:\n" + expired.join("\n"));
+         logEntry("EXPIRED", expired.join(", "));
+      }
+      
+      // Cleanup finished trackers automatically? Or keep them at 0?
+      // Let's keep them at 0 so user sees they are done, then they can delete.
+      renderTrackers();
+    }
+    
+    function removeTracker(id) {
+       trackers = trackers.filter(t => t.id !== id);
+       saveData();
+       renderTrackers();
+    }
+
+    function renderTrackers() {
+       const list = document.getElementById('trackerList');
+       list.innerHTML = '';
+       
+       if(trackers.length === 0) {
+          document.getElementById('noTrackers').style.display = 'block';
+          return;
+       }
+       document.getElementById('noTrackers').style.display = 'none';
+       
+       trackers.forEach(t => {
+          // Format remaining
+          let timeStr = "";
+          if(t.remaining >= 1440) timeStr = (t.remaining / 1440).toFixed(1) + " days";
+          else if(t.remaining >= 60) timeStr = (t.remaining / 60).toFixed(1) + " hrs";
+          else timeStr = Math.ceil(t.remaining) + " mins";
+          
+          if(t.remaining <= 0) timeStr = "EXPIRED";
+          
+          const div = document.createElement('div');
+          div.className = 'tracker-item';
+          if(t.remaining <= 0) div.style.borderLeftColor = '#ef4444';
+          
+          div.innerHTML = `
+             <div>
+                <div class="tracker-name">${t.name}</div>
+                <div class="tracker-time">${timeStr} remaining</div>
+             </div>
+             <button class="btn btn-danger" style="padding:4px 8px; width:auto; font-size:0.7rem" onclick="removeTracker(${t.id})">X</button>
+          `;
+          list.appendChild(div);
+       });
+    }
+
+    // --- UI ---
+    function updateDisplay() {
+      const mName = MONTHS[clock.month];
+      document.getElementById('dispDate').innerText = `${clock.day} ${mName}, AC ${clock.year}`;
+      
+      // Time 12h
+      let h = Math.floor(clock.hour);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12;
+      if(h === 0) h = 12;
+      const m = Math.floor(clock.minute).toString().padStart(2, '0');
+      document.getElementById('dispTime').innerText = `${h}:${m} ${ampm}`;
+      
+      // Season (Simple Mapping for Mystara)
+      // 0-2: Spring (Nuwmont is start of year, typically Winter/Spring transition in Mystara?)
+      // Actually Mystara: Nuwmont (Jan) is mid-winter.
+      // Let's map loosely to Earth seasons for UI feedback
+      let season = "Winter";
+      if(clock.month >= 2 && clock.month <= 4) season = "Spring"; // Thau-Yarth
+      if(clock.month >= 5 && clock.month <= 7) season = "Summer"; // Klar-Fyr
+      if(clock.month >= 8 && clock.month <= 10) season = "Autumn"; // Amby-Eir
+      if(clock.month >= 11 || clock.month <= 1) season = "Winter"; // Kald-Vat
+      
+      document.getElementById('dispSeason').innerText = season;
+      
+      // Moon (28 day cycle matches month perfectly)
+      // Day 1: New, 7: First Q, 14: Full, 21: Last Q
+      let moon = "New Moon";
+      if(clock.day > 3 && clock.day <= 10) moon = "First Quarter";
+      if(clock.day > 10 && clock.day <= 17) moon = "Full Moon";
+      if(clock.day > 17 && clock.day <= 24) moon = "Last Quarter";
+      if(clock.day > 24 || clock.day <= 3) moon = "New Moon";
+      
+      document.getElementById('dispMoon').innerText = moon;
+      if(moon === 'Full Moon') document.getElementById('dispMoon').style.color = '#fcd34d';
+      else document.getElementById('dispMoon').style.color = '#94a3b8';
+    }
+
+    function formatFullDate(c) {
+       return `${c.day} ${MONTHS[c.month]} ${c.year} ${Math.floor(c.hour)}:${Math.floor(c.minute).toString().padStart(2,'0')}`;
+    }
+
+    function logEntry(action, detail) {
+       logs.unshift({ action, detail, timestamp: Date.now() });
+       renderLog();
+    }
+    
+    function renderLog() {
+       const log = document.getElementById('log');
+       if (logs.length === 0) {
+          log.innerHTML = '<div style="text-align:center; color:#64748b; padding-top:40px">Time stands still...</div>';
+          return;
+       }
+       
+       log.innerHTML = logs.map(l => `
+          <div class="log-entry">
+             <div class="log-time">${l.action}</div>
+             <div class="log-msg">${l.detail}</div>
+          </div>
+       `).join('');
+    }
+    
+    function clearLog() {
+       logs = [];
+       renderLog();
+       saveData();
+    }
+
+    function manualSet() {
+       clock.year = parseInt(document.getElementById('setYear').value);
+       clock.month = parseInt(document.getElementById('setMonth').value);
+       clock.day = parseInt(document.getElementById('setDay').value);
+       updateDisplay();
+       saveData();
+       logEntry("Manual Update", `Date set to ${formatFullDate(clock)}`);
+    }
+
+    // --- STORAGE ---
+    function saveData() {
+       const data = {
+          clock: clock,
+          trackers: trackers,
+          logs: logs
+       };
+       localStorage.setItem('master_clock', JSON.stringify(data));
+    }
+    
+    function loadData() {
+       const raw = localStorage.getItem('master_clock');
+       if(raw) {
+          try {
+            const data = JSON.parse(raw);
+            if(data.clock) clock = data.clock;
+            if(data.trackers) trackers = data.trackers;
+            if(data.logs) logs = data.logs;
+          } catch(e) { console.error(e); }
+       }
+       renderTrackers();
+       renderLog();
+    }
+
+    function exportCalendarData() {
+       const data = {
+          clock: clock,
+          trackers: trackers,
+          logs: logs,
+          exportDate: new Date().toISOString()
+       };
+       
+       const dataStr = JSON.stringify(data, null, 2);
+       const blob = new Blob([dataStr], {type: "application/json"});
+       const url = URL.createObjectURL(blob);
+       const link = document.createElement('a');
+       link.href = url;
+       link.download = `calendar_log_${clock.year}_${MONTHS[clock.month]}.json`;
+       document.body.appendChild(link);
+       link.click();
+       document.body.removeChild(link);
+    }
+
+    function importCalendarData(input) {
+       const file = input.files[0];
+       if(!file) return;
+       
+       const reader = new FileReader();
+       reader.onload = function(e) {
+          try {
+             const data = JSON.parse(e.target.result);
+             if(data.clock) {
+                clock = data.clock;
+                trackers = data.trackers || [];
+                logs = data.logs || [];
+                
+                saveData(); // Update local storage
+                updateDisplay();
+                renderTrackers();
+                renderLog();
+                
+                alert("Calendar data loaded successfully.");
+             } else {
+                alert("Invalid calendar file.");
+             }
+          } catch(err) {
+             alert("Error reading file: " + err.message);
+          }
+       };
+       reader.readAsText(file);
+       input.value = '';
+    }
+
+    init();
+
+  </script>
+</body>
+</html>

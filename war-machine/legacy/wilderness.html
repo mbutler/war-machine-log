@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Royal Cartographer</title>
+  <style>
+    /* --- SUITE DESIGN SYSTEM --- */
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 1.5rem; font-family: system-ui, -apple-system, sans-serif; background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%); color: #e5e7eb; }
+    h1 { margin: 0 0 0.3rem 0; font-size: 1.6rem; letter-spacing: -0.02em; }
+    .tagline { font-size: 0.85rem; color: #94a3b8; margin-bottom: 1.2rem; }
+    
+    .layout-main { display: grid; grid-template-columns: 300px 1fr 300px; gap: 1rem; margin-top: 0.75rem; }
+    @media (max-width: 1100px) { .layout-main { grid-template-columns: 1fr 1fr; } .panel-map { grid-column: span 2; order: -1; } }
+    @media (max-width: 768px) { .layout-main { grid-template-columns: 1fr; } .panel-map { grid-column: span 1; } }
+
+    /* Cards */
+    .card { border-radius: 0.75rem; border: 1px solid #1f2937; background: #0f172a; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem; height: fit-content; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; border-bottom: 1px solid #1e293b; margin-bottom: 0.5rem; }
+    .card-title { font-weight: 700; font-size: 1rem; color: #f8fafc; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    /* UI Elements */
+    label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 3px; }
+    select, input {
+      width: 100%; background: #020617; border: 1px solid #334155; color: #e2e8f0;
+      padding: 6px 8px; border-radius: 4px; font-size: 0.9rem;
+    }
+    
+    /* Map Canvas */
+    .map-container {
+      background: #020617; border: 1px solid #334155; border-radius: 8px;
+      overflow: hidden; position: relative; height: 500px; width: 100%;
+      display: flex; justify-content: center; align-items: center;
+    }
+    canvas { background: #0f172a; cursor: crosshair; }
+
+    /* Controls */
+    .d-pad {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; width: 120px; margin: 0 auto;
+    }
+    .btn-dir {
+      padding: 10px; background: #334155; border: none; border-radius: 4px; color: #fff; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+    }
+    .btn-dir:hover { background: #4f46e5; }
+    .btn-dir:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* Weather Widget */
+    .weather-box { background: #1e293b; padding: 10px; border-radius: 6px; border-left: 3px solid #60a5fa; }
+    .weather-row { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px; }
+    
+    /* Stats */
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .stat-item { background: #1e293b; padding: 8px; border-radius: 4px; text-align: center; }
+    .stat-lbl { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; }
+    .stat-val { font-size: 1rem; font-weight: bold; color: #fff; }
+
+    /* Log */
+    .log-container { background: #000; border: 1px solid #334155; border-radius: 8px; height: 300px; overflow-y: auto; padding: 10px; font-family: 'Courier New', monospace; font-size: 0.8rem; }
+    .log-entry { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px dashed #333; }
+    .badge { display: inline-block; padding: 1px 5px; border-radius: 3px; font-size: 0.65rem; font-weight: bold; margin-right: 5px; text-transform: uppercase; }
+    
+    .terrain-clear { color: #86efac; }
+    .terrain-woods { color: #166534; font-weight: bold; }
+    .terrain-hills { color: #d4d4d8; }
+    .terrain-mountain { color: #71717a; font-weight: bold; }
+    .terrain-swamp { color: #10b981; }
+    .terrain-desert { color: #fdba74; }
+    .terrain-water { color: #3b82f6; }
+    
+    .btn-primary { width:100%; padding:10px; background:#4f46e5; color:white; border:none; border-radius:6px; font-weight:600; cursor:pointer; }
+    .btn-primary:hover { background:#4338ca; }
+    .btn-sec { width:100%; padding:8px; background:#334155; color:#e2e8f0; border:none; border-radius:6px; cursor:pointer; margin-top:8px; }
+    
+    .btn-sm { font-size: 0.75rem; padding: 4px 8px; background: #334155; border: none; border-radius: 4px; color: #e2e8f0; cursor: pointer; position: absolute; bottom: 10px; right: 10px; z-index: 10; }
+    .btn-sm:hover { background: #475569; }
+  </style>
+</head>
+<body>
+
+  <h1>The Royal Cartographer</h1>
+  <p class="tagline">BECMI Wilderness Generation (Expert Set) & Weather.</p>
+
+  <div class="layout-main">
+
+    <!-- CONTROLS -->
+    <div class="card">
+      <div class="card-header"><span class="card-title">Quartermaster</span></div>
+      
+      <div class="row">
+        <div><label>Party Size</label><input type="number" id="partySize" value="5" min="1"></div>
+        <div><label>Rations (Days)</label><input type="number" id="rations" value="35" min="0"></div>
+        <div><label>Water (Skins)</label><input type="number" id="water" value="35" min="0"></div>
+      </div>
+      
+      <div style="background:#1e293b; padding:8px; border-radius:4px; margin-top:10px; font-size:0.8rem; text-align:center">
+         <span style="color:#94a3b8">Time:</span> <span id="dayCount" style="font-weight:bold; color:#fff">0 days, 24/24 Miles</span>
+      </div>
+
+      <div style="margin-top:20px; border-top:1px solid #334155; padding-top:15px">
+        <div class="card-title" style="font-size:0.8rem; margin-bottom:10px; text-align:center">Travel</div>
+        
+        <div class="d-pad">
+           <button class="btn-dir" onclick="move(0)" title="North West">↖</button>
+           <button class="btn-dir" onclick="move(1)" title="North">↑</button>
+           <button class="btn-dir" onclick="move(2)" title="North East">↗</button>
+           <button class="btn-dir" onclick="move(3)" title="South West">↙</button>
+           <button class="btn-dir" onclick="move(4)" title="South">↓</button>
+           <button class="btn-dir" onclick="move(5)" title="South East">↘</button>
+        </div>
+        <div style="text-align:center; font-size:0.7rem; color:#64748b; margin-top:5px">Arrow = Travel to Hex</div>
+      </div>
+      
+      <div class="row" style="margin-top: 10px;">
+        <button class="btn-sec" onclick="forage()">Hunt / Forage (1 Day)</button>
+        <button class="btn-sec" onclick="refillWater()" id="btnRefill">Refill Water</button>
+      </div>
+
+      <div style="margin-top:auto">
+        <hr style="border:0; border-top:1px solid #334155; margin:15px 0;">
+        <label>Generator Settings</label>
+        <select id="startTerrain" style="margin-bottom:5px">
+          <option value="clear">Start: Clear</option>
+          <option value="woods">Start: Woods</option>
+          <option value="mountain">Start: Mountain</option>
+          <option value="city">Start: City</option>
+        </select>
+        <select id="climate">
+          <option value="normal">Climate: Temperate</option>
+          <option value="cold">Climate: Cold</option>
+          <option value="tropic">Climate: Tropical</option>
+          <option value="desert">Climate: Arid</option>
+        </select>
+        <div class="row" style="margin-top: 10px;">
+           <button class="btn-primary" onclick="resetMap()">New Map</button>
+           <button class="btn-sec" onclick="exportMapData()" style="margin-top:0">Export Map</button>
+        </div>
+        <div style="margin-top:8px">
+           <label style="cursor:pointer; display:block; background:#334155; color:#e2e8f0; padding:8px; border-radius:6px; text-align:center; font-size:0.8rem">
+              Import Map (JSON)
+              <input type="file" id="importFile" accept=".json" style="display:none" onchange="importMapData(this)">
+           </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAP -->
+    <div class="card panel-map" style="padding:0; border:none; background:transparent;">
+      <div class="map-container">
+        <canvas id="mapCanvas" width="600" height="500"></canvas>
+        <div style="position:absolute; top:10px; left:10px; background:rgba(0,0,0,0.7); padding:5px 10px; border-radius:4px; color:#fff; font-size:0.8rem">
+           Pos: <span id="coords">0, 0</span>
+        </div>
+        <button class="btn-sm" onclick="recenterMap()">Recenter View</button>
+      </div>
+    </div>
+
+    <!-- DETAILS -->
+    <div class="card">
+      <div class="card-header"><span class="card-title">Survey Report</span></div>
+      
+      <!-- Weather -->
+      <div class="weather-box">
+        <div style="color:#93c5fd; font-weight:bold; font-size:0.8rem; margin-bottom:5px; text-transform:uppercase">Daily Weather</div>
+        <div class="weather-row">
+           <span>Temp:</span> <span id="wTemp" style="color:#fff">--</span>
+        </div>
+        <div class="weather-row">
+           <span>Wind:</span> <span id="wWind" style="color:#fff">--</span>
+        </div>
+        <div class="weather-row">
+           <span>Precip:</span> <span id="wRain" style="color:#fff">--</span>
+        </div>
+      </div>
+
+      <!-- Current Hex Info -->
+      <div style="margin-top:15px">
+         <div class="stat-grid">
+           <div class="stat-item">
+             <div class="stat-lbl">Terrain</div>
+             <div class="stat-val" id="currTerrain" style="color:#86efac">--</div>
+           </div>
+           <div class="stat-item">
+             <div class="stat-lbl">Travel Cost</div>
+             <div class="stat-val" id="currCost">1 Day</div>
+           </div>
+         </div>
+      </div>
+
+      <!-- Features / Dominion -->
+      <div style="margin-top:15px; padding:10px; background:#1e293b; border-radius:6px; font-size:0.8rem">
+         <div style="color:#94a3b8; text-transform:uppercase; font-size:0.7rem; margin-bottom:5px">Dominion Resources</div>
+         <div id="resList" style="line-height:1.5">
+           No resources surveyed.
+         </div>
+         <div style="font-size:0.7rem; color:#64748b; margin-top:8px; border-top:1px dashed #334155; padding-top:5px">
+           <i>Note: Resources add +1 gp/family to income if settled.</i>
+         </div>
+      </div>
+
+      <div class="log-container" id="log" style="height:250px; margin-top:15px">
+         <div style="color:#64748b; text-align:center; padding-top:20px">Survey Log...</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // --- CONSTANTS ---
+    // BECMI Movement Points per terrain (Expert Set p. X57 & X15)
+    // Scale: 6-mile hexes. 
+    // Base Movement: 24 miles/day (120' / 5).
+    // MP Cost: 6 miles = 6 MP (1 MP = 1 mile approx for simplified math, or scale MP to hexes)
+    // Current Implementation: 12 MP/day. 
+    // Clear = 1 MP cost -> 12 hexes/day? That's 72 miles! Too fast.
+    // CORRECTION:
+    // BECMI Expert p. X15:
+    // "Normal" Move (120') = 24 miles/day.
+    // Clear Terrain cost = 2/3 movement? No, p.X15 table:
+    // Clear: x1 cost. (24 miles = 4 hexes @ 6 miles).
+    // Woods/Hills: x1.5 cost (16 miles = 2.6 hexes).
+    // Swamp/Mountain: x2 cost (12 miles = 2 hexes).
+    
+    // REVISED MP SYSTEM for 6-MILE HEXES:
+    // Party has 24 "Miles Points" per day.
+    // Clear Hex (6 miles) = 6 MP.
+    // Woods/Hills (6 miles * 1.5) = 9 MP.
+    // Mountain/Swamp (6 miles * 2) = 12 MP.
+    // Road (Clear) = 4 MP (x0.66) - ignored for now as no roads generated.
+    
+    const TERRAIN = {
+      'clear': { color: '#86efac', name: 'Clear', mpCost: 6, forage: 1, tables: {clear:10, city:12, woods:16, river:17, swamp:18, hills:19, mountain:20}, lost: 1, encounter: 2 }, 
+      'woods': { color: '#15803d', name: 'Woods', mpCost: 9, forage: 3, tables: {clear:5, city:6, woods:14, river:15, swamp:16, hills:17, mountain:20}, lost: 2, encounter: 3 }, 
+      'hills': { color: '#a1a1aa', name: 'Hills', mpCost: 9, forage: 2, tables: {clear:4, city:5, woods:7, river:8, swamp:9, hills:17, mountain:20}, lost: 2, encounter: 3 },
+      'mountain': { color: '#52525b', name: 'Mountain', mpCost: 12, forage: 1, tables: {clear:3, woods:6, river:8, hills:14, mountain:20}, lost: 2, encounter: 3 }, 
+      'swamp': { color: '#047857', name: 'Swamp', mpCost: 12, forage: 2, tables: {clear:3, woods:6, river:10, swamp:18, hills:19, mountain:20}, lost: 3, encounter: 3 }, 
+      'desert': { color: '#fdba74', name: 'Desert', mpCost: 12, forage: 0, tables: {clear:4, desert:18, hills:19, mountain:20}, lost: 3, encounter: 2 }, 
+      'city': { color: '#fcd34d', name: 'Settlement', mpCost: 4, forage: 6, tables: {clear:10, city:14, woods:16, river:17, hills:19, mountain:20}, lost: 0, encounter: 2 }, // Treat as road (x2/3)
+      'river': { color: '#3b82f6', name: 'River', mpCost: 6, forage: 3, tables: {clear:10, city:12, woods:16, river:20}, lost: 0, encounter: 2 },
+      'ocean': { color: '#1e3a8a', name: 'Ocean', mpCost: 12, forage: 3, tables: {ocean:20}, lost: 3, encounter: 2 }
+    };
+
+    // BECMI Movement Rates (MP per day)
+    // 120' exploration speed -> 24 miles / day
+    const MOVEMENT_RATES = {
+      'Normal': 24 
+    };
+
+    // BECMI Expert Wilderness Encounter Tables (X57)
+    // Structure: Terrain -> Roll d8 -> Table Category -> Roll Subtable
+    const ENCOUNTER_DATA = {
+      // Subtables
+      menus: [
+        { name: 'Bandit', qty: '1d6+3' }, // Using dice notation
+        { name: 'Brigand', qty: '2d4' },
+        { name: 'Berserker', qty: '1d6' },
+        { name: 'Fighter (Patrol)', qty: '1d6' }, // Patrol
+        { name: 'Merchant', qty: '1d20' },
+        { name: 'NPC Party', qty: '1d6+2' },
+      ],
+      humanoid: [
+        { name: 'Goblin', qty: '2d4' },
+        { name: 'Hobgoblin', qty: '1d6' },
+        { name: 'Orc', qty: '1d6' },
+        { name: 'Gnoll', qty: '1d6' },
+        { name: 'Kobold', qty: '4d4' },
+        { name: 'Ogre', qty: '1d3' }
+      ],
+      flyer: [
+        { name: 'Gargoyle', qty: '1d6' },
+        { name: 'Griffon', qty: '1d6' },
+        { name: 'Harpy', qty: '1d6' },
+        { name: 'Hippogriff', qty: '2d8' },
+        { name: 'Pegasus', qty: '1d12' },
+        { name: 'Roc', qty: '1d20' }, // Rare, but in table
+        { name: 'Dragon', qty: '1' }
+      ],
+      animal: [
+        { name: 'Antelope', qty: '3d10' },
+        { name: 'Boar', qty: '1d6' },
+        { name: 'Cat, Great', qty: '1d4' },
+        { name: 'Bear', qty: '1d4' },
+        { name: 'Wolf', qty: '2d6' }
+      ],
+      swimmer: [
+        { name: 'Crocodile', qty: '1d6' },
+        { name: 'Fish, Giant', qty: '1d6' },
+        { name: 'Leech, Giant', qty: '1d4' },
+        { name: 'Lizard Men', qty: '2d4' }
+      ],
+      dragon: [
+        { name: 'Black Dragon', qty: '1' },
+        { name: 'Blue Dragon', qty: '1' },
+        { name: 'Green Dragon', qty: '1' },
+        { name: 'Red Dragon', qty: '1' },
+        { name: 'White Dragon', qty: '1' },
+        { name: 'Chimera', qty: '1d2' },
+        { name: 'Wyvern', qty: '1d3' },
+        { name: 'Hydra', qty: '1' }
+      ],
+      undead: [
+        { name: 'Ghoul', qty: '1d6' },
+        { name: 'Skeleton', qty: '3d4' },
+        { name: 'Wight', qty: '1d3' },
+        { name: 'Wraith', qty: '1d3' },
+        { name: 'Vampire', qty: '1' },
+        { name: 'Spectre', qty: '1d2' },
+        { name: 'Zombie', qty: '2d4' }
+      ],
+      unusual: [
+        { name: 'Basilisk', qty: '1d6' },
+        { name: 'Centaur', qty: '1d6' },
+        { name: 'Giant', qty: '1d6' },
+        { name: 'Lycanthrope', qty: '1d6' },
+        { name: 'Medusa', qty: '1d3' },
+        { name: 'Treant', qty: '1d6' }
+      ]
+    };
+
+    // Main Terrain Tables (d8)
+    const TERRAIN_TABLES = {
+      'clear': ['Men', 'Men', 'Flyer', 'Humanoid', 'Animal', 'Animal', 'Unusual', 'Dragon'],
+      'woods': ['Men', 'Flyer', 'Humanoid', 'Humanoid', 'Animal', 'Animal', 'Unusual', 'Dragon'],
+      'hills': ['Men', 'Flyer', 'Humanoid', 'Humanoid', 'Animal', 'Unusual', 'Dragon', 'Dragon'],
+      'mountain': ['Men', 'Flyer', 'Humanoid', 'Unusual', 'Unusual', 'Animal', 'Dragon', 'Dragon'],
+      'swamp': ['Men', 'Flyer', 'Humanoid', 'Undead', 'Undead', 'Swimmer', 'Dragon', 'Unusual'],
+      'river': ['Men', 'Flyer', 'Humanoid', 'Swimmer', 'Swimmer', 'Swimmer', 'Animal', 'Dragon'],
+      'desert': ['Men', 'Men', 'Flyer', 'Humanoid', 'Undead', 'Unusual', 'Dragon', 'Dragon'],
+      'city': ['Men', 'Men', 'Men', 'Men', 'Men', 'Humanoid', 'Undead', 'Giant'] // Custom City mix
+    };
+
+    const CLASSES = ["Fighter", "Cleric", "Magic-User", "Thief", "Dwarf", "Elf"];
+    const ALIGNMENTS = ["Lawful", "Neutral", "Chaotic"];
+
+    // HEX MATH (FLAT TOP / ODD-Q)
+    const HEX_SIZE = 25; 
+    const HEX_WIDTH = 2 * HEX_SIZE; 
+    const HEX_HEIGHT = Math.sqrt(3) * HEX_SIZE;
+
+    const DIRS = [
+      [{q:-1, r:-1}, {q:0,  r:-1}, {q:1,  r:-1}, {q:-1, r:0}, {q:0,  r:1}, {q:1,  r:0}], 
+      [{q:-1, r:0}, {q:0,  r:-1}, {q:1,  r:0}, {q:-1, r:1}, {q:0,  r:1}, {q:1,  r:1}]
+    ];
+
+    // --- STATE ---
+    let map = {};
+    let currentPos = { q: 0, r: 0 };
+    let cameraOffset = { x: 0, y: 0 };
+    let canvas, ctx;
+    let days = 0;
+    let movementPoints = 0; // Current MP remaining today
+    let maxMovementPoints = 0; // Total MP available per day
+
+    function init() {
+      canvas = document.getElementById('mapCanvas');
+      ctx = canvas.getContext('2d');
+      cameraOffset = { x: canvas.width / 2, y: canvas.height / 2 };
+      resetMap();
+    }
+
+    function resetMap() {
+      map = {};
+      currentPos = { q: 0, r: 0 };
+      days = 0;
+      movementPoints = calculatePartyMovementPoints();
+      maxMovementPoints = movementPoints;
+      cameraOffset = { x: canvas.width / 2, y: canvas.height / 2 };
+
+      const start = document.getElementById('startTerrain').value;
+      map["0,0"] = { type: start, visited: true, resources: [], feature: "Start", details: "Safe Haven" };
+
+      document.getElementById('dayCount').innerText = '0 days';
+      document.getElementById('rations').value = document.getElementById('partySize').value * 7;
+      document.getElementById('water').value = document.getElementById('partySize').value * 7; // Init Water
+
+      drawMap();
+      updateInfo();
+      updateRefillButton();
+      generateWeather();
+    }
+
+    function calculatePartyMovementPoints() {
+      // BECMI movement (Expert p. X15)
+      // 120' / turn base = 24 miles / day
+      // 90' / turn base = 18 miles / day
+      // 60' / turn base = 12 miles / day
+      // We use standard unencumbered foot travel (120') for now: 24 MP (Miles Points)
+      return 24; 
+    }
+    
+    function recenterMap() {
+      const pixelPos = getPixelPos(currentPos.q, currentPos.r);
+      cameraOffset.x = (canvas.width / 2) - pixelPos.x;
+      cameraOffset.y = (canvas.height / 2) - pixelPos.y;
+      drawMap();
+    }
+
+    // --- RESOURCES ---
+    function consumeMovementPoints(mpCost) {
+      movementPoints -= mpCost;
+      if (movementPoints <= 0) {
+        // Day ends, consume rations
+        // Handle Movement Debt: If mp is -4, we start next day with 20 (24 - 4)
+        // If cost was huge (e.g. 24) and we had 6, mp is -18. Next day we have 6.
+        while (movementPoints <= 0) {
+           consumeDailySupplies();
+           movementPoints += maxMovementPoints; 
+        }
+      }
+      // Update display immediately for debt tracking
+      document.getElementById('dayCount').innerText = `${days} days, ${Math.floor(movementPoints)}/${maxMovementPoints} Miles`;
+    }
+
+    function consumeDailySupplies() {
+      const pSize = parseInt(document.getElementById('partySize').value);
+      let rations = parseInt(document.getElementById('rations').value);
+      let water = parseInt(document.getElementById('water').value);
+
+      const needed = pSize; // 1 ration per person per day
+      rations -= needed;
+      
+      // Water consumption: Double in Desert
+      const currentHex = map[`${currentPos.q},${currentPos.r}`];
+      const isDesert = currentHex && currentHex.type === 'desert';
+      const waterNeeded = isDesert ? pSize * 2 : pSize;
+      water -= waterNeeded;
+
+      days += 1;
+      
+      let msg = "";
+      if(rations < 0) {
+        rations = 0;
+        msg += "STARVATION! ";
+      }
+      if(water < 0) {
+        water = 0;
+        msg += "DEHYDRATION! ";
+      }
+      
+      if (msg) {
+         logEntry(map[`${currentPos.q},${currentPos.r}`], currentPos, msg + "Party takes damage.", "");
+      }
+
+      document.getElementById('rations').value = rations;
+      document.getElementById('water').value = water;
+      
+      // Update button state
+      updateRefillButton();
+    }
+
+    function updateRefillButton() {
+       const btn = document.getElementById('btnRefill');
+       if(!btn) return;
+       const key = `${currentPos.q},${currentPos.r}`;
+       if(!map[key]) return;
+       const type = map[key].type;
+       // Can refill in most places except desert/hills/mountain unless water feature?
+       // Simplified: Clear, Woods, River, Swamp, City, Ocean = Yes. Desert, Mountain, Hills = No.
+       const canRefill = ['clear', 'woods', 'river', 'swamp', 'city', 'ocean'].includes(type);
+       btn.disabled = !canRefill;
+       btn.title = canRefill ? "Refill Waterskins" : "No water source nearby";
+       if (canRefill) btn.style.opacity = "1";
+       else btn.style.opacity = "0.5";
+    }
+
+    function refillWater() {
+       const pSize = parseInt(document.getElementById('partySize').value);
+       // Assume max capacity is 7 days per person? Or just fill to arbitrary amount?
+       // Let's fill to 7 days worth (standard load)
+       document.getElementById('water').value = pSize * 7;
+       logEntry(map[`${currentPos.q},${currentPos.r}`], currentPos, "", "Waterskins refilled.");
+    }
+
+    function forage() {
+      const key = `${currentPos.q},${currentPos.r}`;
+      const terrain = TERRAIN[map[key].type];
+
+      consumeDailySupplies(); // Foraging takes a full day
+
+      const roll = Math.floor(Math.random() * 6) + 1;
+      if(roll <= terrain.forage) {
+         const found = Math.floor(Math.random() * 6) + 1;
+         let currentRations = parseInt(document.getElementById('rations').value);
+         currentRations += found;
+         document.getElementById('rations').value = currentRations;
+         logEntry(map[key], currentPos, "", `Foraging Successful! Found ${found} rations.`);
+      } else {
+         logEntry(map[key], currentPos, "", "Foraging Failed. Found nothing.");
+      }
+      generateWeather();
+    }
+
+    // --- GENERATION ---
+    function getTerrainFromTable(prevType) {
+      if(!TERRAIN[prevType].tables) return prevType;
+      const table = TERRAIN[prevType].tables;
+      const roll = Math.floor(Math.random() * 20) + 1;
+      
+      // Ensure we check thresholds in ascending order
+      const entries = Object.entries(table).sort((a, b) => a[1] - b[1]);
+      
+      for (const [type, threshold] of entries) {
+        if (roll <= threshold) return type;
+      }
+      return prevType;
+    }
+
+    function generateHex(q, r, fromType) {
+      const key = `${q},${r}`;
+      if (map[key]) return map[key]; 
+
+      const newType = getTerrainFromTable(fromType);
+      
+      // 1. Resources
+      const resources = [];
+      if(Math.random() < 0.2) resources.push("Animal");
+      if(Math.random() < 0.2) resources.push("Vegetable");
+      if(Math.random() < 0.1) resources.push("Mineral");
+      
+      // 2. Features & Details (Stronghold Generator)
+      let feature = null;
+      let details = "";
+      
+      // BECMI Probabilities (X59)
+      const fRoll = Math.random();
+      // Adjusted probabilities to ensure features appear reasonably often
+      if(fRoll < 0.02) { // Castle (2%)
+         feature = "Castle";
+         const ownerLvl = Math.floor(Math.random() * 6) + 9; // 9-14
+         const ownerClass = CLASSES[Math.floor(Math.random() * CLASSES.length)];
+         const align = ALIGNMENTS[Math.floor(Math.random() * 3)];
+         const troops = (Math.floor(Math.random() * 4) + 1) * 10;
+         // Patrols
+         const patrol = generateBECMIEncounter({type: newType}).replace("ENCOUNTER: ", "");
+         details = `${align} ${ownerClass} (Lvl ${ownerLvl}). Garrison: ${troops}. Patrol: ${patrol}.`;
+      } else if (fRoll < 0.05) { // Ruins (3%)
+         feature = "Ruins";
+         details = "Ancient crumbling walls. Dungeon entrance?";
+      } else if (fRoll < 0.15) { // Lair (10%)
+         feature = "Lair";
+         const encounter = generateBECMIEncounter({type: newType});
+         if (encounter) {
+            details = encounter.replace("ENCOUNTER: ", "Lair of ");
+         } else {
+            details = "Empty lair.";
+         }
+      } else if (fRoll < 0.20 || newType === 'city') { // Settlement (5% + Terrain Transitions)
+         feature = "Town";
+         const settlement = generateSettlement();
+         details = `${settlement.size} (Pop: ${settlement.population}). Ruler: ${settlement.ruler}. Services: ${settlement.services}.`;
+      }
+
+      map[key] = { type: newType, resources, feature, details, visited: true };
+      return map[key];
+    }
+
+    function move(dirIndex) {
+      // 1. Calculate "To" Hex (to see cost)
+      const isOdd = Math.abs(currentPos.q) % 2 === 1;
+      const delta = DIRS[isOdd ? 1 : 0][dirIndex];
+      const nextQ = currentPos.q + delta.q;
+      const nextR = currentPos.r + delta.r;
+      
+      const currKey = `${currentPos.q},${currentPos.r}`;
+      const fromType = map[currKey].type;
+      
+      // Generate destination to check costs
+      const nextHex = generateHex(nextQ, nextR, fromType);
+      const nextData = TERRAIN[nextHex.type];
+
+      // 2. Check Lost (Based on CURRENT terrain)
+      // EXCEPTION: Rivers are safe landmarks
+      const currData = TERRAIN[fromType];
+      let actualDir = dirIndex;
+      let lostMsg = "";
+      let lostChance = currData.lost;
+      if(fromType === 'river') lostChance = 0; // Safe
+      
+      if (Math.floor(Math.random() * 6) + 1 <= lostChance) {
+         const drift = Math.floor(Math.random() * 6);
+         if (drift !== dirIndex) {
+            actualDir = drift;
+            lostMsg = "LOST! Drifting...";
+            const driftDelta = DIRS[isOdd ? 1 : 0][actualDir];
+            const driftQ = currentPos.q + driftDelta.q;
+            const driftR = currentPos.r + driftDelta.r;
+            generateHex(driftQ, driftR, fromType);
+            currentPos.q = driftQ;
+            currentPos.r = driftR;
+         } else {
+            currentPos.q = nextQ;
+            currentPos.r = nextR;
+         }
+      } else {
+         currentPos.q = nextQ;
+         currentPos.r = nextR;
+      }
+
+      // 3. Consume Movement Points
+      const finalHex = map[`${currentPos.q},${currentPos.r}`];
+      const finalData = TERRAIN[finalHex.type];
+      consumeMovementPoints(finalData.mpCost);
+
+      // 4. Updates
+      const p = getPixelPos(currentPos.q, currentPos.r);
+      const screenX = p.x + cameraOffset.x;
+      const screenY = p.y + cameraOffset.y;
+      const margin = 50;
+      
+      if(screenX < margin || screenX > canvas.width - margin || screenY < margin || screenY > canvas.height - margin) {
+         recenterMap();
+      } else {
+         drawMap();
+      }
+      
+      updateInfo();
+      updateRefillButton(); // Check water availability
+      generateWeather();
+      
+      // 5. Encounter (BECMI Rules)
+      let encounterMsg = "";
+      if (Math.floor(Math.random() * 6) + 1 <= finalData.encounter) {
+         encounterMsg = generateBECMIEncounter(finalHex);
+      }
+
+      logEntry(finalHex, currentPos, lostMsg, encounterMsg);
+    }
+
+    // --- WEATHER ---
+    function generateWeather() {
+      const climate = document.getElementById('climate').value;
+      let tempRoll = Math.floor(Math.random() * 6) + Math.floor(Math.random() * 6) + 2;
+      if(climate === 'cold') tempRoll -= 3;
+      if(climate === 'tropic') tempRoll += 3;
+      
+      let tempStr = "Moderate";
+      if(tempRoll <= 4) tempStr = "Cold/Freezing";
+      else if(tempRoll <= 6) tempStr = "Cool";
+      else if(tempRoll >= 10) tempStr = "Hot";
+      else if(tempRoll >= 12) tempStr = "Scorching";
+
+      const windRoll = Math.floor(Math.random() * 6) + Math.floor(Math.random() * 6) + 2;
+      let windStr = "Breeze";
+      if(windRoll <= 3) windStr = "Dead Calm";
+      else if(windRoll >= 10) windStr = "Strong Winds";
+      else if(windRoll >= 12) windStr = "Gale/Storm";
+
+      const rainRoll = Math.floor(Math.random() * 6) + Math.floor(Math.random() * 6) + 2;
+      let rainStr = "None";
+      if(rainRoll >= 10) rainStr = (tempStr.includes('Cold')) ? "Snow" : "Rain";
+      if(rainRoll === 12) rainStr = "Heavy Storm";
+
+      document.getElementById('wTemp').innerText = tempStr;
+      document.getElementById('wWind').innerText = windStr;
+      document.getElementById('wRain').innerText = rainStr;
+    }
+
+    // --- DRAWING ---
+    function getPixelPos(q, r) {
+      // ODD-Q Conversion
+      const x = HEX_SIZE * 1.5 * q;
+      const y = HEX_SIZE * Math.sqrt(3) * (r + 0.5 * (Math.abs(q)%2));
+      return { x, y };
+    }
+
+    function drawHex(x, y, color, isCurrent, q, r) {
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const angle = (2 * Math.PI / 6) * i;
+        const x_i = x + HEX_SIZE * Math.cos(angle);
+        const y_i = y + HEX_SIZE * Math.sin(angle);
+        if (i === 0) ctx.moveTo(x_i, y_i);
+        else ctx.lineTo(x_i, y_i);
+      }
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "#1e293b";
+      ctx.stroke();
+      
+      // Coords
+      ctx.fillStyle = "rgba(0,0,0,0.3)";
+      ctx.font = "10px monospace";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(`${q},${r}`, x, y);
+    }
+
+    function drawPlayer(x, y) {
+      ctx.beginPath();
+      ctx.arc(x, y, 8, 0, 2*Math.PI);
+      ctx.fillStyle = "#ef4444";
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "#fff";
+      ctx.stroke();
+    }
+
+    function drawMap() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      for (const key in map) {
+        const [q, r] = key.split(',').map(Number);
+        const terrain = map[key];
+        const color = TERRAIN[terrain.type].color;
+        
+        const pos = getPixelPos(q, r);
+        const x = pos.x + cameraOffset.x;
+        const y = pos.y + cameraOffset.y;
+        
+        if(x > -50 && x < canvas.width + 50 && y > -50 && y < canvas.height + 50) {
+           drawHex(x, y, color, false, q, r);
+           if(terrain.feature) {
+              ctx.beginPath();
+              ctx.arc(x, y + 10, 3, 0, 2*Math.PI);
+              ctx.fillStyle = "#fff";
+              ctx.fill();
+           }
+        }
+      }
+      
+      const pPos = getPixelPos(currentPos.q, currentPos.r);
+      drawPlayer(pPos.x + cameraOffset.x, pPos.y + cameraOffset.y);
+    }
+
+    function updateInfo() {
+      const key = `${currentPos.q},${currentPos.r}`;
+      const hex = map[key];
+      const data = TERRAIN[hex.type];
+      document.getElementById('coords').innerText = `${currentPos.q}, ${currentPos.r}`;
+      const terEl = document.getElementById('currTerrain');
+      terEl.innerText = data.name;
+      terEl.style.color = data.color;
+      document.getElementById('currCost').innerText = data.mpCost + " Miles";
+      
+      const resDiv = document.getElementById('resList');
+      let html = "";
+      
+      if(hex.feature) {
+         html += `<div style="color:#fbbf24; font-weight:bold; margin-bottom:4px">${hex.feature}</div>`;
+         if(hex.details) html += `<div style="margin-bottom:8px; font-size:0.75rem; color:#e2e8f0">${hex.details}</div>`;
+      } else {
+         html += `<div style="color:#64748b; margin-bottom:4px">Wilderness</div>`;
+      }
+      
+      if(hex.resources.length > 0) {
+         hex.resources.forEach(r => { html += `<div>• ${r} Resource</div>`; });
+      } else {
+         html += `<div>No resources.</div>`;
+      }
+      resDiv.innerHTML = html;
+    }
+
+    function generateBECMIEncounter(hex) {
+      // BECMI Terrain-based encounter system (X57)
+      const type = hex.type;
+      
+      // If feature exists, check for special encounters
+      if (hex.feature === 'Castle') {
+        return "ENCOUNTER: Castle Patrol or Garrison"; // Placeholder for now
+      }
+      
+      if (!TERRAIN_TABLES[type]) return ""; // Should not happen
+
+      // 1. Roll on Terrain Table (d8)
+      const categories = TERRAIN_TABLES[type];
+      const roll = Math.floor(Math.random() * 8);
+      const categoryName = categories[roll];
+      const categoryKey = categoryName.toLowerCase();
+
+      // 2. Roll on Subtable
+      let encounter = { name: "Unknown", qty: "1" };
+      
+      if (ENCOUNTER_DATA[categoryKey]) {
+         const table = ENCOUNTER_DATA[categoryKey];
+         encounter = table[Math.floor(Math.random() * table.length)];
+      } else if (categoryKey === 'unusual') {
+         encounter = ENCOUNTER_DATA.unusual[Math.floor(Math.random() * ENCOUNTER_DATA.unusual.length)];
+      } else {
+         // Fallback
+         encounter = { name: categoryName, qty: "1" };
+      }
+
+      const qty = rollDice(encounter.qty);
+      
+      // Special Handling for "Men" -> Settlements or Castles
+      if (categoryName === 'Men') {
+        // Check if it's a settlement/castle discovery?
+        // For now, just the encounter
+      }
+
+      return `ENCOUNTER: ${qty} ${encounter.name} (${categoryName})`;
+    }
+
+    function rollDice(diceString) {
+       // "1d6+2" -> [1, 6, 2]
+       const match = diceString.match(/(\d+)d(\d+)([+-]\d+)?/);
+       if (!match) return parseInt(diceString) || 1;
+       
+       const num = parseInt(match[1]);
+       const sides = parseInt(match[2]);
+       const mod = match[3] ? parseInt(match[3]) : 0;
+       
+       let sum = 0;
+       for(let i=0; i<num; i++) sum += Math.floor(Math.random() * sides) + 1;
+       return Math.max(1, sum + mod);
+    }
+
+    // --- SETTLEMENT GENERATION (BECMI / Dominion Rules) ---
+    function generateSettlement() {
+       const popRoll = rollDice("2d6");
+       let size = "Village";
+       let population = rollDice("1d10") * 50; // 50-500
+       
+       if (popRoll >= 11) { // City
+          size = "City";
+          population = rollDice("2d10") * 1000; // 2000-20000
+       } else if (popRoll >= 8) { // Town
+          size = "Town";
+          population = rollDice("1d10") * 200 + 500; // 700-2500
+       }
+       
+       // Ruler
+       const rulerLevel = rollDice("1d6") + 8; // 9-14
+       const rulerClass = CLASSES[Math.floor(Math.random() * CLASSES.length)];
+       
+       // Services
+       const services = [];
+       services.push("Market");
+       if (size !== "Village") {
+          services.push("Inn");
+          services.push("Blacksmith");
+          services.push("Temple");
+       }
+       if (size === "City") {
+          services.push("Magic Guild");
+          services.push("Thieves Guild");
+          services.push("Arena");
+       }
+       
+       return {
+         size,
+         population,
+         ruler: `Lvl ${rulerLevel} ${rulerClass}`,
+         services: services.join(", ")
+       };
+    }
+
+
+    function logEntry(hex, pos, lostMsg, encounterMsg) {
+      const log = document.getElementById('log');
+      const data = TERRAIN[hex.type];
+      let msg = `Travelled to ${data.name}.`;
+      if(hex.feature) msg += ` FOUND ${hex.feature.toUpperCase()}!`;
+      
+      let extraHtml = "";
+      if(lostMsg) extraHtml += `<div style="color:#f87171; font-weight:bold; font-size:0.7rem">${lostMsg}</div>`;
+      if(encounterMsg) extraHtml += `<div style="color:#fca5a5; font-weight:bold; font-size:0.7rem; margin-top:2px">${encounterMsg}</div>`;
+
+      const html = `
+        <div class="log-entry">
+           <span style="color:#64748b; font-size:0.7rem">Day ${days.toFixed(1)} [${pos.q},${pos.r}]</span>
+           <span style="color:${data.color}; font-weight:bold">${msg}</span>
+           ${extraHtml}
+        </div>
+      `;
+      log.innerHTML = html + log.innerHTML;
+    }
+
+    // --- EXPORT / IMPORT ---
+    function exportMapData() {
+      const data = {
+        map: map,
+        currentPos: currentPos,
+        days: days,
+        movementPoints: movementPoints,
+        maxMovementPoints: maxMovementPoints,
+        partySize: document.getElementById('partySize').value,
+        rations: document.getElementById('rations').value,
+        water: document.getElementById('water').value, // Export Water
+        startTerrain: document.getElementById('startTerrain').value,
+        climate: document.getElementById('climate').value
+      };
+      
+      const dataStr = JSON.stringify(data, null, 2);
+      const blob = new Blob([dataStr], {type: "application/json"});
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `wilderness_map_day${Math.floor(days)}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function importMapData(input) {
+      const file = input.files[0];
+      if(!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+           const data = JSON.parse(e.target.result);
+           
+           if(data.map && data.currentPos) {
+              map = data.map;
+              currentPos = data.currentPos;
+              days = data.days || 0;
+              movementPoints = data.movementPoints || 12;
+              maxMovementPoints = data.maxMovementPoints || 12;
+              
+              if(data.partySize) document.getElementById('partySize').value = data.partySize;
+              if(data.rations) document.getElementById('rations').value = data.rations;
+              if(data.startTerrain) document.getElementById('startTerrain').value = data.startTerrain;
+              if(data.climate) document.getElementById('climate').value = data.climate;
+              if(data.water) document.getElementById('water').value = data.water;
+              
+              document.getElementById('dayCount').innerText = `${days} days, ${movementPoints}/${maxMovementPoints} Miles`;
+              
+              recenterMap(); // Redraws and centers
+              updateInfo();
+              updateRefillButton();
+              generateWeather();
+              
+              // Clear log on import to avoid confusion
+              document.getElementById('log').innerHTML = '<div style="color:#64748b; text-align:center; padding-top:20px">Map loaded successfully.</div>';
+           } else {
+              alert("Invalid map file format.");
+           }
+        } catch(err) {
+           alert("Error reading file: " + err.message);
+        }
+      };
+      reader.readAsText(file);
+      input.value = ''; // Reset so same file can be selected again
+    }
+
+    // Init
+    init();
+  </script>
+</body>
+</html>

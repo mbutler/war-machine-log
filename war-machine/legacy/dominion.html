@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dominion Administrator</title>
+  <style>
+    /* --- DESIGN SYSTEM (Matches War Machine) --- */
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 1.5rem; font-family: system-ui, -apple-system, sans-serif; background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%); color: #e5e7eb; }
+    h1 { margin: 0 0 0.3rem 0; font-size: 1.6rem; letter-spacing: -0.02em; }
+    .tagline { font-size: 0.85rem; color: #94a3b8; margin-bottom: 1.2rem; }
+    
+    .layout-main { display: grid; grid-template-columns: 300px 1fr 320px; gap: 1rem; margin-top: 0.75rem; }
+    @media (max-width: 1100px) { .layout-main { grid-template-columns: 1fr 1fr; } .panel-log { grid-column: span 2; } }
+    @media (max-width: 768px) { .layout-main { grid-template-columns: 1fr; } .panel-log { grid-column: span 1; } }
+
+    /* Cards */
+    .card { border-radius: 0.75rem; border: 1px solid #1f2937; background: #0f172a; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem; height: fit-content; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; border-bottom: 1px solid #1e293b; margin-bottom: 0.5rem; }
+    .card-title { font-weight: 700; font-size: 1rem; color: #f8fafc; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    /* Forms */
+    label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 3px; }
+    input[type="text"], input[type="number"], select {
+      width: 100%; background: #020617; border: 1px solid #334155; color: #e2e8f0;
+      padding: 6px 8px; border-radius: 4px; font-size: 0.9rem;
+    }
+    input:focus, select:focus { border-color: #6366f1; outline: none; }
+    
+    .row { display: flex; gap: 8px; }
+    .row > div { flex: 1; }
+    
+    .stat-display { background: #020617; padding: 8px 12px; border-radius: 6px; border: 1px solid #334155; text-align: center; }
+    .stat-val { font-size: 1.4rem; font-weight: 700; color: #fff; display: block; }
+    .stat-label { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; }
+
+    /* Buttons */
+    .btn { width: 100%; padding: 10px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; }
+    .btn-primary { background: #4f46e5; color: white; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+    .btn-primary:hover { background: #4338ca; }
+    .btn-sec { background: #334155; color: #cbd5e1; margin-top: 8px; font-size: 0.8rem; }
+    .btn-green { background: #059669; color: white; font-size: 0.75rem; padding: 4px 8px; width: auto; display: inline-block; margin-top:6px;}
+
+    /* Log */
+    .log-container { background: #000; border: 1px solid #334155; border-radius: 8px; height: 500px; overflow-y: auto; padding: 10px; font-family: 'Courier New', monospace; font-size: 0.8rem; }
+    .log-entry { margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed #333; }
+    .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; margin-right: 5px; }
+    .badge.season { background: #1e3a8a; color: #bfdbfe; }
+    .badge.pop { background: #064e3b; color: #a7f3d0; }
+    .badge.bad { background: #450a0a; color: #fca5a5; }
+    
+    /* Status Bar */
+    .status-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+
+  <h1>Dominion Administrator</h1>
+  <p class="tagline">Track Families, Income, and the all-important Confidence Level.</p>
+
+  <div class="layout-main">
+
+    <!-- 1. DOMINION STATS (Persistent State) -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Dominion Status</span>
+      </div>
+      
+      <label>Dominion Name</label>
+      <input type="text" id="domName" value="Barony of Vorloi" class="save">
+      
+      <div class="row" style="margin-top:8px">
+        <div>
+          <label>Ruler Alignment</label>
+          <select id="alignRuler" class="save">
+            <option value="Lawful">Lawful</option>
+            <option value="Neutral">Neutral</option>
+            <option value="Chaotic">Chaotic</option>
+          </select>
+        </div>
+        <div>
+          <label>Dominion Alignment</label>
+          <select id="alignDom" class="save">
+            <option value="Lawful">Lawful</option>
+            <option value="Neutral">Neutral</option>
+            <option value="Chaotic">Chaotic</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="status-bar" style="margin-top:10px">
+        <div class="stat-display">
+          <span class="stat-val" id="dispPop">0</span>
+          <span class="stat-label">Families</span>
+        </div>
+        <div class="stat-display">
+          <span class="stat-val" id="dispConf">0</span>
+          <span class="stat-label">Confidence</span>
+        </div>
+        <div class="stat-display">
+          <span class="stat-val" id="dispHex">0</span>
+          <span class="stat-label">Hexes</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div><label>Current Families</label><input type="number" id="inPop" value="1000" class="save"></div>
+        <div><label>Land (Hexes)</label><input type="number" id="inHex" value="4" class="save"></div>
+      </div>
+      
+      <div class="row" style="margin-top:8px">
+        <div><label>Treasury (gp)</label><input type="number" id="inTreasury" value="5000" class="save"></div>
+        <div><label>Current Conf.</label><input type="number" id="inConf" value="300" class="save"></div>
+      </div>
+
+      <div style="margin-top:12px; padding-top:10px; border-top:1px solid #1e293b">
+        <label>Hierarchy</label>
+        <div class="row">
+           <div style="flex:2"><label>Liege</label><input type="text" id="inLiege" value="King Stefan" class="save"></div>
+           <div><label>Vassals (Count)</label><input type="number" id="inVassalCount" value="0" class="save"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px; padding-top:10px; border-top:1px solid #1e293b">
+        <label>Resources (Specific Types)</label>
+        <div id="resourceList" style="margin-bottom:8px">
+            <!-- Resource items will be injected here -->
+        </div>
+        <div class="row">
+            <select id="newResType" style="flex:2">
+                <option value="Animal">Animal</option>
+                <option value="Vegetable">Vegetable</option>
+                <option value="Mineral">Mineral</option>
+            </select>
+            <input type="text" id="newResName" placeholder="Name (e.g. Iron)" style="flex:3">
+            <button class="btn btn-green" onclick="addResource()" style="margin-top:0; flex:1">+</button>
+        </div>
+        <div style="font-size:0.7rem; color:#64748b; margin-top:4px">Avg total resource value: <span id="resTotal">0</span>gp/family</div>
+      </div>
+      
+      <button class="btn btn-sec" onclick="resetData()">Reset Dominion</button>
+    </div>
+
+    <!-- 2. SEASONAL MANAGEMENT (The Calculator) -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Manage Season</span>
+      </div>
+      
+      <div class="row">
+        <div>
+          <label>Season/Turn</label>
+          <select id="turnSeason">
+            <option value="Spring Start">Spring (Start)</option>
+            <option value="Summer">Summer</option>
+            <option value="Autumn">Autumn (Harvest)</option>
+            <option value="Winter">Winter</option>
+            <option value="Year End">Year End (Growth)</option>
+          </select>
+        </div>
+        <div>
+           <label>Ruler Status</label>
+           <select id="turnRuler">
+             <option value="present">Present</option>
+             <option value="advisor">Advisor Only (-)</option>
+             <option value="absent">Absent (-)</option>
+           </select>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label>Tax Rate (gp/family)</label>
+          <input type="number" id="turnTax" value="10">
+        </div>
+        <div>
+           <label>Holiday Spending (Total gp)</label>
+           <input type="number" id="turnHoliday" value="1000">
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px">
+        <div>
+           <label>Events / Mood</label>
+           <select id="turnEvent">
+             <option value="none">Normal / None</option>
+             <option value="festival">Grand Festival (+Conf)</option>
+             <option value="good">Good Event (+Conf)</option>
+             <option value="bad">Bad Event (-Conf)</option>
+             <option value="calamity">Calamity (-Conf)</option>
+             <option value="random">Roll Random Event</option>
+           </select>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label>Expenses (Troops/Stronghold)</label>
+          <input type="number" id="turnExpFixed" value="1500">
+        </div>
+        <div>
+          <label>Tithe/Tax to Liege (%)</label>
+          <input type="number" id="turnTithe" value="20">
+        </div>
+      </div>
+
+      <div style="background:#1e293b; padding:10px; border-radius:6px; margin-top:15px">
+        <div class="row" style="margin-bottom:4px">
+           <span style="font-size:0.8rem; color:#94a3b8">Proj. Income:</span>
+           <span style="font-size:0.8rem; font-weight:bold; color:#fff" id="projInc">0 gp</span>
+        </div>
+        <div class="row" style="margin-bottom:4px">
+           <span style="font-size:0.8rem; color:#94a3b8">Proj. Confidence:</span>
+           <span style="font-size:0.8rem; font-weight:bold; color:#fff" id="projConf">0</span>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" style="margin-top:15px" onclick="processTurn()">Process Turn</button>
+    </div>
+
+    <!-- 3. CHRONICLE (Log) -->
+    <div class="card panel-log">
+      <div class="card-header">
+        <span class="card-title">Dominion Chronicle</span>
+        <button style="background:none; border:none; color:#64748b; cursor:pointer; font-size:0.75rem" onclick="clearLog()">Clear</button>
+      </div>
+      <div class="log-container" id="log">
+        <div style="color:#64748b; text-align:center; padding-top:60px">
+          History is written here...
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // --- CORE ENGINE --- //
+
+    const getVal = (id) => parseFloat(document.getElementById(id).value) || 0;
+    const setVal = (id, val) => document.getElementById(id).value = val;
+
+    // RC Standard Constants
+    const STD_TAX_MIN = 10; 
+    const STD_TAX_MAX = 20;
+    const MAX_HEX_POP = 500; // Families per hex density cap
+    const STD_HOLIDAY_YR = 1; // 1gp per family per year standard
+
+    let resources = [
+      { type: 'Animal', name: 'Livestock', value: 2 },
+      { type: 'Vegetable', name: 'Grain', value: 2 },
+      { type: 'Mineral', name: 'Stone', value: 1 }
+    ];
+
+    function renderResources() {
+        const list = document.getElementById('resourceList');
+        list.innerHTML = '';
+        let totalVal = 0;
+        
+        resources.forEach((r, idx) => {
+            totalVal += parseFloat(r.value);
+            const div = document.createElement('div');
+            div.className = 'row';
+            div.style.marginBottom = '4px';
+            div.innerHTML = `
+                <span style="flex:2; font-size:0.8rem; padding:6px; background:#1e293b; border-radius:4px; color:#cbd5e1">
+                    <span style="color:#94a3b8; font-size:0.7rem; text-transform:uppercase; margin-right:4px">${r.type.substr(0,3)}</span>
+                    ${r.name}
+                </span>
+                <input type="number" value="${r.value}" onchange="updateResValue(${idx}, this.value)" style="flex:1">
+                <button class="btn btn-green" style="background:#ef4444; flex:0.5" onclick="removeResource(${idx})">x</button>
+            `;
+            list.appendChild(div);
+        });
+        
+        document.getElementById('resTotal').innerText = totalVal;
+        updateProjections();
+    }
+
+    function addResource() {
+        const type = document.getElementById('newResType').value;
+        const name = document.getElementById('newResName').value;
+        if(!name) return alert("Enter resource name");
+        
+        resources.push({ type, name, value: 1 });
+        document.getElementById('newResName').value = '';
+        renderResources();
+        saveData();
+    }
+
+    function removeResource(idx) {
+        resources.splice(idx, 1);
+        renderResources();
+        saveData();
+    }
+
+    function updateResValue(idx, val) {
+        resources[idx].value = parseFloat(val) || 0;
+        saveData();
+        updateProjections();
+    }
+
+    function updateProjections() {
+      const pop = getVal('inPop');
+      const tax = getVal('turnTax');
+      
+      // Resource Income
+      let resTotal = 0;
+      resources.forEach(r => resTotal += r.value);
+      
+      // Income Math
+      const taxInc = pop * tax;
+      const resInc = pop * resTotal;
+      const gross = taxInc + resInc;
+      
+      const expFixed = getVal('turnExpFixed');
+      const holiday = getVal('turnHoliday');
+      const tithePct = getVal('turnTithe');
+      const tithe = Math.floor(gross * (tithePct / 100));
+      const net = gross - expFixed - tithe - holiday;
+
+      document.getElementById('projInc').innerText = `${net} gp`;
+
+      // --- CONFIDENCE MATH (Strict BECMI/RC) ---
+      let confChange = 0;
+      let factors = [];
+      
+      // 1. Tax Mod
+      // RC: <10 -> +1/gp diff. 10-20 -> 0. >20 -> -1/gp diff.
+      if (tax < STD_TAX_MIN) {
+          const gain = (STD_TAX_MIN - tax);
+          confChange += gain;
+          factors.push(`Low Tax (+${gain})`);
+      } else if (tax > STD_TAX_MAX) {
+          const loss = (tax - STD_TAX_MAX);
+          confChange -= loss;
+          factors.push(`High Tax (-${loss})`);
+      }
+
+      // 2. Ruler Presence
+      const ruler = document.getElementById('turnRuler').value;
+      if(ruler === 'present') { confChange += 1; factors.push("Ruler Present (+1)"); }
+      if(ruler === 'absent') { confChange -= 2; factors.push("Ruler Absent (-2)"); }
+
+      // 3. Alignment Check
+      const rAlign = document.getElementById('alignRuler').value;
+      const dAlign = document.getElementById('alignDom').value;
+      if (rAlign !== dAlign) {
+          if ((rAlign === 'Lawful' && dAlign === 'Chaotic') || (rAlign === 'Chaotic' && dAlign === 'Lawful')) {
+              confChange -= 5; // Opposed
+              factors.push("Opposed Alignment (-5)");
+          } else {
+              confChange -= 2; // Different
+              factors.push("Diff. Alignment (-2)");
+          }
+      }
+
+      // 4. Resource Variety Check (Companion Rules)
+      const types = new Set(resources.map(r => r.type));
+      if (!types.has('Animal') || !types.has('Vegetable') || !types.has('Mineral')) {
+          confChange -= 5;
+          factors.push("Lack of Resource Types (-5)");
+      }
+
+      // 5. Holidays
+      // Standard: 1gp/family/year. Season is 1/4 year? Or is holiday a one-off?
+      // Let's assume user enters total holiday spending for this turn.
+      // If spending < 0.25 gp/family (minimal quarterly), penalty?
+      // RC says: "If amount spent is less than 1gp/inhabitant... confidence decreases"
+      // Let's simpler model: Standard expectation is ~0.25gp/family per season.
+      const holidayPerCapita = holiday / pop;
+      if (holidayPerCapita > 0.5) {
+          confChange += 2; factors.push("Lavish Holidays (+2)");
+      } else if (holidayPerCapita < 0.1) {
+          // Assuming 0 is bad, but low spending is penalty
+          confChange -= 2; factors.push("No Holidays (-2)");
+      }
+
+      // 6. Events
+      const evt = document.getElementById('turnEvent').value;
+      if(evt === 'festival') { confChange += 5; factors.push("Festival (+5)"); }
+      if(evt === 'good') { confChange += 10; factors.push("Good Event (+10)"); }
+      if(evt === 'bad') { confChange -= 10; factors.push("Bad Event (-10)"); }
+      if(evt === 'calamity') { confChange -= 30; factors.push("Calamity (-30)"); }
+
+      const currConf = getVal('inConf');
+      const finalConf = Math.min(500, Math.max(0, currConf + confChange));
+      
+      let diffStr = confChange >= 0 ? `+${confChange}` : `${confChange}`;
+      document.getElementById('projConf').innerText = `${currConf} -> ${finalConf} (${diffStr})`;
+      
+      // Update Header Stats
+      document.getElementById('dispPop').innerText = pop;
+      document.getElementById('dispConf').innerText = currConf;
+      document.getElementById('dispHex').innerText = getVal('inHex');
+      
+      return { net, confChange, factors, finalConf };
+    }
+
+    function processTurn() {
+      const season = document.getElementById('turnSeason').value;
+      const evtType = document.getElementById('turnEvent').value;
+      
+      // 1. Random Event (if selected)
+      let eventLog = "";
+      let rndConf = 0;
+      if(evtType === 'random') {
+         const roll = Math.floor(Math.random() * 20) + 1;
+         if(roll <= 2) { eventLog = "Natural Disaster"; rndConf = -20; }
+         else if(roll <= 5) { eventLog = "Bandit Raid"; rndConf = -10; }
+         else if(roll <= 8) { eventLog = "Bad Harvest / Illness"; rndConf = -5; }
+         else if(roll <= 12) { eventLog = "Uneventful Season"; rndConf = 0; }
+         else if(roll <= 15) { eventLog = "Good Weather"; rndConf = 5; }
+         else if(roll <= 17) { eventLog = "Visiting Merchant"; rndConf = 5; }
+         else if(roll <= 19) { eventLog = "Local Festival"; rndConf = 10; }
+         else { eventLog = "Miracle / Bumper Crop"; rndConf = 20; }
+      } else {
+         eventLog = evtType.charAt(0).toUpperCase() + evtType.slice(1);
+      }
+
+      // Calculate Projections
+      const proj = updateProjections();
+      let { net, confChange, factors, finalConf } = proj;
+      
+      // Add random event confidence
+      confChange += rndConf;
+      if (rndConf !== 0) factors.push(`Random Event (${rndConf})`);
+      
+      finalConf = Math.min(500, Math.max(0, getVal('inConf') + confChange));
+
+      // Update Treasury & Confidence
+      setVal('inTreasury', getVal('inTreasury') + net);
+      setVal('inConf', finalConf);
+
+      // Population Growth (Year End)
+      let pop = getVal('inPop');
+      let popChange = 0;
+      let growthMsg = "";
+      
+      if(season === 'Year End') {
+         let pct = 0;
+         if(finalConf >= 450) pct = 0.50;       
+         else if(finalConf >= 350) pct = 0.20;  
+         else if(finalConf >= 270) pct = 0.05;  
+         else if(finalConf >= 200) pct = 0.0;   
+         else if(finalConf >= 150) pct = -0.10; 
+         else pct = -0.20;                    
+         
+         popChange = Math.floor(pop * pct);
+         const maxPop = getVal('inHex') * MAX_HEX_POP;
+         if(pop + popChange > maxPop) {
+           popChange = Math.max(0, maxPop - pop);
+           growthMsg = "(Capped by land)";
+         }
+         setVal('inPop', pop + popChange);
+      }
+
+      // Log
+      const diffSign = net >= 0 ? '+' : '';
+      const confSign = confChange >= 0 ? '+' : '';
+      
+      let factorHtml = factors.map(f => `<span class="badge" style="background:#334155; color:#cbd5e1; margin-bottom:2px">${f}</span>`).join(" ");
+
+      let html = `
+        <div class="log-entry">
+           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px">
+              <span class="badge season">${season}</span>
+              <span style="color:#64748b; font-size:0.7rem">${new Date().toLocaleTimeString()}</span>
+           </div>
+           <div style="margin-bottom:6px">
+              <strong>Event:</strong> ${eventLog}
+           </div>
+           <div style="margin-bottom:8px; line-height:1.4">
+              ${factorHtml}
+           </div>
+           <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:0.8rem; background:#1e293b; padding:8px; border-radius:4px;">
+              <div>
+                 <div style="color:#94a3b8; font-size:0.7rem">TREASURY</div>
+                 <div style="color:${net>=0?'#4ade80':'#f87171'}">${diffSign}${net} gp</div>
+                 <div style="color:#64748b; font-size:0.7rem">Now: ${getVal('inTreasury')}</div>
+              </div>
+              <div>
+                 <div style="color:#94a3b8; font-size:0.7rem">CONFIDENCE</div>
+                 <div style="color:${confChange>=0?'#60a5fa':'#f87171'}">${confSign}${confChange}</div>
+                 <div style="color:#64748b; font-size:0.7rem">Now: ${finalConf}</div>
+              </div>
+           </div>
+      `;
+
+      if(popChange !== 0) {
+        html += `
+           <div style="margin-top:6px; background:#064e3b; padding:6px; border-radius:4px; color:#a7f3d0; font-size:0.8rem">
+              <strong>Year End Growth:</strong> ${popChange > 0 ? '+' : ''}${popChange} families. ${growthMsg}
+           </div>
+        `;
+      }
+      
+      html += `</div>`;
+      
+      const log = document.getElementById('log');
+      if(log.innerText.includes("History is")) log.innerHTML = "";
+      log.innerHTML = html + log.innerHTML;
+      
+      saveData();
+      updateProjections();
+    }
+
+    function clearLog() {
+      document.getElementById('log').innerHTML = '<div style="color:#64748b; text-align:center; padding-top:60px">History is written here...</div>';
+    }
+
+    // --- PERSISTENCE --- //
+    function saveData() {
+      const inputs = document.querySelectorAll('.save');
+      const data = {};
+      inputs.forEach(i => data[i.id] = i.value);
+      data.resources = resources; // Save resource list
+      localStorage.setItem('dominion_admin', JSON.stringify(data));
+    }
+
+    function loadData() {
+      const raw = localStorage.getItem('dominion_admin');
+      if(!raw) { renderResources(); return; }
+      const data = JSON.parse(raw);
+      const inputs = document.querySelectorAll('.save');
+      inputs.forEach(i => {
+        if(data[i.id] !== undefined) i.value = data[i.id];
+      });
+      if(data.resources) resources = data.resources;
+      renderResources();
+    }
+    
+    function resetData() {
+      if(confirm("Reset all dominion stats to default?")) {
+        localStorage.removeItem('dominion_admin');
+        location.reload();
+      }
+    }
+
+    // Init
+    document.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('change', () => { updateProjections(); saveData(); });
+      el.addEventListener('keyup', updateProjections);
+    });
+
+    loadData();
+    updateProjections();
+
+  </script>
+</body>
+</html>

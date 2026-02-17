@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BECMI War Machine - Complete Campaign Suite</title>
+  <style>
+    /* --- SUITE DESIGN SYSTEM --- */
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 1.5rem;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%);
+      color: #e5e7eb;
+      line-height: 1.6;
+    }
+
+    h1 {
+      margin: 0 0 0.3rem 0;
+      font-size: 2.5rem;
+      letter-spacing: -0.02em;
+      text-align: center;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      color: #94a3b8;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #64748b;
+      margin-bottom: 3rem;
+      text-align: center;
+      font-style: italic;
+    }
+
+    /* Cards */
+    .card {
+      border-radius: 0.75rem;
+      border: 1px solid #1f2937;
+      background: #0f172a;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      height: 100%;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      border-color: #3b82f6;
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #60a5fa, #a78bfa);
+    }
+
+    .card-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #f8fafc;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-description {
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      margin: 0;
+      flex-grow: 1;
+      line-height: 1.3;
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.4rem;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.85rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+      color: white;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+
+    /* Layout */
+    .hero-section {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 0.75rem;
+      border: 1px solid #1e293b;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .workflow-section {
+      background: rgba(15, 23, 42, 0.3);
+      border-radius: 1rem;
+      border: 1px solid #1e293b;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .workflow-title {
+      font-size: 1.5rem;
+      color: #f8fafc;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .workflow-diagram {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .workflow-step {
+      background: #1e293b;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      text-align: center;
+      min-width: 120px;
+      border: 2px solid #374151;
+    }
+
+    .workflow-arrow {
+      font-size: 1.5rem;
+      color: #60a5fa;
+    }
+
+    .footer {
+      text-align: center;
+      color: #64748b;
+      font-size: 0.85rem;
+      border-top: 1px solid #1e293b;
+      padding-top: 2rem;
+      margin-top: 3rem;
+    }
+
+    /* Icons (using emoji for now) */
+    .icon-party { color: #f59e0b; }
+    .icon-dungeon { color: #ef4444; }
+    .icon-merchant { color: #10b981; }
+    .icon-dominion { color: #8b5cf6; }
+    .icon-wilderness { color: #06b6d4; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .workflow-diagram {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .workflow-arrow {
+        transform: rotate(90deg);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <h1>BECMI War Machine</h1>
+    <p class="tagline">Complete D&D Expert Set Campaign Management Suite</p>
+    <p class="subtitle">Authentic BECMI Rules Implementation • Strategic Domain Management • Tactical Combat Simulation</p>
+  </div>
+
+  <!-- Tools Grid -->
+  <div class="tools-grid">
+
+    <!-- Party Generator -->
+    <div class="card">
+      <h3 class="card-title">
+        <span class="icon-party">👥</span>
+        Mustard Hall Registry
+      </h3>
+      <p class="card-description">
+        Generate BECMI characters with 3d6 stats, classes, and authentic equipment.
+      </p>
+      <a href="party.html" class="btn btn-primary">
+        <span>🎲</span>
+        Generate Party
+      </a>
+    </div>
+
+    <!-- Dungeon Delver -->
+    <div class="card">
+      <h3 class="card-title">
+        <span class="icon-dungeon">🏰</span>
+        The Dungeon Delver
+      </h3>
+      <p class="card-description">
+        Tactical combat simulation with individual tracking, morale, and treasure.
+      </p>
+      <a href="dungeon.html" class="btn btn-primary">
+        <span>⚔️</span>
+        Enter Dungeon
+      </a>
+    </div>
+
+    <!-- Merchant Simulator -->
+    <div class="card">
+      <h3 class="card-title">
+        <span class="icon-merchant">⚖️</span>
+        Merchant of Darokin
+      </h3>
+      <p class="card-description">
+        Trade simulation with demand modifiers, tariffs, and caravan logistics.
+      </p>
+      <a href="merchant.html" class="btn btn-primary">
+        <span>💰</span>
+        Start Trading
+      </a>
+    </div>
+
+    <!-- Artificer's Lab -->
+    <div class="card">
+      <h3 class="card-title">
+        <span class="icon-merchant">⚗️</span>
+        Artificer's Lab
+      </h3>
+      <p class="card-description">
+        Research spells, brew potions, and enchant magic items using RC formulas.
+      </p>
+      <a href="lab.html" class="btn btn-primary">
+        <span>🔮</span>
+        Enter Lab
+      </a>
+    </div>
+
+    <!-- Dominion Administrator -->
+    <div class="card">
+      <h3 class="card-title">
+        <span class="icon-dominion">🏛️</span>
+        Dominion Administrator
+      </h3>
+      <p class="card-description">
+        Manage population, income, confidence, and political relationships.
+      </p>
+      <a href="dominion.html" class="btn btn-primary">
+        <span>👑</span>
+        Rule Your Domain
+      </a>
+    </div>
+
+    <!-- Stronghold Architect -->
+    <div class="card">
+      <h3 class="card-title">
+        <span class="icon-dominion">🏰</span>
+        Stronghold Architect
+      </h3>
+      <p class="card-description">
+        Design fortifications and calculate construction costs per Expert Rules.
+      </p>
+      <a href="stronghold.html" class="btn btn-primary">
+        <span>🏗️</span>
+        Build Stronghold
+      </a>
+    </div>
+
+    <!-- War Machine Siege -->
+    <div class="card">
+      <h3 class="card-title">
+        <span class="icon-dungeon">🚩</span>
+        War Machine Combat
+      </h3>
+      <p class="card-description">
+        Simulate large-scale battles with Battle Force Ratings and siege mechanics.
+      </p>
+      <a href="siege.html" class="btn btn-primary">
+        <span>⚔️</span>
+        Start Battle
+      </a>
+    </div>
+
+    <!-- Master Chronometer -->
+    <div class="card">
+      <h3 class="card-title">
+        <span class="icon-wilderness">⏳</span>
+        Master Chronometer
+      </h3>
+      <p class="card-description">
+        Track campaign time, moon phases, seasons, and event logs.
+      </p>
+      <a href="calendar.html" class="btn btn-primary">
+        <span>🕰️</span>
+        Open Calendar
+      </a>
+    </div>
+
+    <!-- Treasure Generator -->
+    <div class="card">
+      <h3 class="card-title">
+        <span class="icon-merchant">💎</span>
+        Treasure Generator
+      </h3>
+      <p class="card-description">
+        Generate hoards (Types A-O) with gems, jewelry, and magic items.
+      </p>
+      <a href="treasure.html" class="btn btn-primary">
+        <span>💰</span>
+        Generate Hoard
+      </a>
+    </div>
+
+    <!-- Wilderness Explorer -->
+    <div class="card">
+      <h3 class="card-title">
+        <span class="icon-wilderness">🌲</span>
+        Royal Cartographer
+      </h3>
+      <p class="card-description">
+        Explore wilderness hex maps with movement costs and encounters.
+      </p>
+      <a href="wilderness.html" class="btn btn-primary">
+        <span>🗺️</span>
+        Explore Wilderness
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Campaign Workflow -->
+  <div class="workflow-section">
+    <h3 class="workflow-title">BECMI Campaign Workflow</h3>
+    <div class="workflow-diagram">
+      <div class="workflow-step">
+        <strong>1. Character Creation</strong><br>
+        <span style="color: #94a3b8; font-size: 0.8rem;">Mustard Hall Registry</span>
+      </div>
+      <span class="workflow-arrow">→</span>
+      <div class="workflow-step">
+        <strong>2. Wilderness Exploration</strong><br>
+        <span style="color: #94a3b8; font-size: 0.8rem;">Royal Cartographer</span>
+      </div>
+      <span class="workflow-arrow">→</span>
+      <div class="workflow-step">
+        <strong>3. Dungeon Delving</strong><br>
+        <span style="color: #94a3b8; font-size: 0.8rem;">The Dungeon Delver</span>
+      </div>
+      <span class="workflow-arrow">→</span>
+      <div class="workflow-step">
+        <strong>4. Domain Management</strong><br>
+        <span style="color: #94a3b8; font-size: 0.8rem;">Dominion Administrator</span>
+      </div>
+    </div>
+    <p style="text-align: center; color: #94a3b8; margin-top: 1rem;">
+      Seamlessly export/import data between tools to maintain campaign continuity and track character progression.
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>
+      BECMI War Machine - Authentic D&D Expert Set Implementation<br>
+      Built with precision for the classic rules that shaped fantasy RPGs<br>
+      <em>"The finest tools for the most refined campaigns"</em>
+    </p>
+  </div>
+
+</body>
+</html>
