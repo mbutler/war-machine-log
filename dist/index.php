@@ -14,10 +14,36 @@ $basePath = '/home/mbutler/fantasy-log';  // Path to your simulation folder
 $eventsPath = $basePath . '/logs/events.jsonl';
 $worldPath = $basePath . '/world.json';
 
+// Handle export requests
+if (isset($_GET['export'])) {
+    $exportType = $_GET['export'];
+    
+    if ($exportType === 'world' && file_exists($worldPath)) {
+        header('Content-Type: application/json');
+        header('Content-Disposition: attachment; filename="world.json"');
+        header('Content-Length: ' . filesize($worldPath));
+        readfile($worldPath);
+        exit;
+    } elseif ($exportType === 'events' && file_exists($eventsPath)) {
+        header('Content-Type: application/x-ndjson');
+        header('Content-Disposition: attachment; filename="events.jsonl"');
+        header('Content-Length: ' . filesize($eventsPath));
+        readfile($eventsPath);
+        exit;
+    } else {
+        http_response_code(404);
+        echo 'File not found';
+        exit;
+    }
+}
+
 // Pagination settings
 $limit = isset($_GET['limit']) ? min(500, max(10, (int)$_GET['limit'])) : 50;
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $order = isset($_GET['order']) && $_GET['order'] === 'oldest' ? 'oldest' : 'newest'; // 'newest' or 'oldest'
+
+// Entity filter - search by name in actors, location, summary, details
+$entityFilter = isset($_GET['entity']) ? trim($_GET['entity']) : '';
 
 // Category colors
 $categoryColors = [
@@ -81,6 +107,27 @@ if (!file_exists($eventsPath)) {
                 return strcmp($timeB, $timeA); // Descending = newest first
             }
         });
+        
+        // Apply entity filter if specified
+        if ($entityFilter !== '') {
+            $filterLower = strtolower($entityFilter);
+            $allEvents = array_filter($allEvents, function($event) use ($filterLower) {
+                // Check actors array
+                $actors = $event['actors'] ?? [];
+                foreach ($actors as $actor) {
+                    if (stripos($actor, $filterLower) !== false) return true;
+                }
+                // Check location
+                if (stripos($event['location'] ?? '', $filterLower) !== false) return true;
+                // Check summary
+                if (stripos($event['summary'] ?? '', $filterLower) !== false) return true;
+                // Check details
+                if (stripos($event['details'] ?? '', $filterLower) !== false) return true;
+                return false;
+            });
+            $allEvents = array_values($allEvents); // Re-index
+        }
+        
         $totalEvents = count($allEvents);
         $totalPages = max(1, ceil($totalEvents / $limit));
         
@@ -1030,7 +1077,7 @@ function getOrdinal($n) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="refresh" content="60">
-    <title>World Without Players</title>
+    <title>The Ghost Campaign</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -1221,6 +1268,92 @@ function getOrdinal($n) {
         a { color: #c084fc; text-decoration: none; }
         a:hover { text-decoration: underline; }
         
+        .export-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .export-btn {
+            font-size: 11px;
+            padding: 4px 10px;
+            background: #1a1a24;
+            border: 1px solid #2a2a35;
+            border-radius: 4px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+        
+        .export-btn:hover {
+            background: #252530;
+            border-color: #c084fc;
+            color: #c084fc;
+            text-decoration: none;
+        }
+        
+        .entity-filter {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .entity-filter input {
+            background: #1a1a24;
+            border: 1px solid #2a2a35;
+            border-radius: 4px;
+            color: #e2e2e8;
+            font-family: inherit;
+            font-size: 11px;
+            padding: 5px 10px;
+            width: 160px;
+            transition: all 0.15s;
+        }
+        
+        .entity-filter input:focus {
+            outline: none;
+            border-color: #c084fc;
+            background: #1e1e28;
+        }
+        
+        .entity-filter input::placeholder {
+            color: #6b6b7a;
+        }
+        
+        .clear-filter {
+            position: absolute;
+            right: 6px;
+            color: #6b6b7a;
+            font-size: 14px;
+            line-height: 1;
+            text-decoration: none;
+            padding: 2px 4px;
+        }
+        
+        .clear-filter:hover {
+            color: #f87171;
+            text-decoration: none;
+        }
+        
+        .filter-active {
+            background: #1f1a2d;
+            border: 1px solid #c084fc40;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+        
+        .filter-active .filter-label {
+            color: #c084fc;
+        }
+        
+        .filter-active .filter-count {
+            color: #6b6b7a;
+        }
+        
         /* Pagination styles */
         .pagination-link {
             padding: 4px 8px;
@@ -1274,8 +1407,31 @@ function getOrdinal($n) {
                 margin-bottom: 16px;
             }
             
+            header > div:first-child {
+                flex-wrap: wrap;
+            }
+            
             h1 {
                 font-size: 14px;
+            }
+            
+            .entity-filter input {
+                width: 120px;
+            }
+            
+            .export-buttons {
+                gap: 4px;
+            }
+            
+            .export-btn {
+                padding: 4px 8px;
+                font-size: 10px;
+            }
+            
+            .filter-active {
+                flex-direction: column;
+                gap: 4px;
+                align-items: flex-start;
             }
             
             .meta {
@@ -1405,8 +1561,24 @@ function getOrdinal($n) {
 <body>
     <div class="container">
         <header>
-            <h1>WORLD WITHOUT PLAYERS</h1>
-            <h2>A BECMI event log</h2>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                <div>
+                    <h1>THE GHOST CAMPAIGN</h1>
+                    <h2>A BECMI event log</h2>
+                </div>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <div class="entity-filter">
+                        <input type="text" id="entitySearch" placeholder="Filter by entity..." value="<?= htmlspecialchars($entityFilter) ?>" />
+                        <?php if ($entityFilter): ?>
+                        <a href="?" class="clear-filter" title="Clear filter">×</a>
+                        <?php endif; ?>
+                    </div>
+                    <div class="export-buttons">
+                        <a href="?export=world" class="export-btn" title="Download world.json">World</a>
+                        <a href="?export=events" class="export-btn" title="Download events.jsonl">Events</a>
+                    </div>
+                </div>
+            </div>
             <div class="meta">
                 <?php if ($world): ?>
                 <span><span class="dot">●</span> <?= htmlspecialchars($world['archetype'] ?? 'Unknown') ?></span>
@@ -1440,6 +1612,13 @@ function getOrdinal($n) {
         
         <?php if ($error): ?>
         <div class="error"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
+        
+        <?php if ($entityFilter): ?>
+        <div class="filter-active">
+            <span class="filter-label">Showing events matching: <strong><?= htmlspecialchars($entityFilter) ?></strong></span>
+            <span class="filter-count"><?= $totalEvents ?> result<?= $totalEvents !== 1 ? 's' : '' ?></span>
+        </div>
         <?php endif; ?>
         
         <div class="events">
@@ -1630,6 +1809,25 @@ function getOrdinal($n) {
         url.searchParams.set('page', '1'); // Reset to first page when changing order
         window.location.href = url.toString();
     }
+    
+    function filterByEntity(value) {
+        const url = new URL(window.location);
+        if (value.trim()) {
+            url.searchParams.set('entity', value.trim());
+        } else {
+            url.searchParams.delete('entity');
+        }
+        url.searchParams.set('page', '1'); // Reset to first page when filtering
+        window.location.href = url.toString();
+    }
+    
+    // Entity search input handler
+    document.getElementById('entitySearch')?.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            filterByEntity(this.value);
+        }
+    });
     
     (function() {
         const tooltip = document.getElementById('tooltip');
