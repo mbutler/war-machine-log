@@ -1,0 +1,13 @@
+{
+  "name": "fantasy-log",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun --watch src/index.ts",
+    "build": "bun build src/index.ts --outfile dist/fantasy-log.js --target bun --minify",
+    "build:node": "bun build src/index.ts --outfile dist/fantasy-log-node.js --target node --minify",
+    "build:stress": "bun build src/stress-test.ts --outfile dist/stress-test.js --target bun --minify",
+    "run:dist": "bun run dist/fantasy-log.js"
+  }
+}
